@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentOptions"
-            app:destination="@id/fragmentOptions" />
+            app:destination="@id/fragmentOptions"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentPause2"
             app:destination="@id/fragmentPause" />
@@ -25,6 +29,10 @@
         <action
             android:id="@+id/action_fragmentOptions_to_fragmentMenu"
             app:destination="@id/fragmentMenu"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out"
             app:popUpTo="@id/fragmentMenu" />
     </fragment>
     <fragment
