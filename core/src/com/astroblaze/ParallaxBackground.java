@@ -8,19 +8,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
 public class ParallaxBackground extends Actor {
-    private final Array<Texture> textures;
-    private float speed;
+    private final Array<Texture> textures = new Array<>();
+    public float speed;
     private float scroll;
 
-    public ParallaxBackground(Array<Texture> textures) {
-        this.textures = textures;
-        for (int i = 0; i < textures.size; i++) {
-            this.textures.get(i).setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+    public ParallaxBackground(float speed) {
+        this.speed = speed;
+        for (int i = 0; i < Assets.parallaxArray.size; i++) {
+            Texture tex = Assets.asset(Assets.parallaxArray.get(i));
+            tex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            textures.add(tex);
         }
-    }
-
-    public void setSpeed(float newSpeed) {
-        this.speed = newSpeed;
     }
 
     @Override
