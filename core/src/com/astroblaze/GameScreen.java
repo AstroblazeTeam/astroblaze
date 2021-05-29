@@ -37,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         if (timeScale > 0f) {
-            this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(3f)));
+            this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
         }
         this.stage.addActor(new ParallaxBackground(8f));
         this.stage.addActor(new DebugTextDrawer());

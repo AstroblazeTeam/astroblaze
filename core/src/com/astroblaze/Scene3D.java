@@ -1,12 +1,13 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,6 @@ public class Scene3D {
     }
 
     public void render() {
-        //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         game.batch.begin(camera);
@@ -41,14 +41,9 @@ public class Scene3D {
     }
 
     public void addActors() {
-        SpaceShip ship = new SpaceShip(this, Assets.asset(Assets.spaceShip2));
-        ship.getTransform().setTranslation(50f, 0f, 0f);
-        actors.add(ship);
-        ship = new SpaceShip(this, Assets.asset(Assets.spaceShip1));
-        ship.getTransform().setTranslation(0f, 0f, 0f);
-        actors.add(ship);
-        ship = new SpaceShip(this, Assets.asset(Assets.spaceShip3));
-        ship.getTransform().setTranslation(-50f, 0f, 0f);
+        Renderable ship = new Renderable(this, Assets.asset(Assets.spaceShip2));
+        float scale = 0.5f;
+        ship.getTransform().setToTranslationAndScaling(0f, 0f, 0f, scale, scale, scale);
         actors.add(ship);
     }
 
@@ -59,11 +54,16 @@ public class Scene3D {
     public void resize(int width, int height) {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-        camera.fieldOfView = 60;
-        camera.position.set(40f, 40f, 40f);
-        camera.lookAt(0, 0, 0);
-        camera.near = 1f;
-        camera.far = 300f;
+        camera.fieldOfView = 60f;
+        camera.position.set(0f, 100f, 100f);
+        camera.rotate(Vector3.X, -90f);
+        camera.rotate(Vector3.Y, -90f);
+        camera.near = 10f;
+        camera.far = 500f;
         camera.update();
+    }
+
+    public Camera getCamera() {
+        return this.camera;
     }
 }
