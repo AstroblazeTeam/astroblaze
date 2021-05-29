@@ -32,6 +32,7 @@ public class ParallaxBackground extends Actor {
         int LAYER_SPEED_DIFFERENCE = 2;
         float width = Gdx.graphics.getWidth();
         float height = Gdx.graphics.getHeight();
+        batch.setColor(1f, 1f, 1f, parentAlpha);
         for (int i = 0; i < textures.size; i++) {
             Texture tex = textures.get(i);
             TextureRegion texRegion = new TextureRegion(tex, (int) width, (int) height);

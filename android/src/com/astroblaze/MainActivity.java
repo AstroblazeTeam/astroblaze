@@ -1,10 +1,11 @@
 package com.astroblaze;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 
@@ -23,7 +24,6 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                     .replace(R.id.game_container, new FragmentRender(game))
                     .commitNow();
         }
-        this.findViewById(R.id.menu_container).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -36,7 +36,8 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                MainActivity.this.findViewById(R.id.menu_container).setVisibility(View.VISIBLE);
+                NavController nc = Navigation.findNavController(MainActivity.this, R.id.menu_container);
+                nc.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
             }
         });
     }

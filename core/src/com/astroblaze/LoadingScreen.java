@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.DelegateAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -19,6 +18,7 @@ public class LoadingScreen extends ScreenAdapter {
     private ProgressBar pgLoading;
     private float loadingTime = 0f;
     private boolean loaded = false;
+
     public LoadingScreen(AstroblazeGame game) {
         this.game = game;
     }
@@ -27,7 +27,7 @@ public class LoadingScreen extends ScreenAdapter {
     public void render(float delta) {
         loadingTime += delta;
 
-        float minLoadingTime = 2f;
+        final float minLoadingTime = 2f;
         float p = AstroblazeGame.assets.getProgress();
         pgLoading.setValue(p < 1f ? MathUtils.lerp(pgLoading.getValue(), p, 0.1f * delta) : 1f);
         if (AstroblazeGame.assets.update() && !loaded) {
@@ -39,7 +39,15 @@ public class LoadingScreen extends ScreenAdapter {
                     new RunnableAction() {
                         @Override
                         public void run() {
-                            game.finishLoading();
+                            stage.addAction(Actions.sequence(
+                                    Actions.delay(MathUtils.clamp(minLoadingTime - loadingTime, 0f, minLoadingTime)),
+                                    Actions.fadeOut(0.5f),
+                                    new RunnableAction() {
+                                        @Override
+                                        public void run() {
+                                            game.finishLoading();
+                                        }
+                                    }));
                         }
                     }));
             return;

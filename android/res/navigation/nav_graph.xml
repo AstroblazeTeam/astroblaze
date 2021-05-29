@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentMenu">
+    app:startDestination="@id/fragmentLoading">
 
     <fragment
         android:id="@+id/fragmentMenu"
@@ -44,7 +44,11 @@
         tools:layout="@layout/fragment_pause" >
         <action
             android:id="@+id/action_fragmentPause_to_fragmentGame"
-            app:destination="@id/fragmentGame" />
+            app:destination="@id/fragmentGame"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
         <action
             android:id="@+id/action_fragmentPause_to_fragmentMenu"
             app:destination="@id/fragmentMenu"
@@ -53,5 +57,16 @@
             android:name="startGame"
             app:argType="boolean"
             android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLoading"
+        android:name="com.astroblaze.FragmentLoading"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading" >
+        <action
+            android:id="@+id/action_fragmentLoading_to_fragmentMenu"
+            app:destination="@id/fragmentMenu"
+            app:enterAnim="@anim/navigate_in"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>

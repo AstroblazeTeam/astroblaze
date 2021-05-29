@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
@@ -23,8 +24,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.stage.act(delta);
-        this.stage.draw();
         this.scene.act(timeScale * delta);
+        this.stage.draw();
         this.scene.render();
     }
 
@@ -35,7 +36,11 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        if (timeScale > 0f) {
+            this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(3f)));
+        }
         this.stage.addActor(new ParallaxBackground(8f));
+        this.stage.addActor(new DebugTextDrawer());
     }
 
     public void startGame() {
