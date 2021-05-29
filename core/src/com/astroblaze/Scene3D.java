@@ -7,7 +7,12 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Plane;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 
 import java.util.ArrayList;
 
@@ -16,6 +21,10 @@ public class Scene3D {
     private final Environment environment;
     private final PerspectiveCamera camera = new PerspectiveCamera();
     private final AstroblazeGame game;
+    private final Vector3 moveVector = new Vector3();
+    private final Plane planeXZ = new Plane(Vector3.Y, 0f);
+
+    private Ship ship;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
@@ -27,6 +36,17 @@ public class Scene3D {
     public void act(float delta) {
         for (SceneActor actor : actors) {
             actor.act(delta);
+        }
+        if (Gdx.input.isTouched()) {
+            Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
+            Vector3 hit = Vector3.Zero;
+            if (Intersector.intersectRayPlane(ray, planeXZ, hit)) {
+                moveVector.set(hit);
+            }
+        }
+
+        if(ship != null) {
+            ship.setMoveVector(moveVector);
         }
     }
 
@@ -41,9 +61,7 @@ public class Scene3D {
     }
 
     public void addActors() {
-        Renderable ship = new Renderable(this, Assets.asset(Assets.spaceShip2));
-        float scale = 0.5f;
-        ship.getTransform().setToTranslationAndScaling(0f, 0f, 0f, scale, scale, scale);
+        ship = new Ship(this, Assets.asset(Assets.spaceShip2));
         actors.add(ship);
     }
 
