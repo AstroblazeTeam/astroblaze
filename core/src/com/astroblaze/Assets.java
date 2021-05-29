@@ -10,7 +10,6 @@ public class Assets extends AssetManager {
     private static Assets instance;
     public final static AssetDescriptor<Texture> loadingImage = new AssetDescriptor<>("loading.png", Texture.class);
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
-    public final static AssetDescriptor<Model> tank = new AssetDescriptor<>("tank/tank-model.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip1 = new AssetDescriptor<>("spaceships/spaceship1.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip2 = new AssetDescriptor<>("spaceships/spaceship2.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
@@ -22,7 +21,6 @@ public class Assets extends AssetManager {
     public void loadAssets() {
         load(loadingImage);
         load(uiSkin);
-        load(tank);
         load(spaceShip1);
         load(spaceShip2);
         load(spaceShip3);

@@ -1,5 +1,7 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -28,7 +30,8 @@ public class Scene3D {
     }
 
     public void render() {
-        ScreenUtils.clear(0, 0, 0.2f, 1, true);
+        //Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         game.batch.begin(camera);
         for (SceneActor actor : actors) {
@@ -37,7 +40,7 @@ public class Scene3D {
         game.batch.end();
     }
 
-    public void addShip() {
+    public void addActors() {
         SpaceShip ship = new SpaceShip(this, Assets.asset(Assets.spaceShip2));
         ship.getTransform().setTranslation(50f, 0f, 0f);
         actors.add(ship);
@@ -47,6 +50,10 @@ public class Scene3D {
         ship = new SpaceShip(this, Assets.asset(Assets.spaceShip3));
         ship.getTransform().setTranslation(-50f, 0f, 0f);
         actors.add(ship);
+    }
+
+    public void clearActors() {
+        actors.clear();
     }
 
     public void resize(int width, int height) {

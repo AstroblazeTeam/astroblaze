@@ -22,9 +22,9 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        float minLoadingTime = 1f;
+        float minLoadingTime = 2f;
         if ((loadingTime > minLoadingTime) && (AstroblazeGame.assets.update(10))) {
-            game.setScreen(game.gameScreen);
+            game.finishLoading();
             return;
         }
         loadingTime += delta;

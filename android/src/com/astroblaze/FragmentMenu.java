@@ -47,5 +47,16 @@ public class FragmentMenu extends Fragment {
                         .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
             }
         });
+
+        view.findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("startGame", true);
+
+                NavHostFragment.findNavController(FragmentMenu.this)
+                        .navigate(R.id.action_fragmentMenu_to_fragmentPause2, bundle);
+            }
+        });
     }
 }

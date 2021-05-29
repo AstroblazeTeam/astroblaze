@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentOptions"
             app:destination="@id/fragmentOptions" />
+        <action
+            android:id="@+id/action_fragmentMenu_to_fragmentPause2"
+            app:destination="@id/fragmentPause" />
     </fragment>
     <fragment
         android:id="@+id/fragmentOptions"
@@ -23,5 +26,32 @@
             android:id="@+id/action_fragmentOptions_to_fragmentMenu"
             app:destination="@id/fragmentMenu"
             app:popUpTo="@id/fragmentMenu" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGame"
+        android:name="com.astroblaze.FragmentGame"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_fragmentGame_to_fragmentPause"
+            app:destination="@id/fragmentPause"
+            app:popUpTo="@id/fragmentPause" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPause"
+        android:name="com.astroblaze.FragmentPause"
+        android:label="fragment_pause"
+        tools:layout="@layout/fragment_pause" >
+        <action
+            android:id="@+id/action_fragmentPause_to_fragmentGame"
+            app:destination="@id/fragmentGame" />
+        <action
+            android:id="@+id/action_fragmentPause_to_fragmentMenu"
+            app:destination="@id/fragmentMenu"
+            app:popUpTo="@id/fragmentMenu" />
+        <argument
+            android:name="startGame"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 </navigation>
