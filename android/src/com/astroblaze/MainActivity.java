@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
-import com.astroblaze.ui.main.MainFragment;
+import com.astroblaze.ui.main.FragmentGame;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks {
@@ -15,8 +15,11 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         setContentView(R.layout.main_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MainFragment())
+                    .replace(R.id.game_container, new FragmentGame())
                     .commitNow();
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.menu_container, new FragmentMenu())
+//                    .commitNow();
         }
     }
 

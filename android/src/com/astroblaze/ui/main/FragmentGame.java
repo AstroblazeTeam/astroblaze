@@ -14,7 +14,7 @@ import com.astroblaze.R;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 
-public class MainFragment extends AndroidFragmentApplication {
+public class FragmentGame extends AndroidFragmentApplication {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
