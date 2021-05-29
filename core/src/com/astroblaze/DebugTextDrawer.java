@@ -16,11 +16,12 @@ public class DebugTextDrawer extends Actor {
 
     public DebugTextDrawer() {
         font.getData().scale(1.5f);
+        setExtraReport("");
     }
 
     public static void setExtraReport(String extra) {
         GlyphLayout layout = new GlyphLayout(); //dont do this every frame! Store it as member
-        layout.setText(font, report + " " + extraReport);
+        layout.setText(font, report + " " + extra);
         width = layout.width + 10f;// contains the width of the current set text
         height = layout.height; // contains the height of the current set text
         extraReport = extra;

@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
 public class Renderable extends SceneActor {
-    private final Scene3D scene;
+    protected final Scene3D scene;
     private Model model;
     private ModelInstance modelInstance;
 

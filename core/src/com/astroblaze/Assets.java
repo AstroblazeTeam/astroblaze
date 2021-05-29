@@ -19,6 +19,7 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<Model> spaceShip1 = new AssetDescriptor<>("spaceships/spaceship1.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip2 = new AssetDescriptor<>("spaceships/spaceship2.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
+    public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
 
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
@@ -38,6 +39,7 @@ public class Assets extends AssetManager {
         load(parallax1);
         load(parallax2);
         load(parallax3);
+        load(missile);
     }
 
     public static <T> T asset (AssetDescriptor<T> assetDescriptor) {

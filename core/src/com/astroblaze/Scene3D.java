@@ -17,14 +17,16 @@ import com.badlogic.gdx.math.collision.Ray;
 import java.util.ArrayList;
 
 public class Scene3D {
-    public final ArrayList<SceneActor> actors = new ArrayList<>(1024);
+    private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
+    public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
+    public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
     private final Environment environment;
     private final PerspectiveCamera camera = new PerspectiveCamera();
     private final AstroblazeGame game;
     private final Vector3 moveVector = new Vector3();
     private final Plane planeXZ = new Plane(Vector3.Y, 0f);
 
-    private Ship ship;
+    public Ship ship;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
@@ -37,6 +39,9 @@ public class Scene3D {
         for (SceneActor actor : actors) {
             actor.act(delta);
         }
+
+        DebugTextDrawer.setExtraReport("actors: " + actors.size());
+
         if (Gdx.input.isTouched()) {
             Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
             Vector3 hit = Vector3.Zero;
@@ -45,7 +50,7 @@ public class Scene3D {
             }
         }
 
-        if(ship != null) {
+        if (ship != null) {
             ship.setMoveVector(moveVector);
         }
     }
@@ -58,6 +63,12 @@ public class Scene3D {
             actor.render(game.batch, environment);
         }
         game.batch.end();
+
+        // complete actor actions
+        actors.addAll(addActors);
+        addActors.clear();
+        actors.removeAll(removeActors);
+        removeActors.clear();
     }
 
     public void addActors() {
