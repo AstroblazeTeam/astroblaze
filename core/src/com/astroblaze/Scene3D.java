@@ -70,9 +70,8 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     public void act(float delta) {
         delta *= timeScale;
 
-        for (SceneActor actor : actors) {
-            actor.act(delta);
-        }
+        if (delta <= 0f)
+            return;
 
         if (Gdx.input.isTouched()) {
             Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
@@ -85,13 +84,15 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             }
         }
 
+        for (SceneActor actor : actors) {
+            actor.act(delta);
+        }
+
         if (ship != null) {
             ship.setMoveVector(moveVector);
         }
 
-        if (delta > 0f) {
-            this.particles.update(delta);
-        }
+        this.particles.update(delta);
     }
 
     public void render() {
