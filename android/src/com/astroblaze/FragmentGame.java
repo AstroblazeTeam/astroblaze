@@ -34,6 +34,14 @@ public class FragmentGame extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        AstroblazeGame.getInstance().gameScreen.pauseGame();
+        NavHostFragment.findNavController(FragmentGame.this)
+                .navigate(R.id.action_fragmentGame_to_fragmentPause);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_game, container, false);

@@ -7,13 +7,13 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.Random;
 
 public class MissileSidewinder extends Missile {
-    private float unpoweredTime = 0.5f;
+    private float unpoweredTime = 0.25f;
     private final float unpoweredDir;
     private final static Random rng = new Random();
 
     public MissileSidewinder(Scene3D scene, Model model) {
         super(scene, model);
-        final float unpoweredSpeed = 50f;
+        final float unpoweredSpeed = 100f;
         unpoweredDir = (rng.nextFloat() - 0.5f) * unpoweredSpeed;
     }
 
