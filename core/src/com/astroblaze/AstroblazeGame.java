@@ -74,13 +74,11 @@ public class AstroblazeGame extends Game {
         this.setScreen(loadingScreen);
     }
 
-    @Override
-    public void pause() {
+    public void pauseGame() {
         scene.setTimeScale(0f);
     }
 
-    @Override
-    public void resume() {
+    public void resumeGame() {
         scene.setTimeScale(1f);
     }
 

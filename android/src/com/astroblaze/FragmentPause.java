@@ -27,7 +27,7 @@ public class FragmentPause extends Fragment {
             NavHostFragment.findNavController(FragmentPause.this)
                     .navigate(R.id.action_fragmentPause_to_fragmentGame);
             AstroblazeGame.getInstance().gameScreen.startGame();
-            AstroblazeGame.getInstance().resume();
+            AstroblazeGame.getInstance().resumeGame();
         }
         NavHostFragment.findNavController(FragmentPause.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
@@ -62,7 +62,7 @@ public class FragmentPause extends Fragment {
             public void onClick(View v) {
                 NavHostFragment.findNavController(FragmentPause.this)
                         .navigate(R.id.action_fragmentPause_to_fragmentGame);
-                AstroblazeGame.getInstance().resume();
+                AstroblazeGame.getInstance().resumeGame();
             }
         });
     }

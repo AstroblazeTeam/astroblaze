@@ -27,7 +27,7 @@ public class FragmentGame extends Fragment {
             @Override
             public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
                 if (navDestination.getId() == R.id.fragmentPause) {
-                    AstroblazeGame.getInstance().pause();
+                    AstroblazeGame.getInstance().pauseGame();
                 }
             }
         });
@@ -38,7 +38,7 @@ public class FragmentGame extends Fragment {
         super.onPause();
         NavHostFragment.findNavController(FragmentGame.this)
                 .popBackStack(R.id.fragmentPause, false);
-        AstroblazeGame.getInstance().pause();
+        AstroblazeGame.getInstance().pauseGame();
     }
 
     @Override
