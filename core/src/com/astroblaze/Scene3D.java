@@ -28,6 +28,7 @@ public class Scene3D {
     private final Vector3 moveVector = new Vector3();
     private final Plane planeXZ = new Plane(Vector3.Y, 0f);
     private final ParticleSystem particles = new ParticleSystem();
+    private float verticalSpan = 0f;
 
     public Ship ship;
 
@@ -56,6 +57,9 @@ public class Scene3D {
             Vector3 hit = Vector3.Zero;
             if (Intersector.intersectRayPlane(ray, planeXZ, hit)) {
                 moveVector.set(hit);
+                final float fingerOffset = 16f;
+                moveVector.z += fingerOffset; // keeps ship off left edge and outside finger
+                moveVector.x = MathUtils.clamp(moveVector.x, -verticalSpan, +verticalSpan);
             }
         }
 
@@ -135,6 +139,13 @@ public class Scene3D {
         camera.near = 10f;
         camera.far = 500f;
         camera.update();
+
+        Ray ray = camera.getPickRay(0, 0);
+        Vector3 hit = Vector3.Zero;
+        if (!Intersector.intersectRayPlane(ray, planeXZ, hit)) {
+            throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
+        }
+        verticalSpan = hit.x * 0.8f;
     }
 
     public Camera getCamera() {
