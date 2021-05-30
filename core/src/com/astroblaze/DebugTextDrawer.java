@@ -7,19 +7,28 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class DebugTextDrawer extends Actor {
-    private final static BitmapFont font = new BitmapFont();
+    private final BitmapFont font = new BitmapFont();
     private float timeAccumulator = 0f;
     private static String report = "";
     private static String extraReport = "";
     private static float width;
     private static float height;
+    private static DebugTextDrawer instance;
 
     public DebugTextDrawer() {
+        if (instance == null) {
+            instance = this;
+        }
+
         font.getData().scale(1.5f);
         setExtraReport("");
     }
 
     public static void setExtraReport(String extra) {
+        instance.setExtraReportInternal(extra);
+    }
+
+    private void setExtraReportInternal(String extra) {
         GlyphLayout layout = new GlyphLayout(); //dont do this every frame! Store it as member
         layout.setText(font, report + " " + extra);
         width = layout.width + 10f;// contains the width of the current set text

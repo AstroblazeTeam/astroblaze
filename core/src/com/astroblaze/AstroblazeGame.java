@@ -16,8 +16,6 @@ public class AstroblazeGame extends Game {
         void finished();
     }
 
-    public final static int PIXELS_PER_METER = 50;
-
     public Skin skin;
     public ModelBatch batch;
     public GameScreen gameScreen;

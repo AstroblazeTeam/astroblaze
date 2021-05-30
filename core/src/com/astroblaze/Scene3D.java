@@ -124,6 +124,11 @@ public class Scene3D {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
         camera.fieldOfView = 60f;
+        // reset - for when android restores our activity
+        camera.direction.set(0f, 0f, -1f);
+        camera.up.set(0f, 1f, 0f);
+        camera.update();
+
         camera.position.set(0f, 100f, 100f);
         camera.rotate(Vector3.X, -90f);
         camera.rotate(Vector3.Y, -90f);
