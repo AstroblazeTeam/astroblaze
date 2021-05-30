@@ -11,6 +11,7 @@ public class Missile extends Renderable {
 
     public void setTargetVector(Vector3 moveVector) {
         this.moveVector.set(moveVector);
+        setScale(0.75f);
     }
 
     public Missile(Scene3D scene, Model model) {
@@ -20,7 +21,7 @@ public class Missile extends Renderable {
     @Override
     public void act(float delta) {
         super.act(delta);
-        Vector3 currentPos = getTransform().getTranslation(new Vector3());
+        Vector3 currentPos = getPosition();
         Vector3 diff = moveVector.cpy().sub(currentPos);
         float travelDist = moveSpeed * delta;
 
@@ -30,8 +31,8 @@ public class Missile extends Renderable {
             currentPos = moveVector.cpy();
         }
 
-        getTransform().set(currentPos,
-                new Quaternion(Vector3.Y, 180f),
-                new Vector3(0.5f, 0.5f, 0.5f));
+        setPosition(currentPos);
+        addRotation(new Quaternion(Vector3.Z, delta * 360f));
+        applyTRS();
     }
 }

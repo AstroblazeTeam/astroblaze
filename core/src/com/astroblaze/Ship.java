@@ -13,18 +13,20 @@ public class Ship extends Renderable {
     private float fireInterval = 1f / 8f;
     private float fireClock = 0f;
 
-    public void setMoveVector(Vector3 moveVector) {
-        this.moveVector.set(moveVector);
-    }
-
     public Ship(Scene3D scene, Model model) {
         super(scene, model);
+        setScale(0.5f);
+        applyTRS();
+    }
+
+    public void setMoveVector(Vector3 moveVector) {
+        this.moveVector.set(moveVector);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        Vector3 currentPos = getTransform().getTranslation(new Vector3());
+        Vector3 currentPos = getPosition();
         Vector3 diff = moveVector.cpy().sub(currentPos);
         float travelDist = moveSpeed * delta;
         if (MathUtils.isEqual(currentBank, 0f, 0.1f) && MathUtils.isEqual(diff.x, 0f, 0.1f)) {
@@ -40,18 +42,19 @@ public class Ship extends Renderable {
             currentPos = moveVector.cpy();
         }
 
-        getTransform().set(currentPos,
-                new Quaternion(Vector3.Z, currentBank),
-                new Vector3(0.5f, 0.5f, 0.5f));
+        setPosition(currentPos);
+        setRotation(new Quaternion(Vector3.Z, currentBank));
+        applyTRS();
 
         fireClock -= delta;
         if (fireClock < 0f) {
             fireClock = fireInterval;
 
             Missile missile = new MissileSidewinder(scene, Assets.asset(Assets.missile));
-            Vector3 pos = scene.ship.getTransform().getTranslation(new Vector3()).cpy();
-            missile.getTransform().setTranslation(pos);
-            missile.setTargetVector(pos.add(0, 0, 1000f));
+            Vector3 pos = scene.ship.getPosition().cpy();
+            missile.setPosition(pos);
+            missile.setTargetVector(pos.cpy().add(0, 0, 1000f));
+            missile.applyTRS();
 
             scene.addActors.add(missile);
         }

@@ -13,7 +13,7 @@ public class MissileSidewinder extends Missile {
 
     public MissileSidewinder(Scene3D scene, Model model) {
         super(scene, model);
-        final float unpoweredSpeed = 40f;
+        final float unpoweredSpeed = 25f;
         unpoweredDir = (rng.nextFloat() - 0.5f) * unpoweredSpeed;
     }
 
@@ -21,11 +21,11 @@ public class MissileSidewinder extends Missile {
     public void act(float delta) {
         if (unpoweredTime >= 0f) {
             unpoweredTime -= delta;
-            Vector3 currentPos = getTransform().getTranslation(new Vector3());
+            Vector3 currentPos = getPosition();
 
-            getTransform().set(currentPos.add(unpoweredDir * delta, -3f * delta, 0f),
-                    new Quaternion(Vector3.Y, 180f),
-                    new Vector3(0.5f, 0.5f, 0.5f));
+            setPosition(currentPos.add(unpoweredDir * delta, -3f * delta, 0f));
+            addRotation(new Quaternion(Vector3.Z, delta * 720f));
+            applyTRS();
         } else {
             super.act(delta);
         }

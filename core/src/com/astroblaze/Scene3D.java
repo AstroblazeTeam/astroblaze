@@ -66,11 +66,10 @@ public class Scene3D {
 
         if (Gdx.graphics.getFrameId() % 120 == 0) {
             // every ~2 seconds do cleanup of objects that go out of bounds
-            Vector3 pos = new Vector3();
             final float maxBoundsSquared = 500f * 500f;
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
-                    ((Renderable) actor).getTransform().getTranslation(pos);
+                    Vector3 pos = ((Renderable) actor).getPosition();
                     if (pos.len2() > maxBoundsSquared) {
                         removeActors.add(actor);
                     }

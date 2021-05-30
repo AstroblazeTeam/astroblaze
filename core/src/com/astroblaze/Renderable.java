@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Plane;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
@@ -16,9 +17,53 @@ public class Renderable extends SceneActor {
     private Model model;
     private ModelInstance modelInstance;
 
+    private Vector3 position = new Vector3();
+    private Quaternion rotation = new Quaternion(0f, 0f, 0f, 1f);
+    private Vector3 scale = new Vector3(1f, 1f, 1f);
+
     public Renderable(Scene3D scene, Model model) {
         this.scene = scene;
         this.setModel(model);
+        applyTRS();
+    }
+
+    public Vector3 getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Vector3 position) {
+        this.position = position;
+        applyTRS();
+    }
+
+    public Quaternion getRotation() {
+        return this.rotation;
+    }
+
+    public void setRotation(Quaternion rotation) {
+        this.rotation = rotation;
+        applyTRS();
+    }
+
+    public Vector3 getScale() {
+        return this.scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = new Vector3(scale, scale, scale);
+    }
+
+    public void setScale(Vector3 scale) {
+        this.scale = scale;
+        applyTRS();
+    }
+
+    public void addRotation(Quaternion rotation) {
+        this.rotation.mul(rotation);
+    }
+
+    public void applyTRS() {
+        modelInstance.transform.set(position, rotation, scale);
     }
 
     public Matrix4 getTransform() {
