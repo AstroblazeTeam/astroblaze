@@ -10,7 +10,7 @@ public class Ship extends Renderable {
     private final float moveSpeed = 60f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
-    private float fireInterval = 1f / 4f;
+    private float fireInterval = 1f / 8f;
     private float fireClock = 0f;
 
     public void setMoveVector(Vector3 moveVector) {
@@ -48,9 +48,9 @@ public class Ship extends Renderable {
         if (fireClock < 0f) {
             fireClock = fireInterval;
 
-            Missile missile = new Missile(scene, Assets.asset(Assets.missile));
+            Missile missile = new MissileSidewinder(scene, Assets.asset(Assets.missile));
             Vector3 pos = scene.ship.getTransform().getTranslation(new Vector3()).cpy();
-            missile.getTransform().setTranslation(pos.add(0f, 0f, 10f));
+            missile.getTransform().setTranslation(pos);
             missile.setTargetVector(pos.add(0, 0, 1000f));
 
             scene.addActors.add(missile);
