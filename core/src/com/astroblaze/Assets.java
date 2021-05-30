@@ -4,6 +4,9 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
@@ -21,6 +24,9 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
 
+    // these are loaded late, don't rely on them available at start!
+    public static AssetDescriptor<ParticleEffect> flame;
+
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
     }
@@ -29,7 +35,9 @@ public class Assets extends AssetManager {
         instance = this;
     }
 
-    public void loadAssets() {
+    public static Assets getInstance() { return instance; }
+
+    public void loadAssets(ParticleSystem particles) {
         load(loadingImage);
         load(uiSkin);
         load(spaceShip1);
@@ -40,6 +48,10 @@ public class Assets extends AssetManager {
         load(parallax2);
         load(parallax3);
         load(missile);
+
+        ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
+        flame = new AssetDescriptor<>("particles/flame.pfx", ParticleEffect.class, loaderParams);
+        load(flame);
     }
 
     public static <T> T asset (AssetDescriptor<T> assetDescriptor) {

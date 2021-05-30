@@ -23,6 +23,7 @@ public class AstroblazeGame extends Game {
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
     public InputMultiplexer inputMux;
+    private Scene3D scene;
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
     private static Preferences prefs;
 
@@ -37,6 +38,10 @@ public class AstroblazeGame extends Game {
 
     public static AstroblazeGame getInstance() {
         return instance;
+    }
+    public Scene3D getScene() { return this.scene; }
+
+    public AstroblazeGame() {
     }
 
     public void addListener(ILoadingFinishedListener listener) {
@@ -59,13 +64,14 @@ public class AstroblazeGame extends Game {
         this.batch = new ModelBatch();
         this.inputMux = new InputMultiplexer();
         this.gameScreen = new GameScreen(this);
-        loadingScreen = new LoadingScreen(this);
+        this.loadingScreen = new LoadingScreen(this);
+        this.scene = new Scene3D(this);
 
         Gdx.input.setInputProcessor(inputMux);
 
         rng = new Random();
         assets = new Assets();
-        assets.loadAssets();
+        assets.loadAssets(this.scene.getParticles());
         assets.finishLoadingAsset(Assets.uiSkin);
         this.setScreen(loadingScreen);
     }

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
@@ -25,15 +27,22 @@ public class Scene3D {
     private final AstroblazeGame game;
     private final Vector3 moveVector = new Vector3();
     private final Plane planeXZ = new Plane(Vector3.Y, 0f);
+    private final ParticleSystem particles = new ParticleSystem();
 
     public Ship ship;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
         this.environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        this.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
+        this.environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+        BillboardParticleBatch batch = new BillboardParticleBatch();
+        batch.setCamera(this.getCamera());
+        this.getParticles().add(batch);
     }
+
+    public ParticleSystem getParticles() { return this.particles; }
 
     public void act(float delta) {
         for (SceneActor actor : actors) {
@@ -53,12 +62,19 @@ public class Scene3D {
         if (ship != null) {
             ship.setMoveVector(moveVector);
         }
+
+        this.particles.update(delta);
     }
 
     public void render() {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
+        this.particles.begin();
+        this.particles.draw();
+        this.particles.end();
+
         game.batch.begin(camera);
+        game.batch.render(particles);
         for (SceneActor actor : actors) {
             actor.render(game.batch, environment);
         }
@@ -78,8 +94,19 @@ public class Scene3D {
         }
 
         // complete actor actions
-        actors.addAll(addActors);
+        for(SceneActor actor: addActors) {
+            if(actor instanceof Renderable) {
+                actor.show(game.getScene());
+            }
+            actors.add(actor);
+        }
         addActors.clear();
+        for(SceneActor actor: removeActors) {
+            if(actor instanceof Renderable) {
+                actor.hide(game.getScene());
+            }
+            actors.remove(actor);
+        }
         actors.removeAll(removeActors);
         removeActors.clear();
     }

@@ -27,7 +27,13 @@ public class MissileSidewinder extends Missile {
             addRotation(new Quaternion(Vector3.Z, delta * 720f));
             applyTRS();
         } else {
-            super.act(delta);
+            missileMovement(delta);
+        }
+
+        effect.setTransform(getTransform().cpy());
+        if (effect.isComplete()) {
+            effect.reset();
+            effect.start();
         }
     }
 }
