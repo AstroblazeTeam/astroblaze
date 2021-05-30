@@ -3,8 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:background="@drawable/menu_background"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center"
     tools:context=".FragmentPause">
 
     <LinearLayout
@@ -16,16 +18,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/backToGame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/menu_button"
             android:text="@string/backToGame" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/backToMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:background="@drawable/menu_button"
             android:text="@string/backToMenu" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
