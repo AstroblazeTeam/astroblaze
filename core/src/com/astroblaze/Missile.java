@@ -5,26 +5,24 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.Random;
+
 public class Missile extends Renderable {
     private final float moveSpeed = 80f;
+    private final float unpoweredDir;
+    private final float unpoweredSpeed = 100f;
+    private float unpoweredTime = 0.25f;
     private final Vector3 moveVector = new Vector3();
+    private final static Random rng = new Random();
     protected ParticleEffect effect;
 
     public Missile(Scene3D scene, Model model) {
         super(scene, model);
+        unpoweredDir = (rng.nextFloat() - 0.5f) * unpoweredSpeed;
     }
 
-    @Override
-    public void show(Scene3D scene) {
-        super.show(scene);
-        this.effect = scene.getParticles().obtain();
-    }
-
-    @Override
-    public void hide(Scene3D scene) {
-        super.hide(scene);
-        scene.getParticles().free(this.effect);
-        this.effect = null;
+    public void reset() {
+        unpoweredTime = 0.25f;
     }
 
     public void setTargetVector(Vector3 moveVector) {
@@ -53,6 +51,23 @@ public class Missile extends Renderable {
     public void act(float delta) {
         super.act(delta);
 
-        this.missileMovement(delta);
+        if (unpoweredTime > 0f) {
+            unpoweredTime -= delta;
+            Vector3 currentPos = getPosition();
+
+            setPosition(currentPos.add(unpoweredDir * delta, -3f * delta, 0f));
+            addRotation(new Quaternion(Vector3.Z, delta * 720f));
+            applyTRS();
+        } else if (unpoweredTime == 0f) {
+            this.effect.start();
+            unpoweredTime = -1f;
+        } else {
+            effect.setTransform(getTransform());
+            if (effect.isComplete()) {
+                effect.reset();
+                effect.start();
+            }
+            missileMovement(delta);
+        }
     }
 }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
 public class Ship extends Renderable {
-    private final float bankSpeed = 25f;
+    private final float bankSpeed = 90f;
     private final float moveSpeed = 60f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
@@ -50,13 +50,11 @@ public class Ship extends Renderable {
         if (fireClock < 0f) {
             fireClock = fireInterval;
 
-            Missile missile = new MissileSidewinder(scene, Assets.asset(Assets.missile));
-            Vector3 pos = scene.ship.getPosition().cpy();
+            Missile missile = scene.getMissilesPool().obtain();
+            Vector3 pos = this.getPosition().cpy();
             missile.setPosition(pos);
             missile.setTargetVector(pos.cpy().add(0, 0, 1000f));
             missile.applyTRS();
-
-            scene.addActors.add(missile);
         }
     }
 }

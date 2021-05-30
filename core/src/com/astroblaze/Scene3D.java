@@ -28,6 +28,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final Plane planeXZ = new Plane(Vector3.Y, 0f);
     private final ParticleSystem particles = new ParticleSystem();
     private final ParticlePool particlePool;
+    private final MissilePool missilePool;
     private float timeScale = 1f;
     private float verticalSpan = 0f;
 
@@ -41,14 +42,19 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         this.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
         this.environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         this.particlePool = new ParticlePool(this.particles);
+        this.missilePool = new MissilePool(this);
 
         BillboardParticleBatch batch = new BillboardParticleBatch();
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
     }
 
-    public ParticlePool getParticles() {
+    public ParticlePool getParticlesPool() {
         return this.particlePool;
+    }
+
+    public MissilePool getMissilesPool() {
+        return this.missilePool;
     }
 
     public ParticleSystem getParticlesSystem() {
@@ -58,6 +64,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     @Override
     public void finishedLoadingAssets() {
         this.particlePool.setEffect(Assets.asset(Assets.flame));
+        this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
     }
 
     public void act(float delta) {
@@ -108,7 +115,11 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 if (actor instanceof Renderable) {
                     Vector3 pos = ((Renderable) actor).getPosition();
                     if (pos.len2() > maxBoundsSquared) {
-                        removeActors.add(actor);
+                        if (actor instanceof Missile) {
+                            missilePool.free((Missile) actor);
+                        } else {
+                            removeActors.add(actor);
+                        }
                     }
                 }
             }
