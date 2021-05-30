@@ -23,6 +23,11 @@ public class Ship extends Renderable {
         this.moveVector.set(moveVector);
     }
 
+    private float moveTowards(float current, float target, float maxDelta) {
+        if (Math.abs(target - current) <= maxDelta) return target;
+        return current + Math.signum(target - current) * maxDelta;
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -32,7 +37,7 @@ public class Ship extends Renderable {
         if (MathUtils.isEqual(currentBank, 0f, 0.1f) && MathUtils.isEqual(diff.x, 0f, 0.1f)) {
             currentBank = 0f;
         } else {
-            currentBank -= Math.signum(diff.x != 0f ? diff.x : currentBank) * bankSpeed * delta;
+            currentBank = moveTowards(currentBank, -diff.x, bankSpeed * delta);
             currentBank = MathUtils.clamp(currentBank, -15f, +15f);
         }
 
