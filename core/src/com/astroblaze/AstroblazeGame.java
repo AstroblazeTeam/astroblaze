@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class AstroblazeGame extends Game {
     public interface ILoadingFinishedListener {
-        void finished();
+        void finishedLoadingAssets();
     }
 
     public Skin skin;
@@ -42,14 +42,14 @@ public class AstroblazeGame extends Game {
     public AstroblazeGame() {
     }
 
-    public void addListener(ILoadingFinishedListener listener) {
+    public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
         loadingFinishedListeners.add(listener);
     }
 
     public void finishLoading() {
         this.setScreen(this.gameScreen);
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
-            listener.finished();
+            listener.finishedLoadingAssets();
         }
     }
 
@@ -69,17 +69,19 @@ public class AstroblazeGame extends Game {
 
         rng = new Random();
         assets = new Assets();
-        assets.loadAssets(this.scene.getParticles());
+        assets.loadAssets(this.scene.getParticlesSystem());
         assets.finishLoadingAsset(Assets.uiSkin);
         this.setScreen(loadingScreen);
     }
 
     @Override
     public void pause() {
+        scene.setTimeScale(0f);
     }
 
     @Override
     public void resume() {
+        scene.setTimeScale(1f);
     }
 
     @Override

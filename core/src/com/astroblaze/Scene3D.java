@@ -12,13 +12,12 @@ import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
 import java.util.ArrayList;
 
-public class Scene3D {
+public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
     public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
     public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
@@ -28,29 +27,45 @@ public class Scene3D {
     private final Vector3 moveVector = new Vector3();
     private final Plane planeXZ = new Plane(Vector3.Y, 0f);
     private final ParticleSystem particles = new ParticleSystem();
+    private final ParticlePool particlePool;
+    private float timeScale = 1f;
     private float verticalSpan = 0f;
 
     public Ship ship;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
+        this.game.addOnLoadingFinishedListener(this);
+
         this.environment = new Environment();
         this.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
         this.environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        this.particlePool = new ParticlePool(this.particles);
 
         BillboardParticleBatch batch = new BillboardParticleBatch();
         batch.setCamera(this.getCamera());
-        this.getParticles().add(batch);
+        this.particles.add(batch);
     }
 
-    public ParticleSystem getParticles() { return this.particles; }
+    public ParticlePool getParticles() {
+        return this.particlePool;
+    }
+
+    public ParticleSystem getParticlesSystem() {
+        return this.particles;
+    }
+
+    @Override
+    public void finishedLoadingAssets() {
+        this.particlePool.setEffect(Assets.asset(Assets.flame));
+    }
 
     public void act(float delta) {
+        delta *= timeScale;
+
         for (SceneActor actor : actors) {
             actor.act(delta);
         }
-
-        DebugTextDrawer.setExtraReport("actors: " + actors.size());
 
         if (Gdx.input.isTouched()) {
             Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
@@ -67,7 +82,9 @@ public class Scene3D {
             ship.setMoveVector(moveVector);
         }
 
-        this.particles.update(delta);
+        if (delta > 0f) {
+            this.particles.update(delta);
+        }
     }
 
     public void render() {
@@ -84,9 +101,9 @@ public class Scene3D {
         }
         game.batch.end();
 
-        if (Gdx.graphics.getFrameId() % 120 == 0) {
+        if (Gdx.graphics.getFrameId() % 15 == 0) {
             // every ~2 seconds do cleanup of objects that go out of bounds
-            final float maxBoundsSquared = 500f * 500f;
+            final float maxBoundsSquared = 250f * 250f;
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
                     Vector3 pos = ((Renderable) actor).getPosition();
@@ -98,15 +115,15 @@ public class Scene3D {
         }
 
         // complete actor actions
-        for(SceneActor actor: addActors) {
-            if(actor instanceof Renderable) {
+        for (SceneActor actor : addActors) {
+            if (actor instanceof Renderable) {
                 actor.show(game.getScene());
             }
             actors.add(actor);
         }
         addActors.clear();
-        for(SceneActor actor: removeActors) {
-            if(actor instanceof Renderable) {
+        for (SceneActor actor : removeActors) {
+            if (actor instanceof Renderable) {
                 actor.hide(game.getScene());
             }
             actors.remove(actor);
@@ -150,5 +167,9 @@ public class Scene3D {
 
     public Camera getCamera() {
         return this.camera;
+    }
+
+    public void setTimeScale(float timeScale) {
+        this.timeScale = timeScale;
     }
 }

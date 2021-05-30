@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class GameScreen extends ScreenAdapter {
     private final AstroblazeGame game;
     private final Stage stage;
-    private float timeScale = 1f;
 
     public GameScreen(AstroblazeGame game) {
         this.game = game;
@@ -22,7 +21,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         this.stage.act(delta);
-        game.getScene().act(timeScale * delta);
+        game.getScene().act(delta);
         this.stage.draw();
         game.getScene().render();
     }
@@ -34,9 +33,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        if (timeScale > 0f) {
-            this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
-        }
+        this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
         this.stage.addActor(new ParallaxBackground(8f));
         this.stage.addActor(new DebugTextDrawer());
     }
@@ -57,13 +54,5 @@ public class GameScreen extends ScreenAdapter {
                 game.getScene().clearActors();
             }
         });
-    }
-
-    public void pauseGame() {
-        timeScale = 0f;
-    }
-
-    public void unpauseGame() {
-        timeScale = 1f;
     }
 }

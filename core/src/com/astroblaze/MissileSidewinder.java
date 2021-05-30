@@ -19,21 +19,23 @@ public class MissileSidewinder extends Missile {
 
     @Override
     public void act(float delta) {
-        if (unpoweredTime >= 0f) {
+        if (unpoweredTime > 0f) {
             unpoweredTime -= delta;
             Vector3 currentPos = getPosition();
 
             setPosition(currentPos.add(unpoweredDir * delta, -3f * delta, 0f));
             addRotation(new Quaternion(Vector3.Z, delta * 720f));
             applyTRS();
+        } else if (unpoweredTime == 0f) {
+            this.effect.start();
+            unpoweredTime = -1f;
         } else {
+            effect.setTransform(getTransform());
+            if (effect.isComplete()) {
+                effect.reset();
+                effect.start();
+            }
             missileMovement(delta);
-        }
-
-        effect.setTransform(getTransform().cpy());
-        if (effect.isComplete()) {
-            effect.reset();
-            effect.start();
         }
     }
 }

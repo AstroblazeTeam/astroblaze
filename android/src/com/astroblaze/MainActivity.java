@@ -18,7 +18,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.main_activity);
         game = new AstroblazeGame();
-        game.addListener(this);
+        game.addOnLoadingFinishedListener(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.game_container, new FragmentRender(game))
@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     }
 
     @Override
-    public void finished() {
+    public void finishedLoadingAssets() {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
