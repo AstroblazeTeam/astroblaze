@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.math.FloatCounter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -43,13 +44,12 @@ public class GameScreen extends ScreenAdapter {
         game.getScene().render();
 
         if (profiler.isEnabled()) {
-            DebugTextDrawer.setExtraReport(
-                    "  Drawcalls: " + profiler.getDrawCalls() +
-                            "\n Calls: " + profiler.getCalls() +
-                            "\n TextureBindings: " + profiler.getTextureBindings() +
-                            "\n ShaderSwitches:  " + profiler.getShaderSwitches() +
-                            "\nvertexCount: " + profiler.getVertexCount().value
-            );
+            String extra = "draw calls: " + profiler.getDrawCalls() +
+                    "\nGL calls: " + profiler.getCalls() +
+                    "\ntexture bindings: " + profiler.getTextureBindings() +
+                    "\nshader switches:  " + profiler.getShaderSwitches()+
+                    "\nvertices: " + (int)profiler.getVertexCount().value;
+            DebugTextDrawer.setExtraReport(extra);
         }
     }
 

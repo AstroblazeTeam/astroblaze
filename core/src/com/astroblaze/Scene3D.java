@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
@@ -44,7 +45,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         this.particlePool = new ParticlePool(this.particles);
         this.missilePool = new MissilePool(this);
 
-        BillboardParticleBatch batch = new BillboardParticleBatch();
+        PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
     }
@@ -63,7 +64,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
     @Override
     public void finishedLoadingAssets() {
-        this.particlePool.setEffect(Assets.asset(Assets.flame));
+        this.particlePool.setEffect(Assets.asset(Assets.flame2));
         this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
     }
 

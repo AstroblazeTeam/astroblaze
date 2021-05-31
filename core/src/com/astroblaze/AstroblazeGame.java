@@ -16,7 +16,6 @@ public class AstroblazeGame extends Game {
         void finishedLoadingAssets();
     }
 
-    public Skin skin;
     public ModelBatch batch;
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
@@ -58,7 +57,6 @@ public class AstroblazeGame extends Game {
         instance = this;
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         prefs = Gdx.app.getPreferences("AnnelidWar");
-        this.skin = new Skin(Gdx.files.internal("ui/clean-crispy-ui.json"));
         this.batch = new ModelBatch();
         this.inputMux = new InputMultiplexer();
         this.gameScreen = new GameScreen(this);

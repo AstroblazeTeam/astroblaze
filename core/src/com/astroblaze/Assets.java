@@ -3,6 +3,7 @@ package com.astroblaze;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
@@ -23,9 +24,11 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<Model> spaceShip2 = new AssetDescriptor<>("spaceships/spaceship2.obj", Model.class);
     public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
+    public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
 
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
+    public static AssetDescriptor<ParticleEffect> flame2;
 
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
@@ -48,10 +51,13 @@ public class Assets extends AssetManager {
         load(parallax2);
         load(parallax3);
         load(missile);
+        load(atlas);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("particles/flame.pfx", ParticleEffect.class, loaderParams);
+        flame2 = new AssetDescriptor<>("projectiles/flame2.pfx", ParticleEffect.class, loaderParams);
         load(flame);
+        load(flame2);
     }
 
     public static <T> T asset (AssetDescriptor<T> assetDescriptor) {

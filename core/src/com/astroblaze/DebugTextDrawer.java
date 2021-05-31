@@ -13,7 +13,6 @@ public class DebugTextDrawer extends Actor {
     private static String report = "0 fps   ";
     private static String extraReport = "";
     private static float width;
-    private static float height;
     private static DebugTextDrawer instance;
 
     public DebugTextDrawer() {
@@ -33,7 +32,7 @@ public class DebugTextDrawer extends Actor {
         GlyphLayout layout = new GlyphLayout(); //dont do this every frame! Store it as member
         layout.setText(font, report + " " + extra);
         width = layout.width;// contains the width of the current set text
-        height = layout.height; // contains the height of the current set text
+        // no need for height because text flows top point downwards
         extraReport = extra;
     }
 
@@ -54,7 +53,7 @@ public class DebugTextDrawer extends Actor {
         super.draw(batch, parentAlpha);
         font.draw(batch, report + " " + extraReport,
                 Gdx.graphics.getWidth() - width,
-                Gdx.graphics.getHeight() - height);
+                Gdx.graphics.getHeight() - 32);
     }
 
     @Override
