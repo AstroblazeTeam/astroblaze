@@ -5,9 +5,14 @@ import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, AstroblazeGame.ILoadingFinishedListener {
     private AstroblazeGame game;
@@ -36,6 +41,13 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Navigation.findNavController(MainActivity.this, R.id.menu_container)
+                        .addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+                            @Override
+                            public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
+                                Gdx.app.log("MainActivity", "NavController onDestinationChanged -> " + navDestination.getDisplayName());
+                            }
+                        });
                 NavController nc = Navigation.findNavController(MainActivity.this, R.id.menu_container);
                 nc.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
             }

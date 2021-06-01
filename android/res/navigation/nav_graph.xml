@@ -75,6 +75,7 @@
             android:id="@+id/action_fragmentLoading_to_fragmentMenu"
             app:destination="@id/fragmentMenu"
             app:enterAnim="@anim/navigate_in"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="false" />
     </fragment>
 </navigation>
