@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
@@ -37,8 +38,12 @@ public class MissilePool extends Pool<Missile> {
     @Override
     public void free(Missile missile) {
         super.free(missile);
-        particles.free(missile.effect);
-        missile.effect = null;
+        if (missile.effect == null) {
+            Gdx.app.debug("MissilePool", "free() on missile with null effect");
+        } else {
+            particles.free(missile.effect);
+            missile.effect = null;
+        }
         scene.removeActors.add(missile);
     }
 
