@@ -68,7 +68,7 @@ public class LoadingScreen extends ScreenAdapter {
         StretchViewport viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport);
         stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(0.5f)));
-        Image image = new Image(Assets.asset(Assets.loadingImage));
+        Image image = new Image(Assets.asset(Assets.logo));
         image.setPosition(
                 (viewport.getScreenWidth() / 2f) - (image.getWidth() / 2),
                 (viewport.getScreenHeight() / 2f) - (image.getHeight() / 2));

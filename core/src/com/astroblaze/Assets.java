@@ -15,7 +15,7 @@ public class Assets extends AssetManager {
     private static Assets instance;
     public final static Array<AssetDescriptor<Texture>> parallaxArray = new Array<>();
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
-    public final static AssetDescriptor<Texture> loadingImage = new AssetDescriptor<>("loading.png", Texture.class);
+    public final static AssetDescriptor<Texture> logo = new AssetDescriptor<>("logo.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax1 = new AssetDescriptor<>("parallax/parallax1.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax2 = new AssetDescriptor<>("parallax/parallax2.png", Texture.class);
@@ -41,7 +41,7 @@ public class Assets extends AssetManager {
     public static Assets getInstance() { return instance; }
 
     public void loadAssets(ParticleSystem particles) {
-        load(loadingImage);
+        load(logo);
         load(uiSkin);
         load(spaceShip1);
         load(spaceShip2);
