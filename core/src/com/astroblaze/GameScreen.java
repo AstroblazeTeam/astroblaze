@@ -8,54 +8,31 @@ import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.FloatCounter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
     private final AstroblazeGame game;
     private final Stage stage;
-    private final GLProfiler profiler;
 
     public GameScreen(AstroblazeGame game) {
         this.game = game;
         this.stage = new Stage(new ScreenViewport());
-        profiler = new GLProfiler(Gdx.graphics);
     }
 
     @Override
     public void render(float delta) {
-        if (profiler.isEnabled()) {
-            profiler.reset();
-        }
-
-        if (Gdx.input.isTouched(3)) {
-            if (profiler.isEnabled()) {
-                profiler.disable();
-                DebugTextDrawer.setExtraReport("");
-            } else {
-                profiler.enable();
-            }
-        }
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(0f, 0f, 0f, 0f, true);
 
         this.stage.act(delta);
-        game.getScene().act(delta);
+        this.game.getScene().act(delta);
         this.stage.draw();
-        game.getScene().render();
-
-        if (profiler.isEnabled()) {
-            String extra = "draw calls: " + profiler.getDrawCalls() +
-                    "\nGL calls: " + profiler.getCalls() +
-                    "\ntexture bindings: " + profiler.getTextureBindings() +
-                    "\nshader switches:  " + profiler.getShaderSwitches()+
-                    "\nvertices: " + (int)profiler.getVertexCount().value;
-            DebugTextDrawer.setExtraReport(extra);
-        }
+        this.game.getScene().render();
     }
 
     @Override
     public void resize(int width, int height) {
-        game.getScene().resize(width, height);
+        this.game.getScene().resize(width, height);
     }
 
     @Override
