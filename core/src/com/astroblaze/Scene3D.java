@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
-import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
 import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 
 import java.util.ArrayList;
@@ -22,6 +22,10 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
     public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
     public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
+    public final ArrayList<Missile> activeMissiles = new ArrayList<>(64);
+    public final BoundingBox gameBounds = new BoundingBox();
+    public final BoundingBox destroyBounds = new BoundingBox();
+    public final EnemyPool enemyPool;
     private final Environment environment;
     private final PerspectiveCamera camera = new PerspectiveCamera();
     private final AstroblazeGame game;
@@ -31,7 +35,6 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
     private float timeScale = 1f;
-    private float verticalSpan = 0f;
 
     public Ship ship;
 
@@ -44,14 +47,11 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         this.environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         this.particlePool = new ParticlePool(this.particles);
         this.missilePool = new MissilePool(this);
+        this.enemyPool = new EnemyPool(this);
 
         PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
-    }
-
-    public ParticlePool getParticlesPool() {
-        return this.particlePool;
     }
 
     public MissilePool getMissilesPool() {
@@ -66,6 +66,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     public void finishedLoadingAssets() {
         this.particlePool.setEffect(Assets.asset(Assets.flame2));
         this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
+        this.enemyPool.setAssets(particlePool, Assets.asset(Assets.spaceShip3));
     }
 
     public void act(float delta) {
@@ -80,8 +81,12 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             if (Intersector.intersectRayPlane(ray, planeXZ, hit)) {
                 moveVector.set(hit);
                 final float fingerOffset = 16f;
+                final float edgeOffset = 0.8f;
                 moveVector.z += fingerOffset; // keeps ship off left edge and outside finger
-                moveVector.x = MathUtils.clamp(moveVector.x, -verticalSpan, +verticalSpan);
+                moveVector.x = MathUtils.clamp(moveVector.x,
+                        gameBounds.min.x * edgeOffset,
+                        gameBounds.max.x * edgeOffset);
+
             }
         }
 
@@ -94,6 +99,18 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         }
 
         this.particles.update(delta);
+
+        for (SceneActor actor : actors) {
+            if (!(actor instanceof CollisionProvider))
+                continue;
+
+            for (Missile m : activeMissiles) {
+                if (((CollisionProvider) actor).CheckCollision(m.getPosition(), 3f)) {
+                    removeActors.add(actor);
+                    break;
+                }
+            }
+        }
     }
 
     public void render() {
@@ -116,8 +133,14 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
                     Vector3 pos = ((Renderable) actor).getPosition();
-                    if (pos.len2() > maxBoundsSquared) {
-                        removeActors.add(actor);
+                    if (!destroyBounds.contains(pos)) {
+                        if (actor instanceof Enemy) {
+                            enemyPool.free(((Enemy) actor));
+                        } else if (actor instanceof Missile) {
+                            missilePool.free((Missile) actor);
+                        } else {
+                            removeActors.add(actor);
+                        }
                     }
                 }
             }
@@ -132,16 +155,20 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             if (actor instanceof Renderable) {
                 actor.show(game.getScene());
             }
+            if (actor instanceof Missile) {
+                activeMissiles.add((Missile) actor);
+            }
             actors.add(actor);
         }
         addActors.clear();
         for (SceneActor actor : removeActors) {
-            if (actor instanceof Missile) {
-                missilePool.free((Missile) actor);
-            } else if (actor instanceof Renderable) {
+            if (actor instanceof Renderable) {
                 actor.hide(game.getScene());
             } else {
                 Gdx.app.error("Scene3D", "Removing unknown actor type " + actor.toString());
+            }
+            if (actor instanceof Missile) {
+                activeMissiles.remove(actor);
             }
             actors.remove(actor);
         }
@@ -151,6 +178,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
     public void addActors() {
         ship = new Ship(this, Assets.asset(Assets.spaceShip2));
+
         actors.add(ship);
     }
 
@@ -176,16 +204,29 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         camera.far = 500f;
         camera.update();
 
-        Ray ray = camera.getPickRay(0, 0);
-        Vector3 hit = Vector3.Zero;
-        if (!Intersector.intersectRayPlane(ray, planeXZ, hit)) {
+        Ray ray1 = camera.getPickRay(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Vector3 hit1 = new Vector3();
+        if (!Intersector.intersectRayPlane(ray1, planeXZ, hit1)) {
             throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
         }
-        verticalSpan = hit.x * 0.8f;
+        Ray ray2 = camera.getPickRay(0, 0);
+        Vector3 hit2 = new Vector3();
+        if (!Intersector.intersectRayPlane(ray2, planeXZ, hit2)) {
+            throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
+        }
+
+        hit1.y = -32f;
+        hit2.y = +32f;
+        gameBounds.set(hit1.cpy(), hit2.cpy());
+        destroyBounds.set(hit1.scl(1.5f), hit2.scl(1.5f));
     }
 
     public Camera getCamera() {
         return this.camera;
+    }
+
+    public float getTimeScale() {
+        return this.timeScale;
     }
 
     public void setTimeScale(float timeScale) {

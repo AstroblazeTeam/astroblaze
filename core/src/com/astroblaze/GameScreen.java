@@ -40,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
         this.stage.addActor(new ParallaxBackground(8f));
         this.stage.addActor(new DebugTextDrawer());
+        this.stage.addActor(new EnemySpawner(game.getScene(), 2f));
     }
 
     public void startGame() {

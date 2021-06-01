@@ -26,7 +26,7 @@ public class DebugTextDrawer extends Actor {
 
     public static void setExtraReport(String extra) {
         if (instance == null) {
-            Gdx.app.log("DebugTextDrawer", "setExtraReport called but instance isn't up yet.");
+            Gdx.app.debug("DebugTextDrawer", "setExtraReport called but instance isn't up yet.");
             return;
         }
         instance.setExtraReportInternal(extra);

@@ -10,7 +10,7 @@ public class Ship extends Renderable {
     private final float moveSpeed = 60f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
-    private float fireInterval = 1f / 8f;
+    private float fireInterval = 1f / 2f;
     private float fireClock = 0f;
 
     public Ship(Scene3D scene, Model model) {
