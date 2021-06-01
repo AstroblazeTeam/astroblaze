@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class LoadingScreen extends ScreenAdapter {
@@ -68,17 +70,19 @@ public class LoadingScreen extends ScreenAdapter {
         StretchViewport viewport = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport);
         stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(0.5f)));
+        Table layout = new Table(Assets.asset(Assets.uiSkin));
+        layout.setFillParent(true);
         Image image = new Image(Assets.asset(Assets.logo));
-        image.setPosition(
-                (viewport.getScreenWidth() / 2f) - (image.getWidth() / 2),
-                (viewport.getScreenHeight() / 2f) - (image.getHeight() / 2));
-        stage.addActor(image);
+        layout.add(image).center().padBottom(32f * Gdx.graphics.getDensity());
+        layout.row();
+        image.setScaling(Scaling.fit);
 
         pgLoading = new ProgressBar(0, 1f, 0.1f, false, Assets.asset(Assets.uiSkin));
         float h = 16 * Gdx.graphics.getDensity();
         pgLoading.setPosition(viewport.getScreenWidth() * 0.25f, h);
         pgLoading.setSize(viewport.getScreenWidth() * 0.5f, pgLoading.getHeight());
-        stage.addActor(pgLoading);
+        layout.add(pgLoading).fillX().padBottom(32f * Gdx.graphics.getDensity());
+        stage.addActor(layout);
     }
 
     @Override
