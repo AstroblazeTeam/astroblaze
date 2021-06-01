@@ -117,16 +117,16 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 if (actor instanceof Renderable) {
                     Vector3 pos = ((Renderable) actor).getPosition();
                     if (pos.len2() > maxBoundsSquared) {
-                        if (actor instanceof Missile) {
-                            missilePool.free((Missile) actor);
-                        } else {
-                            removeActors.add(actor);
-                        }
+                        removeActors.add(actor);
                     }
                 }
             }
         }
 
+        processActorMigrations();
+    }
+
+    private void processActorMigrations() {
         // complete actor actions
         for (SceneActor actor : addActors) {
             if (actor instanceof Renderable) {
@@ -136,8 +136,12 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         }
         addActors.clear();
         for (SceneActor actor : removeActors) {
-            if (actor instanceof Renderable) {
+            if (actor instanceof Missile) {
+                missilePool.free((Missile) actor);
+            } else if (actor instanceof Renderable) {
                 actor.hide(game.getScene());
+            } else {
+                Gdx.app.error("Scene3D", "Removing unknown actor type " + actor.toString());
             }
             actors.remove(actor);
         }
@@ -151,7 +155,9 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     }
 
     public void clearActors() {
-        actors.clear();
+        removeActors.addAll(actors);
+        processActorMigrations();
+        ship = null;
     }
 
     public void resize(int width, int height) {

@@ -2,6 +2,7 @@ package com.astroblaze;
 
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 
 public class ParticlePool extends Pool<ParticleEffect> {
@@ -11,7 +12,8 @@ public class ParticlePool extends Pool<ParticleEffect> {
     public ParticlePool(ParticleSystem system, ParticleEffect effect) {
         super(64, 256);
         this.system = system;
-        setEffect(effect);
+        this.system.update(10f);
+        this.setEffect(effect);
     }
 
     public ParticlePool(ParticleSystem system) {
@@ -25,14 +27,21 @@ public class ParticlePool extends Pool<ParticleEffect> {
     @Override
     protected void reset(ParticleEffect pfx) {
         // super.reset(pfx); - no need, default implementation only handles Poolable
+
         pfx.end();
-        pfx.reset();
+
+        // hide starter particles out of the way
+        pfx.translate(new Vector3(1000f, 0f, 0f));
     }
 
     @Override
     protected ParticleEffect newObject() {
         ParticleEffect pfx = effect.copy();
         pfx.init();
+
+        // hide starter particles out of the way
+        pfx.translate(new Vector3(1000f, 0f, 0f));
+
         system.add(pfx);
         return pfx;
     }

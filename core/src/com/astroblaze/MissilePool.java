@@ -39,7 +39,6 @@ public class MissilePool extends Pool<Missile> {
         super.free(missile);
         particles.free(missile.effect);
         missile.effect = null;
-        scene.removeActors.add(missile);
     }
 
     @Override

@@ -30,44 +30,37 @@ public class Missile extends Renderable {
         this.setScale(0.75f);
     }
 
-    protected void missileMovement(float delta) {
-        Vector3 currentPos = getPosition();
-        Vector3 diff = moveVector.cpy().sub(currentPos);
-        float travelDist = moveSpeed * delta;
-
-        if (diff.len() > travelDist) {
-            currentPos.mulAdd(diff.nor(), travelDist);
-        } else {
-            currentPos = moveVector.cpy();
-        }
-
-        setPosition(currentPos);
-        addRotation(new Quaternion(Vector3.Z, delta * 360f));
-        applyTRS();
-        this.effect.setTransform(getTransform().cpy());
-    }
-
     @Override
     public void act(float delta) {
         super.act(delta);
 
         if (unpoweredTime > 0f) {
-            unpoweredTime -= delta;
-            Vector3 currentPos = getPosition();
+            unpoweredTime = Math.max(0f, unpoweredTime - delta);
 
-            setPosition(currentPos.add(unpoweredDir * delta, -3f * delta, 0f));
+            getPosition().add(unpoweredDir * delta, -3f * delta, 0f);
             addRotation(new Quaternion(Vector3.Z, delta * 720f));
             applyTRS();
         } else if (unpoweredTime == 0f) {
-            this.effect.start();
+            effect.start();
             unpoweredTime = -1f;
         } else {
-            effect.setTransform(getTransform());
-            if (effect.isComplete()) {
-                effect.reset();
-                effect.start();
+            Vector3 currentPos = getPosition();
+            Vector3 diff = moveVector.cpy().sub(currentPos);
+            float travelDist = moveSpeed * delta;
+
+            if (diff.len() > travelDist) {
+                currentPos.mulAdd(diff.nor(), travelDist);
+            } else {
+                currentPos = moveVector.cpy();
             }
-            missileMovement(delta);
+
+            setPosition(currentPos);
+            addRotation(new Quaternion(Vector3.Z, delta * 360f));
+            applyTRS();
+            effect.setTransform(getTransform().cpy());
+//            if (effect.isComplete()) {
+//                effect.start();
+//            }
         }
     }
 }
