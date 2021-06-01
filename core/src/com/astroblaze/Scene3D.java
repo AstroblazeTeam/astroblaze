@@ -129,7 +129,6 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
         if (Gdx.graphics.getFrameId() % 15 == 0) {
             // every ~2 seconds do cleanup of objects that go out of bounds
-            final float maxBoundsSquared = 250f * 250f;
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
                     Vector3 pos = ((Renderable) actor).getPosition();
@@ -213,6 +212,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
         }
 
+        // raycasting XZ plane the difference of Y components is 0, fix that
         hit1.y = -32f;
         hit2.y = +32f;
         gameBounds.set(hit1.cpy(), hit2.cpy());

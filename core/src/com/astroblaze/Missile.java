@@ -58,9 +58,6 @@ public class Missile extends Renderable {
             addRotation(new Quaternion(Vector3.Z, delta * 360f));
             applyTRS();
             effect.setTransform(getTransform().cpy());
-//            if (effect.isComplete()) {
-//                effect.start();
-//            }
         }
     }
 }
