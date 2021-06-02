@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +39,23 @@ public class FragmentOptions extends Fragment {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
+            }
+        });
+
+        SeekBar sbMusic = view.findViewById(R.id.seekBarMusic);
+        sbMusic.setProgress((int)(AstroblazeGame.getInstance().MusicManager.getMusicVolume() * 100f));
+        sbMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                AstroblazeGame.getInstance().MusicManager.setTargetVolume(progress / 100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
     }

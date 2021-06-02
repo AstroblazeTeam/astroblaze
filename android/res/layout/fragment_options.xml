@@ -12,39 +12,58 @@
 
 
     <TextView
-        android:id="@+id/tvSound"
+        android:id="@+id/tvMusic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0sp"
-        android:layout_marginTop="10sp"
-        android:text="@string/sound"
-        app:layout_constraintEnd_toStartOf="@+id/seekBarSound"
+        android:layout_marginTop="24dp"
+        android:text="@string/music"
+        app:layout_constraintEnd_toStartOf="@+id/seekBarMusic"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tvSound" />
 
     <SeekBar
         android:id="@+id/seekBarSound"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5sp"
-        android:layout_marginTop="10sp"
+        android:layout_marginTop="24dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvSound"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/sound"
+        app:layout_constraintEnd_toStartOf="@+id/seekBarSound"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekBarMusic"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvMusic"
+        app:layout_constraintTop_toBottomOf="@+id/seekBarSound" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:text="@string/screenShake"
 
+        android:layout_marginTop="32dp"
+        android:text="@string/screenShake"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBarSound"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/seekBarMusic" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnExitToMenu"
@@ -61,8 +80,7 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

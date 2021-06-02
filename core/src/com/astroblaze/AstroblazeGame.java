@@ -7,10 +7,8 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class AstroblazeGame extends Game {
     public interface ILoadingFinishedListener {
@@ -21,6 +19,7 @@ public class AstroblazeGame extends Game {
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
     public InputMultiplexer inputMux;
+    public final MusicManager MusicManager = new MusicManager();
     private Scene3D scene;
     private GLProfiler profiler;
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
@@ -30,7 +29,6 @@ public class AstroblazeGame extends Game {
         return prefs;
     }
 
-    public static Random rng;
     public static Assets assets;
 
     private static AstroblazeGame instance;
@@ -60,6 +58,8 @@ public class AstroblazeGame extends Game {
 
     @Override
     public void render() {
+        MusicManager.update(Gdx.graphics.getDeltaTime());
+
         if (Gdx.input.isTouched(3)) {
             toggleProfiler();
         }
@@ -85,6 +85,7 @@ public class AstroblazeGame extends Game {
     }
 
     public void finishLoading() {
+        this.MusicManager.assignOtherAssets();
         this.setScreen(this.gameScreen);
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
             listener.finishedLoadingAssets();
@@ -104,16 +105,20 @@ public class AstroblazeGame extends Game {
 
         Gdx.input.setInputProcessor(inputMux);
 
-        rng = new Random();
         assets = new Assets();
         assets.loadAssets(this.scene.getParticlesSystem());
         assets.finishLoadingAsset(Assets.uiSkin);
-        this.setScreen(loadingScreen);
+        assets.finishLoadingAsset(Assets.uiMusic);
+        assets.finishLoadingAsset(Assets.logo);
+
+        this.MusicManager.loadLoadingScreenAssets();
 
         this.profiler = new GLProfiler(Gdx.graphics);
         if (prefs.getBoolean("profiler", false)) {
             toggleProfiler();
         }
+
+        this.setScreen(loadingScreen);
     }
 
     public void pauseGame() {

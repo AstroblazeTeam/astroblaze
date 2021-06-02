@@ -14,6 +14,7 @@ public class DebugTextDrawer extends Actor {
     private static String extraReport = "";
     private static float width;
     private static DebugTextDrawer instance;
+    private final GlyphLayout layout = new GlyphLayout();
 
     public DebugTextDrawer() {
         if (instance == null) {
@@ -32,7 +33,6 @@ public class DebugTextDrawer extends Actor {
     }
 
     private void setExtraReportInternal(String extra) {
-        GlyphLayout layout = new GlyphLayout(); //dont do this every frame! Store it as member
         layout.setText(font, report + " " + extra);
         width = layout.width;// contains the width of the current set text
         // no need for height because text flows top point downwards

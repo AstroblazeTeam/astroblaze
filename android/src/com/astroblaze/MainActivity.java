@@ -46,6 +46,19 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                             @Override
                             public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
                                 Gdx.app.log("MainActivity", "NavController onDestinationChanged -> " + navDestination.getDisplayName());
+                                String navDisplayName = navDestination.getDisplayName();
+                                switch(navDisplayName.substring(navDisplayName.indexOf('/')+1)) {
+                                    case "fragmentLoading":
+                                    case "fragmentMenu":
+                                        AstroblazeGame.getInstance().MusicManager.setTrack(MusicManager.MusicType.UI);
+                                        break;
+                                    case "fragmentPause":
+                                        AstroblazeGame.getInstance().MusicManager.setTrack(MusicManager.MusicType.Game);
+                                        break;
+                                    default:
+                                        Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");
+                                        break;
+                                }
                             }
                         });
                 NavController nc = Navigation.findNavController(MainActivity.this, R.id.menu_container);
