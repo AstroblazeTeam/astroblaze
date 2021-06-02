@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Intersector;
@@ -14,6 +15,8 @@ public class Enemy extends Renderable implements CollisionProvider {
     private final Vector3 moveVector = new Vector3();
     private final BoundingBox bb = new BoundingBox();
     private final float modelRadius;
+    private final float maxHp = 100f;
+    private float hp;
 
     public Enemy(Scene3D scene, Model model) {
         super(scene, model);
@@ -29,6 +32,7 @@ public class Enemy extends Renderable implements CollisionProvider {
         setScale(0.25f);
         moveVector.set(0f, 0f, -30f);
         applyTRS();
+        hp = maxHp;
     }
 
     @Override
@@ -43,7 +47,16 @@ public class Enemy extends Renderable implements CollisionProvider {
     @Override
     public boolean CheckCollision(Vector3 pos, float radius) {
         float dst2 = this.getPosition().dst2(pos);
-        radius += modelRadius * getScale().x;
+        radius += modelRadius * getScale().x; // assume uniform scale
         return radius * radius > dst2;
+    }
+
+    @Override
+    public void damageFromCollision(float damage) {
+        this.hp -= damage;
+        if(this.hp <= 0f) {
+            scene.removeActors.add(this);
+            Assets.asset(Assets.explosion).play(1f, 1f, MathUtils.random(-1f, 1f));
+        }
     }
 }

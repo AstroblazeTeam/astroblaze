@@ -3,6 +3,7 @@ package com.astroblaze;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -28,6 +29,7 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
     public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
+    public final static AssetDescriptor<Sound> explosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
 
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
@@ -57,6 +59,7 @@ public class Assets extends AssetManager {
         load(missile);
         load(atlas);
         load(gameMusic);
+        load(explosion);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("particles/flame.pfx", ParticleEffect.class, loaderParams);

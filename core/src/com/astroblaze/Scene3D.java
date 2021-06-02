@@ -104,11 +104,14 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             if (!(actor instanceof CollisionProvider))
                 continue;
 
+            CollisionProvider collision = (CollisionProvider) actor;
             for (Missile m : activeMissiles) {
-                if (((CollisionProvider) actor).CheckCollision(m.getPosition(), 3f)) {
-                    removeActors.add(actor);
-                    break;
+                if (!collision.CheckCollision(m.getPosition(), 3f)) {
+                    continue;
                 }
+
+                collision.damageFromCollision(m.getDamage());
+                missilePool.free(m);
             }
         }
     }

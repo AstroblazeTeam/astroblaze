@@ -15,6 +15,7 @@ public class Missile extends Renderable {
     private final Vector3 moveVector = new Vector3();
     private final static Random rng = new Random();
     protected ParticleEffect effect;
+    private float damage = 35f;
 
     public Missile(Scene3D scene, Model model) {
         super(scene, model);
@@ -59,5 +60,13 @@ public class Missile extends Renderable {
             applyTRS();
             effect.setTransform(getTransform().cpy());
         }
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float getDamage() {
+        return this.damage;
     }
 }
