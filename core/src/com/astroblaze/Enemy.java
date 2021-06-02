@@ -12,21 +12,23 @@ import java.util.Random;
 
 public class Enemy extends Renderable implements CollisionProvider {
     private final Vector3 moveVector = new Vector3();
+    private final BoundingBox bb = new BoundingBox();
     private final float modelRadius;
 
     public Enemy(Scene3D scene, Model model) {
         super(scene, model);
-        BoundingBox bb = new BoundingBox();
         model.calculateBoundingBox(bb);
-        modelRadius = bb.getWidth() / 2f;
+
+        // just an approximation, don't need exact
+        modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
     }
 
     public void reset(BoundingBox bb) {
         setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z));
-        this.setRotation(new Quaternion(Vector3.Y, 180f));
-        this.setScale(0.25f);
-        this.moveVector.set(0f, 0f, -30f);
-        this.applyTRS();
+        setRotation(new Quaternion(Vector3.Y, 180f));
+        setScale(0.25f);
+        moveVector.set(0f, 0f, -30f);
+        applyTRS();
     }
 
     @Override
