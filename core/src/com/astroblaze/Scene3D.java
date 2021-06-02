@@ -36,6 +36,9 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final MissilePool missilePool;
     private float timeScale = 1f;
 
+    // decals
+    public final DecalController decals;
+
     public Ship ship;
 
     public Scene3D(AstroblazeGame game) {
@@ -52,6 +55,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
+        this.decals = new DecalController(this, camera);
     }
 
     public MissilePool getMissilesPool() {
@@ -67,6 +71,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         this.particlePool.setEffect(Assets.asset(Assets.flame2));
         this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
         this.enemyPool.setAssets(particlePool, Assets.asset(Assets.spaceShip3));
+        this.decals.loadTextures();
     }
 
     public void act(float delta) {
@@ -99,6 +104,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         }
 
         this.particles.update(delta);
+        this.decals.update(delta);
 
         for (SceneActor actor : actors) {
             if (!(actor instanceof CollisionProvider))
@@ -111,6 +117,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 }
 
                 collision.damageFromCollision(m.getDamage());
+                decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.55f);
                 missilePool.free(m);
             }
         }
@@ -129,6 +136,8 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             actor.render(game.batch, environment);
         }
         game.batch.end();
+        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+        decals.render();
 
         if (Gdx.graphics.getFrameId() % 15 == 0) {
             // every ~2 seconds do cleanup of objects that go out of bounds

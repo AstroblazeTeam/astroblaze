@@ -54,9 +54,11 @@ public class Enemy extends Renderable implements CollisionProvider {
     @Override
     public void damageFromCollision(float damage) {
         this.hp -= damage;
-        if(this.hp <= 0f) {
+        if (this.hp <= 0f) {
             scene.removeActors.add(this);
             Assets.asset(Assets.explosion).play(1f, 1f, MathUtils.random(-1f, 1f));
+            scene.decals.addExplosion(this.getPosition(), moveVector, 1f);
         }
     }
 }
+

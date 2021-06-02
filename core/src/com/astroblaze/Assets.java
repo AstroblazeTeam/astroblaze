@@ -15,10 +15,13 @@ import com.badlogic.gdx.utils.Array;
 
 public class Assets extends AssetManager {
     private static Assets instance;
-    public final static Array<AssetDescriptor<Texture>> parallaxArray = new Array<>();
+
+    // these 3 assets loaded first to show loading screen
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
     public final static AssetDescriptor<Texture> logo = new AssetDescriptor<>("logo.png", Texture.class);
     public final static AssetDescriptor<Music> uiMusic = new AssetDescriptor<>("music/ObservingTheStar.ogg", Music.class);
+
+    public final static Array<AssetDescriptor<Texture>> parallaxArray = new Array<>();
     public final static AssetDescriptor<Music> gameMusic = new AssetDescriptor<>("music/space_flight.mp3", Music.class);
     public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax1 = new AssetDescriptor<>("parallax/parallax1.png", Texture.class);

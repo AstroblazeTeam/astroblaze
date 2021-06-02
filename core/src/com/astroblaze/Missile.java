@@ -31,6 +31,10 @@ public class Missile extends Renderable {
         this.setScale(0.75f);
     }
 
+    public Vector3 getVelocity() {
+        return this.moveVector.cpy().nor().scl(moveSpeed);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
