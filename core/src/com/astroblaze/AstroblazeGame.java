@@ -15,21 +15,21 @@ public class AstroblazeGame extends Game {
         void finishedLoadingAssets();
     }
 
-    public ModelBatch batch;
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
-    public InputMultiplexer inputMux;
-    public final MusicManager MusicManager = new MusicManager();
+    public final InputMultiplexer inputMux = new InputMultiplexer();
+    private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
+    private final MusicController musicController = new MusicController();
     private Scene3D scene;
     private GLProfiler profiler;
-    private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
-    private static Preferences prefs;
+    private ModelBatch batch;
+    private Preferences prefs;
 
     public static Preferences getPrefs() {
-        return prefs;
+        return getInstance().prefs;
     }
 
-    public static Assets assets;
+    private final Assets assets = new Assets();
 
     private static AstroblazeGame instance;
 
@@ -37,12 +37,59 @@ public class AstroblazeGame extends Game {
         return instance;
     }
 
+    public ModelBatch getBatch() {
+        return this.batch;
+    }
+
     public Scene3D getScene() {
         return this.scene;
     }
 
+    public MusicController getMusicController() {
+        return this.musicController;
+    }
+
     public AstroblazeGame() {
         // don't put stuff here - most of GL isn't initialized yet
+    }
+
+    @Override
+    public void create() {
+        instance = this;
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        prefs = Gdx.app.getPreferences("AnnelidWar");
+        this.gameScreen = new GameScreen(this);
+        this.loadingScreen = new LoadingScreen(this);
+        this.scene = new Scene3D(this);
+        this.batch = new ModelBatch();
+
+        Gdx.input.setInputProcessor(inputMux);
+
+        assets.loadAssets(this.scene.getParticlesSystem());
+        assets.finishLoadingAsset(Assets.uiSkin);
+        assets.finishLoadingAsset(Assets.uiMusic);
+        assets.finishLoadingAsset(Assets.logo);
+
+        this.musicController.loadLoadingScreenAssets();
+
+        this.profiler = new GLProfiler(Gdx.graphics);
+        if (prefs.getBoolean("profiler", false)) {
+            toggleProfiler();
+        }
+
+        this.setScreen(loadingScreen);
+    }
+
+    public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
+        loadingFinishedListeners.add(listener);
+    }
+
+    public void finishLoading() {
+        this.musicController.assignOtherAssets();
+        this.setScreen(this.gameScreen);
+        for (ILoadingFinishedListener listener : loadingFinishedListeners) {
+            listener.finishedLoadingAssets();
+        }
     }
 
     private void toggleProfiler() {
@@ -58,7 +105,7 @@ public class AstroblazeGame extends Game {
 
     @Override
     public void render() {
-        MusicManager.update(Gdx.graphics.getDeltaTime());
+        musicController.update(Gdx.graphics.getDeltaTime());
 
         if (Gdx.input.isTouched(3)) {
             toggleProfiler();
@@ -80,47 +127,6 @@ public class AstroblazeGame extends Game {
         }
     }
 
-    public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
-        loadingFinishedListeners.add(listener);
-    }
-
-    public void finishLoading() {
-        this.MusicManager.assignOtherAssets();
-        this.setScreen(this.gameScreen);
-        for (ILoadingFinishedListener listener : loadingFinishedListeners) {
-            listener.finishedLoadingAssets();
-        }
-    }
-
-    @Override
-    public void create() {
-        instance = this;
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        prefs = Gdx.app.getPreferences("AnnelidWar");
-        this.batch = new ModelBatch();
-        this.inputMux = new InputMultiplexer();
-        this.gameScreen = new GameScreen(this);
-        this.loadingScreen = new LoadingScreen(this);
-        this.scene = new Scene3D(this);
-
-        Gdx.input.setInputProcessor(inputMux);
-
-        assets = new Assets();
-        assets.loadAssets(this.scene.getParticlesSystem());
-        assets.finishLoadingAsset(Assets.uiSkin);
-        assets.finishLoadingAsset(Assets.uiMusic);
-        assets.finishLoadingAsset(Assets.logo);
-
-        this.MusicManager.loadLoadingScreenAssets();
-
-        this.profiler = new GLProfiler(Gdx.graphics);
-        if (prefs.getBoolean("profiler", false)) {
-            toggleProfiler();
-        }
-
-        this.setScreen(loadingScreen);
-    }
-
     public void pauseGame() {
         scene.setTimeScale(0f);
     }
@@ -132,7 +138,6 @@ public class AstroblazeGame extends Game {
     @Override
     public void dispose() {
         assets.dispose();
-        assets = null;
         instance = null;
         batch.dispose();
     }

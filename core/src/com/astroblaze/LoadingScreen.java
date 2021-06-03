@@ -30,9 +30,9 @@ public class LoadingScreen extends ScreenAdapter {
         loadingTime += delta;
 
         final float minLoadingTime = 2f;
-        float p = AstroblazeGame.assets.getProgress();
+        float p = Assets.getInstance().getProgress();
         pgLoading.setValue(p < 1f ? MathUtils.lerp(pgLoading.getValue(), p, 0.1f * delta) : 1f);
-        if (AstroblazeGame.assets.update() && !loaded) {
+        if (Assets.getInstance().update() && !loaded) {
             loaded = true;
             Gdx.app.log("LoadingScreen", "Assets loaded in " + loadingTime + " secs.");
             pgLoading.addAction(Actions.sequence(

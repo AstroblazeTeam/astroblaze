@@ -3,15 +3,14 @@ package com.astroblaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.utils.Timer;
 
 import java.util.HashMap;
 
-public class MusicManager {
-    public enum MusicType {None, UI, Game}
+public class MusicController {
+    public enum MusicTrackType {None, UI, Game}
 
-    public final HashMap<MusicType, Music> musicTracks = new HashMap<>(4);
-    private MusicType currentTrack = MusicType.None;
+    public final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
+    private MusicTrackType currentTrack = MusicTrackType.None;
     private float targetVolume = 1f;
     private final float fadeSpeed = 1f / 2f; // crossfade for 3 seconds
 
@@ -21,15 +20,15 @@ public class MusicManager {
             return;
         }
 
-        assignTrack(MusicType.UI, Assets.uiMusic);
+        assignTrack(MusicTrackType.UI, Assets.uiMusic);
         targetVolume = AstroblazeGame.getPrefs().getFloat("musicVolume", 1f);
     }
 
     public void assignOtherAssets() { // loads the rest of the assets
-        assignTrack(MusicType.Game, Assets.gameMusic);
+        assignTrack(MusicTrackType.Game, Assets.gameMusic);
     }
 
-    private void assignTrack(MusicType type, AssetDescriptor<Music> music) {
+    private void assignTrack(MusicTrackType type, AssetDescriptor<Music> music) {
         Music track = Assets.asset(music);
         musicTracks.put(type, track);
         track.setVolume(0f);
@@ -39,7 +38,7 @@ public class MusicManager {
     }
 
     public void update(float delta) {
-        for (MusicType trackType : musicTracks.keySet()) {
+        for (MusicTrackType trackType : musicTracks.keySet()) {
             Music music = musicTracks.get(trackType);
             if (music == null) // skip unassigned tracks
                 continue;
@@ -75,7 +74,7 @@ public class MusicManager {
         return targetVolume;
     }
 
-    public void setTrack(MusicType track) {
+    public void setTrack(MusicTrackType track) {
         if (this.currentTrack == track) {
             Gdx.app.log("MusicManager", "Music track already was " + currentTrack + ", skipping.");
             return;
@@ -84,7 +83,7 @@ public class MusicManager {
         Gdx.app.log("MusicManager", "Set music track to " + currentTrack);
     }
 
-    public MusicType getTrack() {
+    public MusicTrackType getTrack() {
         return this.currentTrack;
     }
 }

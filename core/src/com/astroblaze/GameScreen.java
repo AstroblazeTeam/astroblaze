@@ -27,7 +27,7 @@ public class GameScreen extends ScreenAdapter {
         this.stage.act(delta);
         this.game.getScene().act(delta);
         this.stage.draw();
-        this.game.getScene().render();
+        this.game.getScene().render(game.getBatch());
     }
 
     @Override

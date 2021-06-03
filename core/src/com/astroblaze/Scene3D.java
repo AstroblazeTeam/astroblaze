@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
@@ -123,19 +125,19 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         }
     }
 
-    public void render() {
+    public void render(ModelBatch batch) {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
         this.particles.begin();
         this.particles.draw();
         this.particles.end();
 
-        game.batch.begin(camera);
-        game.batch.render(particles);
+        batch.begin(camera);
+        batch.render(particles);
         for (SceneActor actor : actors) {
-            actor.render(game.batch, environment);
+            actor.render(batch, environment);
         }
-        game.batch.end();
+        batch.end();
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         decals.render();
 
