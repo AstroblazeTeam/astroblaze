@@ -63,7 +63,7 @@ public class MusicController {
             float end = trackType == currentTrack ? targetVolume : 0f;
 
             float current = music.getVolume();
-            float target = moveTowards(current, end, delta * fadeSpeed);
+            float target = MathHelper.moveTowards(current, end, delta * fadeSpeed);
             if (current == 0f && target == 0f && music.isPlaying()) {
                 Gdx.app.log("MusicManager", "Track " + trackType + ": playing -> stopped");
                 music.pause();
@@ -73,11 +73,6 @@ public class MusicController {
             }
             music.setVolume(target);
         }
-    }
-
-    private static float moveTowards(float current, float target, float maxDelta) {
-        if (Math.abs(target - current) <= maxDelta) return target;
-        return current + Math.signum(target - current) * maxDelta;
     }
 
     public void setTargetVolume(float volume) {

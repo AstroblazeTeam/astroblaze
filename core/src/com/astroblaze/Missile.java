@@ -10,8 +10,9 @@ import java.util.Random;
 public class Missile extends Renderable {
     private final float moveSpeed = 80f;
     private final float unpoweredDir;
-    private final float unpoweredSpeed = 100f;
-    private float unpoweredTime = 0.25f;
+    private final float unpoweredSpeed = 150f;
+    private float maxUnpoweredTime = 0.25f;
+    private float unpoweredTime = 0.5f;
     private final Vector3 moveVector = new Vector3();
     private final static Random rng = new Random();
     protected ParticleEffect effect;
@@ -23,12 +24,12 @@ public class Missile extends Renderable {
     }
 
     public void reset() {
-        unpoweredTime = 0.25f;
+        this.unpoweredTime = maxUnpoweredTime;
+        this.setScale(0.75f);
     }
 
     public void setTargetVector(Vector3 moveVector) {
         this.moveVector.set(moveVector);
-        this.setScale(0.75f);
     }
 
     public Vector3 getVelocity() {
@@ -41,9 +42,12 @@ public class Missile extends Renderable {
 
         if (unpoweredTime > 0f) {
             unpoweredTime = Math.max(0f, unpoweredTime - delta);
-
-            getPosition().add(unpoweredDir * delta, -3f * delta, 0f);
-            addRotation(new Quaternion(Vector3.Z, delta * 720f));
+            final float fakeDeceleration = unpoweredTime / maxUnpoweredTime;
+            getPosition().add(
+                    unpoweredDir * fakeDeceleration * delta,
+                    0f, //-3f * delta,
+                    0f);
+            addRotation(new Quaternion(Vector3.Z, delta * 720f * fakeDeceleration));
             applyTRS();
         } else if (unpoweredTime == 0f) {
             effect.start();

@@ -186,17 +186,19 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         removeActors.clear();
     }
 
-    public void addActors() {
+    public void spawnPlayer() {
         ship = new Ship(this, Assets.asset(Assets.spaceShip2));
-
         actors.add(ship);
     }
 
-    public void clearActors() {
+    public Ship getPlayer() { return this.ship; }
+
+    public void reset() {
         removeActors.addAll(actors);
+        ship = null;
         processActorMigrations();
         particles.update(60f); // finish playing all particles
-        ship = null;
+        moveVector.setZero();
     }
 
     public void resize(int width, int height) {

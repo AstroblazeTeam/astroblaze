@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class EnemySpawner extends Actor {
     private final float spawnInterval;
-    private float spawnTimer = 0f;
+    private float spawnTimer = 10f;
     private final Scene3D scene;
 
     public EnemySpawner(Scene3D scene, float spawnInterval) {

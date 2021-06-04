@@ -32,7 +32,7 @@ public class Renderable extends SceneActor {
     }
 
     public void setPosition(Vector3 position) {
-        this.position = position;
+        this.position.set(position);
         applyTRS();
     }
 
@@ -41,7 +41,7 @@ public class Renderable extends SceneActor {
     }
 
     public void setRotation(Quaternion rotation) {
-        this.rotation = rotation;
+        this.rotation.set(rotation);
         applyTRS();
     }
 
@@ -54,7 +54,7 @@ public class Renderable extends SceneActor {
     }
 
     public void setScale(Vector3 scale) {
-        this.scale = scale;
+        this.scale.set(scale);
         applyTRS();
     }
 

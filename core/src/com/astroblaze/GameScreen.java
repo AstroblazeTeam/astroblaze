@@ -1,11 +1,7 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.math.FloatCounter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -44,19 +40,37 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void startGame() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                game.getScene().addActors();
-            }
-        });
+        final float durations = 0.5f;
+        this.stage.addAction(Actions.sequence(
+                Actions.fadeOut(durations),
+                Actions.delay(durations),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.getScene().reset();
+                    }
+                }),
+                Actions.fadeIn(1f),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.getScene().spawnPlayer();
+                    }
+                }),
+                Actions.delay(durations * 2f),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        game.getScene().getPlayer().setControlled(true);
+                    }
+                })));
     }
 
     public void stopGame() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                game.getScene().clearActors();
+                game.getScene().reset();
             }
         });
     }

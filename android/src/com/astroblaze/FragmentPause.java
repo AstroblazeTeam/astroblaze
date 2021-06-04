@@ -49,20 +49,31 @@ public class FragmentPause extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @androidx.annotation.Nullable @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.backToMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentPause.this)
-                        .popBackStack();
-            }
-        });
-
+        // resume button
         view.findViewById(R.id.backToGame).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(FragmentPause.this)
                         .navigate(R.id.action_fragmentPause_to_fragmentGame);
                 AstroblazeGame.getInstance().resumeGame();
+            }
+        });
+
+        // options button
+        view.findViewById(R.id.openOptions).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .navigate(R.id.action_fragmentPause_to_fragmentOptions);
+            }
+        });
+
+        // quit button
+        view.findViewById(R.id.backToMenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .popBackStack();
             }
         });
     }
