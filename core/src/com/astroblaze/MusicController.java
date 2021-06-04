@@ -13,6 +13,8 @@ public class MusicController {
     private MusicTrackType currentTrack = MusicTrackType.None;
     private float targetVolume = 1f;
     private final float fadeSpeed = 1f / 2f; // crossfade for 3 seconds
+    private final float intervalUpdate = 0.1f;
+    private float time = 0f;
 
     public void loadLoadingScreenAssets() {
         if (!Assets.getInstance().isLoaded(Assets.uiMusic)) {
@@ -37,7 +39,22 @@ public class MusicController {
         track.pause();
     }
 
-    public void update(float delta) {
+    public void update(final float delta) {
+        time += delta;
+        if (time < intervalUpdate) { return; }
+        time -= intervalUpdate;
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                updateInternal(intervalUpdate);
+            }
+        };
+        Thread t = new Thread(runnable);
+        t.start();
+    }
+
+    private void updateInternal(float delta) {
         for (MusicTrackType trackType : musicTracks.keySet()) {
             Music music = musicTracks.get(trackType);
             if (music == null) // skip unassigned tracks
