@@ -16,6 +16,10 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,9 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
     private float timeScale = 1f;
+
+    private int maxLives = 3;
+    private int lives = maxLives;
 
     // decals
     public final DecalController decals;
@@ -101,7 +108,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         }
 
         if (player != null) {
-            player.setMoveVector(moveVector);
+            player.setMoveVector(moveVector, false);
         }
 
         this.particles.update(delta);
@@ -111,24 +118,29 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             if (!(actor instanceof CollisionProvider))
                 continue;
 
-            CollisionProvider collision = (CollisionProvider) actor;
+            CollisionProvider provider = (CollisionProvider) actor;
+
+            if (player != null && provider.checkCollision(player.getPosition(), player.getRadius())) {
+                player.modHp(-player.getMaxHp() * 0.5f);
+                provider.damageFromCollision(100f);
+            }
+
             for (Missile m : activeMissiles) {
-                if (!collision.CheckCollision(m.getPosition(), 3f)) {
+                if (!provider.checkCollision(m.getPosition(), 3f)) {
                     continue;
                 }
 
-                collision.damageFromCollision(m.getDamage());
+                provider.damageFromCollision(m.getDamage());
                 decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                 missilePool.free(m);
             }
             for (DecalController.DecalInfo d : decals.getDecals()) {
-                if (d.collisionDamage <= 0f || !collision.CheckCollision(d.position, 1f)) {
+                if (d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
                     continue;
                 }
 
-                collision.damageFromCollision(d.collisionDamage);
+                provider.damageFromCollision(d.collisionDamage);
                 d.life = 0f;
-                //decals.addExplosion(d.position, m.getVelocity().scl(0.5f), 0.05f);
             }
         }
     }
@@ -153,6 +165,9 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             // every ~2 seconds do cleanup of objects that go out of bounds
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
+                    if (actor instanceof Ship) {
+                        continue;
+                    }
                     Vector3 pos = ((Renderable) actor).getPosition();
                     if (!destroyBounds.contains(pos)) {
                         if (actor instanceof Enemy) {
@@ -214,6 +229,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         particles.update(60f); // finish playing all particles
         decals.getDecals().clear();
         moveVector.setZero();
+        lives = maxLives;
     }
 
     public void resize(int width, int height) {
@@ -260,5 +276,30 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
     public void setTimeScale(float timeScale) {
         this.timeScale = timeScale;
+    }
+
+    public void playerDied() {
+        lives--;
+        if (lives > 0) {
+            player.reset();
+            player.setPosition(new Vector3(1000f, 0f, 0f));
+            float duration = 3f;
+            game.gameScreen.getStage().addAction(Actions.sequence(
+                    Actions.delay(duration),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            player.reset();
+                            player.setGodModeTimer(3f + player.respawnNoControlTime);
+                        }
+                    })));
+        } else {
+            player.reset();
+            Vector3 moveAway = new Vector3(1000f, 0f, 0f);
+            player.setPosition(moveAway);
+            player.setMoveVector(moveAway, true);
+            player.setNoControlTime(1000000f);
+            game.gameScreen.setGameOverVisible(true);
+        }
     }
 }

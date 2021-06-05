@@ -20,6 +20,7 @@ public class Renderable extends SceneActor {
     private Vector3 position = new Vector3();
     private Quaternion rotation = new Quaternion(0f, 0f, 0f, 1f);
     private Vector3 scale = new Vector3(1f, 1f, 1f);
+    protected boolean visible = true;
 
     public Renderable(Scene3D scene, Model model) {
         this.scene = scene;
@@ -81,6 +82,8 @@ public class Renderable extends SceneActor {
 
     @Override
     public void render(ModelBatch batch, Environment environment) {
-        batch.render(modelInstance, environment);
+        if (visible) {
+            batch.render(modelInstance, environment);
+        }
     }
 }

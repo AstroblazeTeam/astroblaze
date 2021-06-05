@@ -40,6 +40,7 @@ public class Assets extends AssetManager {
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
     public static AssetDescriptor<ParticleEffect> flame2;
+    public static TextureAtlas.AtlasRegion whitePixel;
 
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);

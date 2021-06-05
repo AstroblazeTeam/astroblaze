@@ -29,6 +29,7 @@ public class Enemy extends Renderable implements CollisionProvider {
     public void reset(BoundingBox bb) {
         setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z * 1.1f));
         setRotation(new Quaternion(Vector3.Y, 180f));
+        addRotation(new Quaternion(Vector3.Z, MathUtils.random(0, 360f)));
         setScale(0.25f);
         moveVector.set(0f, 0f, -30f);
         applyTRS();
@@ -45,7 +46,7 @@ public class Enemy extends Renderable implements CollisionProvider {
     }
 
     @Override
-    public boolean CheckCollision(Vector3 pos, float radius) {
+    public boolean checkCollision(Vector3 pos, float radius) {
         float dst2 = this.getPosition().dst2(pos);
         radius += modelRadius * getScale().x; // assume uniform scale
         return radius * radius > dst2;

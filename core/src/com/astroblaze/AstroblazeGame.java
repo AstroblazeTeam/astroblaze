@@ -16,10 +16,17 @@ public class AstroblazeGame extends Game {
         void finishedLoadingAssets();
     }
 
+    public interface IHpChangeListener {
+        void onHpChanged(Ship ship, float oldHp, float newHp);
+
+        void onHpEnabled(Ship ship, boolean enabled);
+    }
+
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
     public final InputMultiplexer inputMux = new InputMultiplexer();
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
+    private final ArrayList<IHpChangeListener> hpChangeListeners = new ArrayList<>(4);
     private final MusicController musicController = new MusicController();
     private Scene3D scene;
     private GLProfiler profiler;
@@ -81,11 +88,8 @@ public class AstroblazeGame extends Game {
         this.setScreen(loadingScreen);
     }
 
-    public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
-        loadingFinishedListeners.add(listener);
-    }
-
     public void finishLoading() {
+        Assets.whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");
         Assets.bullets.clear();
         for (int i = 1; i < 11; i++) {
             Assets.bullets.add(Assets.asset(Assets.atlas).findRegion(String.format(Locale.US, "%02d", i)));
@@ -146,6 +150,29 @@ public class AstroblazeGame extends Game {
 
     public void resumeGame() {
         scene.setTimeScale(1f);
+    }
+
+    public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
+        if (!this.loadingFinishedListeners.contains(listener))
+            this.loadingFinishedListeners.add(listener);
+    }
+
+    public void addHpChangeListener(IHpChangeListener listener) {
+        if (!this.hpChangeListeners.contains(listener))
+            this.hpChangeListeners.add(listener);
+    }
+
+    public void reportHpChanged(Ship ship, float newHp, float oldHp) {
+        for (IHpChangeListener listener : hpChangeListeners) {
+            listener.onHpChanged(ship, newHp, oldHp);
+        }
+    }
+
+    public void reportHpEnabled(Ship ship, boolean enabled) {
+        Gdx.app.log("AstroblazeGame", "reportHpEnabled(" + enabled + ")");
+        for (IHpChangeListener listener : hpChangeListeners) {
+            listener.onHpEnabled(ship, enabled);
+        }
     }
 
     @Override

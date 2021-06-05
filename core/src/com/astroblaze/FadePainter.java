@@ -54,9 +54,6 @@ public class FadePainter {
         batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_DST_ALPHA);
         shader.bind();
         shader.setUniformf("alpha", alpha);
-        if (alpha != 0f && alpha != 1f) {
-            Gdx.app.log("asdf", "" + alpha);
-        }
         mesh.render(shader, GL20.GL_TRIANGLES);
         batch.end();
         batch.setBlendFunction(srcFunc, dstFunc);
