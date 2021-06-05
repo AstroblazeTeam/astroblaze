@@ -29,26 +29,12 @@
         android:id="@+id/fragmentOptions"
         android:name="com.astroblaze.FragmentOptions"
         android:label="fragment_options"
-        tools:layout="@layout/fragment_options" >
-        <action
-            android:id="@+id/action_fragmentOptions_to_fragmentMenu"
-            app:destination="@id/fragmentMenu"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out"
-            app:popUpTo="@id/fragmentMenu" />
-    </fragment>
+        tools:layout="@layout/fragment_options" />
     <fragment
         android:id="@+id/fragmentGame"
         android:name="com.astroblaze.FragmentGame"
         android:label="fragment_game"
-        tools:layout="@layout/fragment_game" >
-        <action
-            android:id="@+id/action_fragmentGame_to_fragmentPause"
-            app:destination="@id/fragmentPause"
-            app:popUpTo="@id/fragmentPause" />
-    </fragment>
+        tools:layout="@layout/fragment_game" />
     <fragment
         android:id="@+id/fragmentPause"
         android:name="com.astroblaze.FragmentPause"
@@ -61,10 +47,6 @@
             app:exitAnim="@anim/navigate_out"
             app:popEnterAnim="@anim/navigate_in"
             app:popExitAnim="@anim/navigate_out" />
-        <action
-            android:id="@+id/action_fragmentPause_to_fragmentMenu"
-            app:destination="@id/fragmentMenu"
-            app:popUpTo="@id/fragmentMenu" />
         <argument
             android:name="startGame"
             app:argType="boolean"
@@ -73,7 +55,9 @@
             android:id="@+id/action_fragmentPause_to_fragmentOptions"
             app:destination="@id/fragmentOptions"
             app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out" />
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentLoading"
@@ -85,6 +69,8 @@
             app:destination="@id/fragmentMenu"
             app:enterAnim="@anim/navigate_in"
             app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="false" />
     </fragment>
