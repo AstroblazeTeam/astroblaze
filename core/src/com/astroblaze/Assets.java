@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
@@ -34,6 +35,7 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
     public final static AssetDescriptor<Sound> explosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
     public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
+    public final static AssetDescriptor<ShaderProgram> fadeShader = new AssetDescriptor<>("shaders/fade.vert", ShaderProgram.class);
 
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
@@ -64,6 +66,7 @@ public class Assets extends AssetManager {
         load(gameMusic);
         load(explosion);
         load(atlas);
+        load(fadeShader);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("particles/flame.pfx", ParticleEffect.class, loaderParams);

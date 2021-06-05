@@ -11,6 +11,8 @@ public class ParallaxBackground extends Actor {
     private final Array<Texture> textures = new Array<>();
     public float speed;
     private float scroll;
+    private float width;
+    private float height;
 
     public ParallaxBackground(float speed) {
         this.speed = speed;

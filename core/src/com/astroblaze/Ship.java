@@ -1,6 +1,5 @@
 package com.astroblaze;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 public class Ship extends Renderable {
     private final float bankSpeed = 90f;
     private final float moveSpeed = 80f;
+    private final float respawnNoControlTime = 1f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
     private float fireInterval = 1f / 2f;
@@ -16,7 +16,7 @@ public class Ship extends Renderable {
     private float fireClock = 0f;
     private float fireClockGun = 0f;
     private float gunDamage = 10f;
-    private boolean isControlled = false;
+    private float noControlTimer;
 
     public Ship(Scene3D scene, Model model) {
         super(scene, model);
@@ -28,12 +28,16 @@ public class Ship extends Renderable {
     }
 
     public void setMoveVector(Vector3 moveVector) {
+        if (noControlTimer > 0f)
+            return;
         this.moveVector.set(moveVector);
     }
 
     public void reset() {
+        noControlTimer = respawnNoControlTime;
         moveVector.setZero();
-        setPosition(new Vector3(0f, 0f, 0f));
+        // set to slightly closer than destroy bounds
+        setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
         setRotation(new Quaternion());
         setScale(0.5f);
         applyTRS();
@@ -42,11 +46,9 @@ public class Ship extends Renderable {
     @Override
     public void act(float delta) {
         super.act(delta);
+        noControlTimer -= delta;
         Vector3 currentPos = getPosition().cpy();
-        Vector3 diff = getPosition().cpy().sub(currentPos);
-        if (!isControlled) {
-            diff.setZero();
-        }
+        Vector3 diff = moveVector.cpy().sub(currentPos);
 
         if (MathUtils.isEqual(currentBank, 0f, 0.1f) && MathUtils.isEqual(diff.x, 0f, 0.1f)) {
             currentBank = 0f;
@@ -61,7 +63,7 @@ public class Ship extends Renderable {
         applyTRS();
 
         fireClock -= delta;
-        if (isControlled && fireClock < 0f) {
+        if (isControlled() && fireClock < 0f) {
             fireClock = fireInterval;
 
             Missile missile = scene.getMissilesPool().obtain();
@@ -72,7 +74,7 @@ public class Ship extends Renderable {
         }
 
         fireClockGun -= delta;
-        if (isControlled && fireClockGun < 0f) {
+        if (isControlled() && fireClockGun < 0f) {
             fireClockGun = fireIntervalGun;
 
             final Vector3 vel = new Vector3(0, 0, 3f * moveSpeed);
@@ -85,11 +87,11 @@ public class Ship extends Renderable {
         return moveVector.cpy().sub(getPosition()).nor().scl(moveSpeed);
     }
 
-    public boolean getControlled() {
-        return this.isControlled;
+    public boolean isControlled() {
+        return noControlTimer <= 0f;
     }
 
-    public void setControlled(boolean isControlled) {
-        this.isControlled = isControlled;
+    public void setNoControlTime(float time) {
+        this.noControlTimer = time;
     }
 }

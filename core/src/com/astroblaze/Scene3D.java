@@ -40,7 +40,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     // decals
     public final DecalController decals;
 
-    public Ship ship;
+    private Ship player;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
@@ -100,8 +100,8 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             actor.act(delta);
         }
 
-        if (ship != null) {
-            ship.setMoveVector(moveVector);
+        if (player != null) {
+            player.setMoveVector(moveVector);
         }
 
         this.particles.update(delta);
@@ -194,20 +194,25 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         removeActors.clear();
     }
 
-    public void spawnPlayer() {
-        ship = new Ship(this, Assets.asset(Assets.spaceShip2));
-        actors.add(ship);
+    public void respawnPlayer() {
+        if (player != null) {
+            player.reset();
+        } else {
+            player = new Ship(this, Assets.asset(Assets.spaceShip2));
+            actors.add(player);
+        }
     }
 
     public Ship getPlayer() {
-        return this.ship;
+        return this.player;
     }
 
     public void reset() {
         removeActors.addAll(actors);
-        ship = null;
+        player = null;
         processActorMigrations();
         particles.update(60f); // finish playing all particles
+        decals.getDecals().clear();
         moveVector.setZero();
     }
 

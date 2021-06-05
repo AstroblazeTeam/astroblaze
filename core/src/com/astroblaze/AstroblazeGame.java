@@ -86,6 +86,7 @@ public class AstroblazeGame extends Game {
     }
 
     public void finishLoading() {
+        Assets.bullets.clear();
         for (int i = 1; i < 11; i++) {
             Assets.bullets.add(Assets.asset(Assets.atlas).findRegion(String.format(Locale.US, "%02d", i)));
         }
@@ -108,11 +109,11 @@ public class AstroblazeGame extends Game {
     }
 
     public void handleBtnExtra2Click() {
-        scene.getPlayer().modGunDamage(+10f);
+        scene.getPlayer().reset();
     }
 
     public void handleBtnExtra1Click() {
-        scene.getPlayer().modGunDamage(-10f);
+        scene.getPlayer().modGunDamage(10f);
     }
 
     @Override

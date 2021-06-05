@@ -19,7 +19,11 @@
             app:popExitAnim="@anim/navigate_out" />
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentPause2"
-            app:destination="@id/fragmentPause" />
+            app:destination="@id/fragmentPause"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentOptions"

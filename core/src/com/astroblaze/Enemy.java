@@ -27,7 +27,7 @@ public class Enemy extends Renderable implements CollisionProvider {
     }
 
     public void reset(BoundingBox bb) {
-        setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z));
+        setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z * 1.1f));
         setRotation(new Quaternion(Vector3.Y, 180f));
         setScale(0.25f);
         moveVector.set(0f, 0f, -30f);
