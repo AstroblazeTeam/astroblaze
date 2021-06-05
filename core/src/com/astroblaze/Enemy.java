@@ -57,7 +57,7 @@ public class Enemy extends Renderable implements CollisionProvider {
         if (this.hp <= 0f) {
             scene.removeActors.add(this);
             Assets.asset(Assets.explosion).play(1f, 1f, MathUtils.random(-1f, 1f));
-            scene.decals.addExplosion(this.getPosition(), moveVector, 1f);
+            scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
         }
     }
 }

@@ -12,12 +12,19 @@ public class Ship extends Renderable {
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
     private float fireInterval = 1f / 2f;
+    private float fireIntervalGun = 1f / 20f;
     private float fireClock = 0f;
+    private float fireClockGun = 0f;
+    private float gunDamage = 10f;
     private boolean isControlled = false;
 
     public Ship(Scene3D scene, Model model) {
         super(scene, model);
         reset();
+    }
+
+    public void modGunDamage(float mod) {
+        this.gunDamage = MathUtils.clamp(this.gunDamage + mod, 10f, 100f);
     }
 
     public void setMoveVector(Vector3 moveVector) {
@@ -63,6 +70,19 @@ public class Ship extends Renderable {
             missile.setTargetVector(pos.cpy().add(0, 0, 1000f));
             missile.applyTRS();
         }
+
+        fireClockGun -= delta;
+        if (isControlled && fireClockGun < 0f) {
+            fireClockGun = fireIntervalGun;
+
+            final Vector3 vel = new Vector3(0, 0, 3f * moveSpeed);
+            scene.decals.addBullet(this.getPosition().cpy().add(+5f, 0f, 3f), vel, 0.1f, gunDamage);
+            scene.decals.addBullet(this.getPosition().cpy().add(-5f, 0f, 3f), vel, 0.1f, gunDamage);
+        }
+    }
+
+    public Vector3 getVelocity() {
+        return moveVector.cpy().sub(getPosition()).nor().scl(moveSpeed);
     }
 
     public boolean getControlled() {

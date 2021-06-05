@@ -33,6 +33,7 @@ public class Assets extends AssetManager {
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
     public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
     public final static AssetDescriptor<Sound> explosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
+    public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
 
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
@@ -60,9 +61,9 @@ public class Assets extends AssetManager {
         load(parallax2);
         load(parallax3);
         load(missile);
-        load(atlas);
         load(gameMusic);
         load(explosion);
+        load(atlas);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("particles/flame.pfx", ParticleEffect.class, loaderParams);

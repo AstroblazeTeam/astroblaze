@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -119,8 +118,17 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 }
 
                 collision.damageFromCollision(m.getDamage());
-                decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.55f);
+                decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                 missilePool.free(m);
+            }
+            for (DecalController.DecalInfo d : decals.getDecals()) {
+                if (d.collisionDamage <= 0f || !collision.CheckCollision(d.position, 1f)) {
+                    continue;
+                }
+
+                collision.damageFromCollision(d.collisionDamage);
+                d.life = 0f;
+                //decals.addExplosion(d.position, m.getVelocity().scl(0.5f), 0.05f);
             }
         }
     }
@@ -191,7 +199,9 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         actors.add(ship);
     }
 
-    public Ship getPlayer() { return this.ship; }
+    public Ship getPlayer() {
+        return this.ship;
+    }
 
     public void reset() {
         removeActors.addAll(actors);

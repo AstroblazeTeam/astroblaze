@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AstroblazeGame extends Game {
     public interface ILoadingFinishedListener {
@@ -85,6 +86,9 @@ public class AstroblazeGame extends Game {
     }
 
     public void finishLoading() {
+        for (int i = 1; i < 11; i++) {
+            Assets.bullets.add(Assets.asset(Assets.atlas).findRegion(String.format(Locale.US, "%02d", i)));
+        }
         this.musicController.assignOtherAssets();
         this.setScreen(this.gameScreen);
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
@@ -101,6 +105,14 @@ public class AstroblazeGame extends Game {
         }
         prefs.putBoolean("profiler", profiler.isEnabled());
         prefs.flush();
+    }
+
+    public void handleBtnExtra2Click() {
+        scene.getPlayer().modGunDamage(+10f);
+    }
+
+    public void handleBtnExtra1Click() {
+        scene.getPlayer().modGunDamage(-10f);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.astroblaze;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -45,5 +46,24 @@ public class FragmentGame extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_game, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @androidx.annotation.Nullable @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        view.findViewById(R.id.btnExtra1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AstroblazeGame.getInstance().handleBtnExtra1Click();
+            }
+        });
+
+        view.findViewById(R.id.btnExtra2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AstroblazeGame.getInstance().handleBtnExtra2Click();
+            }
+        });
     }
 }
