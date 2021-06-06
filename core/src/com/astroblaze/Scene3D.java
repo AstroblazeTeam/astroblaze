@@ -16,10 +16,7 @@ import com.badlogic.gdx.math.Plane;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 
 import java.util.ArrayList;
 
@@ -41,7 +38,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final MissilePool missilePool;
     private float timeScale = 1f;
 
-    private int maxLives = 2;
+    private final int maxLives = 3;
     private int lives = maxLives;
 
     // decals
@@ -78,7 +75,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     public void finishedLoadingAssets() {
         this.particlePool.setEffect(Assets.asset(Assets.flame2));
         this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
-        this.enemyPool.setAssets(particlePool, Assets.asset(Assets.spaceShip3));
+        this.enemyPool.setAssets(particlePool);
         this.decals.loadTextures();
     }
 
@@ -99,7 +96,6 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 moveVector.x = MathUtils.clamp(moveVector.x,
                         gameBounds.min.x * edgeOffset,
                         gameBounds.max.x * edgeOffset);
-
             }
         }
 
@@ -120,9 +116,22 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
             CollisionProvider provider = (CollisionProvider) actor;
 
-            if (player != null && provider.checkCollision(player.getPosition(), player.getRadius())) {
-                player.modHp(-player.getMaxHp() * 0.5f);
-                provider.damageFromCollision(100f);
+            if (player != null) {
+                Vector3 playerPos = player.getPosition();
+                // check if player clips enemy ship
+                if (provider.checkCollision(playerPos, player.getRadius())) {
+                    player.modHp(-player.getMaxHp() * 0.5f);
+                    provider.damageFromCollision(100f);
+                }
+
+                final float bulletHitRadius = 1f;
+                // check if player clips enemy bullet
+                for (DecalController.DecalInfo d : decals.getDecals()) {
+                    if (!d.fromPlayer && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
+                        player.modHp(-d.collisionDamage);
+                        d.life = 0f;
+                    }
+                }
             }
 
             for (Missile m : activeMissiles) {
@@ -135,7 +144,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                 missilePool.free(m);
             }
             for (DecalController.DecalInfo d : decals.getDecals()) {
-                if (d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
+                if (!d.fromPlayer || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
                     continue;
                 }
 

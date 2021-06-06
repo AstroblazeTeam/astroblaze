@@ -1,9 +1,8 @@
 package com.astroblaze;
 
-import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
-import java.util.ArrayList;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class EnemySpawner extends Actor {
     private final float spawnInterval;
@@ -20,7 +19,8 @@ public class EnemySpawner extends Actor {
         spawnTimer -= delta * scene.getTimeScale();
         if (spawnTimer < 0f) {
             spawnTimer = spawnInterval;
-            scene.enemyPool.obtain();
+            Enemy enemy = scene.enemyPool.obtain();
+            enemy.setType(MathUtils.random(0, 2));
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
@@ -19,7 +21,8 @@ public class Missile extends Renderable {
     private float damage = 35f;
 
     public Missile(Scene3D scene, Model model) {
-        super(scene, model);
+        super(scene);
+        setModel(new ModelInstance(model));
         reset();
     }
 
@@ -29,7 +32,7 @@ public class Missile extends Renderable {
 
     public void reset() {
         this.unpoweredTime = maxUnpoweredTime;
-        this.unpoweredDir.set((rng.nextFloat() - 0.5f) * unpoweredSpeed, 0f, 0f);
+        this.unpoweredDir.set(MathUtils.random(-0.5f, 0.5f) * unpoweredSpeed, 0f, 0f);
         this.setScale(0.75f);
     }
 

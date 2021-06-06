@@ -2,6 +2,7 @@ package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -12,10 +13,8 @@ public class Ship extends Renderable {
     private float moveSpeed = 80f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
-    private float fireInterval = 1f / 2f;
-    private float fireIntervalGun = 1f / 20f;
-    private float fireClock = 0f;
-    private float fireClockGun = 0f;
+    private float gunInterval = 1f / 20f;
+    private float gunClock = 0f;
     private float gunDamage = 3f;
     private float noControlTimer;
     private float maxHp = 100f;
@@ -32,7 +31,8 @@ public class Ship extends Renderable {
     private boolean hpBarEnabled = false; // flag to avoid event spam
 
     public Ship(Scene3D scene, Model model) {
-        super(scene, model);
+        super(scene);
+        setModel(new ModelInstance(model));
         reset();
     }
 
@@ -80,7 +80,7 @@ public class Ship extends Renderable {
         // set to slightly closer than destroy bounds
         setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
         setRotation(new Quaternion());
-        setScale(0.5f);
+        setScale(0.35f);
         applyTRS();
     }
 
@@ -110,15 +110,9 @@ public class Ship extends Renderable {
         applyTRS();
 
         if (!isDying) {
-            fireClock -= delta;
-            if (isControlled() && fireClock < 0f) {
-                fireClock = fireInterval;
-
-            }
-
-            fireClockGun -= delta;
-            if (isControlled() && fireClockGun < 0f) {
-                fireClockGun = fireIntervalGun;
+            gunClock -= delta;
+            if (isControlled() && gunClock < 0f) {
+                gunClock = gunInterval;
 
                 final Vector3 vel = new Vector3(0, 0, 3f * moveSpeed);
                 scene.decals.addBullet(this.getPosition().cpy().add(+3f, 0f, 3f), vel, 0.1f, gunDamage);
@@ -166,9 +160,8 @@ public class Ship extends Renderable {
     public void fireMissiles() {
         float count = missileSalvo;
         float speed = Missile.unpoweredSpeed / count;
-        float oddOffset = count % 2 == 1 ? 0.5f : 0.5f; // offset for odd number of missiles
         Vector3 pos = this.getPosition().cpy();
-        for (float x = -count * 0.5f + oddOffset; x < count * 0.5f + oddOffset; x++) {
+        for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
             float offset = x * speed * Missile.maxUnpoweredTime;
             Missile missile = scene.getMissilesPool().obtain();
             missile.setUnpoweredDir(x * speed, 0f, 0f);

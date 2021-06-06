@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
@@ -21,6 +20,8 @@ public class DecalController {
         public float life;
         public float angle;
         public float collisionDamage;
+        public float radiusSquared;
+        public boolean fromPlayer;
         public Decal decal;
         public Animation<TextureRegion> animation;
     }
@@ -48,12 +49,14 @@ public class DecalController {
         return this.activeDecals;
     }
 
-    public void addBullet(Vector3 position, Vector3 velocity, float scale, float damage) {
+    public DecalInfo addBullet(Vector3 position, Vector3 velocity, float scale, float damage) {
         DecalInfo info = new DecalInfo();
         info.position = position.cpy();
         info.velocity = velocity.cpy();
         info.time = 0f;
         info.life = 5f;
+        info.radiusSquared = 1f;
+        info.fromPlayer = true;
         info.collisionDamage = damage;
         int bulletIdx = MathUtils.clamp((int) (damage / 10f) - 1, 0, 10);
         info.decal = Decal.newDecal(Assets.bullets.get(bulletIdx), true);
@@ -62,6 +65,7 @@ public class DecalController {
         info.decal.setScale(scale);
         info.angle = MathUtils.atan2(velocity.x, velocity.z) * MathUtils.radiansToDegrees;
         activeDecals.add(info);
+        return info;
     }
 
     public DecalInfo addExplosion(Vector3 position, Vector3 velocity, float scale) {

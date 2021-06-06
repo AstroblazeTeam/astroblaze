@@ -45,6 +45,7 @@ public class Assets extends AssetManager {
     public static TextureAtlas atlas1;
     public static TextureAtlas.AtlasRegion whitePixel;
     public static TextureAtlas.AtlasRegion heartTexture;
+    public static Array<Model> enemyModels = new Array<>(16);
 
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
@@ -54,7 +55,9 @@ public class Assets extends AssetManager {
         instance = this;
     }
 
-    public static Assets getInstance() { return instance; }
+    public static Assets getInstance() {
+        return instance;
+    }
 
     public void loadAssets(ParticleSystem particles) {
         load(uiSkin);
@@ -84,13 +87,15 @@ public class Assets extends AssetManager {
         atlas1 = Assets.asset(Assets.atlas);
         heartTexture = Assets.asset(Assets.atlas).findRegion("heart_icon");
         whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");
+        enemyModels.clear();
+        enemyModels.add(asset(spaceShip1), asset(spaceShip2), asset(spaceShip3));
         bullets.clear();
         for (int i = 1; i < 11; i++) {
             bullets.add(atlas1.findRegion(String.format(Locale.US, "%02d", i)));
         }
     }
 
-    public static <T> T asset (AssetDescriptor<T> assetDescriptor) {
+    public static <T> T asset(AssetDescriptor<T> assetDescriptor) {
         return instance.get(assetDescriptor.fileName, assetDescriptor.type, true);
     }
 }

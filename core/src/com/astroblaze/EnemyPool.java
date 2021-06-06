@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Pool;
 
 public class EnemyPool extends Pool<Enemy> {
     private final Scene3D scene;
-    private Model model;
     private ParticlePool particles;
 
     public EnemyPool(Scene3D scene) {
@@ -16,9 +15,8 @@ public class EnemyPool extends Pool<Enemy> {
         this.scene = scene;
     }
 
-    public void setAssets(ParticlePool particles, Model model) {
+    public void setAssets(ParticlePool particles) {
         this.particles = particles;
-        this.model = model;
     }
 
     @Override
@@ -47,7 +45,7 @@ public class EnemyPool extends Pool<Enemy> {
 
     @Override
     protected Enemy newObject() {
-        Enemy enemy = new Enemy(scene, model);
+        Enemy enemy = new Enemy(scene, 0);
         reset(enemy);
         return enemy;
     }
