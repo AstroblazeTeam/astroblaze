@@ -89,11 +89,7 @@ public class AstroblazeGame extends Game {
     }
 
     public void finishLoading() {
-        Assets.whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");
-        Assets.bullets.clear();
-        for (int i = 1; i < 11; i++) {
-            Assets.bullets.add(Assets.asset(Assets.atlas).findRegion(String.format(Locale.US, "%02d", i)));
-        }
+        Assets.getInstance().finalizeLoading();
         this.musicController.assignOtherAssets();
         this.setScreen(this.gameScreen);
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
@@ -113,11 +109,21 @@ public class AstroblazeGame extends Game {
     }
 
     public void handleBtnExtra2Click() {
-        scene.getPlayer().reset();
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                scene.getPlayer().fireMissiles();
+            }
+        });
     }
 
     public void handleBtnExtra1Click() {
-        scene.getPlayer().modGunDamage(10f);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                scene.getPlayer().missileSalvo += 1;
+            }
+        });
     }
 
     @Override
@@ -173,6 +179,10 @@ public class AstroblazeGame extends Game {
         for (IHpChangeListener listener : hpChangeListeners) {
             listener.onHpEnabled(ship, enabled);
         }
+    }
+
+    public boolean isDebugging() {
+        return this.profiler.isEnabled();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Intersector;
@@ -17,6 +18,7 @@ public class Enemy extends Renderable implements CollisionProvider {
     private final float modelRadius;
     private final float maxHp = 100f;
     private float hp;
+    private Sound explosionSound;
 
     public Enemy(Scene3D scene, Model model) {
         super(scene, model);
@@ -34,6 +36,7 @@ public class Enemy extends Renderable implements CollisionProvider {
         moveVector.set(0f, 0f, -30f);
         applyTRS();
         hp = maxHp;
+        explosionSound = Assets.asset(Assets.explosion);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class Enemy extends Renderable implements CollisionProvider {
         this.hp -= damage;
         if (this.hp <= 0f) {
             scene.removeActors.add(this);
-            Assets.asset(Assets.explosion).play(1f, 1f, MathUtils.random(-1f, 1f));
+            explosionSound.play(1f, 1f, MathUtils.random(-1f, 1f));
             scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
         }
     }

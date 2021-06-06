@@ -77,7 +77,7 @@ public class Renderable extends SceneActor {
 
     public void setModel(Model model) {
         this.model = model;
-        this.modelInstance = new ModelInstance(model);
+        this.modelInstance = model == null ? null : new ModelInstance(model);
     }
 
     @Override

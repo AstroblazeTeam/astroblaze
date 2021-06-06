@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
 public class Ship extends Renderable {
-    private final float bankSpeed = 90f;
     public final float respawnNoControlTime = 1f;
+    private final float bankSpeed = 90f;
     private float moveSpeed = 80f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
@@ -28,6 +28,8 @@ public class Ship extends Renderable {
     private float destroyExplosionInterval = 0.1f;
     private float godModeTimer = 0f;
     private float godModeTimerOnDeath = 3f;
+    public int missileSalvo = 1;
+    private boolean hpBarEnabled = false; // flag to avoid event spam
 
     public Ship(Scene3D scene, Model model) {
         super(scene, model);
@@ -112,11 +114,6 @@ public class Ship extends Renderable {
             if (isControlled() && fireClock < 0f) {
                 fireClock = fireInterval;
 
-                Missile missile = scene.getMissilesPool().obtain();
-                Vector3 pos = this.getPosition().cpy();
-                missile.setPosition(pos);
-                missile.setTargetVector(pos.cpy().add(0, 0, 1000f));
-                missile.applyTRS();
             }
 
             fireClockGun -= delta;
@@ -166,8 +163,29 @@ public class Ship extends Renderable {
         return noControlTimer <= 0f;
     }
 
+    public void fireMissiles() {
+        float count = missileSalvo;
+        float speed = Missile.unpoweredSpeed / count;
+        float oddOffset = count % 2 == 1 ? 0.5f : 0.5f; // offset for odd number of missiles
+        Vector3 pos = this.getPosition().cpy();
+        for (float x = -count * 0.5f + oddOffset; x < count * 0.5f + oddOffset; x++) {
+            float offset = x * speed * Missile.maxUnpoweredTime;
+            Missile missile = scene.getMissilesPool().obtain();
+            missile.setUnpoweredDir(x * speed, 0f, 0f);
+            missile.setPosition(pos);
+            missile.setTargetVector(pos.cpy().add(offset, 0f, 1000f));
+            missile.applyTRS();
+        }
+    }
+
     public void setNoControlTime(float time) {
         this.noControlTimer = time;
-        AstroblazeGame.getInstance().reportHpEnabled(this, time <= 0f);
+        final boolean newHpBarEnabled = time <= 0f
+                && godModeTimer <= 0f
+                && scene.gameBounds.contains(getPosition());
+        if (hpBarEnabled != newHpBarEnabled) {
+            hpBarEnabled = newHpBarEnabled;
+            AstroblazeGame.getInstance().reportHpEnabled(this, hpBarEnabled);
+        }
     }
 }

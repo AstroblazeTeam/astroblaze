@@ -83,6 +83,12 @@ public class GameScreen extends ScreenAdapter {
                         game.getScene().reset();
                     }
                 }),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        hpDisplayActor.setVisible(true);
+                    }
+                }),
                 Actions.fadeIn(1f),
                 Actions.run(new Runnable() {
                     @Override
@@ -103,6 +109,12 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     public void run() {
                         game.getScene().reset();
+                    }
+                }),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        hpDisplayActor.setVisible(false);
                     }
                 }),
                 Actions.fadeIn(1f),

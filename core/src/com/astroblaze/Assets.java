@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Locale;
+
 public class Assets extends AssetManager {
     private static Assets instance;
 
@@ -40,7 +42,9 @@ public class Assets extends AssetManager {
     // these are loaded late, don't rely on them available at start!
     public static AssetDescriptor<ParticleEffect> flame;
     public static AssetDescriptor<ParticleEffect> flame2;
+    public static TextureAtlas atlas1;
     public static TextureAtlas.AtlasRegion whitePixel;
+    public static TextureAtlas.AtlasRegion heartTexture;
 
     static {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
@@ -74,6 +78,16 @@ public class Assets extends AssetManager {
         flame2 = new AssetDescriptor<>("projectiles/flame2.pfx", ParticleEffect.class, loaderParams);
         load(flame);
         load(flame2);
+    }
+
+    public void finalizeLoading() {
+        atlas1 = Assets.asset(Assets.atlas);
+        heartTexture = Assets.asset(Assets.atlas).findRegion("heart_icon");
+        whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");
+        bullets.clear();
+        for (int i = 1; i < 11; i++) {
+            bullets.add(atlas1.findRegion(String.format(Locale.US, "%02d", i)));
+        }
     }
 
     public static <T> T asset (AssetDescriptor<T> assetDescriptor) {

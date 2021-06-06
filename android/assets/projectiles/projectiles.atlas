@@ -522,6 +522,13 @@ explosion1
   orig: 256, 256
   offset: 0, 0
   index: 3
+heart_icon
+  rotate: false
+  xy: 1199, 910
+  size: 115, 99
+  orig: 115, 99
+  offset: 0, 0
+  index: -1
 white_pixel
   rotate: false
   xy: 1442, 1673

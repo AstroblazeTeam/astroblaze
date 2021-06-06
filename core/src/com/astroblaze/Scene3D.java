@@ -41,7 +41,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     private final MissilePool missilePool;
     private float timeScale = 1f;
 
-    private int maxLives = 3;
+    private int maxLives = 2;
     private int lives = maxLives;
 
     // decals
@@ -148,17 +148,15 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
     public void render(ModelBatch batch) {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
+        batch.begin(camera);
         this.particles.begin();
         this.particles.draw();
         this.particles.end();
-
-        batch.begin(camera);
         batch.render(particles);
         for (SceneActor actor : actors) {
             actor.render(batch, environment);
         }
         batch.end();
-        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         decals.render();
 
         if (Gdx.graphics.getFrameId() % 15 == 0) {
@@ -270,6 +268,10 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         return this.camera;
     }
 
+    public int getLives() {
+        return this.lives;
+    }
+
     public float getTimeScale() {
         return this.timeScale;
     }
@@ -280,6 +282,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
 
     public void playerDied() {
         lives--;
+        this.moveVector.setZero();
         if (lives > 0) {
             player.reset();
             player.setPosition(new Vector3(1000f, 0f, 0f));
@@ -294,10 +297,11 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
                         }
                     })));
         } else {
-            player.reset();
             Vector3 moveAway = new Vector3(1000f, 0f, 0f);
+            player.reset();
             player.setPosition(moveAway);
             player.setMoveVector(moveAway, true);
+            player.setGodModeTimer(1000000f);
             player.setNoControlTime(1000000f);
             game.gameScreen.setGameOverVisible(true);
         }
