@@ -2,7 +2,6 @@ package com.astroblaze;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class EnemySpawner extends Actor {
     private final float spawnInterval;

@@ -31,6 +31,7 @@ public class FragmentMenu extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // exit button
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +41,7 @@ public class FragmentMenu extends Fragment {
             }
         });
 
+        // menu -> options
         view.findViewById(R.id.btnOptions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,14 +50,12 @@ public class FragmentMenu extends Fragment {
             }
         });
 
+        // menu -> level select
         view.findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("startGame", true);
-
                 NavHostFragment.findNavController(FragmentMenu.this)
-                        .navigate(R.id.action_fragmentMenu_to_fragmentPause2, bundle);
+                        .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
             }
         });
     }

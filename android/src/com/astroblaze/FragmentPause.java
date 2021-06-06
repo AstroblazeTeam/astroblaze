@@ -32,7 +32,7 @@ public class FragmentPause extends Fragment {
         NavHostFragment.findNavController(FragmentPause.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if (navDestination.getId() == R.id.fragmentMenu) {
+                if (navDestination.getId() == R.id.fragmentLevelSelect) {
                     AstroblazeGame.getInstance().gameScreen.stopGame();
                 }
             }

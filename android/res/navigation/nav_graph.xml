@@ -18,8 +18,8 @@
             app:popEnterAnim="@anim/navigate_in"
             app:popExitAnim="@anim/navigate_out" />
         <action
-            android:id="@+id/action_fragmentMenu_to_fragmentPause2"
-            app:destination="@id/fragmentPause"
+            android:id="@+id/action_fragmentMenu_to_fragmentLevelSelect"
+            app:destination="@id/fragmentLevelSelect"
             app:enterAnim="@anim/navigate_in"
             app:exitAnim="@anim/navigate_out"
             app:popEnterAnim="@anim/navigate_in"
@@ -74,4 +74,29 @@
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentLevelSelect"
+        android:name="com.astroblaze.FragmentLevelSelect"
+        android:label="fragment_levelselect"
+        tools:layout="@layout/fragment_levelselect" >
+        <action
+            android:id="@+id/action_fragmentLevelSelect_to_fragmentPause"
+            app:destination="@id/fragmentPause"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
+        <action
+            android:id="@+id/action_fragmentLevelSelect_to_shopFragment"
+            app:destination="@id/shopFragment"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.astroblaze.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
 </navigation>

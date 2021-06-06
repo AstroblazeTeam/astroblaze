@@ -46,7 +46,7 @@ public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeLis
         if (!shouldHide && fadeTimer > 0f) {
             drawAlpha = MathHelper.moveTowards(drawAlpha, 1f, alphaSpeed * delta);
         } else {
-            final float lowestAlpha = shouldHide ? 0f : 0.1f;
+            final float lowestAlpha = shouldHide ? 0f : 0.25f;
             drawAlpha = MathHelper.moveTowards(drawAlpha, lowestAlpha, alphaSpeed * delta);
         }
     }

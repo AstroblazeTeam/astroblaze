@@ -9,8 +9,7 @@
     <string name="music">Music</string>
     <string name="screenShake">Screen Shake</string>
     <string name="back">Back</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shop">Shop</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>
 
