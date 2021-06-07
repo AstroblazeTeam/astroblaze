@@ -26,7 +26,7 @@ public class FragmentPause extends Fragment {
         if (args != null && args.getBoolean("startGame")) {
             NavHostFragment.findNavController(FragmentPause.this)
                     .navigate(R.id.action_fragmentPause_to_fragmentGame);
-            AstroblazeGame.getInstance().gameScreen.startGame();
+            AstroblazeGame.getInstance().gameScreen.startGame(args.getInt("level", 1));
             AstroblazeGame.getInstance().resumeGame();
         }
         NavHostFragment.findNavController(FragmentPause.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {

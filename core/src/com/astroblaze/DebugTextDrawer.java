@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class DebugTextDrawer extends Actor {
     private final BitmapFont font = new BitmapFont();
+    private final float heightOffset;
     private float timeAccumulator = 0f;
     private static String report = "0 fps   ";
     private static String extraReport = "";
@@ -21,6 +22,7 @@ public class DebugTextDrawer extends Actor {
             instance = this;
         }
 
+        heightOffset = 60f * Gdx.graphics.getDensity();
         font.getData().scale(1.5f);
         setExtraReport("");
     }
@@ -56,7 +58,7 @@ public class DebugTextDrawer extends Actor {
         super.draw(batch, parentAlpha);
         font.draw(batch, report + " " + extraReport,
                 Gdx.graphics.getWidth() - width,
-                Gdx.graphics.getHeight() - 32);
+                Gdx.graphics.getHeight() - heightOffset);
     }
 
     @Override

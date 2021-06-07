@@ -12,7 +12,7 @@ public class MissilePool extends Pool<Missile> {
     private ParticlePool particles;
 
     public MissilePool(Scene3D scene) {
-        super(0, 256);
+        super(0, 512);
         this.scene = scene;
     }
 

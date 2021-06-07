@@ -1,11 +1,8 @@
 package com.astroblaze;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -14,8 +11,8 @@ public class GameScreen extends ScreenAdapter {
     private final Stage stage;
     private ParallaxBackground parallax;
     private FadePainter fadePainter;
-    private Label gameOver;
     private HpDisplayActor hpDisplayActor;
+    private LevelController levelController;
 
     public GameScreen(AstroblazeGame game) {
         this.game = game;
@@ -39,6 +36,10 @@ public class GameScreen extends ScreenAdapter {
         return this.stage;
     }
 
+    public LevelController getEnemySpawner() {
+        return this.levelController;
+    }
+
     @Override
     public void resize(int width, int height) {
         this.game.getScene().resize(width, height);
@@ -49,31 +50,22 @@ public class GameScreen extends ScreenAdapter {
         fadePainter = new FadePainter(this.game.getScene().getCamera());
         parallax = new ParallaxBackground(8f);
 
-        gameOver = new Label("Game Over", Assets.asset(Assets.uiSkin));
-        gameOver.setFontScale(8f);
-        gameOver.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        gameOver.setAlignment(Align.center);
-        gameOver.setVisible(false);
-
         hpDisplayActor = new HpDisplayActor();
         hpDisplayActor.setVisible(false);
 
         this.stage.addActor(parallax);
         this.stage.addActor(new DebugTextDrawer());
-        this.stage.addActor(new EnemySpawner(game.getScene(), 2f));
-        this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
-        this.stage.addActor(gameOver);
         this.stage.addActor(hpDisplayActor);
+        this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 
-    public void setGameOverVisible(boolean visible) {
-        gameOver.setVisible(visible);
-    }
-
-    public void startGame() {
+    public void startGame(int level) {
         final float duration = 0.5f;
-        this.setGameOverVisible(false);
-        this.stage.act(10f);
+
+        levelController = new LevelController(game.getScene(), 2f);
+        levelController.setLevel(level);
+        this.stage.addActor(levelController);
+        game.clearText();
         this.stage.addAction(Actions.sequence(
                 Actions.fadeOut(duration),
                 Actions.delay(duration),
@@ -100,8 +92,12 @@ public class GameScreen extends ScreenAdapter {
 
     public void stopGame() {
         final float duration = 0.5f;
-        this.setGameOverVisible(false);
-        this.stage.act(10f);
+        game.clearText();
+        if (levelController != null) {
+            levelController.remove();
+            levelController = null;
+        }
+        this.stage.act(30f);
         this.stage.addAction(Actions.sequence(
                 Actions.fadeOut(duration),
                 Actions.delay(duration),

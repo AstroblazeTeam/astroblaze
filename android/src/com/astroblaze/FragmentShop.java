@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ShopFragment extends Fragment {
-    public ShopFragment() {
+public class FragmentShop extends Fragment {
+    public FragmentShop() {
         // Required empty public constructor
     }
 

@@ -65,6 +65,10 @@ public class Ship extends Renderable {
         this.gunDamage = MathUtils.clamp(this.gunDamage + mod, 10f, 100f);
     }
 
+    public Vector3 getMoveVector() {
+        return this.moveVector.cpy();
+    }
+
     public void setMoveVector(Vector3 moveVector, boolean force) {
         if (!force && noControlTimer > 0f)
             return;

@@ -7,21 +7,11 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class AstroblazeGame extends Game {
-    public interface ILoadingFinishedListener {
-        void finishedLoadingAssets();
-    }
-
-    public interface IHpChangeListener {
-        void onHpChanged(Ship ship, float oldHp, float newHp);
-
-        void onHpEnabled(Ship ship, boolean enabled);
-    }
-
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
     public final InputMultiplexer inputMux = new InputMultiplexer();
@@ -32,6 +22,7 @@ public class AstroblazeGame extends Game {
     private GLProfiler profiler;
     private ModelBatch batch;
     private Preferences prefs;
+    private IGUIRenderer guiRenderer;
 
     public static Preferences getPrefs() {
         return getInstance().prefs;
@@ -57,13 +48,17 @@ public class AstroblazeGame extends Game {
         return this.musicController;
     }
 
+    public void setGuiRenderer(IGUIRenderer guiRenderer) {
+        this.guiRenderer = guiRenderer;
+    }
+
     public AstroblazeGame() {
+        instance = this;
         // don't put stuff here - most of GL isn't initialized yet
     }
 
     @Override
     public void create() {
-        instance = this;
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         prefs = Gdx.app.getPreferences("AnnelidWar");
         this.gameScreen = new GameScreen(this);
@@ -185,8 +180,54 @@ public class AstroblazeGame extends Game {
         return this.profiler.isEnabled();
     }
 
+    public void clearText() {
+        if (guiRenderer == null) {
+            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
+            return;
+        }
+        for (int i = 0; i < 2; i++) {
+            guiRenderer.renderText(i, "", 24f, 0f, 0f);
+        }
+    }
+
+    public void renderText(int idx, String txt) {
+        if (guiRenderer == null) {
+            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
+            return;
+        }
+        guiRenderer.renderText(idx, txt, 24f,
+                Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
+    }
+
+    public void renderText(int idx, String txt, float x, float y) {
+        if (guiRenderer == null) {
+            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
+            return;
+        }
+        guiRenderer.renderText(idx, txt, 24f, x, Gdx.graphics.getHeight() - y);
+    }
+
+    public void renderTextAt(int idx, String txt, Renderable renderable) {
+        if (guiRenderer == null) {
+            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
+            return;
+        }
+        renderTextAt(idx, txt, renderable, 0f, 0f);
+    }
+
+    public void renderTextAt(int idx, String txt, Renderable renderable, float offsetX, float offsetY) {
+        if (guiRenderer == null || scene.getCamera() == null || renderable == null) {
+            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
+            return;
+        }
+        Vector3 screenPos = scene.getCamera().project(renderable.position.cpy());
+        guiRenderer.renderText(idx, txt, 24f,
+                screenPos.x + offsetX, Gdx.graphics.getHeight() - screenPos.y + offsetY);
+    }
+
     @Override
     public void dispose() {
+        getPrefs().flush();
         assets.dispose();
         instance = null;
         batch.dispose();

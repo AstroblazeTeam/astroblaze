@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import java.util.ArrayList;
 
-public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
+public class Scene3D implements ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
     public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
     public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
@@ -111,10 +111,10 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
         this.decals.update(delta);
 
         for (SceneActor actor : actors) {
-            if (!(actor instanceof CollisionProvider))
+            if (!(actor instanceof ICollisionProvider))
                 continue;
 
-            CollisionProvider provider = (CollisionProvider) actor;
+            ICollisionProvider provider = (ICollisionProvider) actor;
 
             if (player != null) {
                 Vector3 playerPos = player.getPosition();
@@ -312,7 +312,7 @@ public class Scene3D implements AstroblazeGame.ILoadingFinishedListener {
             player.setMoveVector(moveAway, true);
             player.setGodModeTimer(1000000f);
             player.setNoControlTime(1000000f);
-            game.gameScreen.setGameOverVisible(true);
+            game.renderText(0, "Game Over");
         }
     }
 }

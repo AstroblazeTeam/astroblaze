@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.astroblaze.ShopFragment"
+        android:name="com.astroblaze.FragmentShop"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
 </navigation>

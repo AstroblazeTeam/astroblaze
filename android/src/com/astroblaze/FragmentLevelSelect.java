@@ -34,6 +34,7 @@ public class FragmentLevelSelect extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("startGame", true);
+                bundle.putInt("level", 0);
 
                 NavHostFragment.findNavController(FragmentLevelSelect.this)
                         .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);

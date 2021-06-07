@@ -4,18 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeListener {
-    private final float hpWidth = 8f;
+public class HpDisplayActor extends Actor implements IHpChangeListener {
+    private final float hpWidth = 4f;
     private boolean shouldHide = true; // externally controlled (e.g. player died etc)
-    private float targetHpPercentage = 0f;
-    private float currentHpPercentage = 0f;
-    private float hpLerpSpeed = 1f;
+    private float targetHp = 0f; // percentage
+    private float currentHp = 0f; // percentage
+    private float hpLerpSpeed = 0.5f; // velocity of hp bar change
     private float drawAlpha = 0f; // internal logic decides if we actually draw or not
     private float alphaSpeed = 2f;
     private final float defaultFadeTimer = 3f;
@@ -27,6 +25,7 @@ public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeLis
     protected void setStage(Stage stage) {
         super.setStage(stage);
         AstroblazeGame.getInstance().addHpChangeListener(this);
+
         if (shapeRenderer == null)
             shapeRenderer = new ShapeRenderer();
     }
@@ -35,10 +34,10 @@ public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeLis
     public void act(float delta) {
         super.act(delta);
 
-        currentHpPercentage = MathHelper.moveTowards(currentHpPercentage, targetHpPercentage,
+        currentHp = MathHelper.moveTowards(currentHp, targetHp,
                 hpLerpSpeed * delta);
 
-        if (currentHpPercentage != targetHpPercentage) {
+        if (currentHp != targetHp) {
             fadeTimer = defaultFadeTimer;
         }
 
@@ -61,15 +60,26 @@ public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeLis
             return;
 
         final float h = Gdx.graphics.getHeight();
+        final float w = 4f * Gdx.graphics.getDensity();
 
-        Color c = Color.GREEN;
-        c.a = drawAlpha;
-        batch.setColor(c);
-        batch.draw(Assets.whitePixel, 0, 0, hpWidth, h * currentHpPercentage);
-        c = Color.RED;
-        c.a = drawAlpha;
-        batch.setColor(c);
-        batch.draw(Assets.whitePixel, 0, h * currentHpPercentage, hpWidth, h);
+        // make white highlight for just-taken-away health
+        if (currentHp > targetHp) {
+            drawPartOfHpBar(batch, Color.RED, w, h, currentHp, 1f);
+            drawPartOfHpBar(batch, Color.WHITE, w, h, targetHp, currentHp - targetHp);
+            drawPartOfHpBar(batch, Color.GREEN, w, h, 0, targetHp);
+        } else if (currentHp < targetHp) {
+            drawPartOfHpBar(batch, Color.RED, w, h, targetHp, 1f);
+            drawPartOfHpBar(batch, Color.WHITE, w, h, currentHp, targetHp - currentHp);
+            drawPartOfHpBar(batch, Color.GREEN, w, h, 0, currentHp);
+        } else {
+            drawPartOfHpBar(batch, Color.RED, w, h, currentHp, 1f);
+            drawPartOfHpBar(batch, Color.GREEN, w, h, 0, currentHp);
+        }
+    }
+
+    private void drawPartOfHpBar(Batch batch, Color c, float w, float h, float from, float to) {
+        batch.setColor(c.r, c.g, c.b, drawAlpha);
+        batch.draw(Assets.whitePixel, 0, h * from, w, h * to);
     }
 
     private void drawLives(Batch batch) {
@@ -84,9 +94,9 @@ public class HpDisplayActor extends Actor implements AstroblazeGame.IHpChangeLis
 
     @Override
     public void onHpChanged(Ship ship, float newHp, float oldHp) {
-        targetHpPercentage = newHp / ship.getMaxHp();
+        targetHp = newHp / ship.getMaxHp();
         if (AstroblazeGame.getInstance().getScene().getLives() < 1) {
-            targetHpPercentage = 0f;
+            targetHp = 0f;
             fadeTimer = 10f;
         }
     }

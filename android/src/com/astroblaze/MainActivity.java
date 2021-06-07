@@ -14,7 +14,7 @@ import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, AstroblazeGame.ILoadingFinishedListener {
+public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, ILoadingFinishedListener {
     private AstroblazeGame game;
 
     @Override
@@ -25,6 +25,9 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
         game = new AstroblazeGame();
         game.addOnLoadingFinishedListener(this);
         if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.hud_container, new FragmentHUD(game))
+                    .commitNow();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.game_container, new FragmentRender(game))
                     .commitNow();
@@ -47,7 +50,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                             public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
                                 Gdx.app.log("MainActivity", "NavController onDestinationChanged -> " + navDestination.getDisplayName());
                                 String navDisplayName = navDestination.getDisplayName();
-                                switch(navDisplayName.substring(navDisplayName.indexOf('/')+1)) {
+                                switch (navDisplayName.substring(navDisplayName.indexOf('/') + 1)) {
                                     case "fragmentLoading":
                                     case "fragmentMenu":
                                         AstroblazeGame.getInstance().getMusicController().setTrack(MusicController.MusicTrackType.UI);

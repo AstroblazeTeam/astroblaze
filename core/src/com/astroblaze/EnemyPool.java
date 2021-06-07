@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -30,22 +31,21 @@ public class EnemyPool extends Pool<Enemy> {
     @Override
     public Enemy obtain() {
         Enemy enemy = super.obtain();
+        Gdx.app.debug("EnemyPool", "Added enemy to scene");
         scene.addActors.add(enemy);
-        //enemy.effect = particles.obtain();
         return enemy;
     }
 
     @Override
     public void free(Enemy enemy) {
         super.free(enemy);
+        Gdx.app.debug("EnemyPool", "Removed enemy from scene");
         scene.removeActors.add(enemy);
-        //particles.free(enemy.effect);
-        //enemy.effect = null;
     }
 
     @Override
     protected Enemy newObject() {
-        Enemy enemy = new Enemy(scene, 0);
+        Enemy enemy = new Enemy(scene, EnemyType.Idle);
         reset(enemy);
         return enemy;
     }
