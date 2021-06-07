@@ -33,6 +33,7 @@ public class FragmentRender extends AndroidFragmentApplication {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useImmersiveMode = true;
         return initializeForView(game, config);
     }
 }

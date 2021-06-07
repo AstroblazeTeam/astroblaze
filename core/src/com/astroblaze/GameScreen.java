@@ -36,8 +36,12 @@ public class GameScreen extends ScreenAdapter {
         return this.stage;
     }
 
-    public LevelController getEnemySpawner() {
+    public LevelController getLevelController() {
         return this.levelController;
+    }
+
+    public boolean isGameRunning() {
+        return this.levelController != null;
     }
 
     @Override
@@ -91,6 +95,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void stopGame() {
+        if (!isGameRunning())
+            return;
+
         final float duration = 0.5f;
         game.clearText();
         if (levelController != null) {
