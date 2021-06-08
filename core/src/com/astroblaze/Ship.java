@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Ship extends Renderable {
     public final float respawnNoControlTime = 1f;
@@ -13,6 +14,7 @@ public class Ship extends Renderable {
     private float moveSpeed = 80f;
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
+    private int gunPellets = 2;
     private float gunInterval = 1f / 20f;
     private float gunClock = 0f;
     private float gunDamage = 3f;
@@ -20,6 +22,7 @@ public class Ship extends Renderable {
     private float maxHp = 100f;
     private float hp;
     private float radius = 3f;
+    private float modelRadius = 1f;
     private boolean isDying;
     private float deathTimer;
     private float deathTimerMax = 5f;
@@ -86,6 +89,9 @@ public class Ship extends Renderable {
         deathTimer = deathTimerMax;
         isDying = false;
         // set to slightly closer than destroy bounds
+        BoundingBox bb = new BoundingBox();
+        modelInstance.model.calculateBoundingBox(bb);
+        modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
         setMoveVector(new Vector3(), true);
         setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
         setRotation(new Quaternion());
@@ -95,6 +101,25 @@ public class Ship extends Renderable {
 
     public void setGodModeTimer(float time) {
         this.godModeTimer = time;
+    }
+
+    public void fireGuns(float delta) {
+        if (!isControlled())
+            return;
+
+        gunClock -= delta;
+        if (gunClock >= 0f) {
+            return;
+        }
+        gunClock = gunInterval;
+
+        final Vector3 pos = this.getPosition().cpy();
+        final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
+        final float offset = this.modelRadius / gunPellets * 0.5f;
+        for (float x = -gunPellets * 0.5f + 0.5f; x < gunPellets * 0.5f + 0.5f; x++) {
+            scene.decals.addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
+                    .fromPlayer = true;
+        }
     }
 
     @Override
@@ -119,14 +144,8 @@ public class Ship extends Renderable {
         applyTRS();
 
         if (!isDying) {
-            gunClock -= delta;
-            if (isControlled() && gunClock < 0f) {
-                gunClock = gunInterval;
+            fireGuns(delta);
 
-                final Vector3 vel = new Vector3(0, 0, 3f * moveSpeed);
-                scene.decals.addBullet(this.getPosition().cpy().add(+3f, 0f, 3f), vel, 0.1f, gunDamage);
-                scene.decals.addBullet(this.getPosition().cpy().add(-3f, 0f, 3f), vel, 0.1f, gunDamage);
-            }
             if (hp <= 0f) {
                 isDying = true;
                 setNoControlTime(deathTimer);
@@ -167,6 +186,9 @@ public class Ship extends Renderable {
     }
 
     public void fireMissiles() {
+        if (!isControlled())
+            return;
+
         float count = missileSalvo;
         float speed = Missile.unpoweredSpeed / count;
         Vector3 pos = this.getPosition().cpy();

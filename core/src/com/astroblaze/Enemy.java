@@ -69,10 +69,13 @@ public class Enemy extends Renderable implements ICollisionProvider {
         setEnabled(true);
     }
 
-    public void fireGuns() {
-        if (!enabled)
+    public void fireGuns(float delta) {
+        gunClock -= delta;
+        if (gunClock >= 0f) {
             return;
+        }
 
+        gunClock = gunInterval;
         final float count = gunPellets;
         final Vector3 pos = this.getPosition().cpy();
         final Vector3 vel = new Vector3(0, 0, -3f * moveVector.len());
@@ -89,12 +92,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
         if (!enabled)
             return;
 
-        gunClock -= delta;
-        if (gunClock < 0f) {
-            gunClock = gunInterval;
-
-            fireGuns();
-        }
+        fireGuns(delta);
 
         phaseClock += phaseSpeed * delta;
         switch (this.typeId) {
