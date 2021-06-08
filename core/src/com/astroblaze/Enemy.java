@@ -76,9 +76,9 @@ public class Enemy extends Renderable implements ICollisionProvider {
         final float count = gunPellets;
         final Vector3 pos = this.getPosition().cpy();
         final Vector3 vel = new Vector3(0, 0, -3f * moveVector.len());
-        final float span = this.modelRadius / count;
+        final float offset = this.modelRadius / count * 0.5f;
         for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
-            scene.decals.addBullet(pos.cpy().add(x * span, 0f, -3f), vel, 0.1f, gunDamage)
+            scene.decals.addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, gunDamage)
                     .fromPlayer = false;
         }
     }
