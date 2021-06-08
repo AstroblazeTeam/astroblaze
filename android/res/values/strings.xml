@@ -14,5 +14,32 @@
     <string name="backToMenu">Exit to menu</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="swipeRight">Swipe right</string>
+    <string name="swipeLeft">Swipe left</string>
 
+    <string name="level0">
+        "Tutorial mission.\n\n\n"
+
+        "An introduction to game controls and gameplay flow.\n\n"
+        "This is optional, you may prefer to skip it if you're familiar with shoot-em-up games."
+    </string>
+
+    <string name="level1">
+        "Mission 1.\n\n\n"
+
+        "Launch a scout mission after pirate nicknamed BadBoy6663.\n\n"
+        "WANTED:\n"
+        "BadBoy6663\n"
+        "$10000\n\n"
+        "DEAD OR ALIVE\n"
+    </string>
+
+    <string name="levelGeneric">
+        "Level %1$d\n"
+        "Calling any mercenaries!\n\n"
+
+        "Pirates have been spotted in outskirts of the solar system."
+        "Find and destroy, reward upon uploading sensor readings of attached coordinates.\n\n"
+        "Reward: $ %2$d"
+    </string>
 </resources>

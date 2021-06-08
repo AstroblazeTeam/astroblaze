@@ -4,11 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -18,6 +24,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class FragmentLevelSelect extends Fragment {
     private ShipPreviewActor preview;
+    private ViewPager pager;
+    private TextView tvSwipeLeft;
+    private TextView tvSwipeRight;
 
     public FragmentLevelSelect() {
         // Required empty public constructor
@@ -39,7 +48,7 @@ public class FragmentLevelSelect extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("startGame", true);
-                bundle.putInt("level", 0);
+                bundle.putInt("level", FragmentLevelSelect.this.pager.getCurrentItem());
 
                 NavHostFragment.findNavController(FragmentLevelSelect.this)
                         .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
@@ -77,6 +86,32 @@ public class FragmentLevelSelect extends Fragment {
                 FragmentLevelSelect.this.preview.nextShip();
             }
         });
+
+        tvSwipeLeft = view.findViewById(R.id.tvLevelLeft);
+        tvSwipeRight = view.findViewById(R.id.tvLevelRight);
+
+        PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
+        pager = view.findViewById(R.id.pagerLevels);
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                FragmentLevelSelect.this.refreshSwipeButtons(position);
+            }
+        });
+        pager.setAdapter(pagerAdapter);
+        int openLevel = AstroblazeGame.getInstance().getMaxLevel() - 1;
+        if (openLevel == 1) { // don't automatically skip tutorial level at first
+            pager.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
+        }
+        refreshSwipeButtons(pager.getCurrentItem());
+    }
+
+    public void refreshSwipeButtons(int position) {
+        tvSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
+        tvSwipeRight.setVisibility(position < AstroblazeGame.getInstance().getMaxLevel()
+                ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
@@ -103,5 +138,27 @@ public class FragmentLevelSelect extends Fragment {
         Gdx.app.log("FragmentLevelSelect", "onStop");
         AstroblazeGame.getInstance().gameScreen.getShipPreview()
                 .setModelInstance(null);
+    }
+
+    private static class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @NotNull
+        @Override
+        public Fragment getItem(int position) {
+            return new LevelFragment(position);
+        }
+
+        @Override
+        public void setPrimaryItem(@NonNull @NotNull ViewGroup container, int position, @NonNull @NotNull Object object) {
+            super.setPrimaryItem(container, position, object);
+        }
+
+        @Override
+        public int getCount() {
+            return AstroblazeGame.getInstance().getMaxLevel() + 1;
+        }
     }
 }
