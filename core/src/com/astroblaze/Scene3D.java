@@ -85,26 +85,24 @@ public class Scene3D implements ILoadingFinishedListener {
         if (delta <= 0f)
             return;
 
-        if (Gdx.input.isTouched()) {
+        if (player != null && Gdx.input.isTouched()) {
             Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
-            Vector3 hit = Vector3.Zero;
+            Vector3 hit = new Vector3();
             if (Intersector.intersectRayPlane(ray, planeXZ, hit)) {
-                moveVector.set(hit);
                 final float fingerOffset = 16f;
                 final float edgeOffset = 0.8f;
+                moveVector.set(hit);
                 moveVector.z += fingerOffset; // keeps ship off left edge and outside finger
                 moveVector.x = MathUtils.clamp(moveVector.x,
                         gameBounds.min.x * edgeOffset,
                         gameBounds.max.x * edgeOffset);
+
+                player.setMoveVector(moveVector, false);
             }
         }
 
         for (SceneActor actor : actors) {
             actor.act(delta);
-        }
-
-        if (player != null) {
-            player.setMoveVector(moveVector, false);
         }
 
         this.particles.update(delta);

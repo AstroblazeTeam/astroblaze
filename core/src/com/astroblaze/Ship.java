@@ -73,15 +73,20 @@ public class Ship extends Renderable {
         if (!force && noControlTimer > 0f)
             return;
         this.moveVector.set(moveVector);
+        Gdx.app.log("Ship", "moveVector set to " + moveVector);
+    }
+
+    public void stopMoving(boolean force) { // stops movement of ship
+        setMoveVector(this.position, force);
     }
 
     public void reset() {
         modHp(maxHp);
         noControlTimer = respawnNoControlTime;
         deathTimer = deathTimerMax;
-        moveVector.setZero();
         isDying = false;
         // set to slightly closer than destroy bounds
+        setMoveVector(new Vector3(), true);
         setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
         setRotation(new Quaternion());
         setScale(0.35f);

@@ -146,6 +146,7 @@ public class AstroblazeGame extends Game {
     }
 
     public void pauseGame() {
+        scene.getPlayer().stopMoving(true);
         scene.setTimeScale(0f);
     }
 
