@@ -49,6 +49,6 @@ public class MissilePool extends Pool<Missile> {
 
     @Override
     protected Missile newObject() {
-        return new Missile(scene, model);
+        return new Missile(model);
     }
 }

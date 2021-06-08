@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Enemy extends Renderable implements ICollisionProvider {
+    private final Scene3D scene;
     private final Vector3 moveVector = new Vector3();
     private final float maxHp = 100f;
     private float modelRadius;
@@ -27,8 +28,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
     private boolean enabled;
 
     public Enemy(Scene3D scene, EnemyType typeId) {
-        super(scene);
-
+        this.scene = scene;
         setType(typeId);
     }
 

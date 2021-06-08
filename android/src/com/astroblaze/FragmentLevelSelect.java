@@ -1,19 +1,24 @@
 package com.astroblaze;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
 public class FragmentLevelSelect extends Fragment {
+    private ShipPreviewActor preview;
+
     public FragmentLevelSelect() {
         // Required empty public constructor
     }
@@ -58,5 +63,45 @@ public class FragmentLevelSelect extends Fragment {
                         .popBackStack();
             }
         });
+
+        view.findViewById(R.id.btnPrevShip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentLevelSelect.this.preview.prevShip();
+            }
+        });
+
+        view.findViewById(R.id.btnNextShip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentLevelSelect.this.preview.nextShip();
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Gdx.app.log("FragmentLevelSelect", "onStart");
+
+        ModelInstance instance = new ModelInstance(Assets.asset(Assets.spaceShip2));
+        preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
+        preview.setModelInstance(instance);
+        preview.scale.set(0.5f, 0.5f, 0.5f);
+        Vector3 worldPos = new Vector3();
+        if (AstroblazeGame.getInstance().getScene().getXZIntersection(
+                Gdx.graphics.getWidth() * 0.25f,
+                Gdx.graphics.getHeight() * 0.5f, worldPos)) {
+            preview.position.set(worldPos);
+        }
+        preview.applyTRS();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Gdx.app.log("FragmentLevelSelect", "onStop");
+        AstroblazeGame.getInstance().gameScreen.getShipPreview()
+                .setModelInstance(null);
     }
 }

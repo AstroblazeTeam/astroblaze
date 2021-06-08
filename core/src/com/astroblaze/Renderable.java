@@ -8,16 +8,13 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
 public class Renderable extends SceneActor {
-    protected final Scene3D scene;
-    protected ModelInstance modelInstance;
     protected final Vector3 position = new Vector3();
     protected final Quaternion rotation = new Quaternion();
     protected final Vector3 scale = new Vector3(1f, 1f, 1f);
+    protected ModelInstance modelInstance;
     protected boolean visible = true;
 
-    public Renderable(Scene3D scene) {
-        this.scene = scene;
-        applyTRS();
+    public Renderable() {
     }
 
     public Vector3 getPosition() {

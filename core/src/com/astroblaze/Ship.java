@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Ship extends Renderable {
     public final float respawnNoControlTime = 1f;
+    private final Scene3D scene;
     private final float bankSpeed = 90f;
     private float moveSpeed = 80f;
     private float currentBank;
@@ -34,7 +35,7 @@ public class Ship extends Renderable {
     private boolean hpBarEnabled = false; // flag to avoid event spam
 
     public Ship(Scene3D scene, Model model) {
-        super(scene);
+        this.scene = scene;
         setModel(new ModelInstance(model));
         reset();
     }

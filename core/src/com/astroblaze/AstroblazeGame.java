@@ -103,6 +103,15 @@ public class AstroblazeGame extends Game {
         prefs.flush();
     }
 
+    public int getMaxLevel() {
+        return prefs.getInteger("level", 1);
+    }
+
+    public void setMaxLevel(int level) {
+        prefs.putInteger("level", level);
+        prefs.flush();
+    }
+
     public void handleBtnExtra2Click() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
@@ -146,7 +155,9 @@ public class AstroblazeGame extends Game {
     }
 
     public void pauseGame() {
-        scene.getPlayer().stopMoving(true);
+        if (scene.getPlayer() != null) {
+            scene.getPlayer().stopMoving(true);
+        }
         scene.setTimeScale(0f);
     }
 

@@ -12,16 +12,14 @@ import java.util.Random;
 public class Missile extends Renderable {
     public final static float unpoweredSpeed = 150f;
     public final static float maxUnpoweredTime = 0.25f;
-    private final float moveSpeed = 80f;
     private final Vector3 unpoweredDir = new Vector3();
-    private float unpoweredTime = 0.5f;
     private final Vector3 moveVector = new Vector3();
-    private final static Random rng = new Random();
+    private final float moveSpeed = 80f;
+    private float unpoweredTime = 0.5f;
     protected ParticleEffect effect;
     private float damage = 35f;
 
-    public Missile(Scene3D scene, Model model) {
-        super(scene);
+    public Missile(Model model) {
         setModel(new ModelInstance(model));
         reset();
     }

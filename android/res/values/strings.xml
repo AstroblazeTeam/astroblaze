@@ -12,5 +12,7 @@
     <string name="shop">Shop</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 
 </resources>

@@ -13,6 +13,7 @@ public class GameScreen extends ScreenAdapter {
     private FadePainter fadePainter;
     private HpDisplayActor hpDisplayActor;
     private LevelController levelController;
+    private ShipPreviewActor shipPreview;
 
     public GameScreen(AstroblazeGame game) {
         this.game = game;
@@ -40,6 +41,10 @@ public class GameScreen extends ScreenAdapter {
         return this.levelController;
     }
 
+    public ShipPreviewActor getShipPreview() {
+        return shipPreview;
+    }
+
     public boolean isGameRunning() {
         return this.levelController != null;
     }
@@ -57,9 +62,12 @@ public class GameScreen extends ScreenAdapter {
         hpDisplayActor = new HpDisplayActor();
         hpDisplayActor.setVisible(false);
 
+        shipPreview = new ShipPreviewActor(game.getScene(), null);
+
         this.stage.addActor(parallax);
         this.stage.addActor(new DebugTextDrawer());
         this.stage.addActor(hpDisplayActor);
+        this.stage.addActor(shipPreview);
         this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 

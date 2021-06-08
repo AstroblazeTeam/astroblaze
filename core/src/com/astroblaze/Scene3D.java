@@ -32,7 +32,7 @@ public class Scene3D implements ILoadingFinishedListener {
     private final PerspectiveCamera camera = new PerspectiveCamera();
     private final AstroblazeGame game;
     private final Vector3 moveVector = new Vector3();
-    private final Plane planeXZ = new Plane(Vector3.Y, 0f);
+    public final Plane planeXZ = new Plane(Vector3.Y, 0f);
     private final ParticleSystem particles = new ParticleSystem();
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
@@ -69,6 +69,10 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public ParticleSystem getParticlesSystem() {
         return this.particles;
+    }
+
+    public Environment getEnvironment() {
+        return this.environment;
     }
 
     @Override
@@ -208,6 +212,7 @@ public class Scene3D implements ILoadingFinishedListener {
             } else {
                 Gdx.app.error("Scene3D", "Removing unknown actor type " + actor.toString());
             }
+
             actors.remove(actor);
         }
         actors.removeAll(removeActors);
@@ -312,5 +317,11 @@ public class Scene3D implements ILoadingFinishedListener {
             player.setNoControlTime(1000000f);
             game.renderText(0, "Game Over");
         }
+    }
+
+    public boolean getXZIntersection(float screenX, float screenY, Vector3 worldPosition) {
+        Ray ray = this.getCamera().getPickRay(screenX, screenY);
+        Gdx.app.log("FragmentLevelSelect", "unproject (" + ray + ")");
+        return Intersector.intersectRayPlane(ray, planeXZ, worldPosition);
     }
 }
