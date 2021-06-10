@@ -9,6 +9,11 @@ public class PlayerBonusShieldRestore implements IPlayerBonus {
     }
 
     @Override
+    public float getDecalScale() {
+        return 0.1f;
+    }
+
+    @Override
     public void applyBonus(Ship ship) {
         ship.modHp(ship.getMaxHp());
     }

@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 public class DecalController {
-    public class DecalInfo {
+    public static class DecalInfo {
         public Vector3 position;
         public Vector3 velocity;
         public Vector3 origin; // not owned, don't change!!!
@@ -85,20 +85,20 @@ public class DecalController {
         return info;
     }
 
-    public DecalInfo addBonus(Vector3 position, Vector3 velocity, float scale, IPlayerBonus bonus) {
+    public DecalInfo addBonus(Vector3 position, IPlayerBonus bonus) {
         DecalInfo info = new DecalInfo();
         info.position = position.cpy();
-        info.velocity = velocity.cpy();
+        info.velocity = new Vector3(0f, 0f, -15f);
         info.time = 0f;
         info.life = 60f;
-        info.radiusSquared = 5f;
+        info.radiusSquared = 9f;
         info.ignorePlayerCollision = false;
         info.collisionDamage = 0f;
         info.bonus = bonus;
         info.decal = Decal.newDecal(bonus.getDecalTexture(), true);
         info.decal.setPosition(info.position);
         //info.decal.setRotation(billboardDirection, Vector3.Y);
-        info.decal.setScale(scale);
+        info.decal.setScale(bonus.getDecalScale());
         activeDecals.add(info);
         return info;
     }
@@ -126,6 +126,7 @@ public class DecalController {
             if (info.animation != null) {
                 info.decal.setTextureRegion(info.animation.getKeyFrame(info.time));
             }
+
             info.decal.lookAt(scene.getCamera().position, Vector3.X);
             info.decal.rotateZ(info.angle);
             batch.add(info.decal);

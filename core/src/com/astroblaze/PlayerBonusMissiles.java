@@ -2,19 +2,19 @@ package com.astroblaze;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
-public class PlayerBonusLife implements IPlayerBonus {
+public class PlayerBonusMissiles implements IPlayerBonus {
     @Override
     public TextureAtlas.AtlasRegion getDecalTexture() {
-        return Assets.asset(Assets.atlas).findRegion("life-upgrade");
+        return Assets.asset(Assets.atlas).findRegion("missile-bonus");
     }
 
     @Override
     public float getDecalScale() {
-        return 0.1f;
+        return 0.15f;
     }
 
     @Override
     public void applyBonus(Ship ship) {
-        ship.getScene().modLives(+1);
+        ship.modMissileSalvos(+3);
     }
 }

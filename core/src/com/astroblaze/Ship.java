@@ -63,6 +63,7 @@ public class Ship extends Renderable {
 
     public void modMissileSalvos(int mod) {
         this.missileSalvos += mod;
+        AstroblazeGame.getInstance().reportExtrasChanged(this, String.valueOf(this.missileSalvos), "");
     }
 
     public void modHp(float hpModifier) {
@@ -71,7 +72,7 @@ public class Ship extends Renderable {
             return;
         }
         hp = MathUtils.clamp(hp + hpModifier, 0f, maxHp);
-        AstroblazeGame.getInstance().reportHpChanged(this, hp, oldHp);
+        AstroblazeGame.getInstance().reportStateChanged(this, hp, oldHp);
         Gdx.app.log("Ship", "Player hp modded from " + oldHp + " to " + hp);
         if (hp < 0f) {
             setNoControlTime(deathTimer);
@@ -101,6 +102,7 @@ public class Ship extends Renderable {
         noControlTimer = respawnNoControlTime;
         deathTimer = deathTimerMax;
         isDying = false;
+        modMissileSalvos(-missileSalvos);
         // set to slightly closer than destroy bounds
         BoundingBox bb = new BoundingBox();
         modelInstance.model.calculateBoundingBox(bb);
@@ -204,7 +206,7 @@ public class Ship extends Renderable {
         if (missileSalvos <= 0)
             return;
 
-        missileSalvos--;
+        modMissileSalvos(-1);
         float count = missilesInASalvo;
         float speed = Missile.unpoweredSpeed / count;
         Vector3 pos = this.getPosition().cpy();

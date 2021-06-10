@@ -151,7 +151,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
     private void dropBonus(IPlayerBonus bonus) {
         if (bonus == null) // random chance for no bonus drop
             return;
-        scene.decals.addBonus(this.getPosition(), new Vector3(), 0.1f, bonus);
+        scene.decals.addBonus(this.getPosition(), bonus);
     }
 }
 

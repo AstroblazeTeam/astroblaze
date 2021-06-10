@@ -7,26 +7,60 @@
     android:layout_height="match_parent"
     tools:context=".FragmentGame">
 
-    <ImageButton
-        android:id="@+id/btnExtra1"
+    <FrameLayout
+        android:id="@+id/btnExtra1Layout"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/start"
-        android:src="@android:drawable/btn_star_big_on"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <ImageButton
-        android:id="@+id/btnExtra2"
+        <ImageButton
+            android:id="@+id/btnExtra1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/start"
+            android:src="@android:drawable/btn_star_big_on" />
+
+        <TextView
+            android:id="@+id/tvExtra1Text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:shadowColor="@android:color/white"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="4"
+            android:text="@string/app_name"
+            android:textColor="@android:color/black"
+            app:autoSizeMaxTextSize="60sp"
+            app:autoSizeTextType="uniform" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/btnExtra2Layout"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="@string/start"
-        android:src="@android:drawable/btn_star_big_on"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnExtra1" />
+        app:layout_constraintEnd_toStartOf="@+id/btnExtra1Layout">
+
+        <ImageButton
+            android:id="@+id/btnExtra2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/start"
+            android:src="@android:drawable/btn_star_big_on" />
+
+        <TextView
+            android:id="@+id/tvExtra2Text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/app_name"
+            app:autoSizeTextType="uniform" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

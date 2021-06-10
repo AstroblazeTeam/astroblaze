@@ -16,7 +16,7 @@ public class AstroblazeGame extends Game {
     public LoadingScreen loadingScreen;
     public final InputMultiplexer inputMux = new InputMultiplexer();
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
-    private final ArrayList<IHpChangeListener> hpChangeListeners = new ArrayList<>(4);
+    private final ArrayList<IPlayerStateChangeListener> playerStateChangeListeners = new ArrayList<>(4);
     private final ArrayList<IScoreChangeListener> scoreChangeListeners = new ArrayList<>(4);
     private final MusicController musicController = new MusicController();
     private Scene3D scene;
@@ -147,7 +147,7 @@ public class AstroblazeGame extends Game {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                scene.getPlayer().fireMissiles();
+                scene.getPlayer().missilesInASalvo += 1;
             }
         });
     }
@@ -156,7 +156,7 @@ public class AstroblazeGame extends Game {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                scene.getPlayer().missilesInASalvo += 1;
+                scene.getPlayer().fireMissiles();
             }
         });
     }
@@ -208,9 +208,13 @@ public class AstroblazeGame extends Game {
             this.loadingFinishedListeners.add(listener);
     }
 
-    public void addHpChangeListener(IHpChangeListener listener) {
-        if (!this.hpChangeListeners.contains(listener))
-            this.hpChangeListeners.add(listener);
+    public void addPlayerStateChangeListener(IPlayerStateChangeListener listener) {
+        if (!this.playerStateChangeListeners.contains(listener))
+            this.playerStateChangeListeners.add(listener);
+    }
+
+    public void removePlayerStateChangeListener(IPlayerStateChangeListener listener) {
+        this.playerStateChangeListeners.remove(listener);
     }
 
     public void addScoreChangeListener(IScoreChangeListener listener) {
@@ -223,15 +227,21 @@ public class AstroblazeGame extends Game {
         this.scoreChangeListeners.remove(listener);
     }
 
-    public void reportHpChanged(Ship ship, float newHp, float oldHp) {
-        for (IHpChangeListener listener : hpChangeListeners) {
+    public void reportStateChanged(Ship ship, float newHp, float oldHp) {
+        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
             listener.onHpChanged(ship, newHp, oldHp);
+        }
+    }
+
+    public void reportExtrasChanged(Ship ship, String text1, String text2) {
+        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
+            listener.onSpecialTextChanged(ship, text1, text2);
         }
     }
 
     public void reportHpEnabled(Ship ship, boolean enabled) {
         Gdx.app.log("AstroblazeGame", "reportHpEnabled(" + enabled + ")");
-        for (IHpChangeListener listener : hpChangeListeners) {
+        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
             listener.onHpEnabled(ship, enabled);
         }
     }

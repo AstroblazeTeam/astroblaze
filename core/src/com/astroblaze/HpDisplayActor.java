@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class HpDisplayActor extends Actor implements IHpChangeListener {
+public class HpDisplayActor extends Actor implements IPlayerStateChangeListener {
     private final float hpWidth = 4f;
     private boolean shouldHide = true; // externally controlled (e.g. player died etc)
     private float targetHp = 0f; // percentage
@@ -24,7 +24,7 @@ public class HpDisplayActor extends Actor implements IHpChangeListener {
     @Override
     protected void setStage(Stage stage) {
         super.setStage(stage);
-        AstroblazeGame.getInstance().addHpChangeListener(this);
+        AstroblazeGame.getInstance().addPlayerStateChangeListener(this);
 
         if (shapeRenderer == null)
             shapeRenderer = new ShapeRenderer();
@@ -104,5 +104,10 @@ public class HpDisplayActor extends Actor implements IHpChangeListener {
     @Override
     public void onHpEnabled(Ship ship, boolean enabled) {
         shouldHide = !enabled;
+    }
+
+    @Override
+    public void onSpecialTextChanged(Ship ship, String text1, String text2) {
+        //
     }
 }

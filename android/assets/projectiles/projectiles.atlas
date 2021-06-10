@@ -536,6 +536,13 @@ life-upgrade
   orig: 115, 99
   offset: 0, 0
   index: -1
+missile-bonus
+  rotate: false
+  xy: 1990, 1664
+  size: 53, 64
+  orig: 53, 64
+  offset: 0, 0
+  index: -1
 shield-restore
   rotate: false
   xy: 973, 241

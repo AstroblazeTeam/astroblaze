@@ -61,8 +61,13 @@ public class Scene3D implements ILoadingFinishedListener {
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
         this.decals = new DecalController(this, camera);
+        bonusesSetup();
+    }
+
+    private void bonusesSetup() {
         bonusDistribution.add(50, null);
-        bonusDistribution.add(40, new PlayerBonusShieldRestore());
+        bonusDistribution.add(40, new PlayerBonusMissiles());
+        bonusDistribution.add(20, new PlayerBonusShieldRestore());
         bonusDistribution.add(10, new PlayerBonusLife());
     }
 
