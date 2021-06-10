@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -101,10 +100,6 @@ public class FragmentLevelSelect extends Fragment {
             }
         });
         pager.setAdapter(pagerAdapter);
-        int openLevel = AstroblazeGame.getInstance().getMaxLevel() - 1;
-        if (openLevel == 1) { // don't automatically skip tutorial level at first
-            pager.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
-        }
         refreshSwipeButtons(pager.getCurrentItem());
     }
 
@@ -112,6 +107,12 @@ public class FragmentLevelSelect extends Fragment {
         tvSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
         tvSwipeRight.setVisibility(position < AstroblazeGame.getInstance().getMaxLevel()
                 ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        pager.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
     }
 
     @Override

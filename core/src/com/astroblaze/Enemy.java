@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 public class Enemy extends Renderable implements ICollisionProvider {
     private final Scene3D scene;
     private final Vector3 moveVector = new Vector3();
-    private final float maxHp = 100f;
     private float modelRadius;
     float hp;
     private float phaseClock = 0f;
@@ -59,7 +58,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
         setScale(typeId.modelScale);
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
-        hp = maxHp;
+        hp = typeId.hp;
         gunClock = MathUtils.random(0f, gunInterval);
         explosionSound = Assets.asset(Assets.explosion);
 
@@ -97,11 +96,10 @@ public class Enemy extends Renderable implements ICollisionProvider {
         phaseClock += phaseSpeed * delta;
         switch (this.typeId) {
             default:
-            case Idle: // simple forward shooting enemy
-                break;
+            case Idle:
             case Simple:
             case MoneyDrop:
-                getPosition().mulAdd(new Vector3(0f, 0f, -typeId.speed), delta);
+                getPosition().mulAdd(moveVector, delta);
                 break;
             case SineWave: // zigzag enemy, shooting diagonals
                 if (phaseClock > 2 * MathUtils.PI)
@@ -130,7 +128,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
     }
 
     @Override
-    public void damageFromCollision(float damage) {
+    public void damageFromCollision(float damage, boolean isPlayer) {
         if (!enabled)
             return;
         this.hp -= damage;
@@ -138,6 +136,10 @@ public class Enemy extends Renderable implements ICollisionProvider {
             scene.removeActors.add(this);
             explosionSound.play(1f, 1f, MathUtils.random(-1f, 1f));
             scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
+
+            if (isPlayer) {
+                AstroblazeGame.getInstance().modPlayerScore(typeId.value);
+            }
         }
     }
 }

@@ -16,12 +16,12 @@
     <string name="next">Next</string>
     <string name="swipeRight">Swipe right</string>
     <string name="swipeLeft">Swipe left</string>
+    <string name="moneyPrint">$ %1$d</string>
 
     <string name="level0">
         "Tutorial mission.\n\n\n"
 
         "An introduction to game controls and gameplay flow.\n\n"
-        "This is optional, you may prefer to skip it if you're familiar with shoot-em-up games."
     </string>
 
     <string name="level1">

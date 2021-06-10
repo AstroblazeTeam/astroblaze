@@ -16,6 +16,7 @@ public class Ship extends Renderable {
     private float currentBank;
     private final Vector3 moveVector = new Vector3();
     private int gunPellets = 2;
+    private int missileSalvos = 0; // amount of missile salvos player has.
     private float gunInterval = 1f / 20f;
     private float gunClock = 0f;
     private float gunDamage = 3f;
@@ -31,7 +32,7 @@ public class Ship extends Renderable {
     private float destroyExplosionInterval = 0.1f;
     private float godModeTimer = 0f;
     private float godModeTimerOnDeath = 3f;
-    public int missileSalvo = 1;
+    public int missilesInASalvo = 1;
     private boolean hpBarEnabled = false; // flag to avoid event spam
 
     public Ship(Scene3D scene, Model model) {
@@ -50,6 +51,14 @@ public class Ship extends Renderable {
 
     public float getMaxHp() {
         return this.maxHp;
+    }
+
+    public int getMissileSalvos() {
+        return this.missileSalvos;
+    }
+
+    public void modMissileSalvos(int mod) {
+        this.missileSalvos += mod;
     }
 
     public void modHp(float hpModifier) {
@@ -77,7 +86,6 @@ public class Ship extends Renderable {
         if (!force && noControlTimer > 0f)
             return;
         this.moveVector.set(moveVector);
-        Gdx.app.log("Ship", "moveVector set to " + moveVector);
     }
 
     public void stopMoving(boolean force) { // stops movement of ship
@@ -189,8 +197,11 @@ public class Ship extends Renderable {
     public void fireMissiles() {
         if (!isControlled())
             return;
+        if (missileSalvos <= 0)
+            return;
 
-        float count = missileSalvo;
+        missileSalvos--;
+        float count = missilesInASalvo;
         float speed = Missile.unpoweredSpeed / count;
         Vector3 pos = this.getPosition().cpy();
         for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {

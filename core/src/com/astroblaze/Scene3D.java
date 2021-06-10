@@ -123,7 +123,7 @@ public class Scene3D implements ILoadingFinishedListener {
                 // check if player clips enemy ship
                 if (provider.checkCollision(playerPos, player.getRadius())) {
                     player.modHp(-player.getMaxHp() * 0.5f);
-                    provider.damageFromCollision(100f);
+                    provider.damageFromCollision(100f, true);
                 }
 
                 final float bulletHitRadius = 1f;
@@ -141,7 +141,7 @@ public class Scene3D implements ILoadingFinishedListener {
                     continue;
                 }
 
-                provider.damageFromCollision(m.getDamage());
+                provider.damageFromCollision(m.getDamage(), true);
                 decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                 missilePool.free(m);
             }
@@ -150,7 +150,7 @@ public class Scene3D implements ILoadingFinishedListener {
                     continue;
                 }
 
-                provider.damageFromCollision(d.collisionDamage);
+                provider.damageFromCollision(d.collisionDamage, d.fromPlayer);
                 d.life = 0f;
             }
         }
@@ -263,7 +263,7 @@ public class Scene3D implements ILoadingFinishedListener {
         if (!Intersector.intersectRayPlane(ray1, planeXZ, hit1)) {
             throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
         }
-        Ray ray2 = camera.getPickRay(0, 0);
+        Ray ray2 = camera.getPickRay(0f, 0f);
         Vector3 hit2 = new Vector3();
         if (!Intersector.intersectRayPlane(ray2, planeXZ, hit2)) {
             throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");

@@ -16,6 +16,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, ILoadingFinishedListener {
     private AstroblazeGame game;
+    private NavController navController;
+
+    public NavController getNavController() {
+        return navController;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +69,8 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                                 }
                             }
                         });
-                NavController nc = Navigation.findNavController(MainActivity.this, R.id.menu_container);
-                nc.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
+                navController = Navigation.findNavController(MainActivity.this, R.id.menu_container);
+                navController.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
             }
         });
     }

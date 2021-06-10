@@ -17,12 +17,15 @@ public class AstroblazeGame extends Game {
     public final InputMultiplexer inputMux = new InputMultiplexer();
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
     private final ArrayList<IHpChangeListener> hpChangeListeners = new ArrayList<>(4);
+    private final ArrayList<IScoreChangeListener> scoreChangeListeners = new ArrayList<>(4);
     private final MusicController musicController = new MusicController();
     private Scene3D scene;
     private GLProfiler profiler;
     private ModelBatch batch;
     private Preferences prefs;
     private IGUIRenderer guiRenderer;
+    private float playerScore;
+    private float playerMoney;
 
     public static Preferences getPrefs() {
         return getInstance().prefs;
@@ -36,6 +39,27 @@ public class AstroblazeGame extends Game {
         return instance;
     }
 
+    public float getPlayerMoney() {
+        return playerMoney;
+    }
+
+    public float getPlayerScore() {
+        return playerScore;
+    }
+
+    public void modPlayerScore(float mod) {
+        this.playerScore += mod;
+        modPlayerMoney(mod);
+        reportScoreChanged();
+        Gdx.app.log("AstroblazeGame", "Player score modded by " + mod + " to " + this.playerScore);
+    }
+
+    public void modPlayerMoney(float mod) {
+        this.playerMoney += mod;
+        reportScoreChanged();
+        Gdx.app.log("AstroblazeGame", "Player money modded by " + mod + " to " + this.playerMoney);
+    }
+
     public ModelBatch getBatch() {
         return this.batch;
     }
@@ -46,6 +70,10 @@ public class AstroblazeGame extends Game {
 
     public MusicController getMusicController() {
         return this.musicController;
+    }
+
+    public IGUIRenderer getGuiRenderer() {
+        return this.guiRenderer;
     }
 
     public void setGuiRenderer(IGUIRenderer guiRenderer) {
@@ -81,6 +109,9 @@ public class AstroblazeGame extends Game {
         }
 
         this.setScreen(loadingScreen);
+        playerScore = prefs.getFloat("score", 0f);
+        playerMoney = prefs.getFloat("money", 0f);
+        reportScoreChanged();
     }
 
     public void finishLoading() {
@@ -104,7 +135,7 @@ public class AstroblazeGame extends Game {
     }
 
     public int getMaxLevel() {
-        return prefs.getInteger("level", 1);
+        return prefs.getInteger("level", 0);
     }
 
     public void setMaxLevel(int level) {
@@ -125,7 +156,7 @@ public class AstroblazeGame extends Game {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                scene.getPlayer().missileSalvo += 1;
+                scene.getPlayer().missilesInASalvo += 1;
             }
         });
     }
@@ -159,9 +190,16 @@ public class AstroblazeGame extends Game {
             scene.getPlayer().stopMoving(true);
         }
         scene.setTimeScale(0f);
+
+        prefs.putFloat("score", playerScore);
+        prefs.putFloat("money", playerMoney);
+        prefs.flush();
     }
 
     public void resumeGame() {
+        playerScore = prefs.getFloat("score", 0f);
+        playerMoney = prefs.getFloat("money", 0f);
+        reportScoreChanged();
         scene.setTimeScale(1f);
     }
 
@@ -175,6 +213,16 @@ public class AstroblazeGame extends Game {
             this.hpChangeListeners.add(listener);
     }
 
+    public void addScoreChangeListener(IScoreChangeListener listener) {
+        if (!this.scoreChangeListeners.contains(listener))
+            this.scoreChangeListeners.add(listener);
+        reportScoreChanged();
+    }
+
+    public void removeScoreChangeListener(IScoreChangeListener listener) {
+        this.scoreChangeListeners.remove(listener);
+    }
+
     public void reportHpChanged(Ship ship, float newHp, float oldHp) {
         for (IHpChangeListener listener : hpChangeListeners) {
             listener.onHpChanged(ship, newHp, oldHp);
@@ -185,6 +233,12 @@ public class AstroblazeGame extends Game {
         Gdx.app.log("AstroblazeGame", "reportHpEnabled(" + enabled + ")");
         for (IHpChangeListener listener : hpChangeListeners) {
             listener.onHpEnabled(ship, enabled);
+        }
+    }
+
+    public void reportScoreChanged() {
+        for (IScoreChangeListener listener : scoreChangeListeners) {
+            listener.scoreChanged(getPlayerMoney(), getPlayerScore());
         }
     }
 
