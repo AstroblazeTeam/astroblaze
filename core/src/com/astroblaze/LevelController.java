@@ -99,9 +99,8 @@ public class LevelController extends Actor {
     }
 
     private Action spawnWallOfEnemiesAndWaitDeath(final EnemyType type, final int count, final int removeMiddle) {
-        RunnableAction r = new RunnableAction();
         final Enemy[] enemy = new Enemy[count]; // array wrapper for closure
-        r.setRunnable(new Runnable() {
+        RunnableAction r = new RunnableAction() {
             @Override
             public void run() {
                 float spawnZoneX = scene.gameBounds.max.x - scene.gameBounds.min.x;
@@ -121,7 +120,7 @@ public class LevelController extends Actor {
                     enemy[i].setPosition(spawnPos);
                 }
             }
-        });
+        };
         return Actions.sequence(r, new Action() {
             @Override
             public boolean act(float delta) {
