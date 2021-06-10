@@ -74,7 +74,7 @@ public class GameScreen extends ScreenAdapter {
     public void startGame(int level) {
         final float duration = 0.5f;
 
-        levelController = new LevelController(game.getScene(), 2f);
+        levelController = new LevelController(game.getScene());
         levelController.setLevel(level);
         this.stage.addActor(levelController);
         game.clearText();

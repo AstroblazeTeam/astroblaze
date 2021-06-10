@@ -1,21 +1,25 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 public class LevelController extends Actor {
     private final Scene3D scene;
-    private float spawnInterval;
-    private float spawnTimer = 3f;
+    private final WeightedCollection<EnemyType> waveTypeWeights = new WeightedCollection<>();
     private int level;
 
-    public LevelController(Scene3D scene, float spawnInterval) {
+    public LevelController(Scene3D scene) {
         this.scene = scene;
-        this.spawnInterval = spawnInterval;
+        waveTypeWeights.add(50, EnemyType.Simple);
+        waveTypeWeights.add(20, EnemyType.SineWave);
+        waveTypeWeights.add(20, EnemyType.Rammer);
+        waveTypeWeights.add(10, EnemyType.MoneyDrop);
     }
 
     public void runTutorial() {
@@ -161,29 +165,67 @@ public class LevelController extends Actor {
         });
     }
 
+    private Action spawnWallOfEnemies(final EnemyType type, final int count, final int removeMiddle) {
+        return new RunnableAction() {
+            @Override
+            public void run() {
+                float spawnZoneX = scene.gameBounds.max.x - scene.gameBounds.min.x;
+                for (int i = 0; i < count; i++) {
+                    if (i > count / 2 - removeMiddle && i < count / 2 + removeMiddle) {
+                        continue;
+                    }
+                    // spawn away by mirrored x axis just in case
+                    Vector3 spawnPos = new Vector3(
+                            spawnZoneX * (((i + 0.5f) / count) - 0.5f),
+                            0f,
+                            scene.gameBounds.max.z);
+                    Enemy enemy = scene.enemyPool.obtain();
+                    enemy.setType(type);
+                    enemy.setPosition(spawnPos);
+                }
+            }
+        };
+    }
+
     public void setLevel(int level) {
         this.level = level;
         Gdx.app.log("LevelController", "Set level to " + level);
 
-        if (level == 0 || level == 1) {
+        if (level == 0) {
             runTutorial();
-            return;
-        } // else generate waves to spawn
+        } else {
+            float textDelay = 1f;
+            float waveDelay = 3.5f;
+            SequenceAction seq = Actions.sequence(
+                    Actions.delay(textDelay),
+                    showText("Ready!"),
+                    Actions.delay(textDelay),
+                    showText("Set!"),
+                    Actions.delay(textDelay),
+                    showText("Go!"),
+                    Actions.delay(textDelay),
+                    showText(""));
 
-        spawnInterval = 3f / level;
+            for (int i = 0; i < 10 + level; i++) {
+                seq.addAction(spawnWallOfEnemies(waveTypeWeights.getRandom(),
+                        MathUtils.random(3 + level, 7 + level), MathUtils.random(1, 2)));
+                seq.addAction(Actions.delay(waveDelay));
+            }
+
+            seq.addAction(spawnEnemyAndWaitDeath(EnemyType.Boss));
+
+            seq.addAction(showText("Level complete"));
+            seq.addAction(finishLevel());
+
+            this.addAction(seq);
+        }
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        spawnTimer -= delta * scene.getTimeScale();
-        if (spawnTimer < 0f) {
-            spawnTimer = spawnInterval;
-
-            if (!this.hasActions()) { // spawn random
-                Enemy enemy = scene.enemyPool.obtain();
-                enemy.setType(EnemyType.random());
-            } // otherwise spawn actions are handled by scenario
+        if (this.scene.getLives() == 0) {
+            this.clearActions();
         }
     }
 }
