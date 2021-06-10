@@ -62,7 +62,8 @@ public class GameScreen extends ScreenAdapter {
         hpDisplayActor = new HpDisplayActor();
         hpDisplayActor.setVisible(false);
 
-        shipPreview = new ShipPreviewActor(game.getScene(), null);
+        shipPreview = new ShipPreviewActor(game.getScene());
+        shipPreview.setVisible(false);
 
         this.stage.addActor(parallax);
         this.stage.addActor(new DebugTextDrawer());

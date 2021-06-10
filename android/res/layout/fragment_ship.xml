@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/menu_background"
-    tools:context=".FragmentLevel">
+    android:background="@android:color/transparent"
+    tools:context=".FragmentShip">
 
     <TextView
         android:id="@+id/tvShipDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/levelGeneric" />
+        android:layout_margin="32dp"
+        android:text="@string/ship0" />
 </androidx.core.widget.NestedScrollView>

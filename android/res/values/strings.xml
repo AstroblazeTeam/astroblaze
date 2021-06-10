@@ -18,6 +18,25 @@
     <string name="swipeLeft">Swipe left</string>
     <string name="moneyPrint">$ %1$d</string>
 
+    <string name="ship0">
+        "Basic scout.\n\n\n"
+
+        "Guns: 2\n"
+        "Missile ports: 3\n"
+    </string>
+    <string name="ship1">
+        "Medium attack ship.\n\n\n"
+
+        "Guns: 4\n"
+        "Missile ports: 5\n"
+    </string>
+    <string name="ship2">
+        "Destroyer.\n\n\n"
+
+        "Guns: 5\n"
+        "Missile ports: 8\n"
+    </string>
+
     <string name="level0">
         "Tutorial mission.\n\n\n"
 

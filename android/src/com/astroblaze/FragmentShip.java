@@ -6,17 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class LevelFragment extends Fragment {
-    private int level;
+public class FragmentShip extends Fragment {
+    private int variant;
 
-    public LevelFragment(int level) {
-        this.level = level;
+    public FragmentShip(int variant) {
+        this.variant = variant;
     }
 
     @Nullable
@@ -24,7 +24,7 @@ public class LevelFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_level, container, false);
+        return inflater.inflate(R.layout.fragment_ship, container, false);
     }
 
     @Override
@@ -34,16 +34,17 @@ public class LevelFragment extends Fragment {
     }
 
     private void resetText() {
-        TextView tv = requireView().findViewById(R.id.tvLevelDescription);
-        switch (level) {
+        TextView tv = requireView().findViewById(R.id.tvShipDescription);
+        switch (variant) {
+            default:
             case 0:
-                tv.setText(getString(R.string.level0));
+                tv.setText(getString(R.string.ship0));
                 break;
             case 1:
-                tv.setText(getString(R.string.level1));
+                tv.setText(getString(R.string.ship1));
                 break;
-            default:
-                tv.setText(getString(R.string.levelGeneric, level, 3000));
+            case 2:
+                tv.setText(getString(R.string.ship2));
                 break;
         }
     }
@@ -51,14 +52,14 @@ public class LevelFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("level", level);
+        outState.putInt("ship", variant);
     }
 
     @Override
     public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
-            this.level = savedInstanceState.getInt("level", 0);
+            this.variant = savedInstanceState.getInt("ship", 0);
         }
         resetText();
     }

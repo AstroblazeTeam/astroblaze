@@ -13,7 +13,7 @@ public enum EnemyType {
     SineWave(Assets.spaceShip3, 0.25f, 100f, 100f, 3, 30f), // enemy moving in sine wave pattern
     Rammer(Assets.spaceShip1, 0.5f, 50f, 10000f, 1, 30f), // enemy moving in sine wave pattern
     MoneyDrop(Assets.spaceShip1, 0.5f, 500f, 200f, 0, 60f), // enemy drops money
-    Boss(Assets.spaceShip1, 5f, 3000f, 1000f, 5, 0f); // boss dummy
+    Boss(Assets.spaceShip1, 3f, 3000f, 1000f, 5, 0f); // boss dummy
 
     private static final List<EnemyType> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
