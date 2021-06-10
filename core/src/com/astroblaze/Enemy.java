@@ -81,7 +81,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
         final float offset = this.modelRadius / count * 0.5f;
         for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
             scene.decals.addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, gunDamage)
-                    .fromPlayer = false;
+                    .ignorePlayerCollision = false;
         }
     }
 
@@ -120,7 +120,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
 
     @Override
     public boolean checkCollision(Vector3 pos, float radius) {
-        if (!enabled)
+        if (!enabled || this.hp <= 0f)
             return false;
         float dst2 = this.getPosition().dst2(pos);
         radius += modelRadius * getScale().x; // assume uniform scale
@@ -140,7 +140,18 @@ public class Enemy extends Renderable implements ICollisionProvider {
             if (isPlayer) {
                 AstroblazeGame.getInstance().modPlayerScore(typeId.value);
             }
+            dropBonus();
         }
+    }
+
+    private void dropBonus() {
+        dropBonus(scene.bonusDistribution.getRandom());
+    }
+
+    private void dropBonus(IPlayerBonus bonus) {
+        if (bonus == null) // random chance for no bonus drop
+            return;
+        scene.decals.addBonus(this.getPosition(), new Vector3(), 0.1f, bonus);
     }
 }
 

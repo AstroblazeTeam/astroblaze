@@ -524,9 +524,23 @@ explosion1
   index: 3
 heart_icon
   rotate: false
+  xy: 1223, 809
+  size: 115, 99
+  orig: 115, 99
+  offset: 0, 0
+  index: -1
+life-upgrade
+  rotate: false
   xy: 1199, 910
   size: 115, 99
   orig: 115, 99
+  offset: 0, 0
+  index: -1
+shield-restore
+  rotate: false
+  xy: 973, 241
+  size: 115, 110
+  orig: 115, 110
   offset: 0, 0
   index: -1
 white_pixel

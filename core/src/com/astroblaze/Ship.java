@@ -41,6 +41,10 @@ public class Ship extends Renderable {
         reset();
     }
 
+    public Scene3D getScene() {
+        return this.scene;
+    }
+
     public float getRadius() {
         return this.radius;
     }
@@ -127,7 +131,7 @@ public class Ship extends Renderable {
         final float offset = this.modelRadius / gunPellets * 0.5f;
         for (float x = -gunPellets * 0.5f + 0.5f; x < gunPellets * 0.5f + 0.5f; x++) {
             scene.decals.addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
-                    .fromPlayer = true;
+                    .ignorePlayerCollision = true;
         }
     }
 

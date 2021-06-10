@@ -25,6 +25,8 @@ public class Scene3D implements ILoadingFinishedListener {
     public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
     public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
     public final ArrayList<Missile> activeMissiles = new ArrayList<>(64);
+    public final WeightedCollection<IPlayerBonus> bonusDistribution = new WeightedCollection<>();
+    public final Plane planeXZ = new Plane(Vector3.Y, 0f);
     public final BoundingBox gameBounds = new BoundingBox();
     public final BoundingBox destroyBounds = new BoundingBox();
     public final EnemyPool enemyPool;
@@ -32,14 +34,12 @@ public class Scene3D implements ILoadingFinishedListener {
     private final PerspectiveCamera camera = new PerspectiveCamera();
     private final AstroblazeGame game;
     private final Vector3 moveVector = new Vector3();
-    public final Plane planeXZ = new Plane(Vector3.Y, 0f);
     private final ParticleSystem particles = new ParticleSystem();
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
     private float timeScale = 1f;
-
-    private final int maxLives = 3;
-    private int lives = maxLives;
+    public final int defaultMaxLives = 3;
+    private int lives = defaultMaxLives;
 
     // decals
     public final DecalController decals;
@@ -61,6 +61,9 @@ public class Scene3D implements ILoadingFinishedListener {
         batch.setCamera(this.getCamera());
         this.particles.add(batch);
         this.decals = new DecalController(this, camera);
+        bonusDistribution.add(50, null);
+        bonusDistribution.add(40, new PlayerBonusShieldRestore());
+        bonusDistribution.add(10, new PlayerBonusLife());
     }
 
     public MissilePool getMissilesPool() {
@@ -126,12 +129,16 @@ public class Scene3D implements ILoadingFinishedListener {
                     provider.damageFromCollision(100f, true);
                 }
 
-                final float bulletHitRadius = 1f;
                 // check if player clips enemy bullet
                 for (DecalController.DecalInfo d : decals.getDecals()) {
-                    if (!d.fromPlayer && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
-                        player.modHp(-d.collisionDamage);
-                        d.life = 0f;
+                    if (!d.ignorePlayerCollision && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
+                        if (d.life > 0f) {
+                            d.life = 0f;
+                            player.modHp(-d.collisionDamage);
+                            if (d.bonus != null) {
+                                d.bonus.applyBonus(this.player);
+                            }
+                        }
                     }
                 }
             }
@@ -146,11 +153,11 @@ public class Scene3D implements ILoadingFinishedListener {
                 missilePool.free(m);
             }
             for (DecalController.DecalInfo d : decals.getDecals()) {
-                if (!d.fromPlayer || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
+                if (!d.ignorePlayerCollision || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
                     continue;
                 }
 
-                provider.damageFromCollision(d.collisionDamage, d.fromPlayer);
+                provider.damageFromCollision(d.collisionDamage, d.ignorePlayerCollision);
                 d.life = 0f;
             }
         }
@@ -239,7 +246,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.update(60f); // finish playing all particles
         decals.getDecals().clear();
         moveVector.setZero();
-        lives = maxLives;
+        lives = defaultMaxLives;
     }
 
     public void resize(int width, int height) {
@@ -282,6 +289,10 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public int getLives() {
         return this.lives;
+    }
+
+    public void modLives(int mod) {
+        this.lives += mod;
     }
 
     public float getTimeScale() {

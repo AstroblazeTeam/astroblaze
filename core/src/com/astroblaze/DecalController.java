@@ -21,8 +21,9 @@ public class DecalController {
         public float angle;
         public float collisionDamage;
         public float radiusSquared;
-        public boolean fromPlayer;
+        public boolean ignorePlayerCollision;
         public Decal decal;
+        public IPlayerBonus bonus;
         public Animation<TextureRegion> animation;
     }
 
@@ -56,7 +57,7 @@ public class DecalController {
         info.time = 0f;
         info.life = 5f;
         info.radiusSquared = 1f;
-        info.fromPlayer = true;
+        info.ignorePlayerCollision = true;
         info.collisionDamage = damage;
         int bulletIdx = MathUtils.clamp((int) (damage / 10f) - 1, 0, 10);
         info.decal = Decal.newDecal(Assets.bullets.get(bulletIdx), true);
@@ -80,6 +81,24 @@ public class DecalController {
         info.decal.setScale(scale);
         info.decal.rotateZ(MathUtils.random(0f, 360f));
         info.animation = explosionAnimation;
+        activeDecals.add(info);
+        return info;
+    }
+
+    public DecalInfo addBonus(Vector3 position, Vector3 velocity, float scale, IPlayerBonus bonus) {
+        DecalInfo info = new DecalInfo();
+        info.position = position.cpy();
+        info.velocity = velocity.cpy();
+        info.time = 0f;
+        info.life = 60f;
+        info.radiusSquared = 5f;
+        info.ignorePlayerCollision = false;
+        info.collisionDamage = 0f;
+        info.bonus = bonus;
+        info.decal = Decal.newDecal(bonus.getDecalTexture(), true);
+        info.decal.setPosition(info.position);
+        //info.decal.setRotation(billboardDirection, Vector3.Y);
+        info.decal.setScale(scale);
         activeDecals.add(info);
         return info;
     }
