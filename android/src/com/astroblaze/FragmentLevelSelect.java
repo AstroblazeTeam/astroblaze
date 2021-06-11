@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FragmentLevelSelect extends Fragment {
+public class FragmentLevelSelect extends Fragment implements IScoreChangeListener {
     private ShipPreviewActor preview;
     private ViewPager pagerLevels;
     private ViewPager pagerShips;
@@ -29,6 +30,7 @@ public class FragmentLevelSelect extends Fragment {
     private TextView tvShipSwipeLeft;
     private TextView tvShipSwipeRight;
     private float prevPosition = 0f;
+    private Button btnPlay;
 
     public FragmentLevelSelect() {
         // Required empty public constructor
@@ -44,8 +46,9 @@ public class FragmentLevelSelect extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        btnPlay = view.findViewById(R.id.btnPlay);
         // (play) level select -> pause (instantly skips to game fragment if startGame param is true)
-        view.findViewById(R.id.btnPlay).setOnClickListener(new View.OnClickListener() {
+        btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -126,17 +129,12 @@ public class FragmentLevelSelect extends Fragment {
         tvShipSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
         tvShipSwipeRight.setVisibility(position < preview.getVariantCount() - 1
                 ? View.VISIBLE : View.INVISIBLE);
+        btnPlay.setEnabled(AstroblazeGame.getInstance().isShipUnlocked(position));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        pagerLevels.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         Gdx.app.log("FragmentLevelSelect", "onStart");
         preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
         Vector3 worldPos = new Vector3();
@@ -146,6 +144,14 @@ public class FragmentLevelSelect extends Fragment {
             preview.setSelectedPosition(worldPos);
         }
         preview.setVisible(true);
+        pagerLevels.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
+        AstroblazeGame.getInstance().addScoreChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AstroblazeGame.getInstance().removeScoreChangeListener(this);
     }
 
     @Override
@@ -154,6 +160,17 @@ public class FragmentLevelSelect extends Fragment {
         Gdx.app.log("FragmentLevelSelect", "onStop");
         AstroblazeGame.getInstance().gameScreen.getShipPreview()
                 .setVisible(false);
+    }
+
+    @Override
+    public void scoreChanged(float newMoney, float newScore) {
+        pagerLevels.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
+                refreshShipSwipeButtons(pagerShips.getCurrentItem());
+            }
+        });
     }
 
     private static class LevelsPagerAdapter extends FragmentPagerAdapter {

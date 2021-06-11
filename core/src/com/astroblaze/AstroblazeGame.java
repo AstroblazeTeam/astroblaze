@@ -60,6 +60,11 @@ public class AstroblazeGame extends Game {
 
     public void modPlayerMoney(float mod) {
         this.playerMoney += mod;
+        if (Math.abs(mod) > 1000) {
+            prefs.putFloat("score", playerScore);
+            prefs.putFloat("money", playerMoney);
+            prefs.flush();
+        }
         reportScoreChanged();
         Gdx.app.log("AstroblazeGame", "Player money modded by " + mod + " to " + this.playerMoney);
     }
@@ -78,6 +83,28 @@ public class AstroblazeGame extends Game {
 
     public IGUIRenderer getGuiRenderer() {
         return this.guiRenderer;
+    }
+
+    private int getUnlockedShips() {
+        return prefs.getInteger("unlockedShips", 1);
+    }
+
+    public boolean isShipUnlocked(int shipId) {
+        return (getUnlockedShips() & (1 << shipId)) == 1 << shipId;
+    }
+
+    public boolean canUnlock(PlayerShipVariant variant) {
+        return variant != null && playerMoney >= variant.price;
+    }
+
+    public void unlockShip(PlayerShipVariant variant) {
+        if (!canUnlock(variant)) {
+            return;
+        }
+        modPlayerMoney(-variant.price);
+        prefs.putInteger("unlockedShips", getUnlockedShips() | (1 << variant.id));
+        prefs.flush();
+        reportScoreChanged(); // refresh ui
     }
 
     public void setGuiRenderer(IGUIRenderer guiRenderer) {
@@ -178,6 +205,7 @@ public class AstroblazeGame extends Game {
 
         if (Gdx.input.isTouched(3)) {
             toggleProfiler();
+            modPlayerMoney(5000);
         }
 
         if (profiler.isEnabled()) {
@@ -236,6 +264,11 @@ public class AstroblazeGame extends Game {
 
     public void removeScoreChangeListener(IScoreChangeListener listener) {
         this.scoreChangeListeners.remove(listener);
+    }
+
+    public void reportStateChanged() { // for ui refresh
+        Ship player = scene.getPlayer();
+        reportStateChanged(player, player.getHp(), player.getHp());
     }
 
     public void reportStateChanged(Ship ship, float newHp, float oldHp) {
