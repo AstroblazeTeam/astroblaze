@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 public class FragmentLevel extends Fragment {
-    private int level;
+    private final int level;
 
     public FragmentLevel(int level) {
         this.level = level;
@@ -46,20 +46,5 @@ public class FragmentLevel extends Fragment {
                 tv.setText(getString(R.string.levelGeneric, level, 3000));
                 break;
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("level", level);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.level = savedInstanceState.getInt("level", 0);
-        }
-        resetText();
     }
 }

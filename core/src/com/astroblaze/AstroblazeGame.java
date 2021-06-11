@@ -93,10 +93,10 @@ public class AstroblazeGame extends Game {
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         prefs = Gdx.app.getPreferences("AnnelidWar");
-        this.gameScreen = new GameScreen(this);
-        this.loadingScreen = new LoadingScreen(this);
-        this.scene = new Scene3D(this);
-        this.batch = new ModelBatch();
+        gameScreen = new GameScreen(this);
+        loadingScreen = new LoadingScreen(this);
+        scene = new Scene3D(this);
+        batch = new ModelBatch();
 
         Gdx.input.setInputProcessor(inputMux);
 
@@ -105,14 +105,14 @@ public class AstroblazeGame extends Game {
         assets.finishLoadingAsset(Assets.uiMusic);
         assets.finishLoadingAsset(Assets.logo);
 
-        this.musicController.loadLoadingScreenAssets();
+        musicController.loadLoadingScreenAssets();
 
-        this.profiler = new GLProfiler(Gdx.graphics);
+        profiler = new GLProfiler(Gdx.graphics);
         if (prefs.getBoolean("profiler", false)) {
             toggleProfiler();
         }
 
-        this.setScreen(loadingScreen);
+        setScreen(loadingScreen);
         playerScore = prefs.getFloat("score", 0f);
         playerMoney = prefs.getFloat("money", 0f);
         reportScoreChanged();
@@ -159,7 +159,6 @@ public class AstroblazeGame extends Game {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                scene.getPlayer().missilesInASalvo += 1;
             }
         });
     }

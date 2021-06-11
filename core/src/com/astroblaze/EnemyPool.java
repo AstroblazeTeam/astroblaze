@@ -1,23 +1,15 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Pool;
 
 public class EnemyPool extends Pool<Enemy> {
     private final Scene3D scene;
-    private ParticlePool particles;
 
     public EnemyPool(Scene3D scene) {
         super(0, 256);
         this.scene = scene;
-    }
-
-    public void setAssets(ParticlePool particles) {
-        this.particles = particles;
     }
 
     @Override

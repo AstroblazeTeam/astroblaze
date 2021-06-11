@@ -1,8 +1,6 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -10,30 +8,29 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Ship extends Renderable {
     public final float respawnNoControlTime = 1f;
+
     private final Scene3D scene;
+    private final Vector3 moveVector = new Vector3();
     private final float bankSpeed = 90f;
+    private final float gunInterval = 1f / 20f;
+    private final float radius = 3f;
+    private final float deathTimerMax = 5f;
+    private final float destroyExplosionInterval = 0.1f;
+
     private float moveSpeed = 80f;
     private float currentBank;
-    private final Vector3 moveVector = new Vector3();
-    private int gunPellets = 2;
     private int missileSalvos = 0; // amount of missile salvos player has.
-    private float gunInterval = 1f / 20f;
     private float gunClock = 0f;
     private float gunDamage = 3f;
     private float noControlTimer;
-    private float maxHp = 100f;
     private float hp;
-    private float radius = 3f;
     private float modelRadius = 1f;
     private boolean isDying;
     private float deathTimer;
-    private float deathTimerMax = 5f;
     private float destroyExplosionTimer = 0f;
-    private float destroyExplosionInterval = 0.1f;
     private float godModeTimer = 0f;
-    private float godModeTimerOnDeath = 3f;
-    public int missilesInASalvo = 1;
     private boolean hpBarEnabled = false; // flag to avoid event spam
+    private PlayerShipVariant shipVariant;
 
     public Ship(Scene3D scene) {
         this.scene = scene;
@@ -52,7 +49,7 @@ public class Ship extends Renderable {
     }
 
     public float getMaxHp() {
-        return this.maxHp;
+        return shipVariant.maxHp;
     }
 
     public int getMissileSalvos() {
@@ -69,7 +66,7 @@ public class Ship extends Renderable {
         if (hpModifier < 0f && godModeTimer > 0f) {
             return;
         }
-        hp = MathUtils.clamp(hp + hpModifier, 0f, maxHp);
+        hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHp());
         AstroblazeGame.getInstance().reportStateChanged(this, hp, oldHp);
         Gdx.app.log("Ship", "Player hp modded from " + oldHp + " to " + hp);
         if (hp < 0f) {
@@ -95,8 +92,20 @@ public class Ship extends Renderable {
         setMoveVector(this.position, force);
     }
 
-    public void reset() {
-        modHp(maxHp);
+    public PlayerShipVariant getShipVariant() {
+        return this.shipVariant;
+    }
+
+    public void resetShip() {
+        resetShipType(getShipVariant());
+    }
+
+    public void resetShipType(PlayerShipVariant variant) {
+        // ship variant
+        shipVariant = variant;
+        modHp(getMaxHp()); // TODO: move max health into variant
+        setModel(variant.modelDescriptor);
+        setScale(variant.modelScale);
         noControlTimer = respawnNoControlTime;
         deathTimer = deathTimerMax;
         isDying = false;
@@ -108,7 +117,6 @@ public class Ship extends Renderable {
         setMoveVector(new Vector3(), true);
         setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
         setRotation(new Quaternion());
-        setScale(0.35f);
         applyTRS();
     }
 
@@ -128,8 +136,9 @@ public class Ship extends Renderable {
 
         final Vector3 pos = this.getPosition().cpy();
         final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
-        final float offset = this.modelRadius / gunPellets * 0.5f;
-        for (float x = -gunPellets * 0.5f + 0.5f; x < gunPellets * 0.5f + 0.5f; x++) {
+        final int ports = shipVariant.gunPorts;
+        final float offset = this.modelRadius / ports * 0.5f;
+        for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
             scene.decals.addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = true;
         }
@@ -139,7 +148,7 @@ public class Ship extends Renderable {
     public void act(float delta) {
         super.act(delta);
 
-        this.setNoControlTime(noControlTimer - delta);
+        setNoControlTime(noControlTimer - delta);
 
         Vector3 currentPos = getPosition().cpy();
         Vector3 diff = moveVector.cpy().sub(currentPos);
@@ -166,8 +175,8 @@ public class Ship extends Renderable {
         }
 
         // handle temporary godmode after respawn
-        this.godModeTimer -= delta;
-        this.visible = this.godModeTimer <= 0f || (((int) (this.godModeTimer * 8f)) % 2 == 0);
+        godModeTimer -= delta;
+        visible = godModeTimer <= 0f || (((int) (godModeTimer * 8f)) % 2 == 0);
 
         // handle destroy explosions animation
         if (isDying) {
@@ -205,10 +214,10 @@ public class Ship extends Renderable {
             return;
 
         modMissileSalvos(-1);
-        float count = missilesInASalvo;
-        float speed = Missile.unpoweredSpeed / count;
+        float ports = shipVariant.missilePorts;
+        float speed = Missile.unpoweredSpeed / ports;
         Vector3 pos = this.getPosition().cpy();
-        for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
+        for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
             float offset = x * speed * Missile.maxUnpoweredTime;
             Missile missile = scene.getMissilesPool().obtain();
             missile.setUnpoweredDir(x * speed, 0f, 0f);

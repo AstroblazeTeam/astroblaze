@@ -31,16 +31,16 @@ public class GameScreen extends ScreenAdapter {
         this.stage.draw();
         this.game.getScene().render(game.getBatch());
         if (this.stage.getRoot().getColor().a != 1f) {
-            fadePainter.draw(stage.getBatch(), this.stage.getRoot().getColor().a);
+            fadePainter.draw(stage.getBatch(), stage.getRoot().getColor().a);
         }
     }
 
     public Stage getStage() {
-        return this.stage;
+        return stage;
     }
 
     public LevelController getLevelController() {
-        return this.levelController;
+        return levelController;
     }
 
     public ShipPreviewActor getShipPreview() {
@@ -48,12 +48,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public boolean isGameRunning() {
-        return this.levelController != null;
+        return levelController != null;
     }
 
     @Override
     public void resize(int width, int height) {
-        this.game.getScene().resize(width, height);
+        game.getScene().resize(width, height);
     }
 
     @Override
@@ -69,16 +69,16 @@ public class GameScreen extends ScreenAdapter {
 
         AstroblazeGame.getInstance().setShipPreview(shipPreview);
 
-        this.stage.addActor(parallax);
-        this.stage.addActor(new DebugTextDrawer());
-        this.stage.addActor(hpDisplayActor);
-        this.stage.addActor(shipPreview);
-        this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
+        stage.addActor(parallax);
+        stage.addActor(new DebugTextDrawer());
+        stage.addActor(hpDisplayActor);
+        stage.addActor(shipPreview);
+        stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 
     public void startGame(int level, int shipSelect) {
         final float duration = 0.5f;
-        final AssetDescriptor<Model> shipModel = getShipPreview().getVariant(shipSelect);
+        final PlayerShipVariant shipVariant = getShipPreview().getVariant(shipSelect);
 
         levelController = new LevelController(game.getScene());
         levelController.setLevel(level);
@@ -103,7 +103,7 @@ public class GameScreen extends ScreenAdapter {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.getScene().respawnPlayer(shipModel);
+                        game.getScene().respawnPlayer(shipVariant);
                     }
                 })));
     }
@@ -118,8 +118,8 @@ public class GameScreen extends ScreenAdapter {
             levelController.remove();
             levelController = null;
         }
-        this.stage.act(30f);
-        this.stage.addAction(Actions.sequence(
+        stage.act(30f);
+        stage.addAction(Actions.sequence(
                 Actions.fadeOut(duration),
                 Actions.delay(duration),
                 Actions.run(new Runnable() {

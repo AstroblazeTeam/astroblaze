@@ -13,9 +13,9 @@ import androidx.fragment.app.Fragment;
 import org.jetbrains.annotations.NotNull;
 
 public class FragmentShip extends Fragment {
-    private int variant;
+    private PlayerShipVariant variant;
 
-    public FragmentShip(int variant) {
+    public FragmentShip(PlayerShipVariant variant) {
         this.variant = variant;
     }
 
@@ -34,33 +34,23 @@ public class FragmentShip extends Fragment {
     }
 
     private void resetText() {
-        TextView tv = requireView().findViewById(R.id.tvShipDescription);
+        TextView tvDescription = requireView().findViewById(R.id.tvShipDescription);
+        TextView tvStats = requireView().findViewById(R.id.tvShipStats);
+
+        tvStats.setText(getString(R.string.shipStats,
+                (int)variant.maxHp, variant.gunPorts, variant.missilePorts));
+
         switch (variant) {
             default:
-            case 0:
-                tv.setText(getString(R.string.ship0));
+            case Scout:
+                tvDescription.setText(getString(R.string.ship0));
                 break;
-            case 1:
-                tv.setText(getString(R.string.ship1));
+            case Cruiser:
+                tvDescription.setText(getString(R.string.ship1));
                 break;
-            case 2:
-                tv.setText(getString(R.string.ship2));
+            case Destroyer:
+                tvDescription.setText(getString(R.string.ship2));
                 break;
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("ship", variant);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.variant = savedInstanceState.getInt("ship", 0);
-        }
-        resetText();
     }
 }

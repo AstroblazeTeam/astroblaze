@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class FadePainter {
     private final ShaderProgram shader;
@@ -18,18 +17,17 @@ public class FadePainter {
     public FadePainter(Camera camera) {
         this.camera = camera;
         this.shader = Assets.asset(Assets.fadeShader);
-        this.mesh = makeMesh(camera.viewportWidth, camera.viewportHeight);
+        this.mesh = makeMesh();
     }
 
-    public void setSize() {
+    public void remakeMesh() {
         if (mesh != null) {
             mesh.dispose();
         }
-        mesh = makeMesh(camera.viewportWidth, camera.viewportHeight);
+        mesh = makeMesh();
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
-    private Mesh makeMesh(float width, float height) {
+    private Mesh makeMesh() {
         MeshBuilder meshBuilder = new MeshBuilder();
         meshBuilder.begin(VertexAttributes.Usage.Position | VertexAttributes.Usage.TextureCoordinates, GL20.GL_TRIANGLES);
         final float x = 1f;

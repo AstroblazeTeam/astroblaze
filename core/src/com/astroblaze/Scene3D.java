@@ -89,7 +89,6 @@ public class Scene3D implements ILoadingFinishedListener {
     public void finishedLoadingAssets() {
         this.particlePool.setEffect(Assets.asset(Assets.flame2));
         this.missilePool.setAssets(particlePool, Assets.missile);
-        this.enemyPool.setAssets(particlePool);
         this.decals.loadTextures();
     }
 
@@ -233,15 +232,15 @@ public class Scene3D implements ILoadingFinishedListener {
         removeActors.clear();
     }
 
-    public void respawnPlayer(AssetDescriptor<Model> model) {
+    public void respawnPlayer(PlayerShipVariant variant) {
         if (player == null) {
             player = new Ship(this);
-            player.setModel(model);
+            player.resetShipType(variant);
 
             actors.add(player);
         }
 
-        player.reset();
+        player.resetShip();
     }
 
     public Ship getPlayer() {
@@ -316,7 +315,7 @@ public class Scene3D implements ILoadingFinishedListener {
         lives--;
         this.moveVector.setZero();
         if (lives > 0) {
-            player.reset();
+            player.resetShip();
             player.setPosition(new Vector3(1000f, 0f, 0f));
             float duration = 3f;
             game.gameScreen.getStage().addAction(Actions.sequence(
@@ -324,13 +323,13 @@ public class Scene3D implements ILoadingFinishedListener {
                     Actions.run(new Runnable() {
                         @Override
                         public void run() {
-                            player.reset();
+                            player.resetShip();
                             player.setGodModeTimer(3f + player.respawnNoControlTime);
                         }
                     })));
         } else {
             Vector3 moveAway = new Vector3(1000f, 0f, 0f);
-            player.reset();
+            player.resetShip();
             player.setPosition(moveAway);
             player.setMoveVector(moveAway, true);
             player.setGodModeTimer(1000000f);

@@ -2,9 +2,7 @@ package com.astroblaze;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
@@ -16,11 +14,11 @@ public class Enemy extends Renderable implements ICollisionProvider {
     private float modelRadius;
     float hp;
     private float phaseClock = 0f;
-    private float phaseMagnitude = 50f;
-    private float phaseSpeed = 2f;
-    private float gunInterval = 1f / 1f;
+    private final float phaseMagnitude = 50f;
+    private final float phaseSpeed = 2f;
+    private final float gunInterval = 1f / 1f;
+    private final float gunDamage = 5f;
     private float gunClock = 0f;
-    private float gunDamage = 5f;
     private int gunPellets = 8;
     private EnemyType typeId = EnemyType.Idle;
     private Sound explosionSound;

@@ -24,8 +24,10 @@ public class FragmentLevelSelect extends Fragment {
     private ShipPreviewActor preview;
     private ViewPager pagerLevels;
     private ViewPager pagerShips;
-    private TextView tvSwipeLeft;
-    private TextView tvSwipeRight;
+    private TextView tvLevelSwipeLeft;
+    private TextView tvLevelSwipeRight;
+    private TextView tvShipSwipeLeft;
+    private TextView tvShipSwipeRight;
     private float prevPosition = 0f;
 
     public FragmentLevelSelect() {
@@ -74,8 +76,11 @@ public class FragmentLevelSelect extends Fragment {
             }
         });
 
-        tvSwipeLeft = view.findViewById(R.id.tvLevelLeft);
-        tvSwipeRight = view.findViewById(R.id.tvLevelRight);
+        tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
+        tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
+
+        tvShipSwipeLeft = view.findViewById(R.id.tvShipLeft);
+        tvShipSwipeRight = view.findViewById(R.id.tvShipRight);
 
         pagerLevels = view.findViewById(R.id.pagerLevels);
         pagerShips = view.findViewById(R.id.pagerShips);
@@ -84,7 +89,7 @@ public class FragmentLevelSelect extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                FragmentLevelSelect.this.refreshSwipeButtons(position);
+                FragmentLevelSelect.this.refreshLevelSwipeButtons(position);
             }
         });
         pagerShips.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -98,7 +103,7 @@ public class FragmentLevelSelect extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                FragmentLevelSelect.this.refreshSwipeButtons(position);
+                FragmentLevelSelect.this.refreshShipSwipeButtons(position);
             }
         });
 
@@ -108,12 +113,18 @@ public class FragmentLevelSelect extends Fragment {
         pagerLevels.setAdapter(pagerLevelsAdapter);
         pagerShips.setAdapter(pagerShipsAdapter);
 
-        refreshSwipeButtons(pagerLevels.getCurrentItem());
+        refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
     }
 
-    public void refreshSwipeButtons(int position) {
-        tvSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
-        tvSwipeRight.setVisibility(position < AstroblazeGame.getInstance().getMaxLevel()
+    public void refreshLevelSwipeButtons(int position) {
+        tvLevelSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
+        tvLevelSwipeRight.setVisibility(position < AstroblazeGame.getInstance().getMaxLevel()
+                ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void refreshShipSwipeButtons(int position) {
+        tvShipSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
+        tvShipSwipeRight.setVisibility(position < preview.getVariantCount() - 1
                 ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -175,7 +186,7 @@ public class FragmentLevelSelect extends Fragment {
         @NotNull
         @Override
         public Fragment getItem(int position) {
-            return new FragmentShip(position);
+            return new FragmentShip(preview.getVariant(position));
         }
 
         @Override

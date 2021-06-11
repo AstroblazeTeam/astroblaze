@@ -1,29 +1,25 @@
 package com.astroblaze;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 
 class ShipPreviewActor extends Actor {
     public static int VARIANT_COUNT = 3;
 
-    class ShipModel {
+    class PlayerShipVariantInstance {
+        public PlayerShipVariant variant;
         public AssetDescriptor<Model> assetDescriptor;
         public ModelInstance modelInstance;
+        public Quaternion baseRotation = new Quaternion();
         public Quaternion rotation = new Quaternion();
         public Vector3 scale = new Vector3(1f, 1f, 1f);
         public int index;
@@ -34,14 +30,14 @@ class ShipPreviewActor extends Actor {
                             0f,
                             0f,
                             (index - page) * spaceBetween - slidePosition),
-                    rotation,
+                    baseRotation.cpy().mul(rotation),
                     scale);
         }
     }
 
     private final ModelBatch modelBatch;
     private final Scene3D scene;
-    private final ArrayList<ShipModel> variants = new ArrayList<>(4);
+    private final ArrayList<PlayerShipVariantInstance> variants = new ArrayList<>(4);
     private final Vector3 selectedPosition = new Vector3();
     private float slidePosition;
     private final float spaceBetween = 80f;
@@ -51,9 +47,9 @@ class ShipPreviewActor extends Actor {
         this.scene = scene;
         this.modelBatch = AstroblazeGame.getInstance().getBatch();
 
-        addVariant(Assets.spaceShip2);
-        addVariant(Assets.spaceShip1);
-        addVariant(Assets.spaceShip3);
+        addVariant(PlayerShipVariant.Scout);
+        addVariant(PlayerShipVariant.Cruiser);
+        addVariant(PlayerShipVariant.Destroyer);
     }
 
     public int getVariantCount() {
@@ -64,33 +60,31 @@ class ShipPreviewActor extends Actor {
         this.selectedPosition.set(position);
     }
 
-    public void addVariant(AssetDescriptor<Model> modelAsset) {
-        ShipModel model = new ShipModel();
-        model.assetDescriptor = modelAsset;
+    public void addVariant(PlayerShipVariant variant) {
+        PlayerShipVariantInstance model = new PlayerShipVariantInstance();
         model.index = variants.size();
-        model.modelInstance = new ModelInstance(Assets.asset(modelAsset));
-        model.scale.set(0.5f, 0.5f, 0.5f);
+        model.variant = variant;
+        model.assetDescriptor = variant.modelDescriptor;
+        model.modelInstance = new ModelInstance(Assets.asset(model.assetDescriptor));
+        model.baseRotation = new Quaternion(Vector3.Z, -30f).mul(new Quaternion(Vector3.X, 30f));
+        model.rotation = new Quaternion(Vector3.Y, MathUtils.random(0f, 360f));
+        model.scale.set(variant.modelScale, variant.modelScale, variant.modelScale);
         variants.add(model);
     }
 
-    public AssetDescriptor<Model> getVariant(int variant) {
-        return this.variants.get(variant).assetDescriptor;
-    }
-
-
-    public void prevShip() {
-        Gdx.app.log("ShipPreviewActor", "Selected prev ship");
-    }
-
-    public void nextShip() {
-        Gdx.app.log("ShipPreviewActor", "Selected next ship");
+    public PlayerShipVariant getVariant(int variant) {
+        return this.variants.get(variant).variant;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
 
-        /// rotate
+        Quaternion rot = new Quaternion(Vector3.Y, 30f * delta);
+        for (PlayerShipVariantInstance model : variants) {
+            model.rotation.mul(rot);
+            model.applyTRS();
+        }
     }
 
     @Override
@@ -100,7 +94,7 @@ class ShipPreviewActor extends Actor {
         if (!isVisible())
             return;
 
-        for (ShipModel model : variants) {
+        for (PlayerShipVariantInstance model : variants) {
             modelBatch.render(model.modelInstance, scene.getEnvironment());
         }
     }
@@ -108,7 +102,7 @@ class ShipPreviewActor extends Actor {
     public void setSlide(int page, float positionOffset) {
         this.page = page;
         slidePosition += positionOffset * spaceBetween;
-        for (ShipModel model : variants) {
+        for (PlayerShipVariantInstance model : variants) {
             model.applyTRS();
         }
     }
