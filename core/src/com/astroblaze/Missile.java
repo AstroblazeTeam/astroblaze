@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
@@ -19,8 +20,8 @@ public class Missile extends Renderable {
     protected ParticleEffect effect;
     private float damage = 35f;
 
-    public Missile(Model model) {
-        setModel(new ModelInstance(model));
+    public Missile(AssetDescriptor<Model> model) {
+        setModel(model);
         reset();
     }
 

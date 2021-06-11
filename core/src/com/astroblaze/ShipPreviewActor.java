@@ -22,6 +22,7 @@ class ShipPreviewActor extends Actor {
     public static int VARIANT_COUNT = 3;
 
     class ShipModel {
+        public AssetDescriptor<Model> assetDescriptor;
         public ModelInstance modelInstance;
         public Quaternion rotation = new Quaternion();
         public Vector3 scale = new Vector3(1f, 1f, 1f);
@@ -65,11 +66,17 @@ class ShipPreviewActor extends Actor {
 
     public void addVariant(AssetDescriptor<Model> modelAsset) {
         ShipModel model = new ShipModel();
+        model.assetDescriptor = modelAsset;
         model.index = variants.size();
         model.modelInstance = new ModelInstance(Assets.asset(modelAsset));
         model.scale.set(0.5f, 0.5f, 0.5f);
         variants.add(model);
     }
+
+    public AssetDescriptor<Model> getVariant(int variant) {
+        return this.variants.get(variant).assetDescriptor;
+    }
+
 
     public void prevShip() {
         Gdx.app.log("ShipPreviewActor", "Selected prev ship");

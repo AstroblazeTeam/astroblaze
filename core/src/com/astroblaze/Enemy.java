@@ -40,13 +40,12 @@ public class Enemy extends Renderable implements ICollisionProvider {
     }
 
     public void setType(EnemyType enemyType) {
-        Model model = Assets.asset(enemyType.modelDescriptor);
         this.typeId = enemyType;
-        this.setModel(new ModelInstance(model));
+        this.setModel(enemyType.modelDescriptor);
 
         // just an approximation of radius, don't need exact
         BoundingBox bb = new BoundingBox();
-        model.calculateBoundingBox(bb);
+        Assets.asset(enemyType.modelDescriptor).calculateBoundingBox(bb);
         modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
         reset(scene.gameBounds);
     }

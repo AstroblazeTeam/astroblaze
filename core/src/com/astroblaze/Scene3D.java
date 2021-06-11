@@ -1,10 +1,12 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -86,7 +88,7 @@ public class Scene3D implements ILoadingFinishedListener {
     @Override
     public void finishedLoadingAssets() {
         this.particlePool.setEffect(Assets.asset(Assets.flame2));
-        this.missilePool.setAssets(particlePool, Assets.asset(Assets.missile));
+        this.missilePool.setAssets(particlePool, Assets.missile);
         this.enemyPool.setAssets(particlePool);
         this.decals.loadTextures();
     }
@@ -231,13 +233,15 @@ public class Scene3D implements ILoadingFinishedListener {
         removeActors.clear();
     }
 
-    public void respawnPlayer() {
-        if (player != null) {
-            player.reset();
-        } else {
-            player = new Ship(this, Assets.asset(Assets.spaceShip2));
+    public void respawnPlayer(AssetDescriptor<Model> model) {
+        if (player == null) {
+            player = new Ship(this);
+            player.setModel(model);
+
             actors.add(player);
         }
+
+        player.reset();
     }
 
     public Ship getPlayer() {

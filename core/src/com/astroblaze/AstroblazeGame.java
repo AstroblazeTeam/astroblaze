@@ -5,6 +5,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector3;
@@ -18,12 +20,14 @@ public class AstroblazeGame extends Game {
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
     private final ArrayList<IPlayerStateChangeListener> playerStateChangeListeners = new ArrayList<>(4);
     private final ArrayList<IScoreChangeListener> scoreChangeListeners = new ArrayList<>(4);
+    private final ArrayList<AssetDescriptor<Model>> playerVariants = new ArrayList<>(4);
     private final MusicController musicController = new MusicController();
     private Scene3D scene;
     private GLProfiler profiler;
     private ModelBatch batch;
     private Preferences prefs;
     private IGUIRenderer guiRenderer;
+    private ShipPreviewActor shipPreview;
     private float playerScore;
     private float playerMoney;
 
@@ -132,6 +136,14 @@ public class AstroblazeGame extends Game {
         }
         prefs.putBoolean("profiler", profiler.isEnabled());
         prefs.flush();
+    }
+
+    public void setShipPreview(ShipPreviewActor shipPreview) {
+        this.shipPreview = shipPreview;
+    }
+
+    public ShipPreviewActor getShipPreview() {
+        return this.shipPreview;
     }
 
     public int getMaxLevel() {

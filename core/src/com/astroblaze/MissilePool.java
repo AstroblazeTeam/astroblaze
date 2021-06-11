@@ -1,6 +1,7 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.utils.Pool;
 
 public class MissilePool extends Pool<Missile> {
     private final Scene3D scene;
-    private Model model;
+    private AssetDescriptor<Model> model;
     private ParticlePool particles;
 
     public MissilePool(Scene3D scene) {
@@ -16,7 +17,7 @@ public class MissilePool extends Pool<Missile> {
         this.scene = scene;
     }
 
-    public void setAssets(ParticlePool particles, Model model) {
+    public void setAssets(ParticlePool particles, AssetDescriptor<Model> model) {
         this.particles = particles;
         this.model = model;
     }

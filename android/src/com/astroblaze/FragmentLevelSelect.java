@@ -49,6 +49,7 @@ public class FragmentLevelSelect extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("startGame", true);
                 bundle.putInt("level", FragmentLevelSelect.this.pagerLevels.getCurrentItem());
+                bundle.putInt("ship", FragmentLevelSelect.this.pagerShips.getCurrentItem());
 
                 NavHostFragment.findNavController(FragmentLevelSelect.this)
                         .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);

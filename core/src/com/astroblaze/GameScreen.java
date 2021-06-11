@@ -1,6 +1,8 @@
 package com.astroblaze;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -65,6 +67,8 @@ public class GameScreen extends ScreenAdapter {
         shipPreview = new ShipPreviewActor(game.getScene());
         shipPreview.setVisible(false);
 
+        AstroblazeGame.getInstance().setShipPreview(shipPreview);
+
         this.stage.addActor(parallax);
         this.stage.addActor(new DebugTextDrawer());
         this.stage.addActor(hpDisplayActor);
@@ -72,14 +76,15 @@ public class GameScreen extends ScreenAdapter {
         this.stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 
-    public void startGame(int level) {
+    public void startGame(int level, int shipSelect) {
         final float duration = 0.5f;
+        final AssetDescriptor<Model> shipModel = getShipPreview().getVariant(shipSelect);
 
         levelController = new LevelController(game.getScene());
         levelController.setLevel(level);
-        this.stage.addActor(levelController);
         game.clearText();
-        this.stage.addAction(Actions.sequence(
+        stage.addActor(levelController);
+        stage.addAction(Actions.sequence(
                 Actions.fadeOut(duration),
                 Actions.delay(duration),
                 Actions.run(new Runnable() {
@@ -98,7 +103,7 @@ public class GameScreen extends ScreenAdapter {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.getScene().respawnPlayer();
+                        game.getScene().respawnPlayer(shipModel);
                     }
                 })));
     }

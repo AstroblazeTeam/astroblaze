@@ -1,6 +1,8 @@
 package com.astroblaze;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
@@ -69,7 +71,7 @@ public class Renderable extends SceneActor {
         }
     }
 
-    protected void setModel(ModelInstance modelInstance) {
-        this.modelInstance = modelInstance;
+    protected void setModel(AssetDescriptor<Model> model) {
+        this.modelInstance = new ModelInstance(Assets.asset(model));
     }
 }

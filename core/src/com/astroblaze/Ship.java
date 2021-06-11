@@ -35,10 +35,8 @@ public class Ship extends Renderable {
     public int missilesInASalvo = 1;
     private boolean hpBarEnabled = false; // flag to avoid event spam
 
-    public Ship(Scene3D scene, Model model) {
+    public Ship(Scene3D scene) {
         this.scene = scene;
-        setModel(new ModelInstance(model));
-        reset();
     }
 
     public Scene3D getScene() {
