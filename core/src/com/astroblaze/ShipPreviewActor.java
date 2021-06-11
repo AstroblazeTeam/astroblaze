@@ -21,17 +21,21 @@ class ShipPreviewActor extends Actor {
         public ModelInstance modelInstance;
         public Quaternion baseRotation = new Quaternion();
         public Quaternion rotation = new Quaternion();
-        public Vector3 scale = new Vector3(1f, 1f, 1f);
+        public float scale;
         public int index;
 
+        private Vector3 scaleVec = new Vector3(1f, 1f, 1f);
+
         public void applyTRS() {
+            final float final_scale = variant.modelScale * scale;
+            scaleVec.set(final_scale, final_scale, final_scale);
             modelInstance.transform.set(
                     selectedPosition.cpy().add(
                             0f,
                             0f,
                             (index - page) * spaceBetween - slidePosition),
                     baseRotation.cpy().mul(rotation),
-                    scale);
+                    scaleVec);
         }
     }
 
@@ -42,6 +46,8 @@ class ShipPreviewActor extends Actor {
     private float slidePosition;
     private final float spaceBetween = 80f;
     private int page;
+    private float scaleState = 0f;
+    private float scaleTarget = 0f;
 
     public ShipPreviewActor(Scene3D scene) {
         this.scene = scene;
@@ -68,7 +74,7 @@ class ShipPreviewActor extends Actor {
         model.modelInstance = new ModelInstance(Assets.asset(model.assetDescriptor));
         model.baseRotation = new Quaternion(Vector3.Z, -30f).mul(new Quaternion(Vector3.X, 30f));
         model.rotation = new Quaternion(Vector3.Y, MathUtils.random(0f, 360f));
-        model.scale.set(variant.modelScale, variant.modelScale, variant.modelScale);
+        model.scale = 0f;
         variants.add(model);
     }
 
@@ -77,13 +83,21 @@ class ShipPreviewActor extends Actor {
     }
 
     @Override
+    public void setVisible(boolean visible) {
+        // super.setVisible(visible);
+        // don't run base class - we'll handle "visibility" via scaling
+        scaleTarget = visible ? 1f : 0f;
+    }
+
+    @Override
     public void act(float delta) {
         super.act(delta);
 
+        final float scaleSpeed = 3f;
         Quaternion rot = new Quaternion(Vector3.Y, 30f * delta);
         for (PlayerShipVariantInstance model : variants) {
             model.rotation.mul(rot);
-            model.applyTRS();
+            model.scale = MathHelper.moveTowards(model.scale, scaleTarget, delta * scaleSpeed);
         }
     }
 
@@ -91,10 +105,11 @@ class ShipPreviewActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        if (!isVisible())
-            return;
-
         for (PlayerShipVariantInstance model : variants) {
+            if (model.scale == 0f)
+                return; // assume all scales are the same
+
+            model.applyTRS();
             modelBatch.render(model.modelInstance, scene.getEnvironment());
         }
     }
@@ -102,8 +117,5 @@ class ShipPreviewActor extends Actor {
     public void setSlide(int page, float positionOffset) {
         this.page = page;
         slidePosition += positionOffset * spaceBetween;
-        for (PlayerShipVariantInstance model : variants) {
-            model.applyTRS();
-        }
     }
 }

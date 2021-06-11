@@ -1,53 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/menu_background"
-    android:padding="32dp"
-    tools:context=".FragmentPause">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/backToMenu"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/menu_button"
-        android:text="@string/backToMenu"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/openOptions" />
+        android:layout_gravity="center"
+        android:background="@drawable/menu_background"
+        android:padding="32dp"
+        tools:context=".FragmentPause">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/backToGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/menu_button"
-        android:text="@string/backToGame"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/openOptions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/backToMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/menu_button"
+            android:text="@string/backToMenu"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/openOptions" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/openOptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@drawable/menu_button"
-        android:text="@string/options"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/backToMenu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backToGame" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/backToGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/menu_button"
+            android:text="@string/backToGame"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/openOptions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/openOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/menu_button"
+            android:text="@string/options"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/backToMenu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backToGame" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
