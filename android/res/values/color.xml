@@ -4,5 +4,7 @@
     <color name="menu_bg_color">#000000</color>
     <color name="button_gradient_1">#800080</color>
     <color name="button_gradient_2">#008080</color>
+    <color name="button_active_gradient_1">#E000E0</color>
+    <color name="button_active_gradient_2">#00E0E0</color>
     <color name="button_outline">#FFFFFF</color>
 </resources>

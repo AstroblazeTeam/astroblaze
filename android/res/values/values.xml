@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="button_stroke">2dp</dimen>
+    <integer name="anim_fade">300</integer>
+    <integer name="anim_slide">500</integer>
+</resources>
