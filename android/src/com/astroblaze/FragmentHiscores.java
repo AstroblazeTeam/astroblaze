@@ -1,28 +1,32 @@
 package com.astroblaze;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import org.jetbrains.annotations.NotNull;
 
-public class FragmentShop extends Fragment {
-    public FragmentShop() {
+public class FragmentHiscores extends Fragment {
+    public FragmentHiscores() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false);
+        return inflater.inflate(R.layout.fragment_hiscores, container, false);
     }
 
     @Override
@@ -32,7 +36,7 @@ public class FragmentShop extends Fragment {
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentShop.this).popBackStack();
+                NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
             }
         });
     }

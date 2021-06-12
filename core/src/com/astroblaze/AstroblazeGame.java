@@ -20,8 +20,7 @@ public class AstroblazeGame extends Game {
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
     private final ArrayList<IPlayerStateChangeListener> playerStateChangeListeners = new ArrayList<>(4);
     private final ArrayList<IScoreChangeListener> scoreChangeListeners = new ArrayList<>(4);
-    private final ArrayList<AssetDescriptor<Model>> playerVariants = new ArrayList<>(4);
-    private final MusicController musicController = new MusicController();
+    private MusicController musicController;
     private Scene3D scene;
     private GLProfiler profiler;
     private ModelBatch batch;
@@ -35,7 +34,7 @@ public class AstroblazeGame extends Game {
         return getInstance().prefs;
     }
 
-    private final Assets assets = new Assets();
+    private Assets assets;
 
     private static AstroblazeGame instance;
 
@@ -120,6 +119,8 @@ public class AstroblazeGame extends Game {
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         prefs = Gdx.app.getPreferences("AnnelidWar");
+        assets = new Assets(this); // IMPORTANT: make sure this is constructed first!
+
         gameScreen = new GameScreen(this);
         loadingScreen = new LoadingScreen(this);
         scene = new Scene3D(this);
@@ -132,6 +133,7 @@ public class AstroblazeGame extends Game {
         assets.finishLoadingAsset(Assets.uiMusic);
         assets.finishLoadingAsset(Assets.logo);
 
+        musicController = new MusicController(this);
         musicController.loadLoadingScreenAssets();
 
         profiler = new GLProfiler(Gdx.graphics);
@@ -146,12 +148,10 @@ public class AstroblazeGame extends Game {
     }
 
     public void finishLoading() {
-        Assets.getInstance().finalizeLoading();
-        this.musicController.assignOtherAssets();
-        this.setScreen(this.gameScreen);
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
             listener.finishedLoadingAssets();
         }
+        this.setScreen(this.gameScreen);
     }
 
     private void toggleProfiler() {

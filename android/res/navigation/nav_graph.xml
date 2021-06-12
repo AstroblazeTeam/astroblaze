@@ -24,6 +24,13 @@
             app:exitAnim="@anim/navigate_out"
             app:popEnterAnim="@anim/navigate_in"
             app:popExitAnim="@anim/navigate_out" />
+        <action
+            android:id="@+id/action_fragmentMenu_to_fragmentHiscores"
+            app:destination="@id/fragmentHiscores"
+            app:enterAnim="@anim/navigate_in"
+            app:exitAnim="@anim/navigate_out"
+            app:popEnterAnim="@anim/navigate_in"
+            app:popExitAnim="@anim/navigate_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentOptions"
@@ -99,4 +106,9 @@
         android:name="com.astroblaze.FragmentShop"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/fragmentHiscores"
+        android:name="com.astroblaze.FragmentHiscores"
+        android:label="fragment_hiscores"
+        tools:layout="@layout/fragment_hiscores" />
 </navigation>

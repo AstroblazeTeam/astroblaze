@@ -41,6 +41,15 @@ public class FragmentMenu extends Fragment {
             }
         });
 
+        // menu -> hiscores
+        view.findViewById(R.id.btnHiscores).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(FragmentMenu.this)
+                        .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
+            }
+        });
+
         // menu -> options
         view.findViewById(R.id.btnOptions).setOnClickListener(new View.OnClickListener() {
             @Override

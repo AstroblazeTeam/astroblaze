@@ -3,6 +3,7 @@
 
     <string name="app_name">Astroblaze</string>
     <string name="start">Start</string>
+    <string name="hiscores">Hiscores</string>
     <string name="options">Options</string>
     <string name="exit">Exit</string>
     <string name="sound">Sound</string>

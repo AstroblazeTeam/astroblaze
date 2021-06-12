@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Locale;
 
-public class Assets extends AssetManager {
+public class Assets extends AssetManager implements ILoadingFinishedListener {
     private static Assets instance;
 
     // these 3 assets loaded first to show loading screen
@@ -51,8 +51,9 @@ public class Assets extends AssetManager {
         parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
     }
 
-    public Assets() {
+    public Assets(AstroblazeGame game) {
         instance = this;
+        game.addOnLoadingFinishedListener(this);
     }
 
     public static Assets getInstance() {
@@ -83,7 +84,8 @@ public class Assets extends AssetManager {
         load(flame2);
     }
 
-    public void finalizeLoading() {
+    @Override
+    public void finishedLoadingAssets() {
         atlas1 = Assets.asset(Assets.atlas);
         heartTexture = Assets.asset(Assets.atlas).findRegion("heart_icon");
         whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");

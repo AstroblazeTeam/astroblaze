@@ -3,5 +3,5 @@
     <dimen name="corner_radius">4dp</dimen>
     <dimen name="button_stroke">2dp</dimen>
     <integer name="anim_fade">300</integer>
-    <integer name="anim_slide">500</integer>
+    <integer name="anim_slide">400</integer>
 </resources>

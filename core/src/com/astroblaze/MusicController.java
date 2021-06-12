@@ -6,7 +6,7 @@ import com.badlogic.gdx.audio.Music;
 
 import java.util.HashMap;
 
-public class MusicController {
+class MusicController implements ILoadingFinishedListener {
     public enum MusicTrackType {None, UI, Game}
 
     public final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
@@ -15,6 +15,10 @@ public class MusicController {
     private final float fadeSpeed = 1f / 2f; // crossfade for 3 seconds
     private final float intervalUpdate = 0.1f;
     private float time = 0f;
+
+    MusicController(AstroblazeGame game) {
+        game.addOnLoadingFinishedListener(this);
+    }
 
     public void loadLoadingScreenAssets() {
         if (!Assets.getInstance().isLoaded(Assets.uiMusic)) {
@@ -26,7 +30,8 @@ public class MusicController {
         targetVolume = AstroblazeGame.getPrefs().getFloat("musicVolume", 1f);
     }
 
-    public void assignOtherAssets() { // loads the rest of the assets
+    @Override
+    public void finishedLoadingAssets() {
         assignTrack(MusicTrackType.Game, Assets.gameMusic);
     }
 
