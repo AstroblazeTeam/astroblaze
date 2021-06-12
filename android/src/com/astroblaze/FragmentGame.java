@@ -22,6 +22,7 @@ public class FragmentGame extends Fragment implements IPlayerStateChangeListener
     private TextView tvSpecial2;
 
     public FragmentGame() {
+        // Required empty public constructor
     }
 
     @Override

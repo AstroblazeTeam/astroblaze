@@ -15,6 +15,11 @@ import org.jetbrains.annotations.NotNull;
 public class FragmentLevel extends Fragment {
     private final int level;
 
+    public FragmentLevel() {
+        // Required empty public constructor
+        level = 0;
+    }
+
     public FragmentLevel(int level) {
         this.level = level;
     }

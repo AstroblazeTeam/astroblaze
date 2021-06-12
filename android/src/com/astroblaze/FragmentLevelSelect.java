@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.badlogic.gdx.Gdx;
@@ -29,8 +28,8 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
     private TextView tvLevelSwipeRight;
     private TextView tvShipSwipeLeft;
     private TextView tvShipSwipeRight;
-    private float prevPosition = 0f;
     private Button btnPlay;
+    private float prevShipSliderPosition = 0f;
 
     public FragmentLevelSelect() {
         // Required empty public constructor
@@ -95,12 +94,13 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
                 FragmentLevelSelect.this.refreshLevelSwipeButtons(position);
             }
         });
+
         pagerShips.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                preview.setSlide(position, positionOffset - prevPosition);
-                prevPosition = positionOffset;
+                preview.setSlide(position, positionOffset - prevShipSliderPosition);
+                prevShipSliderPosition = positionOffset;
             }
 
             @Override
@@ -110,11 +110,8 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
             }
         });
 
-        PagerAdapter pagerLevelsAdapter = new LevelsPagerAdapter(getChildFragmentManager());
-        PagerAdapter pagerShipsAdapter = new ShipsPagerAdapter(getChildFragmentManager());
-
-        pagerLevels.setAdapter(pagerLevelsAdapter);
-        pagerShips.setAdapter(pagerShipsAdapter);
+        pagerLevels.setAdapter(new LevelsPagerAdapter(getChildFragmentManager()));
+        pagerShips.setAdapter(new ShipsPagerAdapter(getChildFragmentManager()));
 
         refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
     }
@@ -135,7 +132,6 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
     @Override
     public void onResume() {
         super.onResume();
-        Gdx.app.log("FragmentLevelSelect", "onStart");
         preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
         Vector3 worldPos = new Vector3();
         if (AstroblazeGame.getInstance().getScene().getXZIntersection(
@@ -152,14 +148,7 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
     public void onPause() {
         super.onPause();
         AstroblazeGame.getInstance().removeScoreChangeListener(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Gdx.app.log("FragmentLevelSelect", "onStop");
-        AstroblazeGame.getInstance().gameScreen.getShipPreview()
-                .setVisible(false);
+        AstroblazeGame.getInstance().gameScreen.getShipPreview().setVisible(false);
     }
 
     @Override
@@ -195,6 +184,7 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
         }
     }
 
+    // not static - needs reference to preview actor
     private class ShipsPagerAdapter extends FragmentPagerAdapter {
         public ShipsPagerAdapter(FragmentManager fm) {
             super(fm);

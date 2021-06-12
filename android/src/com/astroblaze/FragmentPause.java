@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FragmentPause extends Fragment {
     public FragmentPause() {
+        // Required empty public constructor
     }
 
     @Override
@@ -27,7 +28,8 @@ public class FragmentPause extends Fragment {
             NavHostFragment.findNavController(FragmentPause.this)
                     .navigate(R.id.action_fragmentPause_to_fragmentGame);
             AstroblazeGame.getInstance().gameScreen.startGame(
-                    args.getInt("level", 1), args.getInt("ship", 0));
+                    args.getInt("level", 1),
+                    args.getInt("ship", 0));
             AstroblazeGame.getInstance().resumeGame();
         }
         NavHostFragment.findNavController(FragmentPause.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {

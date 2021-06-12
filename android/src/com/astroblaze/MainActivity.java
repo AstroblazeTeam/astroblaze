@@ -1,7 +1,6 @@
 package com.astroblaze;
 
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
@@ -25,16 +24,13 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.main_activity);
         game = new AstroblazeGame();
         game.addOnLoadingFinishedListener(this);
+        setContentView(R.layout.main_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.hud_container, new FragmentHUD(game))
-                    .commitNow();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.game_container, new FragmentRender(game))
+                    .replace(R.id.hud_container, new FragmentHUD())
+                    .replace(R.id.game_container, new FragmentRender())
                     .commitNow();
         }
     }
@@ -58,10 +54,11 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                                 switch (navDisplayName.substring(navDisplayName.indexOf('/') + 1)) {
                                     case "fragmentLoading":
                                     case "fragmentMenu":
-                                        AstroblazeGame.getInstance().getMusicController().setTrack(MusicController.MusicTrackType.UI);
+                                    case "fragmentLevelSelect":
+                                        game.getMusicController().setTrack(MusicController.MusicTrackType.UI);
                                         break;
                                     case "fragmentPause":
-                                        AstroblazeGame.getInstance().getMusicController().setTrack(MusicController.MusicTrackType.Game);
+                                        game.getMusicController().setTrack(MusicController.MusicTrackType.Game);
                                         break;
                                     default:
                                         Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");

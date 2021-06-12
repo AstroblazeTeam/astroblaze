@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +17,12 @@ import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 
 public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeListener {
-    private final AstroblazeGame game;
     private final ArrayList<TextView> tvRenders = new ArrayList<>(16);
     private TextView tvMoney;
     private View view;
 
-    public FragmentHUD(AstroblazeGame game) {
-        this.game = game;
+    public FragmentHUD() {
+        // Required empty public constructor
     }
 
     @Override

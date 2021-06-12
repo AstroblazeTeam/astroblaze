@@ -19,6 +19,11 @@ public class FragmentShip extends Fragment implements IScoreChangeListener {
     private TextView tvStats;
     private Button btnUnlock;
 
+    public FragmentShip() {
+        variant = PlayerShipVariant.Scout;
+        // Required empty public constructor
+    }
+
     public FragmentShip(PlayerShipVariant variant) {
         this.variant = variant;
     }
