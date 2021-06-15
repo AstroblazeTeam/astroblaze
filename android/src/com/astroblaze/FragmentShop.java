@@ -1,21 +1,30 @@
 package com.astroblaze;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class FragmentShop extends Fragment {
+    RecyclerView rvShopItems;
+    ArrayList<ShopItemsAdapter.ShopItem> shopItems = new ArrayList<>(16);
+
     public FragmentShop() {
         // Required empty public constructor
+        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_hp, "Shield", 1f, 1.1f, 3000f));
+        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_damage, "Damage", 1f, 1.1f, 3000f));
+        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_speed, "Speed", 1f, 1.1f, 3000f));
     }
 
     @Override
@@ -35,5 +44,8 @@ public class FragmentShop extends Fragment {
                 NavHostFragment.findNavController(FragmentShop.this).popBackStack();
             }
         });
+        rvShopItems = view.findViewById(R.id.rvShopItems);
+        rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
+        rvShopItems.setAdapter(new ShopItemsAdapter(getContext(), shopItems));
     }
 }

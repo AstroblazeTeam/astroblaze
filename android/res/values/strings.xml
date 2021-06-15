@@ -18,6 +18,7 @@
     <string name="next">Next</string>
     <string name="swipeRight">Swipe right</string>
     <string name="swipeLeft">Swipe left</string>
+    <string name="buyUpgrade">Buy</string>
     <string name="moneyPrint">$ %1$d</string>
 
     <string name="ship0">
