@@ -18,22 +18,6 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ViewHolder> {
-    public static class ShopItem {
-        public int iconResource;
-        public String name;
-        public float current;
-        public float next;
-        public float price;
-
-        public ShopItem(int iconResource, String name, float current, float next, float price) {
-            this.iconResource = iconResource;
-            this.name = name;
-            this.current = current;
-            this.next = next;
-            this.price = price;
-        }
-    }
-
     private final ArrayList<ShopItem> items;
     private final MediaPlayer mp;
 
@@ -58,13 +42,19 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
         holder.getTextViewName().setText(item.name);
         holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##%}", item.current));
         holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##%}", item.next - item.current));
-        holder.getTextViewPrice().setText(MessageFormat.format("{0,number,#.##}", item.price));
+        holder.getTextViewPrice().setText(MessageFormat.format("${0,number,#.##}", item.price));
         holder.getBtnBuy().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!AstroblazeGame.getInstance().buyUpgrade(item)) {
+                    return;
+                }
+
                 mp.start();
+                ShopItemsAdapter.this.notifyDataSetChanged();
             }
         });
+        holder.getBtnBuy().setEnabled(AstroblazeGame.getInstance().canBuyUpgrade(item));
     }
 
     @Override

@@ -45,13 +45,13 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeL
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeScoreChangeListener(this);
+        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AstroblazeGame.getInstance().addScoreChangeListener(this);
+        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,15 +17,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class FragmentShop extends Fragment {
+public class FragmentShop extends Fragment implements IScoreChangeListener {
+    TextView moneyDisplay;
     RecyclerView rvShopItems;
-    ArrayList<ShopItemsAdapter.ShopItem> shopItems = new ArrayList<>(16);
+    ArrayList<ShopItem> shopItems = new ArrayList<>(16);
 
     public FragmentShop() {
         // Required empty public constructor
-        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_hp, "Shield", 1f, 1.1f, 3000f));
-        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_damage, "Damage", 1f, 1.1f, 3000f));
-        shopItems.add(new ShopItemsAdapter.ShopItem(R.drawable.upgrade_speed, "Speed", 1f, 1.1f, 3000f));
+        shopItems.add(new ShopItem(R.drawable.upgrade_hp, "Shield", 1f, 1.1f, 3000f, ShopItemType.ShieldUpgrade));
+        shopItems.add(new ShopItem(R.drawable.upgrade_damage, "Damage", 1f, 1.1f, 30000f, ShopItemType.DamageUpgrade));
+        shopItems.add(new ShopItem(R.drawable.upgrade_speed, "Speed", 1f, 1.1f, 3000000f, ShopItemType.SpeedUpgrade));
     }
 
     @Override
@@ -32,6 +34,18 @@ public class FragmentShop extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_shop, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
     }
 
     @Override
@@ -47,5 +61,11 @@ public class FragmentShop extends Fragment {
         rvShopItems = view.findViewById(R.id.rvShopItems);
         rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
         rvShopItems.setAdapter(new ShopItemsAdapter(getContext(), shopItems));
+        moneyDisplay = view.findViewById(R.id.tvMoneyDisplay);
+    }
+
+    @Override
+    public void scoreChanged(float newMoney, float newScore) {
+        moneyDisplay.setText(getString(R.string.moneyPrint, (int) newMoney));
     }
 }

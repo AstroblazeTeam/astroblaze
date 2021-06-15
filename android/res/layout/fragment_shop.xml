@@ -37,6 +37,19 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTitleShop"
             tools:listitem="@layout/shop_item" />
 
+        <TextView
+            android:id="@+id/tvMoneyDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/moneyPrint"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExitToMenu"
             android:layout_width="wrap_content"
@@ -44,12 +57,13 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginTop="8dp"
-            android:background="@drawable/menu_button"
 
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/menu_button"
             android:gravity="center"
             android:text="@string/back"
             android:textAlignment="center"
-            android:textSize="12dp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

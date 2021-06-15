@@ -56,14 +56,14 @@ public class FragmentShip extends Fragment implements IScoreChangeListener {
     @Override
     public void onResume() {
         super.onResume();
-        AstroblazeGame.getInstance().addScoreChangeListener(this);
+        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
         resetText();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeScoreChangeListener(this);
+        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
     }
 
     private void resetText() {

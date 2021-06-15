@@ -141,13 +141,13 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
         }
         preview.setVisible(true);
         pagerLevels.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
-        AstroblazeGame.getInstance().addScoreChangeListener(this);
+        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeScoreChangeListener(this);
+        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
         AstroblazeGame.getInstance().gameScreen.getShipPreview().setVisible(false);
     }
 

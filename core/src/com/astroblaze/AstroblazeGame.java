@@ -256,13 +256,13 @@ public class AstroblazeGame extends Game {
         this.playerStateChangeListeners.remove(listener);
     }
 
-    public void addScoreChangeListener(IScoreChangeListener listener) {
+    public void addOnScoreChangeListener(IScoreChangeListener listener) {
         if (!this.scoreChangeListeners.contains(listener))
             this.scoreChangeListeners.add(listener);
         reportScoreChanged();
     }
 
-    public void removeScoreChangeListener(IScoreChangeListener listener) {
+    public void removeOnScoreChangeListener(IScoreChangeListener listener) {
         this.scoreChangeListeners.remove(listener);
     }
 
@@ -351,5 +351,17 @@ public class AstroblazeGame extends Game {
         assets.dispose();
         instance = null;
         batch.dispose();
+    }
+
+    public boolean canBuyUpgrade(ShopItem item) {
+        return playerMoney >= item.price;
+    }
+
+    public boolean buyUpgrade(ShopItem item) {
+        if (!canBuyUpgrade(item)) {
+            return false;
+        }
+        modPlayerMoney(-item.price);
+        return true;
     }
 }
