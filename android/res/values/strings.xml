@@ -21,6 +21,13 @@
     <string name="swipeLeft">Swipe left</string>
     <string name="buyUpgrade">Upgrade</string>
     <string name="moneyPrint">$ %1$d</string>
+    <string name="rankPrintLoading">
+        "Your score is %1$d"
+    </string>
+    <string name="rankPrint">
+        "Your score is %1$d\n"
+        "Your rank is %2$s"
+    </string>
 
     <string name="shieldUpgrade">Shield (%1$s)</string>
     <string name="speedUpgrade">Speed (%1$s)</string>

@@ -10,8 +10,18 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
+import com.badlogic.gdx.net.HttpParametersUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragmentMenu extends Fragment {
+    TextView tvRank;
+
     public FragmentMenu() {
         // Required empty public constructor
     }
@@ -31,41 +41,34 @@ public class FragmentMenu extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // exit button
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-        });
+        tvRank = view.findViewById(R.id.tvRank);
+        tvRank.setText(getString(R.string.rankPrintLoading,
+                (int)AstroblazeGame.getPlayerState().getPlayerScore()));
 
-        // menu -> hiscores
-        view.findViewById(R.id.btnHiscores).setOnClickListener(new View.OnClickListener() {
+        HiscoresController.fetch(new HiscoresController.RunnableResponseHandler() {
             @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentMenu.this)
-                        .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
-            }
-        });
-
-        // menu -> options
-        view.findViewById(R.id.btnOptions).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentMenu.this)
-                        .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
+            public void run() {
+                tvRank.post(() ->
+                        tvRank.setText(getString(R.string.rankPrint,
+                                (int)AstroblazeGame.getPlayerState().getPlayerScore(), this.response)));
             }
         });
 
         // menu -> level select
-        view.findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentMenu.this)
-                        .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
-            }
+        view.findViewById(R.id.btnStart).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+                .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect));
+
+        // menu -> hiscores
+        view.findViewById(R.id.btnHiscores).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+                .navigate(R.id.action_fragmentMenu_to_fragmentHiscores));
+
+        // menu -> options
+        view.findViewById(R.id.btnOptions).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+                .navigate(R.id.action_fragmentMenu_to_fragmentOptions));
+
+        // exit button
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
+            requireActivity().finish();
         });
     }
 }
