@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FragmentShip extends Fragment implements IScoreChangeListener {
+public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
     private TextView tvDescription;
     private TextView tvStats;
-    private Button btnUnlock;
+    private Button btnAction;
+    private MediaPlayer mp;
 
     public FragmentShip() {
-        variant = PlayerShipVariant.Scout;
+        this.variant = PlayerShipVariant.Scout;
         // Required empty public constructor
     }
 
@@ -33,6 +36,7 @@ public class FragmentShip extends Fragment implements IScoreChangeListener {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        this.mp = MediaPlayer.create(getContext(), R.raw.cha_ching);
         return inflater.inflate(R.layout.fragment_ship, container, false);
     }
 
@@ -41,61 +45,54 @@ public class FragmentShip extends Fragment implements IScoreChangeListener {
         super.onViewCreated(view, savedInstanceState);
         tvDescription = requireView().findViewById(R.id.tvShipDescription);
         tvStats = requireView().findViewById(R.id.tvShipStats);
-        btnUnlock = requireView().findViewById(R.id.btnUnlockShip);
-
-        btnUnlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AstroblazeGame.getInstance().unlockShip(variant);
-            }
-        });
-
-        resetText();
+        btnAction = requireView().findViewById(R.id.btnAction);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
-        resetText();
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }
 
-    private void resetText() {
-        btnUnlock.post(new Runnable() {
+    private void resetText(PlayerState state) {
+        btnAction.post(new Runnable() {
             @Override
             public void run() {
-                btnUnlock.setVisibility(AstroblazeGame.getInstance().isShipUnlocked(variant.id)
-                        ? View.INVISIBLE : View.VISIBLE);
-                btnUnlock.setText(getString(R.string.unlockShip, (int) variant.price));
-                btnUnlock.setEnabled(AstroblazeGame.getInstance().canUnlock(variant));
-
+                tvDescription.setText(getString(R.string.ship0 + variant.id));
                 tvStats.setText(getString(R.string.shipStats,
                         (int) variant.maxHp, variant.gunPorts, variant.missilePorts));
 
-                switch (variant) {
-                    default:
-                    case Scout:
-                        tvDescription.setText(getString(R.string.ship0));
-                        break;
-                    case Cruiser:
-                        tvDescription.setText(getString(R.string.ship1));
-                        break;
-                    case Destroyer:
-                        tvDescription.setText(getString(R.string.ship2));
-                        break;
+                if (!state.isShipVariantUnlocked(variant)) {
+                    btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
+                    btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
+                    btnAction.setOnClickListener(v -> {
+                        if (AstroblazeGame.getPlayerState().unlockShipVariant(variant)) {
+                            mp.start();
+                        }
+                    });
+                } else {
+                    btnAction.setEnabled(true);
+                    btnAction.setText(getString(R.string.buyUpgrade));
+                    btnAction.setOnClickListener(v -> {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("variant", variant.id);
+
+                        NavHostFragment.findNavController(getParentFragment())
+                                .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
+                    });
                 }
             }
         });
     }
 
     @Override
-    public void scoreChanged(float newMoney, float newScore) {
-        resetText();
+    public void onStateChanged(PlayerState state) {
+        resetText(state);
     }
 }

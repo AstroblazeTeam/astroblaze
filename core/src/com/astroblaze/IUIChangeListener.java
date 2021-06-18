@@ -1,6 +1,6 @@
 package com.astroblaze;
 
-public interface IPlayerStateChangeListener {
+public interface IUIChangeListener {
     void onHpChanged(Ship ship, float oldHp, float newHp);
 
     void onHpEnabled(Ship ship, boolean enabled);

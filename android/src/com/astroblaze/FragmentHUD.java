@@ -16,7 +16,7 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 
-public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeListener {
+public class FragmentHUD extends Fragment implements IGUIRenderer, IPlayerStateChangedListener {
     private final ArrayList<TextView> tvRenders = new ArrayList<>(16);
     private TextView tvMoney;
     private View view;
@@ -45,13 +45,13 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeL
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
     }
 
     @Override
@@ -61,19 +61,17 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeL
 
         if (view == null) {
             Gdx.app.error("FragmentGame", "renderText without initialized view");
+            return;
         }
 
         final TextView tvRender = tvRenders.get(id);
 
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                tvRender.setText(text);
-                tvRender.setTextSize(fontSize);
-                tvRender.measure(0, 0);
-                tvRender.setTranslationX(x - tvRender.getMeasuredWidth() * 0.5f);
-                tvRender.setTranslationY(y - tvRender.getMeasuredHeight() * 0.5f);
-            }
+        view.post(() -> {
+            tvRender.setText(text);
+            tvRender.setTextSize(fontSize);
+            tvRender.measure(0, 0);
+            tvRender.setTranslationX(x - tvRender.getMeasuredWidth() * 0.5f);
+            tvRender.setTranslationY(y - tvRender.getMeasuredHeight() * 0.5f);
         });
     }
 
@@ -87,23 +85,15 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IScoreChangeL
 
     @Override
     public void backToLevelSelect() {
-        this.requireView().post(new Runnable() {
-            @Override
-            public void run() {
-                NavController nc = ((MainActivity) requireActivity()).getNavController();
-                nc.popBackStack();
-                nc.popBackStack();
-            }
+        this.requireView().post(() -> {
+            NavController nc = ((MainActivity) requireActivity()).getNavController();
+            nc.popBackStack();
+            nc.popBackStack();
         });
     }
 
     @Override
-    public void scoreChanged(float newMoney, float newScore) {
-        tvMoney.post(new Runnable() {
-            @Override
-            public void run() {
-                tvMoney.setText(getString(R.string.moneyPrint, (int) newMoney));
-            }
-        });
+    public void onStateChanged(PlayerState state) {
+        tvMoney.post(() -> tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney())));
     }
 }

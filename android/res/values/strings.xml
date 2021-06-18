@@ -11,6 +11,7 @@
     <string name="screenShake">Screen Shake</string>
     <string name="back">Back</string>
     <string name="shop">Shop</string>
+    <string name="upgrades_for">Upgrades for %1$s</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>
     <string name="unlockShip">Unlock\n$ %1$d</string>
@@ -18,18 +19,16 @@
     <string name="next">Next</string>
     <string name="swipeRight">Swipe right</string>
     <string name="swipeLeft">Swipe left</string>
-    <string name="buyUpgrade">Buy</string>
+    <string name="buyUpgrade">Upgrade</string>
     <string name="moneyPrint">$ %1$d</string>
 
-    <string name="ship0">
-        "Scout.\n\n\n"
-    </string>
-    <string name="ship1">
-        "Cruiser.\n\n\n"
-    </string>
-    <string name="ship2">
-        "Destroyer.\n\n\n"
-    </string>
+    <string name="shieldUpgrade">Shield (%1$s)</string>
+    <string name="speedUpgrade">Speed (%1$s)</string>
+    <string name="damageUpgrade">Damage (%1$s)</string>
+
+    <string name="ship0">Scout</string>
+    <string name="ship1">Cruiser</string>
+    <string name="ship2">Destroyer</string>
 
     <string name="level0">
         "Tutorial mission.\n\n\n"

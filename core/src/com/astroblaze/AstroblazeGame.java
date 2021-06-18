@@ -5,8 +5,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector3;
@@ -17,9 +15,10 @@ public class AstroblazeGame extends Game {
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;
     public final InputMultiplexer inputMux = new InputMultiplexer();
+
     private final ArrayList<ILoadingFinishedListener> loadingFinishedListeners = new ArrayList<>(4);
-    private final ArrayList<IPlayerStateChangeListener> playerStateChangeListeners = new ArrayList<>(4);
-    private final ArrayList<IScoreChangeListener> scoreChangeListeners = new ArrayList<>(4);
+    private final ArrayList<IUIChangeListener> playerStateChangeListeners = new ArrayList<>(4);
+    private static final PlayerState playerState = new PlayerState();
     private MusicController musicController;
     private Scene3D scene;
     private GLProfiler profiler;
@@ -27,11 +26,13 @@ public class AstroblazeGame extends Game {
     private Preferences prefs;
     private IGUIRenderer guiRenderer;
     private ShipPreviewActor shipPreview;
-    private float playerScore;
-    private float playerMoney;
 
     public static Preferences getPrefs() {
         return getInstance().prefs;
+    }
+
+    public static PlayerState getPlayerState() {
+        return playerState;
     }
 
     private Assets assets;
@@ -40,32 +41,6 @@ public class AstroblazeGame extends Game {
 
     public static AstroblazeGame getInstance() {
         return instance;
-    }
-
-    public float getPlayerMoney() {
-        return playerMoney;
-    }
-
-    public float getPlayerScore() {
-        return playerScore;
-    }
-
-    public void modPlayerScore(float mod) {
-        this.playerScore += mod;
-        modPlayerMoney(mod);
-        reportScoreChanged();
-        Gdx.app.log("AstroblazeGame", "Player score modded by " + mod + " to " + this.playerScore);
-    }
-
-    public void modPlayerMoney(float mod) {
-        this.playerMoney += mod;
-        if (Math.abs(mod) > 1000) {
-            prefs.putFloat("score", playerScore);
-            prefs.putFloat("money", playerMoney);
-            prefs.flush();
-        }
-        reportScoreChanged();
-        Gdx.app.log("AstroblazeGame", "Player money modded by " + mod + " to " + this.playerMoney);
     }
 
     public ModelBatch getBatch() {
@@ -84,28 +59,6 @@ public class AstroblazeGame extends Game {
         return this.guiRenderer;
     }
 
-    private int getUnlockedShips() {
-        return prefs.getInteger("unlockedShips", 1);
-    }
-
-    public boolean isShipUnlocked(int shipId) {
-        return (getUnlockedShips() & (1 << shipId)) == 1 << shipId;
-    }
-
-    public boolean canUnlock(PlayerShipVariant variant) {
-        return variant != null && playerMoney >= variant.price;
-    }
-
-    public void unlockShip(PlayerShipVariant variant) {
-        if (!canUnlock(variant)) {
-            return;
-        }
-        modPlayerMoney(-variant.price);
-        prefs.putInteger("unlockedShips", getUnlockedShips() | (1 << variant.id));
-        prefs.flush();
-        reportScoreChanged(); // refresh ui
-    }
-
     public void setGuiRenderer(IGUIRenderer guiRenderer) {
         this.guiRenderer = guiRenderer;
     }
@@ -119,6 +72,7 @@ public class AstroblazeGame extends Game {
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         prefs = Gdx.app.getPreferences("AnnelidWar");
+        playerState.restoreState();
         assets = new Assets(this); // IMPORTANT: make sure this is constructed first!
 
         gameScreen = new GameScreen(this);
@@ -142,9 +96,6 @@ public class AstroblazeGame extends Game {
         }
 
         setScreen(loadingScreen);
-        playerScore = prefs.getFloat("score", 0f);
-        playerMoney = prefs.getFloat("money", 0f);
-        reportScoreChanged();
     }
 
     public void finishLoading() {
@@ -205,7 +156,7 @@ public class AstroblazeGame extends Game {
 
         if (Gdx.input.isTouched(3)) {
             toggleProfiler();
-            modPlayerMoney(5000);
+            playerState.modPlayerMoney(5000);
         }
 
         if (profiler.isEnabled()) {
@@ -229,16 +180,10 @@ public class AstroblazeGame extends Game {
             scene.getPlayer().stopMoving(true);
         }
         scene.setTimeScale(0f);
-
-        prefs.putFloat("score", playerScore);
-        prefs.putFloat("money", playerMoney);
-        prefs.flush();
+        playerState.saveState();
     }
 
     public void resumeGame() {
-        playerScore = prefs.getFloat("score", 0f);
-        playerMoney = prefs.getFloat("money", 0f);
-        reportScoreChanged();
         scene.setTimeScale(1f);
     }
 
@@ -247,52 +192,31 @@ public class AstroblazeGame extends Game {
             this.loadingFinishedListeners.add(listener);
     }
 
-    public void addPlayerStateChangeListener(IPlayerStateChangeListener listener) {
+    public void addPlayerStateChangeListener(IUIChangeListener listener) {
         if (!this.playerStateChangeListeners.contains(listener))
             this.playerStateChangeListeners.add(listener);
     }
 
-    public void removePlayerStateChangeListener(IPlayerStateChangeListener listener) {
+    public void removePlayerStateChangeListener(IUIChangeListener listener) {
         this.playerStateChangeListeners.remove(listener);
     }
 
-    public void addOnScoreChangeListener(IScoreChangeListener listener) {
-        if (!this.scoreChangeListeners.contains(listener))
-            this.scoreChangeListeners.add(listener);
-        reportScoreChanged();
-    }
-
-    public void removeOnScoreChangeListener(IScoreChangeListener listener) {
-        this.scoreChangeListeners.remove(listener);
-    }
-
-    public void reportStateChanged() { // for ui refresh
-        Ship player = scene.getPlayer();
-        reportStateChanged(player, player.getHp(), player.getHp());
-    }
-
     public void reportStateChanged(Ship ship, float newHp, float oldHp) {
-        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
+        for (IUIChangeListener listener : playerStateChangeListeners) {
             listener.onHpChanged(ship, newHp, oldHp);
         }
     }
 
     public void reportExtrasChanged(Ship ship, String text1, String text2) {
-        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
+        for (IUIChangeListener listener : playerStateChangeListeners) {
             listener.onSpecialTextChanged(ship, text1, text2);
         }
     }
 
     public void reportHpEnabled(Ship ship, boolean enabled) {
         Gdx.app.log("AstroblazeGame", "reportHpEnabled(" + enabled + ")");
-        for (IPlayerStateChangeListener listener : playerStateChangeListeners) {
+        for (IUIChangeListener listener : playerStateChangeListeners) {
             listener.onHpEnabled(ship, enabled);
-        }
-    }
-
-    public void reportScoreChanged() {
-        for (IScoreChangeListener listener : scoreChangeListeners) {
-            listener.scoreChanged(getPlayerMoney(), getPlayerScore());
         }
     }
 
@@ -351,17 +275,5 @@ public class AstroblazeGame extends Game {
         assets.dispose();
         instance = null;
         batch.dispose();
-    }
-
-    public boolean canBuyUpgrade(ShopItem item) {
-        return playerMoney >= item.price;
-    }
-
-    public boolean buyUpgrade(ShopItem item) {
-        if (!canBuyUpgrade(item)) {
-            return false;
-        }
-        modPlayerMoney(-item.price);
-        return true;
     }
 }

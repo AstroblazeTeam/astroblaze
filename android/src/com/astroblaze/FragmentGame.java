@@ -17,7 +17,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FragmentGame extends Fragment implements IPlayerStateChangeListener {
+public class FragmentGame extends Fragment implements IUIChangeListener {
     private TextView tvSpecial1;
     private TextView tvSpecial2;
 

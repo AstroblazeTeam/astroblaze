@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FragmentLevelSelect extends Fragment implements IScoreChangeListener {
+public class FragmentLevelSelect extends Fragment implements IPlayerStateChangedListener {
     private ShipPreviewActor preview;
     private ViewPager pagerLevels;
     private ViewPager pagerShips;
@@ -57,15 +57,6 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
 
                 NavHostFragment.findNavController(FragmentLevelSelect.this)
                         .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
-            }
-        });
-
-        // menu -> shop
-        view.findViewById(R.id.btnOpenShop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentLevelSelect.this)
-                        .navigate(R.id.action_fragmentLevelSelect_to_shopFragment);
             }
         });
 
@@ -126,7 +117,8 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
         tvShipSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
         tvShipSwipeRight.setVisibility(position < preview.getVariantCount() - 1
                 ? View.VISIBLE : View.INVISIBLE);
-        btnPlay.setEnabled(AstroblazeGame.getInstance().isShipUnlocked(position));
+        PlayerShipVariant variant = PlayerShipVariant.values()[position];
+        btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipVariantUnlocked(variant));
     }
 
     @Override
@@ -141,18 +133,18 @@ public class FragmentLevelSelect extends Fragment implements IScoreChangeListene
         }
         preview.setVisible(true);
         pagerLevels.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
-        AstroblazeGame.getInstance().addOnScoreChangeListener(this);
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getInstance().removeOnScoreChangeListener(this);
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
         AstroblazeGame.getInstance().gameScreen.getShipPreview().setVisible(false);
     }
 
     @Override
-    public void scoreChanged(float newMoney, float newScore) {
+    public void onStateChanged(PlayerState state) {
         pagerLevels.post(new Runnable() {
             @Override
             public void run() {

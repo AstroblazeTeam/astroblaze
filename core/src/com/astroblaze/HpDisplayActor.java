@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class HpDisplayActor extends Actor implements IPlayerStateChangeListener {
+public class HpDisplayActor extends Actor implements IUIChangeListener {
     private final float hpWidth = 4f;
     private final float hpLerpSpeed = 0.5f; // velocity of hp bar change
     private final float alphaSpeed = 2f;

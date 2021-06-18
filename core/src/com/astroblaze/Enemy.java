@@ -135,7 +135,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
             scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
 
             if (isPlayer) {
-                AstroblazeGame.getInstance().modPlayerScore(typeId.value);
+                AstroblazeGame.getPlayerState().modPlayerScore(typeId.value);
             }
             dropBonus();
         }

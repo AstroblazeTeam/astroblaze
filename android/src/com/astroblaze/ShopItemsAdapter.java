@@ -12,49 +12,63 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ViewHolder> {
+    private final PlayerShipVariant variant;
+    private final Context context;
     private final ArrayList<ShopItem> items;
     private final MediaPlayer mp;
 
-    public ShopItemsAdapter(Context context, ArrayList<ShopItem> items) {
+    public ShopItemsAdapter(PlayerShipVariant variant, Context context, ArrayList<ShopItem> items) {
+        this.variant = variant;
+        this.context = context;
         this.items = items;
         this.mp = MediaPlayer.create(context, R.raw.cha_ching);
     }
 
     @NonNull
-    @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.shop_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ShopItem item = items.get(position);
-        holder.getImageViewUpgrade().setImageResource(item.iconResource);
-        holder.getTextViewName().setText(item.name);
-        holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##%}", item.current));
-        holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##%}", item.next - item.current));
+        String qty = item.currentTier == item.maxTier
+                ? "MAX" : item.currentTier + " / " + item.maxTier;
+        switch (item.type) {
+            case ShieldUpgrade:
+                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_hp);
+                holder.getTextViewName().setText(context.getString(R.string.shieldUpgrade, qty));
+                break;
+            case SpeedUpgrade:
+                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_speed);
+                holder.getTextViewName().setText(context.getString(R.string.speedUpgrade, qty));
+                break;
+            case DamageUpgrade:
+            default:
+                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_damage);
+                holder.getTextViewName().setText(context.getString(R.string.damageUpgrade, qty));
+                break;
+        }
+        holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##%}", item.getCurrent()));
+        holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##%}", item.multiplier));
         holder.getTextViewPrice().setText(MessageFormat.format("${0,number,#.##}", item.price));
-        holder.getBtnBuy().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!AstroblazeGame.getInstance().buyUpgrade(item)) {
-                    return;
-                }
-
-                mp.start();
-                ShopItemsAdapter.this.notifyDataSetChanged();
+        holder.getBtnBuy().setOnClickListener(v -> {
+            if (!AstroblazeGame.getPlayerState().buyUpgrade(variant, item)) {
+                return;
             }
+
+            mp.start();
+            ShopItemsAdapter.this.notifyDataSetChanged();
         });
-        holder.getBtnBuy().setEnabled(AstroblazeGame.getInstance().canBuyUpgrade(item));
+        holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState()
+                .canBuyUpgrade(variant, item));
     }
 
     @Override
