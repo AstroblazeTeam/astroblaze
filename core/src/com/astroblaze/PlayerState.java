@@ -25,6 +25,7 @@ public class PlayerState {
         public float money;
         public float score;
         public int level; // max unlocked level
+        public float lastScoreSubmitted;
         public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
         public HashMap<Integer, ArrayList<ShopItem>> unlockedUpgrades = new HashMap<>();
@@ -48,6 +49,9 @@ public class PlayerState {
     }
 
     public boolean shouldSubmitScore() {
+        if (data.lastScoreSubmitted != data.score) {
+            return true;
+        }
         final long diff = new Date().getTime() - data.lastScoreSubmit.getTime();
         return TimeUnit.MILLISECONDS.toMinutes(diff) > 5;
     }
