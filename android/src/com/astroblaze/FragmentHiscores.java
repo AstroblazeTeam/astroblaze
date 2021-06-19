@@ -4,15 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class FragmentHiscores extends Fragment {
+    RecyclerView rvBoard;
+    ProgressBar pgLoading;
+
     public FragmentHiscores() {
         // Required empty public constructor
     }
@@ -33,10 +42,23 @@ public class FragmentHiscores extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
+                -> NavHostFragment.findNavController(FragmentHiscores.this).popBackStack());
+
+
+        pgLoading = view.findViewById(R.id.pgLoading);
+        rvBoard = view.findViewById(R.id.rvHiscoresBoard);
+        rvBoard.setLayoutManager(new LinearLayoutManager(rvBoard.getContext()));
+        rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), new ArrayList<>()));
+
+        HiscoresController.fetchBoard(new HiscoresController.RunnableResponseHandler<ArrayList<HiscoresEntry>>() {
             @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
+            public void run() {
+                rvBoard.post(() -> {
+                    pgLoading.setVisibility(View.INVISIBLE);
+                    rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), response));
+                    rvBoard.setVisibility(View.VISIBLE);
+                });
             }
         });
     }

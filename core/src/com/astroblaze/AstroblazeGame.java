@@ -124,15 +124,6 @@ public class AstroblazeGame extends Game {
         return this.shipPreview;
     }
 
-    public int getMaxLevel() {
-        return prefs.getInteger("level", 0);
-    }
-
-    public void setMaxLevel(int level) {
-        prefs.putInteger("level", level);
-        prefs.flush();
-    }
-
     public void handleBtnExtra2Click() {
         Gdx.app.postRunnable(new Runnable() {
             @Override

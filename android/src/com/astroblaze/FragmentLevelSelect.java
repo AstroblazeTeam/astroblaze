@@ -109,7 +109,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
     public void refreshLevelSwipeButtons(int position) {
         tvLevelSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
-        tvLevelSwipeRight.setVisibility(position < AstroblazeGame.getInstance().getMaxLevel()
+        tvLevelSwipeRight.setVisibility(position < AstroblazeGame.getPlayerState().getMaxLevel()
                 ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -132,7 +132,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             preview.setSelectedPosition(worldPos);
         }
         preview.setVisible(true);
-        pagerLevels.setCurrentItem(AstroblazeGame.getInstance().getMaxLevel());
+        pagerLevels.setCurrentItem(AstroblazeGame.getPlayerState().getMaxLevel());
         AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
     }
 
@@ -172,7 +172,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
         @Override
         public int getCount() {
-            return AstroblazeGame.getInstance().getMaxLevel() + 1;
+            return AstroblazeGame.getPlayerState().getMaxLevel() + 1;
         }
     }
 

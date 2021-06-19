@@ -3,30 +3,67 @@ package com.astroblaze;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.graalvm.compiler.loop.MathUtil;
-
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class PlayerState {
     private final transient ArrayList<IPlayerStateChangedListener> playerStateChangeListeners = new ArrayList<>(4);
     private final transient static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private PlayerStateData data = new PlayerStateData();
 
-    private class PlayerStateData {
+    private static class PlayerStateData {
+        public String id = UUID.randomUUID().toString();
         public String name = "Anonymous"; // not localized on purpose
         public float money;
         public float score;
+        public int level; // max unlocked level
+        public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
         public HashMap<Integer, ArrayList<ShopItem>> unlockedUpgrades = new HashMap<>();
-
     }
 
     public static class UnlockedShip {
         public int id;
+    }
+
+    public String getId() {
+        return data.id;
+    }
+
+    public String getName() {
+        return data.name;
+    }
+
+    public void setName(String name) {
+        data.name = name;
+        saveState();
+    }
+
+    public boolean shouldSubmitScore() {
+        final long diff = new Date().getTime() - data.lastScoreSubmit.getTime();
+        return TimeUnit.MILLISECONDS.toMinutes(diff) > 5;
+    }
+
+    public void submittedScore() {
+        data.lastScoreSubmit = new Date();
+        saveState();
+    }
+
+    public int getMaxLevel() {
+        return data.level;
+    }
+
+    public void setMaxLevel(int level) {
+        data.level = level;
+        saveState();
     }
 
     public float getPlayerMoney() {
@@ -40,7 +77,7 @@ public class PlayerState {
     public void modPlayerScore(float mod) {
         data.score += mod;
         modPlayerMoney(mod);
-        if (Math.abs(mod) > 1000) {
+        if (Math.abs(mod) > 1000f) {
             saveState();
         }
         reportStateChanged();
@@ -49,7 +86,7 @@ public class PlayerState {
 
     public void modPlayerMoney(float mod) {
         data.money += mod;
-        if (Math.abs(mod) > 1000) {
+        if (Math.abs(mod) > 1000f) {
             saveState();
         }
         reportStateChanged();
@@ -149,6 +186,9 @@ public class PlayerState {
         if (data.unlockedShips == null || data.unlockedShips.size() == 0) {
             data.unlockedShips = new ArrayList<>();
             unlockShipVariant(PlayerShipVariant.Scout);
+        }
+        if (data.id == null || data.id.equals("")) {
+            data.id = UUID.randomUUID().toString();
         }
         Gdx.app.log("PlayerState", "Restored state: " + stateString);
     }

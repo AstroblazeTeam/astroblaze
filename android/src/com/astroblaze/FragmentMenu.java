@@ -12,13 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
-import com.badlogic.gdx.net.HttpParametersUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class FragmentMenu extends Fragment {
     TextView tvRank;
 
@@ -43,32 +36,35 @@ public class FragmentMenu extends Fragment {
 
         tvRank = view.findViewById(R.id.tvRank);
         tvRank.setText(getString(R.string.rankPrintLoading,
-                (int)AstroblazeGame.getPlayerState().getPlayerScore()));
+                (int) AstroblazeGame.getPlayerState().getPlayerScore()));
 
-        HiscoresController.fetch(new HiscoresController.RunnableResponseHandler() {
+        HiscoresController.submitRank(new HiscoresController.RunnableResponseHandler<Integer>() {
             @Override
             public void run() {
+                if (this.response <= 0) return; // silently fail
                 tvRank.post(() ->
                         tvRank.setText(getString(R.string.rankPrint,
-                                (int)AstroblazeGame.getPlayerState().getPlayerScore(), this.response)));
+                                (int) AstroblazeGame.getPlayerState().getPlayerScore(), String.valueOf(this.response))));
             }
-        });
+        }, true);
 
         // menu -> level select
-        view.findViewById(R.id.btnStart).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+        view.findViewById(R.id.btnStart).setOnClickListener(v
+                -> NavHostFragment.findNavController(FragmentMenu.this)
                 .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect));
 
         // menu -> hiscores
-        view.findViewById(R.id.btnHiscores).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+        view.findViewById(R.id.btnHiscores).setOnClickListener(v
+                -> NavHostFragment.findNavController(FragmentMenu.this)
                 .navigate(R.id.action_fragmentMenu_to_fragmentHiscores));
 
         // menu -> options
-        view.findViewById(R.id.btnOptions).setOnClickListener(v -> NavHostFragment.findNavController(FragmentMenu.this)
+        view.findViewById(R.id.btnOptions).setOnClickListener(v
+                -> NavHostFragment.findNavController(FragmentMenu.this)
                 .navigate(R.id.action_fragmentMenu_to_fragmentOptions));
 
         // exit button
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            requireActivity().finish();
-        });
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
+                -> requireActivity().finish());
     }
 }
