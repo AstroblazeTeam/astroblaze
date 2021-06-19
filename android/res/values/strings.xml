@@ -21,6 +21,8 @@
     <string name="swipeLeft">Swipe left</string>
     <string name="buyUpgrade">Upgrade</string>
     <string name="moneyPrint">$ %1$d</string>
+    <string name="changePilotName">Change pilot name</string>
+    <string name="enterPilotName">Enter pilot name:</string>
     <string name="anonymous">Anonymous</string>
     <string name="rankPrintLoading">
         "Your score is %1$d"
