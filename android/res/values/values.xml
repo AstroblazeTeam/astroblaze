@@ -4,4 +4,7 @@
     <dimen name="button_stroke">2dp</dimen>
     <integer name="anim_fade">300</integer>
     <integer name="anim_slide">400</integer>
+    <dimen name="button_width">100dp</dimen>
+    <dimen name="button_height">50dp</dimen>
+    <dimen name="window_height">150dp</dimen>
 </resources>
