@@ -11,10 +11,10 @@ public enum PlayerShipVariant {
     public final int id;
     public final AssetDescriptor<Model> modelDescriptor;
     public final float modelScale;
-    public final float maxHp;
     public final float price;
     public final int gunPorts;
     public final int missilePorts;
+    private final float maxHp;
 
     PlayerShipVariant(int id, AssetDescriptor<Model> modelDescriptor, float modelScale, float maxHp,
                       float price, int gunPorts, int missilePorts) {
@@ -25,5 +25,27 @@ public enum PlayerShipVariant {
         this.price = price;
         this.gunPorts = gunPorts;
         this.missilePorts = missilePorts;
+    }
+
+    public float getUpgradeModifier(PlayerState state, ShopItemType upgradeType) {
+        float modifier = 1.0f;
+        for (ShopItem upgrade : state.getUpgrades(this.id)) {
+            if (upgrade.type == upgradeType) {
+                modifier += upgrade.multiplier * upgrade.currentTier;
+            }
+        }
+        return modifier;
+    }
+
+    public float getMaxHp(PlayerState state) {
+        return this.maxHp * getUpgradeModifier(state, ShopItemType.ShieldUpgrade);
+    }
+
+    public float getDamage(PlayerState state) {
+        return 3f * getUpgradeModifier(state, ShopItemType.DamageUpgrade);
+    }
+
+    public float getSpeed(PlayerState state) {
+        return 50f * getUpgradeModifier(state, ShopItemType.SpeedUpgrade);
     }
 }

@@ -131,8 +131,8 @@ public class PlayerState {
         ArrayList<ShopItem> upgrades = new ArrayList<>();
 
         upgrades.add(new ShopItem("Shield", 1f, 0, 5, 0.1f, 3000f, ShopItemType.ShieldUpgrade));
-        upgrades.add(new ShopItem("Damage", 1f, 0, 5, 0.1f, 30000f, ShopItemType.DamageUpgrade));
-        upgrades.add(new ShopItem("Speed", 1f, 0, 5, 0.1f, 3000000f, ShopItemType.SpeedUpgrade));
+        upgrades.add(new ShopItem("Damage", 1f, 0, 5, 0.1f, 5000f, ShopItemType.DamageUpgrade));
+        upgrades.add(new ShopItem("Speed", 1f, 0, 5, 0.1f, 10000f, ShopItemType.SpeedUpgrade));
 
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
