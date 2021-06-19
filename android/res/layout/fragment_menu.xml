@@ -33,6 +33,7 @@
         android:layout_width="@dimen/window_height"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:padding="5dp"
         android:background="@drawable/menuwindow"
         tools:context=".FragmentMenu">
 
@@ -40,9 +41,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="2dp"
             android:text="@string/astroblaze"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textColor="@color/button_outline"
             android:fontFamily="@font/safetythirdregular"
             android:shadowColor="@color/menu_bg_color"
@@ -61,6 +61,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:padding="5dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"

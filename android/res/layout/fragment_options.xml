@@ -74,13 +74,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExitToMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/menu_button"
+            android:background="@drawable/menu_button_states"
             android:gravity="center"
             android:text="@string/back"
             android:textAlignment="center"
