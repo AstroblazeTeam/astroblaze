@@ -343,4 +343,21 @@ public class Scene3D implements ILoadingFinishedListener {
         Gdx.app.log("FragmentLevelSelect", "unproject (" + ray + ")");
         return Intersector.intersectRayPlane(ray, planeXZ, worldPosition);
     }
+
+    public ITargetable getClosestTarget(Vector3 pos) {
+        float distanceSq = 100000000f;
+        ITargetable result = null;
+        for (SceneActor actor : actors) {
+            if (!(actor instanceof ITargetable)) {
+                continue;
+            }
+            ITargetable t = (ITargetable) actor;
+            float dstToActorSq = t.distanceSquaredTo(pos);
+            if (dstToActorSq < distanceSq) {
+                distanceSq = dstToActorSq;
+                result = t;
+            }
+        }
+        return result;
+    }
 }

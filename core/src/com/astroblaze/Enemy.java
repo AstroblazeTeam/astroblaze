@@ -8,11 +8,10 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
-public class Enemy extends Renderable implements ICollisionProvider {
+public class Enemy extends Renderable implements ICollisionProvider, ITargetable {
     private final Scene3D scene;
     private final Vector3 moveVector = new Vector3();
     private float modelRadius;
-    float hp;
     private float phaseClock = 0f;
     private final float phaseMagnitude = 50f;
     private final float phaseSpeed = 2f;
@@ -23,6 +22,7 @@ public class Enemy extends Renderable implements ICollisionProvider {
     private EnemyType typeId = EnemyType.Idle;
     private Sound explosionSound;
     private boolean enabled;
+    float hp;
 
     public Enemy(Scene3D scene, EnemyType typeId) {
         this.scene = scene;
@@ -149,6 +149,21 @@ public class Enemy extends Renderable implements ICollisionProvider {
         if (bonus == null) // random chance for no bonus drop
             return;
         scene.decals.addBonus(this.getPosition(), bonus);
+    }
+
+    @Override
+    public Vector3 estimatePosition(float time) {
+        return position.cpy().mulAdd(moveVector, time);
+    }
+
+    @Override
+    public float distanceSquaredTo(Vector3 pos) {
+        return position.dst2(pos);
+    }
+
+    @Override
+    public boolean isTargetable() {
+        return typeId != EnemyType.Rammer;
     }
 }
 
