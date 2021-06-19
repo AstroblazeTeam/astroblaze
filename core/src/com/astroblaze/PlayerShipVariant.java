@@ -3,6 +3,8 @@ package com.astroblaze;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Model;
 
+import java.util.ArrayList;
+
 public enum PlayerShipVariant {
     Scout(0, Assets.spaceShip1, 0.5f, 100f, 0f, 2, 3),
     Cruiser(1, Assets.spaceShip2, 0.5f, 150f, 10000f, 4, 4),
@@ -29,7 +31,10 @@ public enum PlayerShipVariant {
 
     public float getUpgradeModifier(PlayerState state, ShopItemType upgradeType) {
         float modifier = 1.0f;
-        for (ShopItem upgrade : state.getUpgrades(this.id)) {
+        ArrayList<ShopItem> upgrades = state.getUpgrades(this.id);
+        if (upgrades == null)
+            return modifier;
+        for (ShopItem upgrade : upgrades) {
             if (upgrade.type == upgradeType) {
                 modifier += upgrade.multiplier * upgrade.currentTier;
             }
