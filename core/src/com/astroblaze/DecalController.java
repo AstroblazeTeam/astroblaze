@@ -59,7 +59,7 @@ public class DecalController {
         info.radiusSquared = 1f;
         info.ignorePlayerCollision = true;
         info.collisionDamage = damage;
-        int bulletIdx = MathUtils.clamp((int) (damage / 10f) - 1, 0, 10);
+        int bulletIdx = MathUtils.clamp((int) (damage / 2f) - 1, 0, 10);
         info.decal = Decal.newDecal(Assets.bullets.get(bulletIdx), true);
         info.decal.setPosition(info.position);
         info.decal.setRotation(billboardDirection, Vector3.Y);

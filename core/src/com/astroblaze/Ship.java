@@ -17,11 +17,11 @@ public class Ship extends Renderable {
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
 
-    private float moveSpeed = 80f;
+    private float moveSpeed;
     private float currentBank;
     private int missileSalvos = 0; // amount of missile salvos player has.
     private float gunClock = 0f;
-    private float gunDamage = 3f;
+    private float gunDamage;
     private float noControlTimer;
     private float hp;
     private float modelRadius = 1f;
@@ -49,7 +49,11 @@ public class Ship extends Renderable {
     }
 
     public float getMaxHp() {
-        return shipVariant.maxHp;
+        return shipVariant.getMaxHp(AstroblazeGame.getPlayerState());
+    }
+
+    public float getGunDamage() {
+        return shipVariant.getDamage(AstroblazeGame.getPlayerState());
     }
 
     public int getMissileSalvos() {
@@ -103,7 +107,9 @@ public class Ship extends Renderable {
     public void resetShipType(PlayerShipVariant variant) {
         // ship variant
         shipVariant = variant;
-        modHp(getMaxHp()); // TODO: move max health into variant
+        modHp(getMaxHp());
+        gunDamage = getGunDamage();
+        moveSpeed = variant.getSpeed(AstroblazeGame.getPlayerState());
         setModel(variant.modelDescriptor);
         setScale(variant.modelScale);
         noControlTimer = respawnNoControlTime;

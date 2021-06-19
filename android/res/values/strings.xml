@@ -56,11 +56,11 @@
         "DEAD OR ALIVE\n"
     </string>
 
-    <string name="shipStats">
-        "Hp: %1$d\n"
-        "Guns: %2$d\n"
-        "Missiles: %3$d\n"
-    </string>
+    <string name="shipStatHp">Shield: %1$d</string>
+    <string name="shipStatDamage">Gun damage: %1$d</string>
+    <string name="shipStatMissiles">Missile damage: %1$d</string>
+    <string name="shipStatSpeed">Speed: %1$d</string>
+    <string name="shipStatBonus"><![CDATA[<b><font color=#00ff00>&nbsp;( %1$s%% )</font></b>]]></string>
 
     <string name="levelGeneric">
         "Level %1$d\n"

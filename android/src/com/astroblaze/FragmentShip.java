@@ -2,6 +2,8 @@ package com.astroblaze;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.badlogic.gdx.Gdx;
+
 import org.jetbrains.annotations.NotNull;
+
+import java.text.DecimalFormat;
 
 public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
@@ -61,32 +67,45 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     }
 
     private void resetText(PlayerState state) {
-        btnAction.post(new Runnable() {
-            @Override
-            public void run() {
-                tvDescription.setText(getString(R.string.ship0 + variant.id));
-                tvStats.setText(getString(R.string.shipStats,
-                        (int) variant.maxHp, variant.gunPorts, variant.missilePorts));
+        btnAction.post(() -> {
+            tvDescription.setText(getString(R.string.ship0 + variant.id));
+            String hpText = getString(R.string.shipStatHp, (int) variant.getMaxHp(state));
+            String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.ShieldUpgrade) - 1f) * 100f));
+            String damageText = getString(R.string.shipStatDamage, (int) variant.getDamage(state));
+            String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.DamageUpgrade) - 1f) * 100f));
+            String speedText = getString(R.string.shipStatSpeed, (int) variant.getSpeed(state));
+            String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.SpeedUpgrade) - 1f) * 100f));
 
-                if (!state.isShipVariantUnlocked(variant)) {
-                    btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
-                    btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
-                    btnAction.setOnClickListener(v -> {
-                        if (AstroblazeGame.getPlayerState().unlockShipVariant(variant)) {
-                            mp.start();
-                        }
-                    });
-                } else {
-                    btnAction.setEnabled(true);
-                    btnAction.setText(getString(R.string.buyUpgrade));
-                    btnAction.setOnClickListener(v -> {
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("variant", variant.id);
+            CharSequence combined = TextUtils.concat(
+                    hpText, hpModText, "<br>",
+                    damageText, damageModifier, "<br>",
+                    speedText, speedModifier, "<br>"
+            );
+            tvStats.setText(Html.fromHtml(combined.toString()));
 
-                        NavHostFragment.findNavController(getParentFragment())
-                                .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
-                    });
-                }
+            if (!state.isShipVariantUnlocked(variant)) {
+                btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
+                btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
+                btnAction.setOnClickListener(v -> {
+                    if (AstroblazeGame.getPlayerState().unlockShipVariant(variant)) {
+                        mp.start();
+                    }
+                });
+            } else {
+                btnAction.setEnabled(true);
+                btnAction.setText(getString(R.string.buyUpgrade));
+                btnAction.setOnClickListener(v -> {
+                    Fragment parentFragment = getParentFragment();
+                    if (parentFragment == null) {
+                        Gdx.app.error("FragmentShip", "Parent fragment was null!");
+                        return;
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("variant", variant.id);
+
+                    NavHostFragment.findNavController(parentFragment)
+                            .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
+                });
             }
         });
     }
