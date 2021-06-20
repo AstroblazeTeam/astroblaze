@@ -29,12 +29,12 @@ public enum PlayerShipVariant {
         this.missilePorts = missilePorts;
     }
 
-    public float getUpgradeModifier(PlayerState state, ShopItemType upgradeType) {
+    public float getUpgradeModifier(PlayerState state, UpgradeEntryType upgradeType) {
         float modifier = 1.0f;
-        ArrayList<ShopItem> upgrades = state.getUpgrades(this.id);
+        ArrayList<UpgradeEntry> upgrades = state.getUpgrades(this.id);
         if (upgrades == null)
             return modifier;
-        for (ShopItem upgrade : upgrades) {
+        for (UpgradeEntry upgrade : upgrades) {
             if (upgrade.type == upgradeType) {
                 modifier += upgrade.multiplier * upgrade.currentTier;
             }
@@ -43,14 +43,14 @@ public enum PlayerShipVariant {
     }
 
     public float getMaxHp(PlayerState state) {
-        return this.maxHp * getUpgradeModifier(state, ShopItemType.ShieldUpgrade);
+        return this.maxHp * getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade);
     }
 
     public float getDamage(PlayerState state) {
-        return 3f * getUpgradeModifier(state, ShopItemType.DamageUpgrade);
+        return 3f * getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade);
     }
 
     public float getSpeed(PlayerState state) {
-        return 50f * getUpgradeModifier(state, ShopItemType.SpeedUpgrade);
+        return 50f * getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade);
     }
 }

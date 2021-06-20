@@ -1,15 +1,13 @@
 package com.astroblaze;
 
+import com.astroblaze.Interfaces.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerState {
@@ -24,9 +22,12 @@ public class PlayerState {
         public float score;
         public int level; // max unlocked level
         public float lastScoreSubmitted;
+        public boolean profilerEnabled;
+        public float soundVolume;
+        public float musicVolume;
         public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
-        public HashMap<Integer, ArrayList<ShopItem>> unlockedUpgrades = new HashMap<>();
+        public HashMap<Integer, ArrayList<UpgradeEntry>> unlockedUpgrades = new HashMap<>();
     }
 
     public static class UnlockedShip {
@@ -56,6 +57,33 @@ public class PlayerState {
 
     public void submittedScore() {
         data.lastScoreSubmit = new Date();
+        saveState();
+    }
+
+    public boolean isProfilerEnabled() {
+        return data.profilerEnabled;
+    }
+
+    public void setProfilerEnabled(boolean enabled) {
+        data.profilerEnabled = enabled;
+        saveState();
+    }
+
+    public float getSoundVolume() {
+        return data.soundVolume;
+    }
+
+    public float getMusicVolume() {
+        return data.musicVolume;
+    }
+
+    public void setSoundVolume(float newVolume) {
+        data.soundVolume = newVolume;
+        saveState();
+    }
+
+    public void setMusicVolume(float newVolume) {
+        data.musicVolume = newVolume;
         saveState();
     }
 
@@ -95,7 +123,7 @@ public class PlayerState {
         Gdx.app.log("AstroblazeGame", "Player money modded by " + mod + " to " + data.money);
     }
 
-    public ArrayList<ShopItem> getUpgrades(int variantId) {
+    public ArrayList<UpgradeEntry> getUpgrades(int variantId) {
         return data.unlockedUpgrades.get(variantId);
     }
 
@@ -128,11 +156,11 @@ public class PlayerState {
         unlocked.id = variant.id;
         modPlayerMoney(-variant.price);
         data.unlockedShips.add(unlocked);
-        ArrayList<ShopItem> upgrades = new ArrayList<>();
+        ArrayList<UpgradeEntry> upgrades = new ArrayList<>();
 
-        upgrades.add(new ShopItem("Shield", 1f, 0, 5, 0.1f, 3000f, ShopItemType.ShieldUpgrade));
-        upgrades.add(new ShopItem("Damage", 1f, 0, 5, 0.1f, 5000f, ShopItemType.DamageUpgrade));
-        upgrades.add(new ShopItem("Speed", 1f, 0, 5, 0.1f, 10000f, ShopItemType.SpeedUpgrade));
+        upgrades.add(new UpgradeEntry("Shield", 1f, 0, 5, 0.1f, 3000f, UpgradeEntryType.ShieldUpgrade));
+        upgrades.add(new UpgradeEntry("Damage", 1f, 0, 5, 0.1f, 5000f, UpgradeEntryType.DamageUpgrade));
+        upgrades.add(new UpgradeEntry("Speed", 1f, 0, 5, 0.1f, 10000f, UpgradeEntryType.SpeedUpgrade));
 
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
@@ -140,7 +168,7 @@ public class PlayerState {
         return true;
     }
 
-    public boolean canBuyUpgrade(PlayerShipVariant variant, ShopItem item) {
+    public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         return isShipVariantUnlocked(variant)
                 && item.currentTier < item.maxTier
                 && data.money >= item.price;
@@ -155,7 +183,7 @@ public class PlayerState {
         return null;
     }
 
-    public boolean buyUpgrade(PlayerShipVariant variant, ShopItem item) {
+    public boolean buyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         if (!canBuyUpgrade(variant, item)) {
             return false;
         }

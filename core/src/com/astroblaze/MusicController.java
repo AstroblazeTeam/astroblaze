@@ -1,5 +1,7 @@
 package com.astroblaze;
 
+import com.astroblaze.Interfaces.*;
+import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
@@ -9,15 +11,18 @@ import java.util.HashMap;
 class MusicController implements ILoadingFinishedListener {
     public enum MusicTrackType {None, UI, Game}
 
-    public final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
+    private final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
+    private final PlayerState state;
+    private final float fadeSpeed = 1f / 2f; // music tracks crossfade time
+    private final float intervalUpdate = 0.1f;
+
     private MusicTrackType currentTrack = MusicTrackType.None;
     private float targetVolume = 1f;
-    private final float fadeSpeed = 1f / 2f; // crossfade for 3 seconds
-    private final float intervalUpdate = 0.1f;
     private float time = 0f;
 
     MusicController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
+        state = AstroblazeGame.getPlayerState();
     }
 
     public void loadLoadingScreenAssets() {
@@ -27,7 +32,7 @@ class MusicController implements ILoadingFinishedListener {
         }
 
         assignTrack(MusicTrackType.UI, Assets.uiMusic);
-        targetVolume = AstroblazeGame.getPrefs().getFloat("musicVolume", 1f);
+        targetVolume = AstroblazeGame.getPlayerState().getMusicVolume();
     }
 
     @Override
@@ -46,16 +51,17 @@ class MusicController implements ILoadingFinishedListener {
 
     public void update(final float delta) {
         time += delta;
-        if (time < intervalUpdate) { return; }
+        if (time < intervalUpdate) {
+            return;
+        }
         time -= intervalUpdate;
 
-        Runnable runnable = new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 updateInternal(intervalUpdate);
             }
-        };
-        Thread t = new Thread(runnable);
+        });
         t.start();
     }
 
@@ -80,15 +86,14 @@ class MusicController implements ILoadingFinishedListener {
         }
     }
 
-    public void setTargetVolume(float volume) {
-        AstroblazeGame.getPrefs().putFloat("musicVolume", volume);
-        AstroblazeGame.getPrefs().flush();
-        targetVolume = volume;
-        Gdx.app.log("MusicManager", "Set target volume to " + targetVolume);
-    }
-
     public float getMusicVolume() {
         return targetVolume;
+    }
+
+    public void setMusicVolume(float volume) {
+        state.setMusicVolume(volume);
+        targetVolume = volume;
+        Gdx.app.log("MusicManager", "Set target volume to " + targetVolume);
     }
 
     public void setTrack(MusicTrackType track) {

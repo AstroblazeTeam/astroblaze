@@ -47,7 +47,7 @@ public class FragmentOptions extends Fragment {
         sbMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                AstroblazeGame.getInstance().getMusicController().setTargetVolume(progress / 100f);
+                AstroblazeGame.getInstance().getMusicController().setMusicVolume(progress / 100f);
             }
 
             @Override

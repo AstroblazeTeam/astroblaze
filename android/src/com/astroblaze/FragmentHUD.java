@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.astroblaze.Interfaces.IGUIRenderer;
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;

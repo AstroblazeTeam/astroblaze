@@ -13,6 +13,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -69,9 +71,9 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         ArrayList<PlayerShipVariant> variants = AstroblazeGame.getPlayerState().getUnlockedShips();
 
         PlayerShipVariant v = variants.get(variants.indexOf(variant));
-        ArrayList<ShopItem> shopItems = AstroblazeGame.getPlayerState().getUpgrades(v.id);
+        ArrayList<UpgradeEntry> upgradeEntries = AstroblazeGame.getPlayerState().getUpgrades(v.id);
 
-        rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), shopItems));
+        rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), upgradeEntries));
     }
 
     @Override

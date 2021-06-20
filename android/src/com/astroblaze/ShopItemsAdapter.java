@@ -18,10 +18,10 @@ import java.util.ArrayList;
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ViewHolder> {
     private final PlayerShipVariant variant;
     private final Context context;
-    private final ArrayList<ShopItem> items;
+    private final ArrayList<UpgradeEntry> items;
     private final MediaPlayer mp;
 
-    public ShopItemsAdapter(PlayerShipVariant variant, Context context, ArrayList<ShopItem> items) {
+    public ShopItemsAdapter(PlayerShipVariant variant, Context context, ArrayList<UpgradeEntry> items) {
         this.variant = variant;
         this.context = context;
         this.items = items;
@@ -38,7 +38,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ShopItem item = items.get(position);
+        UpgradeEntry item = items.get(position);
         String qty = item.currentTier == item.maxTier
                 ? "MAX" : item.currentTier + " / " + item.maxTier;
         switch (item.type) {

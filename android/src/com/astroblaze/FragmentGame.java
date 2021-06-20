@@ -14,6 +14,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.astroblaze.Interfaces.IUIChangeListener;
+import com.astroblaze.Rendering.Ship;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -77,7 +80,7 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
     @Override
     public void onStart() {
         super.onStart();
-        AstroblazeGame.getInstance().addPlayerStateChangeListener(this);
+        AstroblazeGame.getInstance().addUIChangeListener(this);
     }
 
     @Override

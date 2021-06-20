@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,11 +71,11 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
         btnAction.post(() -> {
             tvDescription.setText(getString(R.string.ship0 + variant.id));
             String hpText = getString(R.string.shipStatHp, (int) variant.getMaxHp(state));
-            String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.ShieldUpgrade) - 1f) * 100f));
+            String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade) - 1f) * 100f));
             String damageText = getString(R.string.shipStatDamage, (int) variant.getDamage(state));
-            String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.DamageUpgrade) - 1f) * 100f));
+            String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
             String speedText = getString(R.string.shipStatSpeed, (int) variant.getSpeed(state));
-            String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, ShopItemType.SpeedUpgrade) - 1f) * 100f));
+            String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade) - 1f) * 100f));
 
             CharSequence combined = TextUtils.concat(
                     hpText, hpModText, "<br>",

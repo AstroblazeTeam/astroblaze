@@ -15,6 +15,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astroblaze.GdxActors.ShipPreviewActor;
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
