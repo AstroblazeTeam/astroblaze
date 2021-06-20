@@ -15,16 +15,14 @@ public class EnemyPool extends Pool<Enemy> {
     @Override
     protected void reset(Enemy enemy) {
         // super.reset(pfx); - no need, default implementation only handles Poolable
-        BoundingBox bb = scene.gameBounds;
-
-        enemy.reset(bb);
+        enemy.reset(scene.getGameBounds());
     }
 
     @Override
     public Enemy obtain() {
         Enemy enemy = super.obtain();
         Gdx.app.debug("EnemyPool", "Added enemy to scene");
-        scene.addActors.add(enemy);
+        scene.addActor(enemy);
         return enemy;
     }
 
@@ -32,7 +30,7 @@ public class EnemyPool extends Pool<Enemy> {
     public void free(Enemy enemy) {
         super.free(enemy);
         Gdx.app.debug("EnemyPool", "Removed enemy from scene");
-        scene.removeActors.add(enemy);
+        scene.removeActor(enemy);
     }
 
     @Override

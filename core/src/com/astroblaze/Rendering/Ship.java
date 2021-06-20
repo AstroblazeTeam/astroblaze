@@ -116,7 +116,7 @@ public class Ship extends Renderable {
         modelInstance.model.calculateBoundingBox(bb);
         modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
         setMoveVector(new Vector3(), true);
-        setPosition(new Vector3(0f, 0f, scene.destroyBounds.min.z + 5f));
+        setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
         applyTRS();
     }
@@ -140,7 +140,7 @@ public class Ship extends Renderable {
         final int ports = shipVariant.gunPorts;
         final float offset = this.modelRadius / ports * 0.5f;
         for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
-            scene.decals.addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
+            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = true;
         }
         ITargetable t = scene.getClosestTarget(pos);
@@ -152,7 +152,7 @@ public class Ship extends Renderable {
             float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
             vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
             for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                scene.decals.addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, gunDamage)
+                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, gunDamage)
                         .ignorePlayerCollision = true;
             }
         }
@@ -203,7 +203,7 @@ public class Ship extends Renderable {
                 destroyExplosionTimer = destroyExplosionInterval;
                 Vector3 v = new Vector3();
                 v.setToRandomDirection();
-                DecalController.DecalInfo info = scene.decals.addExplosion(v.scl(MathUtils.random(radius, 2f * radius)),
+                DecalController.DecalInfo info = scene.getDecalController().addExplosion(v.scl(MathUtils.random(radius, 2f * radius)),
                         new Vector3(), 0.05f);
                 info.origin = this.getPosition();
             }
@@ -242,7 +242,7 @@ public class Ship extends Renderable {
         this.noControlTimer = time;
         final boolean newHpBarEnabled = time <= 0f
                 && godModeTimer <= 0f
-                && scene.gameBounds.contains(getPosition());
+                && scene.getGameBounds().contains(getPosition());
         if (hpBarEnabled != newHpBarEnabled) {
             hpBarEnabled = newHpBarEnabled;
             game.reportHpEnabled(this, hpBarEnabled);

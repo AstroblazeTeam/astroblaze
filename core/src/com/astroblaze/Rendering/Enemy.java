@@ -51,7 +51,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         BoundingBox bb = new BoundingBox();
         Assets.asset(enemyType.modelDescriptor).calculateBoundingBox(bb);
         modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
-        reset(scene.gameBounds);
+        reset(scene.getGameBounds());
     }
 
     public void reset(BoundingBox bb) {
@@ -82,7 +82,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         final Vector3 vel = new Vector3(0, 0, -3f * moveVector.len());
         final float offset = this.modelRadius / count * 0.5f;
         for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
-            scene.decals.addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, gunDamage)
+            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = false;
         }
     }
@@ -135,9 +135,9 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
             return;
         this.hitpoints -= damage;
         if (this.hitpoints <= 0f) {
-            scene.removeActors.add(this);
+            scene.removeActor(this);
             AstroblazeGame.getSoundController().playExplosionSound();
-            scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
+            scene.getDecalController().addExplosion(this.getPosition(), moveVector, 0.1f);
 
             if (isPlayer) {
                 AstroblazeGame.getPlayerState().modPlayerScore(typeId.value);
@@ -147,13 +147,13 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     }
 
     private void dropBonus() {
-        dropBonus(scene.bonusDistribution.getRandom());
+        dropBonus(scene.rollRandomBonus());
     }
 
     private void dropBonus(IPlayerBonus bonus) {
         if (bonus == null) // random chance for no bonus drop
             return;
-        scene.decals.addBonus(this.getPosition(), bonus);
+        scene.getDecalController().addBonus(this.getPosition(), bonus);
     }
 
     @Override
