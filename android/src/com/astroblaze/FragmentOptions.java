@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -80,7 +81,7 @@ public class FragmentOptions extends Fragment {
             }
         });
 
-        CheckBox cbShake = view.findViewById(R.id.checkBox);
+        Switch cbShake = view.findViewById(R.id.checkBox);
         cbShake.setChecked(AstroblazeGame.getPlayerState().getScreenShake());
         cbShake.setOnCheckedChangeListener((buttonView, isChecked)
                 -> AstroblazeGame.getPlayerState().setScreenShake(isChecked));
