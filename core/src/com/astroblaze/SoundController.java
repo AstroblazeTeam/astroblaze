@@ -23,7 +23,7 @@ public class SoundController implements ILoadingFinishedListener {
     }
 
     public void playExplosionSound() {
-        soundExplosion.play(1f, 1f, 0f);
+        soundExplosion.play(volume);
     }
 
     public float getVolume() {
