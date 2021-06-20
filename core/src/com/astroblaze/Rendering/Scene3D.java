@@ -24,72 +24,114 @@ import java.util.ArrayList;
 
 public class Scene3D implements ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
-    public final ArrayList<SceneActor> addActors = new ArrayList<>(64);
-    public final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
-    public final ArrayList<Missile> activeMissiles = new ArrayList<>(64);
-    public final WeightedCollection<IPlayerBonus> bonusDistribution = new WeightedCollection<>();
-    public final Plane planeXZ = new Plane(Vector3.Y, 0f);
-    public final BoundingBox gameBounds = new BoundingBox();
-    public final BoundingBox destroyBounds = new BoundingBox();
-    public final EnemyPool enemyPool;
-    private final Environment environment;
-    private final CameraController camera = new CameraController();
-    private final AstroblazeGame game;
+    private final ArrayList<SceneActor> addActors = new ArrayList<>(64);
+    private final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
+    private final ArrayList<Missile> activeMissiles = new ArrayList<>(64);
+    private final WeightedCollection<IPlayerBonus> bonusDistribution = new WeightedCollection<>();
+
     private final Vector3 moveVector = new Vector3();
+    private final Plane planeXZ = new Plane(Vector3.Y, 0f);
+    private final BoundingBox gameBounds = new BoundingBox();
+    private final BoundingBox destroyBounds = new BoundingBox();
+    private final CameraController camera = new CameraController();
     private final ParticleSystem particles = new ParticleSystem();
+    private final Environment environment = new Environment();
+    private final AstroblazeGame game;
+    private final EnemyPool enemyPool;
+    private final DecalController decalController;
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
-    private float timeScale = 1f;
-    public final int defaultMaxLives = 3;
-    private int lives = defaultMaxLives;
-
-    // decals
-    public final DecalController decals;
+    private final int defaultMaxLives = 3;
 
     private Ship player;
+    private int lives = defaultMaxLives;
+    private float timeScale = 1f;
 
     public Scene3D(AstroblazeGame game) {
         this.game = game;
         this.game.addOnLoadingFinishedListener(this);
 
-        this.environment = new Environment();
-        this.environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
-        this.environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-        this.particlePool = new ParticlePool(this.particles);
-        this.missilePool = new MissilePool(this);
-        this.enemyPool = new EnemyPool(this);
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        particlePool = new ParticlePool(particles);
+        missilePool = new MissilePool(this);
+        enemyPool = new EnemyPool(this);
 
         PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);
-        batch.setCamera(this.getCamera());
-        this.particles.add(batch);
-        this.decals = new DecalController(this, camera);
-        bonusesSetup();
+        batch.setCamera(camera);
+        particles.add(batch);
+        decalController = new DecalController(this, camera);
+        setupBonusDistribution();
     }
 
-    private void bonusesSetup() {
+    private void setupBonusDistribution() {
         bonusDistribution.add(50, null);
         bonusDistribution.add(40, new PlayerBonusMissiles());
         bonusDistribution.add(20, new PlayerBonusShieldRestore());
         bonusDistribution.add(10, new PlayerBonusLife());
     }
 
+    public Ship getPlayer() {
+        return player;
+    }
+
+    public EnemyPool getEnemyPool() {
+        return enemyPool;
+    }
+
     public MissilePool getMissilesPool() {
-        return this.missilePool;
+        return missilePool;
     }
 
     public ParticleSystem getParticlesSystem() {
-        return this.particles;
+        return particles;
     }
 
     public Environment getEnvironment() {
-        return this.environment;
+        return environment;
+    }
+
+    public DecalController getDecalController() {
+        return decalController;
+    }
+
+    public Vector3 getRespawnPosition() {
+        return new Vector3(0f, 0f, destroyBounds.min.z + 5f);
+    }
+
+    public BoundingBox getGameBounds() {
+        return new BoundingBox(gameBounds);
+    }
+
+    public IPlayerBonus rollRandomBonus() {
+        return bonusDistribution.getRandom();
+    }
+
+    public CameraController getCamera() {
+        return camera;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void modLives(int mod) {
+        lives += mod;
+    }
+
+    public float getTimeScale() {
+        return timeScale;
+    }
+
+    public void setTimeScale(float newTimeScale) {
+        timeScale = newTimeScale;
     }
 
     @Override
     public void finishedLoadingAssets() {
-        this.particlePool.setEffect(Assets.asset(Assets.flame));
-        this.missilePool.setAssets(particlePool, Assets.missile);
-        this.decals.loadTextures();
+        particlePool.setEffect(Assets.asset(Assets.flame));
+        missilePool.setAssets(particlePool, Assets.missile);
+        decalController.loadTextures();
     }
 
     public void act(float delta) {
@@ -118,8 +160,8 @@ public class Scene3D implements ILoadingFinishedListener {
             actor.act(delta);
         }
 
-        this.particles.update(delta);
-        this.decals.update(delta);
+        particles.update(delta);
+        decalController.update(delta);
 
         for (SceneActor actor : actors) {
             if (!(actor instanceof ICollisionProvider))
@@ -136,13 +178,13 @@ public class Scene3D implements ILoadingFinishedListener {
                 }
 
                 // check if player clips enemy bullet or bonus
-                for (DecalController.DecalInfo d : decals.getDecals()) {
+                for (DecalController.DecalInfo d : decalController.getDecals()) {
                     if (!d.ignorePlayerCollision && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
                         if (d.life > 0f) {
                             d.life = 0f;
                             player.modHp(-d.collisionDamage);
                             if (d.bonus != null) {
-                                d.bonus.applyBonus(this.player);
+                                d.bonus.applyBonus(player);
                             }
                         }
                     }
@@ -155,10 +197,10 @@ public class Scene3D implements ILoadingFinishedListener {
                 }
 
                 provider.damageFromCollision(m.getDamage(), true);
-                decals.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
+                decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                 missilePool.free(m);
             }
-            for (DecalController.DecalInfo d : decals.getDecals()) {
+            for (DecalController.DecalInfo d : decalController.getDecals()) {
                 if (!d.ignorePlayerCollision || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
                     continue;
                 }
@@ -174,18 +216,18 @@ public class Scene3D implements ILoadingFinishedListener {
 
         camera.update();
         batch.begin(camera);
-        this.particles.begin();
-        this.particles.draw();
-        this.particles.end();
+        particles.begin();
+        particles.draw();
+        particles.end();
         batch.render(particles);
         for (SceneActor actor : actors) {
             actor.render(batch, environment);
         }
         batch.end();
-        decals.render();
+        decalController.render();
 
         if (Gdx.graphics.getFrameId() % 15 == 0) {
-            // every ~2 seconds do cleanup of objects that go out of bounds
+            // every few frames do cleanup of objects that go out of bounds
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
                     if (actor instanceof Ship) {
@@ -244,16 +286,12 @@ public class Scene3D implements ILoadingFinishedListener {
         player.resetShip();
     }
 
-    public Ship getPlayer() {
-        return this.player;
-    }
-
     public void reset() {
         removeActors.addAll(actors);
         player = null;
         processActorMigrations();
         particles.update(60f); // finish playing all particles
-        decals.getDecals().clear();
+        decalController.getDecals().clear();
         moveVector.setZero();
         lives = defaultMaxLives;
     }
@@ -285,36 +323,17 @@ public class Scene3D implements ILoadingFinishedListener {
             throw new RuntimeException("Camera ray missed plane XZ, something is very wrong.");
         }
 
-        // raycasting XZ plane the difference of Y components is 0, fix that
+        // raycasting XZ plane the difference of Y components is 0
+        // this messes up some calculations, this fixes it
         hit1.y = -32f;
         hit2.y = +32f;
         gameBounds.set(hit1.cpy(), hit2.cpy());
         destroyBounds.set(hit1.scl(1.5f), hit2.scl(1.5f));
     }
 
-    public CameraController getCamera() {
-        return this.camera;
-    }
-
-    public int getLives() {
-        return this.lives;
-    }
-
-    public void modLives(int mod) {
-        this.lives += mod;
-    }
-
-    public float getTimeScale() {
-        return this.timeScale;
-    }
-
-    public void setTimeScale(float timeScale) {
-        this.timeScale = timeScale;
-    }
-
     public void playerDied() {
         lives--;
-        this.moveVector.setZero();
+        moveVector.setZero();
         if (lives > 0) {
             player.resetShip();
             player.setPosition(new Vector3(1000f, 0f, 0f));
@@ -340,7 +359,7 @@ public class Scene3D implements ILoadingFinishedListener {
     }
 
     public boolean getXZIntersection(float screenX, float screenY, Vector3 worldPosition) {
-        Ray ray = this.getCamera().getPickRay(screenX, screenY);
+        Ray ray = camera.getPickRay(screenX, screenY);
         Gdx.app.log("FragmentLevelSelect", "unproject (" + ray + ")");
         return Intersector.intersectRayPlane(ray, planeXZ, worldPosition);
     }
@@ -360,5 +379,15 @@ public class Scene3D implements ILoadingFinishedListener {
             }
         }
         return result;
+    }
+
+    public void addActor(SceneActor actor) {
+        if (!addActors.contains(actor))
+            addActors.add(actor);
+    }
+
+    public void removeActor(SceneActor actor) {
+        if (!removeActors.contains(actor))
+            removeActors.add(actor);
     }
 }

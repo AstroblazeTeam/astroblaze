@@ -81,7 +81,7 @@ public class LevelControllerActor extends Actor {
                     public boolean act(float delta) {
                         Ship player = scene.getPlayer();
                         player.setPosition(player.getPosition().cpy().add(0f, 0f, 500f * delta));
-                        return !scene.gameBounds.contains(player.getPosition());
+                        return !scene.getGameBounds().contains(player.getPosition());
                     }
                 },
                 new RunnableAction() {
@@ -111,7 +111,7 @@ public class LevelControllerActor extends Actor {
         RunnableAction r = new RunnableAction() {
             @Override
             public void run() {
-                float spawnZoneX = scene.gameBounds.max.x - scene.gameBounds.min.x;
+                float spawnZoneX = scene.getGameBounds().getWidth();
                 for (int i = 0; i < count; i++) {
                     if (i > count / 2 - removeMiddle && i < count / 2 + removeMiddle) {
                         enemy[i] = null;
@@ -121,9 +121,9 @@ public class LevelControllerActor extends Actor {
                     Vector3 spawnPos = new Vector3(
                             spawnZoneX * (((i + 0.5f) / count) - 0.5f),
                             0f,
-                            scene.gameBounds.max.z);
+                            scene.getGameBounds().max.z);
 
-                    enemy[i] = scene.enemyPool.obtain();
+                    enemy[i] = scene.getEnemyPool().obtain();
                     enemy[i].setType(type);
                     enemy[i].setPosition(spawnPos);
                 }
@@ -135,7 +135,7 @@ public class LevelControllerActor extends Actor {
                 int alive = 0;
                 for (Enemy value : enemy) {
                     if (value != null && value.getHitpoints() > 0f
-                            && scene.gameBounds.contains(value.getPosition()))
+                            && scene.getGameBounds().contains(value.getPosition()))
                         alive++;
                 }
                 return alive <= 0;
@@ -152,11 +152,11 @@ public class LevelControllerActor extends Actor {
                 Vector3 spawnPos = scene.getPlayer().getPosition().cpy();
                 // spawn away by mirrored x axis just in case
                 spawnPos.add(
-                        Math.copySign(scene.gameBounds.max.x * 0.75f, -spawnPos.x),
+                        Math.copySign(scene.getGameBounds().max.x * 0.75f, -spawnPos.x),
                         0f,
-                        scene.gameBounds.max.z * 0.75f);
+                        scene.getGameBounds().max.z * 0.75f);
 
-                enemy[0] = scene.enemyPool.obtain();
+                enemy[0] = scene.getEnemyPool().obtain();
                 enemy[0].setType(type);
                 enemy[0].setPosition(spawnPos);
             }
@@ -173,7 +173,7 @@ public class LevelControllerActor extends Actor {
         return new RunnableAction() {
             @Override
             public void run() {
-                float spawnZoneX = scene.gameBounds.max.x - scene.gameBounds.min.x;
+                float spawnZoneX = scene.getGameBounds().getWidth();
                 for (int i = 0; i < count; i++) {
                     if (i > count / 2 - removeMiddle && i < count / 2 + removeMiddle) {
                         continue;
@@ -182,8 +182,8 @@ public class LevelControllerActor extends Actor {
                     Vector3 spawnPos = new Vector3(
                             spawnZoneX * (((i + 0.5f) / count) - 0.5f),
                             0f,
-                            scene.gameBounds.max.z);
-                    Enemy enemy = scene.enemyPool.obtain();
+                            scene.getGameBounds().max.z);
+                    Enemy enemy = scene.getEnemyPool().obtain();
                     enemy.setType(type);
                     enemy.setPosition(spawnPos);
                 }

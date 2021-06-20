@@ -30,7 +30,7 @@ public class MissilePool extends Pool<Missile> {
     public Missile obtain() {
         Missile missile = super.obtain();
         missile.effect = particles.obtain();
-        scene.addActors.add(missile);
+        scene.addActor(missile);
         return missile;
     }
 
@@ -43,7 +43,7 @@ public class MissilePool extends Pool<Missile> {
             particles.free(missile.effect);
             missile.effect = null;
         }
-        scene.removeActors.add(missile);
+        scene.removeActor(missile);
     }
 
     @Override
