@@ -1,7 +1,7 @@
 # Blender MTL File: 'LowPoly Spaceships.blend'
 # Material Count: 1
 
-newmtl Material-2
+newmtl Material-3
 Ns 323.999994
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -10,4 +10,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd tex02-512.png
+map_Kd tex03-512.png

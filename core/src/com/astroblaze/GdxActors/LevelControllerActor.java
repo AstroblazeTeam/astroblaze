@@ -188,6 +188,7 @@ public class LevelControllerActor extends Actor {
                     enemy.setType(type);
                     enemy.setPosition(spawnPos);
                 }
+                Gdx.app.log("LevelControllerActor", "Spawned wall of " + type.name());
             }
         };
     }

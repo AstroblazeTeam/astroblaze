@@ -112,9 +112,7 @@ public class Ship extends Renderable {
         isDying = false;
         modMissileSalvos(-missileSalvos);
         // set to slightly closer than destroy bounds
-        BoundingBox bb = new BoundingBox();
-        modelInstance.model.calculateBoundingBox(bb);
-        modelRadius = Math.max(bb.getWidth(), Math.max(bb.getHeight(), bb.getDepth())) * 0.5f;
+        modelRadius = variant.modelScale;
         setMoveVector(new Vector3(), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());

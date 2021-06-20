@@ -19,6 +19,7 @@ import java.util.Locale;
 
 public class Assets extends AssetManager implements ILoadingFinishedListener {
     private static Assets instance;
+    private static final int spaceShipModelsAvailable = 14;
 
     // these 3 assets loaded first to show loading screen
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
@@ -26,9 +27,6 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Music> uiMusic = new AssetDescriptor<>("music/ObservingTheStar.ogg", Music.class);
 
     public final static AssetDescriptor<Music> gameMusic = new AssetDescriptor<>("music/space_flight.ogg", Music.class);
-    public final static AssetDescriptor<Model> spaceShip1 = new AssetDescriptor<>("spaceships/spaceship1.obj", Model.class);
-    public final static AssetDescriptor<Model> spaceShip2 = new AssetDescriptor<>("spaceships/spaceship2.obj", Model.class);
-    public final static AssetDescriptor<Model> spaceShip3 = new AssetDescriptor<>("spaceships/spaceship3.obj", Model.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
     public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax1 = new AssetDescriptor<>("parallax/parallax1.png", Texture.class);
@@ -41,7 +39,8 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     // these are loaded late, don't rely on them available at start!
     public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
     public final static Array<AssetDescriptor<Texture>> parallaxArray = new Array<>(16);
-    public final static Array<Model> enemyModels = new Array<>(16);
+    public final static Array<AssetDescriptor<Model>> spaceShipAssets = new Array<>(16);
+    public final static Array<Model> spaceShipModels = new Array<>(16);
     public static AssetDescriptor<ParticleEffect> flame;
     public static TextureAtlas atlas1;
     public static TextureAtlas.AtlasRegion whitePixel;
@@ -67,9 +66,12 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     }
 
     public void loadAssets(ParticleSystem particles) {
-        load(spaceShip1);
-        load(spaceShip2);
-        load(spaceShip3);
+        spaceShipAssets.clear();
+        for (int i = 0; i < spaceShipModelsAvailable; i++) {
+            AssetDescriptor<Model> spaceShipAsset = new AssetDescriptor<>("spaceships/spaceship" + i + ".obj", Model.class);
+            load(spaceShipAsset);
+            spaceShipAssets.add(spaceShipAsset);
+        }
         load(parallax0);
         load(parallax1);
         load(parallax2);
@@ -91,8 +93,11 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         heartTexture = Assets.asset(Assets.atlas).findRegion("heart_icon");
         whitePixel = Assets.asset(Assets.atlas).findRegion("white_pixel");
 
-        enemyModels.clear();
-        enemyModels.add(asset(spaceShip1), asset(spaceShip2), asset(spaceShip3));
+        spaceShipModels.clear();
+        for (int i = 0; i < spaceShipModelsAvailable; i++) {
+            AssetDescriptor<Model> spaceShipAsset = new AssetDescriptor<>("spaceships/spaceship" + i + ".obj", Model.class);
+            spaceShipModels.add(asset(spaceShipAsset));
+        }
 
         bullets.clear();
         for (int i = 1; i < 11; i++) {
