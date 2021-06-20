@@ -26,11 +26,18 @@ public class HiscoresController {
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 try {
                     JSONArray scoresRaw = new JSONArray(httpResponse.getResultAsString());
+                    int rank = 0;
+                    float rankScore = 1000000000f;
 
                     for (int i = 0; i < scoresRaw.length(); i++) {
                         JSONObject obj = scoresRaw.getJSONObject(i);
+                        float score = (float) obj.getDouble("score");
+                        if (rankScore > score) {
+                            rankScore = score;
+                            rank++;
+                        }
                         r.response.add(new HiscoresEntry(
-                                i + 1,
+                                rank,
                                 obj.getString("id"),
                                 obj.getString("name"),
                                 (float) obj.getDouble("score"),

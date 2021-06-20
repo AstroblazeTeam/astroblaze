@@ -10,6 +10,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 import org.jetbrains.annotations.NotNull;
@@ -77,5 +79,10 @@ public class FragmentOptions extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+
+        CheckBox cbShake = view.findViewById(R.id.checkBox);
+        cbShake.setChecked(AstroblazeGame.getPlayerState().getScreenShake());
+        cbShake.setOnCheckedChangeListener((buttonView, isChecked)
+                -> AstroblazeGame.getPlayerState().setScreenShake(isChecked));
     }
 }

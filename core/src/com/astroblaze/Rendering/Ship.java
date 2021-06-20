@@ -4,9 +4,7 @@ import com.astroblaze.*;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class Ship extends Renderable {
@@ -70,6 +68,9 @@ public class Ship extends Renderable {
         }
         hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHp());
         game.reportStateChanged(this, hp, oldHp);
+        if (hpModifier < 0f) {
+            scene.getCamera().shake();
+        }
         Gdx.app.log("Ship", "Player hp modded from " + oldHp + " to " + hp);
         if (hp < 0f) {
             setNoControlTime(deathTimer);

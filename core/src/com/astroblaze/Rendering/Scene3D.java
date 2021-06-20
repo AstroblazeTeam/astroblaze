@@ -5,9 +5,7 @@ import com.astroblaze.Bonuses.*;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -35,7 +33,7 @@ public class Scene3D implements ILoadingFinishedListener {
     public final BoundingBox destroyBounds = new BoundingBox();
     public final EnemyPool enemyPool;
     private final Environment environment;
-    private final PerspectiveCamera camera = new PerspectiveCamera();
+    private final CameraController camera = new CameraController();
     private final AstroblazeGame game;
     private final Vector3 moveVector = new Vector3();
     private final ParticleSystem particles = new ParticleSystem();
@@ -137,7 +135,7 @@ public class Scene3D implements ILoadingFinishedListener {
                     provider.damageFromCollision(100f, true);
                 }
 
-                // check if player clips enemy bullet
+                // check if player clips enemy bullet or bonus
                 for (DecalController.DecalInfo d : decals.getDecals()) {
                     if (!d.ignorePlayerCollision && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
                         if (d.life > 0f) {
@@ -174,6 +172,7 @@ public class Scene3D implements ILoadingFinishedListener {
     public void render(ModelBatch batch) {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
+        camera.update();
         batch.begin(camera);
         this.particles.begin();
         this.particles.draw();
@@ -293,7 +292,7 @@ public class Scene3D implements ILoadingFinishedListener {
         destroyBounds.set(hit1.scl(1.5f), hit2.scl(1.5f));
     }
 
-    public Camera getCamera() {
+    public CameraController getCamera() {
         return this.camera;
     }
 

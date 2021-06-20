@@ -23,9 +23,9 @@ public class PlayerState {
         public int level; // max unlocked level
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
-        public boolean screenShake;
-        public float soundVolume;
-        public float musicVolume;
+        public boolean screenShake = true;
+        public float soundVolume = 1f;
+        public float musicVolume = 1f;
         public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
         public HashMap<Integer, ArrayList<UpgradeEntry>> unlockedUpgrades = new HashMap<>();
@@ -53,7 +53,7 @@ public class PlayerState {
             return true;
         }
         final long diff = new Date().getTime() - data.lastScoreSubmit.getTime();
-        return TimeUnit.MILLISECONDS.toMinutes(diff) > 5;
+        return data.score > 0 && TimeUnit.MILLISECONDS.toMinutes(diff) > 5;
     }
 
     public void submittedScore() {
@@ -125,6 +125,9 @@ public class PlayerState {
     }
 
     public void modPlayerMoney(float mod) {
+        if (MathUtils.isEqual(mod, 0, 0.1f)) {
+            return;
+        }
         data.money += mod;
         if (Math.abs(mod) > 1000f) {
             saveState();
@@ -218,19 +221,15 @@ public class PlayerState {
 
     public void restoreState() {
         String stateString = Gdx.app.getPreferences("Astroblaze").getString("playerState");
-        if (stateString == null || stateString.trim().equals(""))
-            stateString = "{}";
-        data = gson.fromJson(stateString, PlayerStateData.class);
-        if (data.unlockedUpgrades == null)
-            data.unlockedUpgrades = new HashMap<>();
-        if (data.unlockedShips == null || data.unlockedShips.size() == 0) {
-            data.unlockedShips = new ArrayList<>();
+        if (stateString == null || stateString.trim().equals("")) {
+            // init fresh state
+            data = new PlayerStateData();
+            Gdx.app.log("PlayerState", "Initialized fresh state.");
             unlockShipVariant(PlayerShipVariant.Scout);
+        } else {
+            data = gson.fromJson(stateString, PlayerStateData.class);
+            Gdx.app.log("PlayerState", "Restored state: " + stateString);
         }
-        if (data.id == null || data.id.equals("")) {
-            data.id = UUID.randomUUID().toString();
-        }
-        Gdx.app.log("PlayerState", "Restored state: " + stateString);
     }
 
     private void reportStateChanged() {
