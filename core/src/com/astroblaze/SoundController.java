@@ -14,7 +14,7 @@ public class SoundController implements ILoadingFinishedListener {
     SoundController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
         state = AstroblazeGame.getPlayerState();
-        volume = state.getMusicVolume();
+        volume = state.getSoundVolume();
     }
 
     @Override
