@@ -63,7 +63,6 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         applyTRS();
         hitpoints = typeId.hp;
         gunClock = MathUtils.random(0f, gunInterval);
-        explosionSound = Assets.asset(Assets.explosion);
 
         // specialization per enemy type
         gunPellets = typeId.gunPellets;
@@ -137,7 +136,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         this.hitpoints -= damage;
         if (this.hitpoints <= 0f) {
             scene.removeActors.add(this);
-            explosionSound.play(1f, 1f, MathUtils.random(-1f, 1f));
+            AstroblazeGame.getSoundController().playExplosionSound();
             scene.decals.addExplosion(this.getPosition(), moveVector, 0.1f);
 
             if (isPlayer) {

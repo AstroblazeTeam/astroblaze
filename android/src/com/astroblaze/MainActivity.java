@@ -56,10 +56,10 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                                     case "fragmentLoading":
                                     case "fragmentMenu":
                                     case "fragmentLevelSelect":
-                                        game.getMusicController().setTrack(MusicController.MusicTrackType.UI);
+                                        AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.UI);
                                         break;
                                     case "fragmentPause":
-                                        game.getMusicController().setTrack(MusicController.MusicTrackType.Game);
+                                        AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.Game);
                                         break;
                                     default:
                                         Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");

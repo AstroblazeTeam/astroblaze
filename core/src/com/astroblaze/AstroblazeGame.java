@@ -25,6 +25,7 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
     private final ArrayList<IUIChangeListener> uiChangeListeners = new ArrayList<>(4);
     private final InputMultiplexer inputMux = new InputMultiplexer();
 
+    private SoundController soundController;
     private MusicController musicController;
     private Scene3D scene;
     private GLProfiler profiler;
@@ -48,8 +49,12 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         return this.scene;
     }
 
-    public MusicController getMusicController() {
-        return this.musicController;
+    public static SoundController getSoundController() {
+        return instance.soundController;
+    }
+
+    public static MusicController getMusicController() {
+        return instance.musicController;
     }
 
     public IGUIRenderer getGuiRenderer() {
@@ -84,6 +89,7 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         assets.finishLoadingAsset(Assets.uiMusic);
         assets.finishLoadingAsset(Assets.logo);
 
+        soundController = new SoundController(this);
         musicController = new MusicController(this);
         musicController.loadLoadingScreenAssets();
 

@@ -17,7 +17,7 @@ class MusicController implements ILoadingFinishedListener {
     private final float intervalUpdate = 0.1f;
 
     private MusicTrackType currentTrack = MusicTrackType.None;
-    private float targetVolume = 1f;
+    private float volume = 1f;
     private float time = 0f;
 
     MusicController(AstroblazeGame game) {
@@ -32,7 +32,7 @@ class MusicController implements ILoadingFinishedListener {
         }
 
         assignTrack(MusicTrackType.UI, Assets.uiMusic);
-        targetVolume = AstroblazeGame.getPlayerState().getMusicVolume();
+        volume = state.getMusicVolume();
     }
 
     @Override
@@ -71,7 +71,7 @@ class MusicController implements ILoadingFinishedListener {
             if (music == null) // skip unassigned tracks
                 continue;
 
-            float end = trackType == currentTrack ? targetVolume : 0f;
+            float end = trackType == currentTrack ? volume : 0f;
 
             float current = music.getVolume();
             float target = MathHelper.moveTowards(current, end, delta * fadeSpeed);
@@ -86,14 +86,14 @@ class MusicController implements ILoadingFinishedListener {
         }
     }
 
-    public float getMusicVolume() {
-        return targetVolume;
+    public float getVolume() {
+        return volume;
     }
 
-    public void setMusicVolume(float volume) {
+    public void setVolume(float volume) {
         state.setMusicVolume(volume);
-        targetVolume = volume;
-        Gdx.app.log("MusicManager", "Set target volume to " + targetVolume);
+        this.volume = volume;
+        Gdx.app.log("MusicManager", "Set target volume to " + this.volume);
     }
 
     public void setTrack(MusicTrackType track) {

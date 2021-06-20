@@ -23,6 +23,7 @@ public class PlayerState {
         public int level; // max unlocked level
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
+        public boolean screenShake;
         public float soundVolume;
         public float musicVolume;
         public Date lastScoreSubmit = new Date(0);
@@ -84,6 +85,15 @@ public class PlayerState {
 
     public void setMusicVolume(float newVolume) {
         data.musicVolume = newVolume;
+        saveState();
+    }
+
+    public boolean getScreenShake() {
+        return data.screenShake;
+    }
+
+    public void setScreenShake(boolean screenShake) {
+        data.screenShake = screenShake;
         saveState();
     }
 

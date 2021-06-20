@@ -15,6 +15,9 @@ import android.widget.SeekBar;
 import org.jetbrains.annotations.NotNull;
 
 public class FragmentOptions extends Fragment {
+    private SoundController soundController;
+    private MusicController musicController;
+
     public FragmentOptions() {
         // Required empty public constructor
     }
@@ -35,19 +38,35 @@ public class FragmentOptions extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
-            }
-        });
+        musicController = AstroblazeGame.getMusicController();
+        soundController = AstroblazeGame.getSoundController();
+
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
+                -> NavHostFragment.findNavController(FragmentOptions.this).popBackStack());
 
         SeekBar sbMusic = view.findViewById(R.id.seekBarMusic);
-        sbMusic.setProgress((int) (AstroblazeGame.getInstance().getMusicController().getMusicVolume() * 100f));
+        sbMusic.setProgress((int) (musicController.getVolume() * 100f));
         sbMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                AstroblazeGame.getInstance().getMusicController().setMusicVolume(progress / 100f);
+                musicController.setVolume(progress / 100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        SeekBar sbSound = view.findViewById(R.id.seekBarSound);
+        sbSound.setProgress((int) (soundController.getVolume() * 100f));
+        sbSound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                soundController.setVolume(progress / 100f);
             }
 
             @Override
