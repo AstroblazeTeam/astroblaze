@@ -23,11 +23,11 @@
             android:textSize="20sp"
             android:textColor="@color/button_outline"
             android:fontFamily="@font/safetythirdregular"
-
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -39,26 +39,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/backToMenu"
-                android:layout_width="@dimen/button_width_var2"
-                android:layout_height="@dimen/button_height_var2"
-                android:layout_margin="8dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/menu_button_states"
-                android:text="@string/backToMenu"
-                android:textSize="12sp"
-                android:fontFamily="@font/tenderness"
-                android:shadowColor="@color/menu_bg_color"
-                android:shadowRadius="3.6"
-                android:shadowDx="2.3"
-                android:shadowDy="2.5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/openOptions" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/backToGame"
@@ -78,7 +58,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread" />
+                app:layout_constraintVertical_chainStyle="spread"
+                />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/openOptions"
@@ -97,8 +78,29 @@
                 app:layout_constraintBottom_toTopOf="@+id/backToMenu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/backToGame" />
+                app:layout_constraintTop_toBottomOf="@+id/backToGame"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/backToMenu"
+                android:layout_width="@dimen/button_width_var2"
+                android:layout_height="@dimen/button_height_var2"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/menu_button_states"
+                android:text="@string/backToMenu"
+                android:textSize="12sp"
+                android:fontFamily="@font/tenderness"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowRadius="3.6"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/openOptions"
+                />
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>

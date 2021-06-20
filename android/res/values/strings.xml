@@ -70,5 +70,5 @@
         "Find and destroy, reward upon uploading sensor readings of attached coordinates.\n\n"
         "Reward: $ %2$d"
     </string>
-    <string name="astroblaze">Astroblaze</string>
+
 </resources>
