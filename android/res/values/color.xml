@@ -7,4 +7,6 @@
     <color name="button_active_gradient_1">#E000E0</color>
     <color name="button_active_gradient_2">#00E0E0</color>
     <color name="button_outline">#FFFFFF</color>
+    <color name="seekbar_high">#FF0000</color>
+    <color name="seekbar_low">#FFA500</color>
 </resources>
