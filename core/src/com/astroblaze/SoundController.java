@@ -2,6 +2,7 @@ package com.astroblaze;
 
 import com.astroblaze.Interfaces.ILoadingFinishedListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Sound;
 
 public class SoundController implements ILoadingFinishedListener {
@@ -34,6 +35,11 @@ public class SoundController implements ILoadingFinishedListener {
 
     private void playSound(Sound sfx) {
         sfx.play(volume);
+    }
+
+    public void playSoundAsset(AssetDescriptor<Sound> sfx) {
+        Gdx.app.log("SoundController", "Playing " + sfx.toString() + " at " + (int) (volume * 100f) + " volume.");
+        Assets.asset(sfx).play(volume);
     }
 
     public float getVolume() {

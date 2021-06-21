@@ -11,7 +11,7 @@ public enum EnemyType {
     SineWave(Assets.spaceShipAssets.get(6), 15f, 100f, 100f, 3, 30f), // enemy moving in sine wave pattern
     Rammer(Assets.spaceShipAssets.get(7), 15f, 50f, 10000f, 1, 30f), // enemy moving in sine wave pattern
     MoneyDrop(Assets.spaceShipAssets.get(8), 15f, 500f, 200f, 0, 60f), // enemy drops money
-    Boss(Assets.spaceShipAssets.get(9), 25f, 3000f, 1000f, 0, 0f); // boss dummy
+    Boss(Assets.spaceShipAssets.get(9), 25f, 3000f, 10000f, 0, 0f); // boss dummy
 
     public final AssetDescriptor<Model> modelDescriptor;
     public final float value;

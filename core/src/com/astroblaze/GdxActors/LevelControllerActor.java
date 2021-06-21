@@ -5,6 +5,8 @@ import com.astroblaze.Rendering.*;
 import com.astroblaze.PlayerState;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -222,6 +224,11 @@ public class LevelControllerActor extends Actor {
                 seq.addAction(delay(waveDelay));
             }
 
+            seq.addAction(delay(5f));
+            seq.addAction(showText("Boss incoming!"));
+            seq.addAction(playSound(Assets.soundWarning));
+            seq.addAction(delay(2f));
+
             seq.addAction(spawnEnemyAndWaitDeath(EnemyType.Boss));
 
             seq.addAction(showText("Level complete"));
@@ -229,6 +236,15 @@ public class LevelControllerActor extends Actor {
 
             this.addAction(seq);
         }
+    }
+
+    public Action playSound(final AssetDescriptor<Sound> sound) {
+        return new RunnableAction() {
+            @Override
+            public void run() {
+                AstroblazeGame.getSoundController().playSoundAsset(sound);
+            }
+        };
     }
 
     @Override

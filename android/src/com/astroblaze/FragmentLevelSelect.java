@@ -49,27 +49,20 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
         btnPlay = view.findViewById(R.id.btnPlay);
         // (play) level select -> pause (instantly skips to game fragment if startGame param is true)
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("startGame", true);
-                bundle.putInt("level", FragmentLevelSelect.this.pagerLevels.getCurrentItem());
-                bundle.putInt("ship", FragmentLevelSelect.this.pagerShips.getCurrentItem());
+        btnPlay.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("startGame", true);
+            bundle.putInt("level", FragmentLevelSelect.this.pagerLevels.getCurrentItem());
+            bundle.putInt("ship", FragmentLevelSelect.this.pagerShips.getCurrentItem());
 
-                NavHostFragment.findNavController(FragmentLevelSelect.this)
-                        .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
-            }
+            NavHostFragment.findNavController(FragmentLevelSelect.this)
+                    .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
         });
 
         // back button
-        view.findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.btnBack).setOnClickListener(v ->
                 NavHostFragment.findNavController(FragmentLevelSelect.this)
-                        .popBackStack();
-            }
-        });
+                        .popBackStack());
 
         tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
         tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
