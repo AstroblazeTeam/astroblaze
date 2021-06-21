@@ -100,6 +100,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 FragmentLevelSelect.this.refreshShipSwipeButtons(position);
+                AstroblazeGame.getPlayerState().setLastSelectedShip(position);
             }
         });
 
@@ -134,8 +135,12 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             preview.setSelectedPosition(worldPos);
         }
         preview.setVisible(true);
-        pagerLevels.setCurrentItem(AstroblazeGame.getPlayerState().getMaxLevel());
-        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+
+        PlayerState state = AstroblazeGame.getPlayerState();
+
+        state.addPlayerStateChangeListener(this);
+        pagerShips.setCurrentItem(state.getLastSelectedShip(), true);
+        pagerLevels.setCurrentItem(state.getMaxLevel(), true);
     }
 
     @Override
@@ -147,12 +152,9 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
     @Override
     public void onStateChanged(PlayerState state) {
-        pagerLevels.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
-                refreshShipSwipeButtons(pagerShips.getCurrentItem());
-            }
+        pagerLevels.post(() -> {
+            refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
+            refreshShipSwipeButtons(pagerShips.getCurrentItem());
         });
     }
 

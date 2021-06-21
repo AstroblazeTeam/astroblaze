@@ -21,6 +21,7 @@ public class PlayerState {
         public float money;
         public float score;
         public int level; // max unlocked level
+        public int selectedShip; // last selected ship
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
         public boolean screenShake = true;
@@ -74,13 +75,13 @@ public class PlayerState {
         return data.soundVolume;
     }
 
-    public float getMusicVolume() {
-        return data.musicVolume;
-    }
-
     public void setSoundVolume(float newVolume) {
         data.soundVolume = newVolume;
         saveState();
+    }
+
+    public float getMusicVolume() {
+        return data.musicVolume;
     }
 
     public void setMusicVolume(float newVolume) {
@@ -103,6 +104,15 @@ public class PlayerState {
 
     public void setMaxLevel(int level) {
         data.level = level;
+        saveState();
+    }
+
+    public int getLastSelectedShip() {
+        return data.selectedShip;
+    }
+
+    public void setLastSelectedShip(int newValue) {
+        data.selectedShip = newValue;
         saveState();
     }
 
