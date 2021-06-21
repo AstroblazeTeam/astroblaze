@@ -71,7 +71,7 @@ public class HealthBarActor extends Actor implements IUIChangeListener {
             return;
 
         final float h = Gdx.graphics.getHeight();
-        final float w = 4f * Gdx.graphics.getDensity();
+        final float w = hpWidth * Gdx.graphics.getDensity();
 
         // make white highlight for just-taken-away health
         if (currentHp > targetHp) {

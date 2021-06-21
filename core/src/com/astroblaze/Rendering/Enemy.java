@@ -35,6 +35,10 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         return this.hitpoints;
     }
 
+    public float getMaxHitpoints() {
+        return this.typeId.hp;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

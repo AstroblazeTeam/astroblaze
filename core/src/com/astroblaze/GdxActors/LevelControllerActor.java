@@ -146,6 +146,41 @@ public class LevelControllerActor extends Actor {
         });
     }
 
+    private Action spawnBoss(final EnemyType bossType) {
+        RunnableAction r = new RunnableAction();
+        final Enemy[] enemy = new Enemy[1]; // array wrapper for closure
+        r.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                Vector3 spawnPos = scene.getPlayer().getPosition().cpy();
+                // spawn away by mirrored x axis just in case
+                spawnPos.add(
+                        Math.copySign(scene.getGameBounds().max.x * 0.75f, -spawnPos.x),
+                        0f,
+                        scene.getGameBounds().max.z * 0.75f);
+
+                enemy[0] = scene.getEnemyPool().obtain();
+                enemy[0].setType(bossType);
+                enemy[0].setPosition(spawnPos);
+
+                AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemy[0]);
+            }
+        });
+
+        return Actions.sequence(
+                delay(5f),
+                showText("Boss incoming!"),
+                playSound(Assets.soundWarning),
+                delay(2f),
+                r,
+                new Action() {
+                    @Override
+                    public boolean act(float delta) {
+                        return enemy[0].getHitpoints() <= 0f;
+                    }
+                });
+    }
+
     private Action spawnEnemyAndWaitDeath(final EnemyType type) {
         RunnableAction r = new RunnableAction();
         final Enemy[] enemy = new Enemy[1]; // array wrapper for closure
@@ -224,12 +259,7 @@ public class LevelControllerActor extends Actor {
                 seq.addAction(delay(waveDelay));
             }
 
-            seq.addAction(delay(5f));
-            seq.addAction(showText("Boss incoming!"));
-            seq.addAction(playSound(Assets.soundWarning));
-            seq.addAction(delay(2f));
-
-            seq.addAction(spawnEnemyAndWaitDeath(EnemyType.Boss));
+            seq.addAction(spawnBoss(EnemyType.Boss));
 
             seq.addAction(showText("Level complete"));
             seq.addAction(finishLevel());

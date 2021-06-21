@@ -16,6 +16,7 @@ public class GameScreen extends ScreenAdapter {
     private ParallaxActor parallaxActor; // background painter
     private FadeOverlayActor fadeOverlayActor; // fade transition translucent overlay
     private HealthBarActor healthBarActor; // health bar display
+    private BossHealthBarActor bossHealthBarActor; // health bar display
     private LevelControllerActor levelControllerActor; // level controller (enemy spawner)
     private ShipPreviewActor shipPreviewActor; // ship preview (for level select)
     private Scene3D scene;
@@ -50,6 +51,10 @@ public class GameScreen extends ScreenAdapter {
         return shipPreviewActor;
     }
 
+    public BossHealthBarActor getBossTracker() {
+        return this.bossHealthBarActor;
+    }
+
     public boolean isGameRunning() {
         return levelControllerActor != null;
     }
@@ -69,11 +74,15 @@ public class GameScreen extends ScreenAdapter {
         healthBarActor = new HealthBarActor(scene);
         healthBarActor.setVisible(false);
 
+        bossHealthBarActor = new BossHealthBarActor();
+        bossHealthBarActor.setVisible(false);
+
         shipPreviewActor = new ShipPreviewActor(scene);
         shipPreviewActor.setVisible(false);
 
         stage.addActor(parallaxActor);
         stage.addActor(healthBarActor);
+        stage.addActor(bossHealthBarActor);
         stage.addActor(shipPreviewActor);
         stage.addActor(new DebugTextActor());
         stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
@@ -100,6 +109,12 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     public void run() {
                         healthBarActor.setVisible(true);
+                    }
+                }),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        bossHealthBarActor.setVisible(true);
                     }
                 }),
                 Actions.fadeIn(1f),
@@ -135,6 +150,12 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     public void run() {
                         healthBarActor.setVisible(false);
+                    }
+                }),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        bossHealthBarActor.setVisible(false);
                     }
                 }),
                 Actions.fadeIn(1f),
