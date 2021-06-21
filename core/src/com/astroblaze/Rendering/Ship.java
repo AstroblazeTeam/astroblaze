@@ -144,6 +144,9 @@ public class Ship extends Renderable {
         ITargetable t = scene.getClosestTarget(pos);
         if (t != null) {
             final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
+            if (distance > 1000f) { // don't shoot from off-screen
+                return;
+            }
             final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
             final int turretPorts = shipVariant.gunPorts;
             final float turretOffset = this.modelRadius / turretPorts * 0.5f;
