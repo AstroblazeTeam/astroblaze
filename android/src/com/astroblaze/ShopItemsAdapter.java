@@ -19,13 +19,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     private final PlayerShipVariant variant;
     private final Context context;
     private final ArrayList<UpgradeEntry> items;
-    private final MediaPlayer mp;
 
     public ShopItemsAdapter(PlayerShipVariant variant, Context context, ArrayList<UpgradeEntry> items) {
         this.variant = variant;
         this.context = context;
         this.items = items;
-        this.mp = MediaPlayer.create(context, R.raw.cha_ching);
     }
 
     @NonNull
@@ -64,7 +62,6 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
                 return;
             }
 
-            mp.start();
             ShopItemsAdapter.this.notifyDataSetChanged();
         });
         holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState()

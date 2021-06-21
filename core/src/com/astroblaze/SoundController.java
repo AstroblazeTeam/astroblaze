@@ -8,6 +8,7 @@ public class SoundController implements ILoadingFinishedListener {
     private final PlayerState state;
 
     private Sound soundExplosion;
+    private Sound soundPurchase;
 
     private float volume;
 
@@ -19,11 +20,20 @@ public class SoundController implements ILoadingFinishedListener {
 
     @Override
     public void finishedLoadingAssets() {
-        soundExplosion = Assets.asset(Assets.explosion);
+        soundExplosion = Assets.asset(Assets.soundExplosion);
+        soundPurchase = Assets.asset(Assets.soundPurchase);
     }
 
     public void playExplosionSound() {
-        soundExplosion.play(volume);
+        playSound(soundExplosion);
+    }
+
+    public void playPurchaseSound() {
+        playSound(soundPurchase);
+    }
+
+    private void playSound(Sound sfx) {
+        sfx.play(volume);
     }
 
     public float getVolume() {

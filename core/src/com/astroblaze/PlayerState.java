@@ -178,6 +178,7 @@ public class PlayerState {
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
         reportStateChanged();
+        AstroblazeGame.getSoundController().playPurchaseSound();
         return true;
     }
 
@@ -207,6 +208,7 @@ public class PlayerState {
         }
         item.currentTier = MathUtils.clamp(item.currentTier + 1, 0, item.maxTier);
         modPlayerMoney(-item.price);
+        AstroblazeGame.getSoundController().playPurchaseSound();
         saveState();
         return true;
     }

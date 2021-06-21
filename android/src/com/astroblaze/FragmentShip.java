@@ -27,7 +27,6 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     private TextView tvDescription;
     private TextView tvStats;
     private Button btnAction;
-    private MediaPlayer mp;
 
     public FragmentShip() {
         this.variant = PlayerShipVariant.Scout;
@@ -43,7 +42,6 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        this.mp = MediaPlayer.create(getContext(), R.raw.cha_ching);
         return inflater.inflate(R.layout.fragment_ship, container, false);
     }
 
@@ -88,9 +86,7 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
                 btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
                 btnAction.setOnClickListener(v -> {
-                    if (AstroblazeGame.getPlayerState().unlockShipVariant(variant)) {
-                        mp.start();
-                    }
+                    AstroblazeGame.getPlayerState().unlockShipVariant(variant);
                 });
             } else {
                 btnAction.setEnabled(true);
