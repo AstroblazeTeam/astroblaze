@@ -192,7 +192,6 @@ public class Scene3D implements ILoadingFinishedListener {
                     player.modHp(-player.getMaxHp() * 0.5f);
                     provider.damageFromCollision(100f, true);
                 }
-
             }
 
             for (Missile m : activeMissiles) {

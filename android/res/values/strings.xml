@@ -36,9 +36,6 @@
     <string name="speedUpgrade">Speed (%1$s)</string>
     <string name="damageUpgrade">Damage (%1$s)</string>
 
-    <string name="ship0">Scout</string>
-    <string name="ship1">Cruiser</string>
-    <string name="ship2">Destroyer</string>
 
     <string name="level0">
         "Tutorial mission.\n\n\n"
@@ -71,4 +68,9 @@
         "Reward: $ %2$d"
     </string>
 
+    <string name="ship0">Scout</string>
+    <string name="ship1">Cruiser</string>
+    <string name="ship2">Destroyer</string>
+    <string name="ship3">Battlecruiser</string>
+    <string name="ship4">Battleship</string>
 </resources>

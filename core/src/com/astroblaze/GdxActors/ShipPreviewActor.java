@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import java.util.ArrayList;
 
 public class ShipPreviewActor extends Actor {
-    public static int VARIANT_COUNT = 3;
+    public static final int VARIANT_COUNT = PlayerShipVariant.values().length;
 
     class PlayerShipVariantInstance {
         public PlayerShipVariant variant;
@@ -43,7 +43,7 @@ public class ShipPreviewActor extends Actor {
 
     private final ModelBatch modelBatch;
     private final Scene3D scene;
-    private final ArrayList<PlayerShipVariantInstance> variants = new ArrayList<>(4);
+    private final ArrayList<PlayerShipVariantInstance> variants = new ArrayList<>(VARIANT_COUNT);
     private final Vector3 selectedPosition = new Vector3();
     private final float spaceBetween = 80f;
     private final float scaleSpeed = 3f;
@@ -55,9 +55,9 @@ public class ShipPreviewActor extends Actor {
         this.scene = scene;
         this.modelBatch = AstroblazeGame.getInstance().getBatch();
 
-        addVariant(PlayerShipVariant.Scout);
-        addVariant(PlayerShipVariant.Cruiser);
-        addVariant(PlayerShipVariant.Destroyer);
+        for (PlayerShipVariant v : PlayerShipVariant.values()) {
+            addVariant(v);
+        }
     }
 
     public int getVariantCount() {
