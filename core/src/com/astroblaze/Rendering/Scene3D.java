@@ -163,6 +163,22 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.update(delta);
         decalController.update(delta);
 
+        if (player != null) {
+            Vector3 playerPos = player.getPosition();
+            // check if player clips enemy bullet or bonus
+            for (DecalController.DecalInfo d : decalController.getDecals()) {
+                if (!d.ignorePlayerCollision && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
+                    if (d.life > 0f) {
+                        d.life = 0f;
+                        player.modHp(-d.collisionDamage);
+                        if (d.bonus != null) {
+                            d.bonus.applyBonus(player);
+                        }
+                    }
+                }
+            }
+        }
+
         for (SceneActor actor : actors) {
             if (!(actor instanceof ICollisionProvider))
                 continue;
@@ -177,18 +193,6 @@ public class Scene3D implements ILoadingFinishedListener {
                     provider.damageFromCollision(100f, true);
                 }
 
-                // check if player clips enemy bullet or bonus
-                for (DecalController.DecalInfo d : decalController.getDecals()) {
-                    if (!d.ignorePlayerCollision && (playerPos.dst(d.position) < player.getRadius() + d.radiusSquared)) {
-                        if (d.life > 0f) {
-                            d.life = 0f;
-                            player.modHp(-d.collisionDamage);
-                            if (d.bonus != null) {
-                                d.bonus.applyBonus(player);
-                            }
-                        }
-                    }
-                }
             }
 
             for (Missile m : activeMissiles) {
