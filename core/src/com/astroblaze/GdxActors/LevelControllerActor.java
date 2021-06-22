@@ -230,6 +230,33 @@ public class LevelControllerActor extends Actor {
         };
     }
 
+    private Action spawnSequenceOfEnemies(final EnemyType type, final int enemyCount, final float interval) {
+        return new Action() {
+            private float time = interval;
+            private final float spawnX = MathUtils.random(-0.45f, 0.45f) * scene.getGameBounds().getWidth();
+            private int count = enemyCount;
+
+            @Override
+            public boolean act(float delta) {
+                time -= delta * AstroblazeGame.getInstance().getScene().getTimeScale();
+                if (time < interval) {
+                    time += interval;
+                    count--;
+
+                    Vector3 spawnPos = new Vector3(spawnX, 0f, scene.getGameBounds().max.z);
+                    Enemy enemy = scene.getEnemyPool().obtain();
+                    enemy.setType(type);
+                    enemy.setPosition(spawnPos);
+                }
+                if (count <= 0) {
+                    Gdx.app.log("LevelControllerActor", "Finished spawning sequence of " + type.name());
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
     private Action delay(float duration) {
         return new SceneDelayAction(duration);
     }
@@ -254,8 +281,14 @@ public class LevelControllerActor extends Actor {
                     showText(""));
 
             for (int i = 0; i < 10 + level; i++) {
-                seq.addAction(spawnWallOfEnemies(waveTypeWeights.getRandom(),
-                        MathUtils.random(3 + level, 7 + level), MathUtils.random(1, 2)));
+                EnemyType waveType = waveTypeWeights.getRandom();
+                int count = MathUtils.random(3 + level, 7 + level);
+                if (MathUtils.random(0f, 1f) > 0.5f) {
+                    int removeMiddle = MathUtils.random(1, 2);
+                    seq.addAction(spawnWallOfEnemies(waveType, count, removeMiddle));
+                } else {
+                    seq.addAction(spawnSequenceOfEnemies(waveType, count, 2f * waveDelay / count));
+                }
                 seq.addAction(delay(waveDelay));
             }
 
