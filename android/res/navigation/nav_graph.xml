@@ -13,24 +13,24 @@
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentOptions"
             app:destination="@id/fragmentOptions"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentLevelSelect"
             app:destination="@id/fragmentLevelSelect"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_fragmentMenu_to_fragmentHiscores"
             app:destination="@id/fragmentHiscores"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/fragmentOptions"
@@ -50,10 +50,10 @@
         <action
             android:id="@+id/action_fragmentPause_to_fragmentGame"
             app:destination="@id/fragmentGame"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <argument
             android:name="startGame"
             app:argType="boolean"
@@ -61,10 +61,10 @@
         <action
             android:id="@+id/action_fragmentPause_to_fragmentOptions"
             app:destination="@id/fragmentOptions"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/fragmentLoading"
@@ -74,10 +74,10 @@
         <action
             android:id="@+id/action_fragmentLoading_to_fragmentMenu"
             app:destination="@id/fragmentMenu"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="false" />
     </fragment>
@@ -89,17 +89,17 @@
         <action
             android:id="@+id/action_fragmentLevelSelect_to_fragmentPause"
             app:destination="@id/fragmentPause"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_fragmentLevelSelect_to_shopFragment"
             app:destination="@id/shopFragment"
-            app:enterAnim="@anim/navigate_in"
-            app:exitAnim="@anim/navigate_out"
-            app:popEnterAnim="@anim/navigate_in"
-            app:popExitAnim="@anim/navigate_out" />
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"

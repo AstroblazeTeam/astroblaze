@@ -54,11 +54,11 @@ public class FragmentHiscores extends Fragment {
         HiscoresController.fetchBoard(new HiscoresController.RunnableResponseHandler<ArrayList<HiscoresEntry>>() {
             @Override
             public void run() {
-                rvBoard.post(() -> {
+                rvBoard.postDelayed(() -> {
                     pgLoading.setVisibility(View.INVISIBLE);
                     rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), response));
                     rvBoard.setVisibility(View.VISIBLE);
-                });
+                }, 500);
             }
         });
     }
