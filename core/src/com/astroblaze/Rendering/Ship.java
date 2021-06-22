@@ -141,20 +141,23 @@ public class Ship extends Renderable {
             scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = true;
         }
-        ITargetable t = scene.getClosestTarget(pos);
-        if (t != null) {
-            final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
-            if (distance > 1000f) { // don't shoot from off-screen
-                return;
-            }
-            final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
-            final int turretPorts = shipVariant.gunPorts;
-            final float turretOffset = this.modelRadius / turretPorts * 0.5f;
-            float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
-            vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
-            for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, gunDamage)
-                        .ignorePlayerCollision = true;
+
+        if (shipVariant.turretPorts > 0) {
+            ITargetable t = scene.getClosestTarget(pos);
+            if (t != null) {
+                final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
+                if (distance > 1000f) { // don't shoot from off-screen
+                    return;
+                }
+                final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
+                final int turretPorts = shipVariant.turretPorts;
+                final float turretOffset = this.modelRadius / turretPorts * 0.5f;
+                float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
+                vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
+                for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
+                    scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * gunDamage)
+                            .ignorePlayerCollision = true;
+                }
             }
         }
     }

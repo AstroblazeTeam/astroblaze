@@ -6,28 +6,30 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import java.util.ArrayList;
 
 public enum PlayerShipVariant {
-    Scout(0, Assets.spaceShipAssets.get(0), 15f, 100f, 0f, 1, 2),
-    Destroyer(1, Assets.spaceShipAssets.get(1), 15f, 150f, 10000f, 2, 3),
-    Cruiser(2, Assets.spaceShipAssets.get(2), 15f, 200f, 50000f, 3, 4),
-    Battlecruiser(3, Assets.spaceShipAssets.get(3), 15f, 250f, 100000f, 4, 5),
-    Battleship(4, Assets.spaceShipAssets.get(9), 15f, 300f, 1000000f, 5, 6);
+    Scout(0, Assets.spaceShipAssets.get(0), 15f, 100f, 0f, 1, 0, 2),
+    Destroyer(1, Assets.spaceShipAssets.get(1), 15f, 150f, 10000f, 2, 0, 3),
+    Cruiser(2, Assets.spaceShipAssets.get(2), 15f, 200f, 50000f, 3, 1, 4),
+    Battlecruiser(3, Assets.spaceShipAssets.get(3), 15f, 250f, 100000f, 4, 1, 5),
+    Battleship(4, Assets.spaceShipAssets.get(9), 15f, 300f, 1000000f, 5, 2, 6);
 
     public final int id;
     public final AssetDescriptor<Model> modelDescriptor;
     public final float modelScale;
     public final float price;
     public final int gunPorts;
+    public final int turretPorts;
     public final int missilePorts;
     private final float maxHp;
 
     PlayerShipVariant(int id, AssetDescriptor<Model> modelDescriptor, float modelScale, float maxHp,
-                      float price, int gunPorts, int missilePorts) {
+                      float price, int gunPorts, int turretPorts, int missilePorts) {
         this.id = id;
         this.modelDescriptor = modelDescriptor;
         this.modelScale = modelScale;
         this.maxHp = maxHp;
         this.price = price;
         this.gunPorts = gunPorts;
+        this.turretPorts = turretPorts;
         this.missilePorts = missilePorts;
     }
 
