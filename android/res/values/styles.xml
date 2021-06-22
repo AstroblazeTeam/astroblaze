@@ -13,10 +13,12 @@
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/tenderness</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
         <item name="android:fontFamily">@font/tenderness</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="SwitchTheme" parent="Widget.AppCompat.CompoundButton.Switch">
