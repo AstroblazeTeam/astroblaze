@@ -78,7 +78,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // exit button
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
-                -> requireActivity().finish());
+                -> ((MainActivity)requireActivity()).exit());
     }
 
     @Override

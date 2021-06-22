@@ -38,34 +38,31 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
 
     @Override
     public void exit() {
-        this.finish();
+        this.finishAndRemoveTask();
     }
 
     @Override
     public void finishedLoadingAssets() {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                navController = Navigation.findNavController(MainActivity.this, R.id.menu_container);
-                navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-                    Gdx.app.log("MainActivity", "NavController onDestinationChanged -> " + navDestination.getDisplayName());
-                    String navDisplayName = navDestination.getDisplayName();
-                    switch (navDisplayName.substring(navDisplayName.indexOf('/') + 1)) {
-                        case "fragmentLoading":
-                        case "fragmentMenu":
-                        case "fragmentLevelSelect":
-                            AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.UI);
-                            break;
-                        case "fragmentPause":
-                            AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.Game);
-                            break;
-                        default:
-                            Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");
-                            break;
-                    }
-                });
-                navController.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
-            }
+        this.runOnUiThread(() -> {
+            navController = Navigation.findNavController(MainActivity.this, R.id.menu_container);
+            navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+                Gdx.app.log("MainActivity", "NavController onDestinationChanged -> " + navDestination.getDisplayName());
+                String navDisplayName = navDestination.getDisplayName();
+                switch (navDisplayName.substring(navDisplayName.indexOf('/') + 1)) {
+                    case "fragmentLoading":
+                    case "fragmentMenu":
+                    case "fragmentLevelSelect":
+                        AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.UI);
+                        break;
+                    case "fragmentPause":
+                        AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.Game);
+                        break;
+                    default:
+                        Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");
+                        break;
+                }
+            });
+            navController.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
         });
     }
 }
