@@ -13,11 +13,18 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class FragmentMenu extends Fragment {
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
+
+public class FragmentMenu extends Fragment implements IPlayerStateChangedListener {
+    TextView tvPilotName;
     TextView tvRank;
+    TextView tvScore;
+    TextView tvMoney;
+    Button btnChangeName;
 
     public FragmentMenu() {
         // Required empty public constructor
@@ -38,19 +45,19 @@ public class FragmentMenu extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tvPilotName = view.findViewById(R.id.tvPilotName);
         tvRank = view.findViewById(R.id.tvRank);
-        tvRank.setClickable(true);
-        tvRank.setOnClickListener(v -> showChangeNameDialog());
-        tvRank.setText(getString(R.string.rankPrintLoading,
-                (int) AstroblazeGame.getPlayerState().getPlayerScore()));
+        tvScore = view.findViewById(R.id.tvScore);
+        tvMoney = view.findViewById(R.id.tvMoneyVal);
+
+        btnChangeName = view.findViewById(R.id.btnChangePilotName);
+        btnChangeName.setOnClickListener(v -> showChangeNameDialog());
 
         HiscoresController.submitRank(new HiscoresController.RunnableResponseHandler<Integer>() {
             @Override
             public void run() {
                 if (this.response <= 0) return; // silently fail
-                tvRank.post(() ->
-                        tvRank.setText(getString(R.string.rankPrint,
-                                (int) AstroblazeGame.getPlayerState().getPlayerScore(), String.valueOf(this.response))));
+                tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
             }
         }, true);
 
@@ -74,6 +81,18 @@ public class FragmentMenu extends Fragment {
                 -> requireActivity().finish());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
+    }
+
     private void showChangeNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(getString(R.string.changePilotName));
@@ -89,9 +108,7 @@ public class FragmentMenu extends Fragment {
                 @Override
                 public void run() {
                     if (this.response <= 0) return; // silently fail
-                    tvRank.post(() ->
-                            tvRank.setText(getString(R.string.rankPrint,
-                                    (int) AstroblazeGame.getPlayerState().getPlayerScore(), String.valueOf(this.response))));
+                    tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
                 }
             }, false);
             dialog.dismiss();
@@ -99,5 +116,12 @@ public class FragmentMenu extends Fragment {
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
         AlertDialog alert = builder.show();
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    @Override
+    public void onStateChanged(PlayerState state) {
+        tvPilotName.setText(state.getName());
+        tvScore.setText(String.valueOf((long) state.getPlayerScore()));
+        tvMoney.setText(getString(R.string.moneyPrint, (long) state.getPlayerMoney()));
     }
 }

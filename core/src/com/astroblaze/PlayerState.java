@@ -129,8 +129,9 @@ public class PlayerState {
         modPlayerMoney(mod);
         if (Math.abs(mod) > 1000f) {
             saveState();
+        } else { // small sum, just update UI
+            reportStateChanged();
         }
-        reportStateChanged();
         Gdx.app.log("AstroblazeGame", "Player score modded by " + mod + " to " + data.score);
     }
 
@@ -141,8 +142,9 @@ public class PlayerState {
         data.money += mod;
         if (Math.abs(mod) > 1000f) {
             saveState();
+        } else { // small sum, just update UI
+            reportStateChanged();
         }
-        reportStateChanged();
         Gdx.app.log("AstroblazeGame", "Player money modded by " + mod + " to " + data.money);
     }
 
@@ -187,7 +189,6 @@ public class PlayerState {
 
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
-        reportStateChanged();
         AstroblazeGame.getSoundController().playPurchaseSound();
         return true;
     }
@@ -229,6 +230,7 @@ public class PlayerState {
         prefs.putString("playerState", stateString);
         prefs.flush();
         Gdx.app.log("PlayerState", "Saved state");
+        reportStateChanged();
     }
 
     public void restoreState() {
