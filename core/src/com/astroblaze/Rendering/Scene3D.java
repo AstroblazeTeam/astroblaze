@@ -283,7 +283,7 @@ public class Scene3D implements ILoadingFinishedListener {
             player = new Ship(this);
             player.resetShipType(variant);
 
-            actors.add(player);
+            addActor(player);
         }
 
         player.resetShip();

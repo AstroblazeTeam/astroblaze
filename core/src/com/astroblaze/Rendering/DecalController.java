@@ -34,7 +34,9 @@ public class DecalController {
     private final Scene3D scene;
     private final Camera camera;
     private Animation<TextureRegion> explosionAnimation;
-    private Array<TextureAtlas.AtlasRegion> texRegions;
+    private Animation<TextureRegion> exhaustAnimation;
+    private Array<TextureAtlas.AtlasRegion> explosionTexRegions;
+    private Array<TextureAtlas.AtlasRegion> exhaustTexRegions;
     private final Vector3 billboardDirection = new Vector3();
 
     public DecalController(Scene3D scene, Camera camera) {
@@ -44,12 +46,32 @@ public class DecalController {
     }
 
     public void loadTextures() {
-        this.texRegions = Assets.asset(Assets.atlas).findRegions("explosion1");
-        this.explosionAnimation = new Animation<TextureRegion>(0.1f, texRegions);
+        this.explosionTexRegions = Assets.asset(Assets.atlas).findRegions("explosion1");
+        this.exhaustTexRegions = Assets.asset(Assets.atlas).findRegions("exhaust");
+        this.explosionAnimation = new Animation<TextureRegion>(0.1f, explosionTexRegions);
+        this.exhaustAnimation = new Animation<TextureRegion>(0.025f, exhaustTexRegions, Animation.PlayMode.LOOP);
     }
 
     public Array<DecalInfo> getDecals() {
         return this.activeDecals;
+    }
+
+    public DecalInfo addExhaust(Vector3 origin, float offset, float scale) {
+        DecalInfo info = new DecalInfo();
+        info.position = new Vector3(offset, -2f, -5f);
+        info.velocity = new Vector3();
+        info.life = 50000000f;
+        info.ignorePlayerCollision = true;
+        info.origin = origin;
+        info.angle = -90f;
+        info.decal = Decal.newDecal(exhaustTexRegions.first(), true);
+        info.decal.setPosition(info.position);
+        info.decal.setRotation(billboardDirection, Vector3.Y);
+        info.decal.setScale(scale * 0.5f);
+        info.decal.rotateZ(MathUtils.random(0f, 360f));
+        info.animation = exhaustAnimation;
+        activeDecals.add(info);
+        return info;
     }
 
     public DecalInfo addBullet(Vector3 position, Vector3 velocity, float scale, float damage) {
@@ -77,7 +99,7 @@ public class DecalController {
         info.velocity = velocity.cpy();
         info.time = 0f;
         info.life = explosionAnimation.getAnimationDuration();
-        info.decal = Decal.newDecal(texRegions.first(), true);
+        info.decal = Decal.newDecal(explosionTexRegions.first(), true);
         info.decal.setPosition(info.position);
         info.decal.setRotation(billboardDirection, Vector3.Y);
         info.decal.setScale(scale);

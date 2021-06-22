@@ -466,6 +466,20 @@ repeat: none
   orig: 233, 134
   offset: 0, 0
   index: -1
+exhaust
+  rotate: false
+  xy: 1737, 1793
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+exhaust
+  rotate: false
+  xy: 1194, 1790
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
 explosion1
   rotate: false
   xy: 2, 1060

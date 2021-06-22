@@ -4,8 +4,9 @@ import com.astroblaze.*;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Array;
 
 public class Ship extends Renderable {
     public final float respawnNoControlTime = 1f;
@@ -34,10 +35,37 @@ public class Ship extends Renderable {
     private boolean hpBarEnabled = false; // flag to avoid event spam
     private PlayerShipVariant shipVariant;
 
+    private final Array<DecalController.DecalInfo> exhaustDecals = new Array<>(8);
+
     public Ship(Scene3D scene) {
         this.scene = scene;
         this.game = AstroblazeGame.getInstance();
         this.playerState = AstroblazeGame.getPlayerState();
+    }
+
+    @Override
+    public void show(Scene3D scene) {
+        super.show(scene);
+        float engineScale = getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade);
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, -modelRadius * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f, 1.25f * engineScale));
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, +modelRadius * 0.25f, 0.75f * engineScale));
+        // normalize to 0f..1f range
+        float colorScale = MathUtils.map(1f, 1.5f, 0f, 1f, engineScale);
+        Color startColor = Color.WHITE;
+        Color endColor = new Color(0.95f, 0.32f, 0.25f, 1f);
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            d.decal.setColor(startColor.lerp(endColor, colorScale));
+        }
+    }
+
+    @Override
+    public void hide(Scene3D scene) {
+        super.hide(scene);
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            d.life = 0f;
+        }
+        exhaustDecals.clear();
     }
 
     public Scene3D getScene() {

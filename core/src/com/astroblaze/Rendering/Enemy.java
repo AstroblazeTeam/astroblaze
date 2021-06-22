@@ -2,13 +2,13 @@ package com.astroblaze.Rendering;
 
 import com.astroblaze.*;
 import com.astroblaze.Interfaces.*;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Array;
 
 public class Enemy extends Renderable implements ICollisionProvider, ITargetable {
     private final Scene3D scene;
@@ -22,13 +22,36 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     private float gunClock = 0f;
     private int gunPellets = 8;
     private EnemyType typeId = EnemyType.Idle;
-    private Sound explosionSound;
     private boolean enabled;
     private float hitpoints;
+
+    private final float exhaustScaleModifier = 1f / 10f;
+    private final Array<DecalController.DecalInfo> exhaustDecals = new Array<>(8);
 
     public Enemy(Scene3D scene, EnemyType typeId) {
         this.scene = scene;
         setType(typeId);
+    }
+
+    @Override
+    public void show(Scene3D scene) {
+        super.show(scene);
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f,
+                exhaustScaleModifier * typeId.modelScale));
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            // flip exhaust position (enemy forward is reverse from player)
+            d.angle = -d.angle;
+            d.position.z = -d.position.z;
+        }
+    }
+
+    @Override
+    public void hide(Scene3D scene) {
+        super.hide(scene);
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            d.life = 0f;
+        }
+        exhaustDecals.clear();
     }
 
     public float getHitpoints() {
@@ -70,6 +93,10 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
 
         // specialization per enemy type
         gunPellets = typeId.gunPellets;
+
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            d.decal.setScale(exhaustScaleModifier * typeId.modelScale);
+        }
 
         setEnabled(true);
     }
