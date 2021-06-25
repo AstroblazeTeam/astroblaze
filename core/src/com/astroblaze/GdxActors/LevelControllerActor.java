@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.actions.TimeScaleAction;
+import com.badlogic.gdx.utils.Array;
 
 public class LevelControllerActor extends Actor {
     private final Scene3D scene;
@@ -43,7 +44,7 @@ public class LevelControllerActor extends Actor {
                 showText("Primary weapon is always active, just aim and kill!"),
                 spawnEnemyAndWaitDeath(EnemyType.TrainingDummy),
                 showText("Dodge the bullets and enemies!"),
-                spawnWallOfEnemiesAndWaitDeath(EnemyType.Rammer, 9, 2),
+                spawnWallOfEnemiesAndWaitDeath(EnemyType.Rammer, 9),
                 showText("Use buttons below to fire missiles"),
                 new RunnableAction() {
                     @Override
@@ -109,39 +110,18 @@ public class LevelControllerActor extends Actor {
         return r;
     }
 
-    private Action spawnWallOfEnemiesAndWaitDeath(final EnemyType type, final int count, final int removeMiddle) {
-        final Enemy[] enemy = new Enemy[count]; // array wrapper for closure
-        RunnableAction r = new RunnableAction() {
-            @Override
-            public void run() {
-                float spawnZoneX = scene.getGameBounds().getWidth();
-                for (int i = 0; i < count; i++) {
-                    if (i > count / 2 - removeMiddle && i < count / 2 + removeMiddle) {
-                        enemy[i] = null;
-                        continue;
-                    }
-                    // spawn away by mirrored x axis just in case
-                    Vector3 spawnPos = new Vector3(
-                            spawnZoneX * (((i + 0.5f) / count) - 0.5f),
-                            0f,
-                            scene.getGameBounds().max.z);
-
-                    enemy[i] = scene.getEnemyPool().obtain();
-                    enemy[i].setType(type);
-                    enemy[i].setPosition(spawnPos);
-                }
-            }
-        };
+    private Action spawnWallOfEnemiesAndWaitDeath(final EnemyType type, int count) {
+        final Array<Enemy> enemies = new Array<>();
+        enemies.setSize(count);
+        Action r = spawnWallOfEnemies(type, enemies);
         return Actions.sequence(r, new Action() {
             @Override
             public boolean act(float delta) {
-                int alive = 0;
-                for (Enemy value : enemy) {
-                    if (value != null && value.getHitpoints() > 0f
-                            && scene.getGameBounds().contains(value.getPosition()))
-                        alive++;
+                for (Enemy value : enemies) {
+                    if (value != null && value.getHitpoints() > 0f && scene.getGameBounds().contains(value.getPosition()))
+                        return false;
                 }
-                return alive <= 0;
+                return true;
             }
         });
     }
@@ -208,27 +188,37 @@ public class LevelControllerActor extends Actor {
         });
     }
 
-    private Action spawnWallOfEnemies(final EnemyType type, final int count, final int removeMiddle) {
+    private Action spawnWallOfEnemies(final EnemyType type, final Array<Enemy> result) {
         return new RunnableAction() {
             @Override
             public void run() {
                 float spawnZoneX = scene.getGameBounds().getWidth();
-                for (int i = 0; i < count; i++) {
-                    if (i > count / 2 - removeMiddle && i < count / 2 + removeMiddle) {
-                        continue;
-                    }
+                float noSpawnRadius = scene.getPlayer().getRadius() * 4f;
+                float noSpawnX = MathUtils.random(scene.getGameBounds().min.x, scene.getGameBounds().max.x) * 0.75f;
+                for (int i = 0; i < result.size; i++) {
                     // spawn away by mirrored x axis just in case
                     Vector3 spawnPos = new Vector3(
-                            spawnZoneX * (((i + 0.5f) / count) - 0.5f),
+                            spawnZoneX * (((i + 0.5f) / result.size) - 0.5f),
                             0f,
                             scene.getGameBounds().max.z);
+                    if (MathUtils.isEqual(spawnPos.x, noSpawnX, noSpawnRadius)) {
+                        continue;
+                    }
                     Enemy enemy = scene.getEnemyPool().obtain();
                     enemy.setType(type);
                     enemy.setPosition(spawnPos);
+                    result.set(i, enemy);
                 }
+
                 Gdx.app.log("LevelControllerActor", "Spawned wall of " + type.name());
             }
         };
+    }
+
+    private Action spawnWallOfEnemies(final EnemyType type, final int count) {
+        Array<Enemy> enemies = new Array<>();
+        enemies.setSize(count);
+        return spawnWallOfEnemies(type, enemies);
     }
 
     private Action spawnSequenceOfEnemies(final EnemyType type, final int enemyCount, final float interval) {
@@ -285,8 +275,7 @@ public class LevelControllerActor extends Actor {
                 EnemyType waveType = waveTypeWeights.getRandom();
                 int count = MathUtils.random(3 + level, 7 + level);
                 if (MathUtils.random(0f, 1f) > 0.5f) {
-                    int removeMiddle = MathUtils.random(1, 2);
-                    seq.addAction(spawnWallOfEnemies(waveType, count, removeMiddle));
+                    seq.addAction(spawnWallOfEnemies(waveType, count));
                 } else {
                     seq.addAction(spawnSequenceOfEnemies(waveType, count, 2f * waveDelay / count));
                 }
