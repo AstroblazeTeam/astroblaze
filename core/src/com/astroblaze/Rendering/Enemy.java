@@ -87,8 +87,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
 
     public void reset(BoundingBox bb) {
         setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z * 1.1f));
-        setRotation(new Quaternion(Vector3.Y, 180f));
-        addRotation(new Quaternion(Vector3.Z, MathUtils.random(0, 360f)));
+        setRotation(new Quaternion(Vector3.Y, 180f)); // rotate to face left
         setScale(typeId.modelScale);
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
@@ -195,7 +194,6 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
                 break;
         }
 
-        addRotation(new Quaternion(Vector3.Z, delta * 90f));
         applyTRS();
     }
 
