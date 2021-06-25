@@ -2,11 +2,10 @@ package com.astroblaze.Rendering;
 
 import com.astroblaze.*;
 import com.astroblaze.Interfaces.*;
+import com.astroblaze.Utils.*;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
@@ -14,13 +13,13 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     private final Scene3D scene;
     private final Vector3 moveVector = new Vector3();
     private float modelRadius;
-    private float phaseClock = 0f;
-    private final float phaseMagnitude = 50f;
-    private final float phaseSpeed = 2f;
-    private final float gunInterval = 1f / 1f;
-    private final float gunDamage = 5f;
+    private float moveClock = 0f;
+    private final float moveMagnitude = 50f;
+    private final float moveClockSpeed = 2f;
+    private float aiDecisionClock = 0f;
+    private Vector3 aiDecisionMove = new Vector3();
     private float gunClock = 0f;
-    private int gunPellets = 8;
+    private float turretClock = 0f;
     private EnemyType typeId = EnemyType.Idle;
     private boolean enabled;
     private float hitpoints;
@@ -70,6 +69,11 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         return this.enabled;
     }
 
+    @Override
+    public boolean isTargetable() {
+        return typeId != EnemyType.Rammer;
+    }
+
     public void setType(EnemyType enemyType) {
         this.typeId = enemyType;
         this.setModel(enemyType.modelDescriptor);
@@ -89,10 +93,8 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
         hitpoints = typeId.hp;
-        gunClock = MathUtils.random(0f, gunInterval);
-
-        // specialization per enemy type
-        gunPellets = typeId.gunPellets;
+        gunClock = MathUtils.random(0f, typeId.gunFireInterval);
+        turretClock = MathUtils.random(0f, typeId.turretFireInterval);
 
         for (DecalController.DecalInfo d : exhaustDecals) {
             d.decal.setScale(exhaustScaleModifier * typeId.modelScale);
@@ -101,20 +103,51 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         setEnabled(true);
     }
 
-    public void fireGuns(float delta) {
+    private void fireGuns(float delta) {
         gunClock -= delta;
         if (gunClock >= 0f) {
             return;
         }
 
-        gunClock = gunInterval;
-        final float count = gunPellets;
+        gunClock += typeId.gunFireInterval;
+        final float count = typeId.guns;
         final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0, 0, -3f * moveVector.len());
-        final float offset = this.modelRadius / count * 0.5f;
+        final Vector3 vel = new Vector3(0, 0, -typeId.turretBulletSpeed);
+        final float offset = this.modelRadius * getScale().x / count * 0.5f;
         for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
-            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, gunDamage)
-                    .ignorePlayerCollision = false;
+            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, 0.1f, typeId.gunDamage)
+                    .ignoreEnemyCollision = true;
+        }
+    }
+
+    private void fireTurrets(float delta) {
+        turretClock -= delta;
+        if (turretClock >= 0f) {
+            return;
+        }
+        turretClock += typeId.turretFireInterval;
+
+        final Vector3 pos = this.getPosition().cpy();
+        final Vector3 vel = new Vector3();
+        final ITargetable t = scene.getPlayer();
+        if (t != null && t.isTargetable()) {
+            final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos.cpy()));
+            final Vector3 targetPos = t.estimatePosition(distance / typeId.turretBulletSpeed);
+            if (!scene.getGameBounds().contains(t.getPosition())) {
+                return;
+            }
+            final Vector3 dir = targetPos.cpy().sub(pos).nor();
+            final int turretPorts = typeId.turrets;
+            final float turretOffset = 0.5f * typeId.modelScale / turretPorts;
+            final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
+            if (Float.isNaN(angle) || Float.isInfinite(angle)) {
+                return;
+            }
+            vel.set(0f, 0f, typeId.turretBulletSpeed).rotate(Vector3.Y, angle);
+            for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
+                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, typeId.turretDamage)
+                        .ignoreEnemyCollision = true;
+            }
         }
     }
 
@@ -125,8 +158,10 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
             return;
 
         fireGuns(delta);
+        fireTurrets(delta);
 
-        phaseClock += phaseSpeed * delta;
+        aiDecisionClock -= delta;
+        moveClock += moveClockSpeed * delta;
         switch (this.typeId) {
             default:
             case Idle:
@@ -135,10 +170,28 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
                 getPosition().mulAdd(moveVector, delta);
                 break;
             case SineWave: // zigzag enemy, shooting diagonals
-                if (phaseClock > 2 * MathUtils.PI)
-                    phaseClock -= 2 * MathUtils.PI;
-                float phase = MathUtils.sin(phaseClock);
-                getPosition().mulAdd(moveVector, delta).add(phase * phaseMagnitude * delta, 0f, 0f);
+                if (moveClock > 2 * MathUtils.PI)
+                    moveClock -= 2 * MathUtils.PI;
+                float phase = MathUtils.sin(moveClock);
+                getPosition().mulAdd(moveVector, delta).add(phase * moveMagnitude * delta, 0f, 0f);
+                break;
+            case Boss:
+                if (typeId.aiMoveDecisionTime != 0f) {
+                    if (aiDecisionClock < 0f) {
+                        aiDecisionClock += typeId.aiMoveDecisionTime;
+                        BoundingBox bb = scene.getGameBounds();
+                        aiDecisionMove.set(
+                                MathUtils.random(bb.min.x, bb.max.x),
+                                0f,
+                                MathUtils.random(bb.min.z, bb.max.z));
+                    }
+
+                    MathHelper.moveTowards(this.position, aiDecisionMove, typeId.speed * delta);
+                    moveVector.set(aiDecisionMove.cpy().sub(this.position).nor());
+                } else {
+                    aiDecisionClock = 0f;
+                }
+
                 break;
         }
 
@@ -196,10 +249,4 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     public float distanceSquaredTo(Vector3 pos) {
         return position.dst2(pos);
     }
-
-    @Override
-    public boolean isTargetable() {
-        return typeId != EnemyType.Rammer;
-    }
 }
-

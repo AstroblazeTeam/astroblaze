@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.Array;
 
-public class Ship extends Renderable {
+public class Ship extends Renderable implements ITargetable {
     public final float respawnNoControlTime = 1f;
 
     private final Scene3D scene;
@@ -24,6 +24,7 @@ public class Ship extends Renderable {
     private float currentBank;
     private int missileSalvos = 0; // amount of missile salvos player has.
     private float gunClock = 0f;
+    private float turretClock = 0f;
     private float gunDamage;
     private float noControlTimer;
     private float hp;
@@ -169,23 +170,38 @@ public class Ship extends Renderable {
             scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = true;
         }
+    }
 
-        if (shipVariant.turretPorts > 0) {
-            ITargetable t = scene.getClosestTarget(pos);
-            if (t != null) {
-                final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
-                if (distance > 1000f) { // don't shoot from off-screen
-                    return;
-                }
-                final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
-                final int turretPorts = shipVariant.turretPorts;
-                final float turretOffset = this.modelRadius / turretPorts * 0.5f;
-                float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
-                vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
-                for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                    scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * gunDamage)
-                            .ignorePlayerCollision = true;
-                }
+    public void fireTurrets(float delta) {
+        if (!isControlled() || shipVariant.turretPorts == 0)
+            return;
+
+        turretClock -= delta;
+        if (turretClock >= 0f) {
+            return;
+        }
+        turretClock += gunInterval;
+
+        final Vector3 pos = this.getPosition().cpy();
+        final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
+
+        ITargetable t = scene.getClosestTarget(this, pos);
+        if (t != null) {
+            final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
+            if (distance > 1000f) { // don't shoot from off-screen
+                return;
+            }
+            final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
+            final int turretPorts = shipVariant.turretPorts;
+            final float turretOffset = this.modelRadius / turretPorts * 0.5f;
+            float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
+            if (Float.isNaN(angle) || Float.isInfinite(angle)) {
+                return;
+            }
+            vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
+            for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
+                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * gunDamage)
+                        .ignorePlayerCollision = true;
             }
         }
     }
@@ -212,8 +228,9 @@ public class Ship extends Renderable {
         setRotation(new Quaternion(Vector3.Z, currentBank));
         applyTRS();
 
-        if (!isDying) {
+        if (!isDying && scene.getGameBounds().contains(this.position)) {
             fireGuns(delta);
+            fireTurrets(delta);
 
             if (hp <= 0f) {
                 isDying = true;
@@ -279,5 +296,20 @@ public class Ship extends Renderable {
             hpBarEnabled = newHpBarEnabled;
             game.reportHpEnabled(this, hpBarEnabled);
         }
+    }
+
+    @Override
+    public boolean isTargetable() {
+        return true;
+    }
+
+    @Override
+    public Vector3 estimatePosition(float time) {
+        return getPosition().cpy().mulAdd(moveVector.cpy().sub(position).nor(), time);
+    }
+
+    @Override
+    public float distanceSquaredTo(Vector3 pos) {
+        return this.position.dst2(pos);
     }
 }

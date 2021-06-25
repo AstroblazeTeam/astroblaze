@@ -24,6 +24,7 @@ public class DecalController {
         public float collisionDamage;
         public float radiusSquared;
         public boolean ignorePlayerCollision;
+        public boolean ignoreEnemyCollision;
         public Decal decal;
         public IPlayerBonus bonus;
         public Animation<TextureRegion> animation;
@@ -81,7 +82,6 @@ public class DecalController {
         info.time = 0f;
         info.life = 5f;
         info.radiusSquared = 1f;
-        info.ignorePlayerCollision = true;
         info.collisionDamage = damage;
         int bulletIdx = MathUtils.clamp((int) (damage / 2f) - 1, 0, 10);
         info.decal = Decal.newDecal(Assets.bullets.get(bulletIdx), true);

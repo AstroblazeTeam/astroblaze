@@ -3,12 +3,14 @@ package com.astroblaze.Rendering;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 
 public class MissilePool extends Pool<Missile> {
     private final Scene3D scene;
     private AssetDescriptor<Model> model;
     private ParticlePool particles;
+    private Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
 
     public MissilePool(Scene3D scene) {
         super(0, 512);
@@ -41,6 +43,7 @@ public class MissilePool extends Pool<Missile> {
             Gdx.app.debug("MissilePool", "free() on missile with null effect");
         } else {
             particles.free(missile.effect);
+            missile.effect.translate(offscreenPosition);
             missile.effect = null;
         }
         scene.removeActor(missile);

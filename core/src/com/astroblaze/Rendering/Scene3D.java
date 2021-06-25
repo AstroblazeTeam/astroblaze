@@ -185,6 +185,7 @@ public class Scene3D implements ILoadingFinishedListener {
 
             ICollisionProvider provider = (ICollisionProvider) actor;
 
+            // check player <-> enemy collisions
             if (player != null) {
                 Vector3 playerPos = player.getPosition();
                 // check if player clips enemy ship
@@ -194,6 +195,7 @@ public class Scene3D implements ILoadingFinishedListener {
                 }
             }
 
+            // check missile collisions
             for (Missile m : activeMissiles) {
                 if (!provider.checkCollision(m.getPosition(), 3f)) {
                     continue;
@@ -203,8 +205,9 @@ public class Scene3D implements ILoadingFinishedListener {
                 decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                 missilePool.free(m);
             }
+
             for (DecalController.DecalInfo d : decalController.getDecals()) {
-                if (!d.ignorePlayerCollision || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
+                if (!d.ignorePlayerCollision || d.ignoreEnemyCollision || d.collisionDamage <= 0f || !provider.checkCollision(d.position, 1f)) {
                     continue;
                 }
 
@@ -367,11 +370,11 @@ public class Scene3D implements ILoadingFinishedListener {
         return Intersector.intersectRayPlane(ray, planeXZ, worldPosition);
     }
 
-    public ITargetable getClosestTarget(Vector3 pos) {
+    public ITargetable getClosestTarget(ITargetable ignoreTarget, Vector3 pos) {
         float distanceSq = 100000000f;
         ITargetable result = null;
         for (SceneActor actor : actors) {
-            if (!(actor instanceof ITargetable)) {
+            if (!(actor instanceof ITargetable) || actor == ignoreTarget) {
                 continue;
             }
             ITargetable t = (ITargetable) actor;

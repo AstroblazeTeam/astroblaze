@@ -172,6 +172,7 @@ public class LevelControllerActor extends Actor {
                 showText("Boss incoming!"),
                 playSound(Assets.soundWarning),
                 delay(2f),
+                showText(""),
                 r,
                 new Action() {
                     @Override
