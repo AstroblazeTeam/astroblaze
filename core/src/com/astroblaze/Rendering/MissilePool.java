@@ -13,7 +13,7 @@ public class MissilePool extends Pool<Missile> {
     private Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
 
     public MissilePool(Scene3D scene) {
-        super(0, 512);
+        super(512, 2048);
         this.scene = scene;
     }
 
