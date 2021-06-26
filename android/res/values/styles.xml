@@ -1,7 +1,7 @@
 <resources>
 
     <style name="Theme.Astroblaze" parent="Base.Theme.AppCompat">
-		<item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
         <item name="android:windowNoTitle">true</item>
@@ -9,6 +9,8 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">

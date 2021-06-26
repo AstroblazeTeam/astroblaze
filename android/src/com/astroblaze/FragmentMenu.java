@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +80,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // exit button
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
-                -> ((MainActivity)requireActivity()).exit());
+                -> ((MainActivity) requireActivity()).exit());
     }
 
     @Override
@@ -95,27 +97,39 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
     private void showChangeNameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(getString(R.string.changePilotName));
         View viewInflated = LayoutInflater.from(getContext())
                 .inflate(R.layout.fragment_pilot_name_change, (ViewGroup) getView(), false);
-        final EditText input = (EditText) viewInflated.findViewById(R.id.input_pilot_name);
+        final EditText input = viewInflated.findViewById(R.id.input_pilot_name);
         input.setText(AstroblazeGame.getPlayerState().getName());
-        builder.setView(viewInflated);
 
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            AstroblazeGame.getPlayerState().setName(input.getText().toString());
-            HiscoresController.submitRank(new HiscoresController.RunnableResponseHandler<Integer>() {
-                @Override
-                public void run() {
-                    if (this.response <= 0) return; // silently fail
-                    tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
-                }
-            }, false);
-            dialog.dismiss();
-        });
-        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
-        AlertDialog alert = builder.show();
+        builder.setView(viewInflated);
+        builder.setCancelable(false);
+
+        final AlertDialog alert = builder.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.Theme_Astroblaze;
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alert.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                return true;
+            }
+            return false;
+        });
+        viewInflated.findViewById(R.id.btnSetPilotName).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AstroblazeGame.getPlayerState().setName(input.getText().toString());
+                HiscoresController.submitRank(new HiscoresController.RunnableResponseHandler<Integer>() {
+                    @Override
+                    public void run() {
+                        if (this.response <= 0) return; // silently fail
+                        tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
+                    }
+                }, false);
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 
     @Override
