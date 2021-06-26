@@ -1,18 +1,20 @@
 package com.astroblaze;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.astroblaze.Interfaces.ILoadingFinishedListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, ILoadingFinishedListener {
     private AstroblazeGame game;
@@ -37,8 +39,21 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
     }
 
     @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent mStartActivity = new Intent(this, MainActivity.class);
+        PendingIntent mPendingIntent = PendingIntent.getActivity(this, 0,
+                mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 300, mPendingIntent);
+        exit();
+    }
+
+    @Override
     public void exit() {
-        this.finishAndRemoveTask();
+        finishAffinity();
+        finishAndRemoveTask();
+        System.exit(0);
     }
 
     @Override
