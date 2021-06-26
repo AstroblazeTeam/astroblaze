@@ -16,11 +16,12 @@
         android:gravity="center"
         android:textAlignment="center"
         android:textSize="48sp"
+        android:text="@string/gameOver"
         app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/gameOver" />
+        />
 
     <Button
         android:id="@+id/btnGameOverExit"
