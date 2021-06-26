@@ -131,15 +131,6 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         });
     }
 
-    public void handleBtnExtra1Click() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                scene.getPlayer().fireMissiles();
-            }
-        });
-    }
-
     @Override
     public void render() {
         musicController.update(Gdx.graphics.getDeltaTime());

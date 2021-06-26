@@ -12,10 +12,13 @@ public class PlayerShip extends SpaceShip {
     private final float gunInterval = 1f / 20f;
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
+    private final int defaultMissileSalvos = 8;
 
+    private float missileClock;
+    private float missileInterval = 1f / 8f;
     private float moveSpeed;
     private float currentBank;
-    private int missileSalvos = 0; // amount of missile salvos player has.
+    private int missileSalvos; // amount of missile salvos player has.
     private float gunDamage;
     private float noControlTimer;
     private boolean isDying;
@@ -24,6 +27,7 @@ public class PlayerShip extends SpaceShip {
     private float godModeTimer = 0f;
     private boolean hpBarEnabled = false; // flag to avoid event spam
     private PlayerShipVariant shipVariant;
+    private boolean autoFireMissiles;
 
     public PlayerShip(Scene3D scene) {
         super(scene);
@@ -121,6 +125,7 @@ public class PlayerShip extends SpaceShip {
         deathTimer = deathTimerMax;
         isDying = false;
         modMissileSalvos(-missileSalvos);
+        modMissileSalvos(defaultMissileSalvos);
         setMoveVector(new Vector3(), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
@@ -210,6 +215,7 @@ public class PlayerShip extends SpaceShip {
         if (!isDying && scene.getGameBounds().contains(this.position)) {
             fireGuns(delta);
             fireTurrets(delta);
+            fireMissiles(delta);
 
             if (hp <= 0f) {
                 isDying = true;
@@ -247,12 +253,14 @@ public class PlayerShip extends SpaceShip {
         return noControlTimer <= 0f;
     }
 
-    public void fireMissiles() {
-        if (!isControlled())
-            return;
-        if (missileSalvos <= 0)
+    public void fireMissiles(float delta) {
+        if (!autoFireMissiles || !isControlled() || missileSalvos <= 0)
             return;
 
+        missileClock -= delta;
+        if (missileClock > 0f)
+            return;
+        missileClock += missileInterval;
         modMissileSalvos(-1);
         float ports = shipVariant.missilePorts;
         float speed = Missile.unpoweredSpeed / ports;
@@ -286,5 +294,9 @@ public class PlayerShip extends SpaceShip {
     @Override
     public Vector3 estimatePosition(float time) {
         return getPosition().cpy().mulAdd(moveVector.cpy().sub(position).nor(), time);
+    }
+
+    public void setAutoFireMissiles(boolean autoFire) {
+        this.autoFireMissiles = autoFire;
     }
 }

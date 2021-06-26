@@ -3,6 +3,7 @@ package com.astroblaze;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -57,8 +58,16 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
         tvSpecial2 = view.findViewById(R.id.tvExtra2Text);
         tvMoney = view.findViewById(R.id.tvMoney);
 
-        view.findViewById(R.id.btnExtra1).setOnClickListener(v
-                -> AstroblazeGame.getInstance().handleBtnExtra1Click());
+        view.findViewById(R.id.btnExtra1).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                AstroblazeGame.getInstance().getScene().getPlayer().setAutoFireMissiles(false);
+                return v.performClick();
+            } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                AstroblazeGame.getInstance().getScene().getPlayer().setAutoFireMissiles(true);
+                return v.performClick();
+            }
+            return false;
+        });
 
         view.findViewById(R.id.btnExtra2).setOnClickListener(v
                 -> AstroblazeGame.getInstance().handleBtnExtra2Click());
