@@ -17,7 +17,7 @@ public class PlayerBonusLife implements IPlayerBonus {
     }
 
     @Override
-    public void applyBonus(Ship ship) {
-        ship.getScene().modLives(+1);
+    public void applyBonus(PlayerShip playerShip) {
+        playerShip.getScene().modLives(+1);
     }
 }

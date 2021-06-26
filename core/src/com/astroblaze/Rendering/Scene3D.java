@@ -43,7 +43,7 @@ public class Scene3D implements ILoadingFinishedListener {
     private final MissilePool missilePool;
     private final int defaultMaxLives = 3;
 
-    private Ship player;
+    private PlayerShip player;
     private int lives = defaultMaxLives;
     private float timeScale = 1f;
 
@@ -71,7 +71,7 @@ public class Scene3D implements ILoadingFinishedListener {
         bonusDistribution.add(2, new PlayerBonusLife());
     }
 
-    public Ship getPlayer() {
+    public PlayerShip getPlayer() {
         return player;
     }
 
@@ -190,7 +190,7 @@ public class Scene3D implements ILoadingFinishedListener {
                 Vector3 playerPos = player.getPosition();
                 // check if player clips enemy ship
                 if (provider.checkCollision(playerPos, player.getRadius())) {
-                    player.modHp(-player.getMaxHp() * 0.5f);
+                    player.modHp(-player.getMaxHitpoints() * 0.5f);
                     provider.damageFromCollision(100f, true);
                 }
             }
@@ -236,13 +236,13 @@ public class Scene3D implements ILoadingFinishedListener {
             // every few frames do cleanup of objects that go out of bounds
             for (SceneActor actor : actors) {
                 if (actor instanceof Renderable) {
-                    if (actor instanceof Ship) {
+                    if (actor instanceof PlayerShip) {
                         continue;
                     }
                     Vector3 pos = ((Renderable) actor).getPosition();
                     if (!destroyBounds.contains(pos)) {
-                        if (actor instanceof Enemy) {
-                            enemyPool.free(((Enemy) actor));
+                        if (actor instanceof EnemyShip) {
+                            enemyPool.free(((EnemyShip) actor));
                         } else {
                             removeActors.add(actor);
                         }
@@ -283,7 +283,7 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public void respawnPlayer(PlayerShipVariant variant) {
         if (player == null) {
-            player = new Ship(this);
+            player = new PlayerShip(this);
             player.resetShipType(variant);
 
             addActor(player);

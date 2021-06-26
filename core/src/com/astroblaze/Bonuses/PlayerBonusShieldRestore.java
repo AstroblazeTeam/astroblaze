@@ -17,7 +17,7 @@ public class PlayerBonusShieldRestore implements IPlayerBonus {
     }
 
     @Override
-    public void applyBonus(Ship ship) {
-        ship.modHp(ship.getMaxHp());
+    public void applyBonus(PlayerShip playerShip) {
+        playerShip.modHp(playerShip.getMaxHitpoints());
     }
 }

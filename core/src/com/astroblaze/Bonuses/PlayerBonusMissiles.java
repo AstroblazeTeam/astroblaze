@@ -17,7 +17,7 @@ public class PlayerBonusMissiles implements IPlayerBonus {
     }
 
     @Override
-    public void applyBonus(Ship ship) {
-        ship.modMissileSalvos(+3);
+    public void applyBonus(PlayerShip playerShip) {
+        playerShip.modMissileSalvos(+3);
     }
 }

@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.actions.TimeScaleAction;
 import com.badlogic.gdx.utils.Array;
 
 public class LevelControllerActor extends Actor {
@@ -83,7 +82,7 @@ public class LevelControllerActor extends Actor {
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        Ship player = scene.getPlayer();
+                        PlayerShip player = scene.getPlayer();
                         player.setPosition(player.getPosition().cpy().add(0f, 0f, 500f * delta));
                         return !scene.getGameBounds().contains(player.getPosition());
                     }
@@ -111,13 +110,13 @@ public class LevelControllerActor extends Actor {
     }
 
     private Action spawnWallOfEnemiesAndWaitDeath(final EnemyType type, int count) {
-        final Array<Enemy> enemies = new Array<>();
+        final Array<EnemyShip> enemies = new Array<>();
         enemies.setSize(count);
         Action r = spawnWallOfEnemies(type, enemies);
         return Actions.sequence(r, new Action() {
             @Override
             public boolean act(float delta) {
-                for (Enemy value : enemies) {
+                for (EnemyShip value : enemies) {
                     if (value != null && value.getHitpoints() > 0f && scene.getGameBounds().contains(value.getPosition()))
                         return false;
                 }
@@ -128,7 +127,7 @@ public class LevelControllerActor extends Actor {
 
     private Action spawnBoss(final EnemyType bossType) {
         RunnableAction r = new RunnableAction();
-        final Enemy[] enemy = new Enemy[1]; // array wrapper for closure
+        final EnemyShip[] enemyShip = new EnemyShip[1]; // array wrapper for closure
         r.setRunnable(new Runnable() {
             @Override
             public void run() {
@@ -139,11 +138,11 @@ public class LevelControllerActor extends Actor {
                         0f,
                         scene.getGameBounds().max.z * 0.75f);
 
-                enemy[0] = scene.getEnemyPool().obtain();
-                enemy[0].setType(bossType);
-                enemy[0].setPosition(spawnPos);
+                enemyShip[0] = scene.getEnemyPool().obtain();
+                enemyShip[0].setType(bossType);
+                enemyShip[0].setPosition(spawnPos);
 
-                AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemy[0]);
+                AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemyShip[0]);
             }
         });
 
@@ -157,14 +156,14 @@ public class LevelControllerActor extends Actor {
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        return enemy[0].getHitpoints() <= 0f;
+                        return enemyShip[0].getHitpoints() <= 0f;
                     }
                 });
     }
 
     private Action spawnEnemyAndWaitDeath(final EnemyType type) {
         RunnableAction r = new RunnableAction();
-        final Enemy[] enemy = new Enemy[1]; // array wrapper for closure
+        final EnemyShip[] enemyShip = new EnemyShip[1]; // array wrapper for closure
         r.setRunnable(new Runnable() {
             @Override
             public void run() {
@@ -175,25 +174,25 @@ public class LevelControllerActor extends Actor {
                         0f,
                         scene.getGameBounds().max.z * 0.75f);
 
-                enemy[0] = scene.getEnemyPool().obtain();
-                enemy[0].setType(type);
-                enemy[0].setPosition(spawnPos);
+                enemyShip[0] = scene.getEnemyPool().obtain();
+                enemyShip[0].setType(type);
+                enemyShip[0].setPosition(spawnPos);
             }
         });
         return Actions.sequence(r, new Action() {
             @Override
             public boolean act(float delta) {
-                return enemy[0].getHitpoints() <= 0f;
+                return enemyShip[0].getHitpoints() <= 0f;
             }
         });
     }
 
-    private Action spawnWallOfEnemies(final EnemyType type, final Array<Enemy> result) {
+    private Action spawnWallOfEnemies(final EnemyType type, final Array<EnemyShip> result) {
         return new RunnableAction() {
             @Override
             public void run() {
                 float spawnZoneX = scene.getGameBounds().getWidth();
-                float noSpawnRadius = scene.getPlayer().getRadius() * 4f;
+                float noSpawnRadius = scene.getPlayer().getRadius() * 3f;
                 float noSpawnX = MathUtils.random(scene.getGameBounds().min.x, scene.getGameBounds().max.x) * 0.75f;
                 for (int i = 0; i < result.size; i++) {
                     // spawn away by mirrored x axis just in case
@@ -204,10 +203,10 @@ public class LevelControllerActor extends Actor {
                     if (MathUtils.isEqual(spawnPos.x, noSpawnX, noSpawnRadius)) {
                         continue;
                     }
-                    Enemy enemy = scene.getEnemyPool().obtain();
-                    enemy.setType(type);
-                    enemy.setPosition(spawnPos);
-                    result.set(i, enemy);
+                    EnemyShip enemyShip = scene.getEnemyPool().obtain();
+                    enemyShip.setType(type);
+                    enemyShip.setPosition(spawnPos);
+                    result.set(i, enemyShip);
                 }
 
                 Gdx.app.log("LevelControllerActor", "Spawned wall of " + type.name());
@@ -216,7 +215,7 @@ public class LevelControllerActor extends Actor {
     }
 
     private Action spawnWallOfEnemies(final EnemyType type, final int count) {
-        Array<Enemy> enemies = new Array<>();
+        Array<EnemyShip> enemies = new Array<>();
         enemies.setSize(count);
         return spawnWallOfEnemies(type, enemies);
     }
@@ -235,9 +234,9 @@ public class LevelControllerActor extends Actor {
                     count--;
 
                     Vector3 spawnPos = new Vector3(spawnX, 0f, scene.getGameBounds().max.z);
-                    Enemy enemy = scene.getEnemyPool().obtain();
-                    enemy.setType(type);
-                    enemy.setPosition(spawnPos);
+                    EnemyShip enemyShip = scene.getEnemyPool().obtain();
+                    enemyShip.setType(type);
+                    enemyShip.setPosition(spawnPos);
                 }
                 if (count <= 0) {
                     Gdx.app.log("LevelControllerActor", "Finished spawning sequence of " + type.name());

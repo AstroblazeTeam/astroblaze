@@ -103,8 +103,8 @@ public class HealthBarActor extends Actor implements IUIChangeListener {
     }
 
     @Override
-    public void onHpChanged(Ship ship, float newHp, float oldHp) {
-        targetHp = newHp / ship.getMaxHp();
+    public void onHpChanged(PlayerShip playerShip, float newHp, float oldHp) {
+        targetHp = newHp / playerShip.getMaxHitpoints();
         if (scene.getLives() < 1) {
             targetHp = 0f;
             fadeTimer = 10f;
@@ -112,11 +112,11 @@ public class HealthBarActor extends Actor implements IUIChangeListener {
     }
 
     @Override
-    public void onHpEnabled(Ship ship, boolean enabled) {
+    public void onHpEnabled(PlayerShip playerShip, boolean enabled) {
         shouldHide = !enabled;
     }
 
     @Override
-    public void onSpecialTextChanged(Ship ship, String text1, String text2) {
+    public void onSpecialTextChanged(PlayerShip playerShip, String text1, String text2) {
     }
 }

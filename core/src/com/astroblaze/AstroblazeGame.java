@@ -191,22 +191,22 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         this.uiChangeListeners.remove(listener);
     }
 
-    public void reportStateChanged(Ship ship, float newHp, float oldHp) {
+    public void reportStateChanged(PlayerShip playerShip, float newHp, float oldHp) {
         for (IUIChangeListener listener : uiChangeListeners) {
-            listener.onHpChanged(ship, newHp, oldHp);
+            listener.onHpChanged(playerShip, newHp, oldHp);
         }
     }
 
-    public void reportExtrasChanged(Ship ship, String text1, String text2) {
+    public void reportExtrasChanged(PlayerShip playerShip, String text1, String text2) {
         for (IUIChangeListener listener : uiChangeListeners) {
-            listener.onSpecialTextChanged(ship, text1, text2);
+            listener.onSpecialTextChanged(playerShip, text1, text2);
         }
     }
 
-    public void reportHpEnabled(Ship ship, boolean enabled) {
+    public void reportHpEnabled(PlayerShip playerShip, boolean enabled) {
         Gdx.app.log("AstroblazeGame", "reportHpEnabled(" + enabled + ")");
         for (IUIChangeListener listener : uiChangeListeners) {
-            listener.onHpEnabled(ship, enabled);
+            listener.onHpEnabled(playerShip, enabled);
         }
     }
 

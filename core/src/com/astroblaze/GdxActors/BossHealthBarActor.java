@@ -1,8 +1,7 @@
 package com.astroblaze.GdxActors;
 
 import com.astroblaze.Assets;
-import com.astroblaze.Rendering.Enemy;
-import com.astroblaze.Rendering.Scene3D;
+import com.astroblaze.Rendering.EnemyShip;
 import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,30 +15,30 @@ public class BossHealthBarActor extends Actor {
     private float targetHp = 0f; // percentage 0f .. 1f
     private float currentHp = 0f; // percentage 0f .. 1f
     private float drawAlpha = 0f; // internal logic decides if we actually draw or not
-    private Enemy trackedEnemy;
+    private EnemyShip trackedEnemyShip;
 
     public BossHealthBarActor() {
     }
 
-    public void setTrackedEnemy(Enemy e) {
-        this.trackedEnemy = e;
+    public void setTrackedEnemy(EnemyShip e) {
+        this.trackedEnemyShip = e;
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
 
-        if (trackedEnemy == null) {
+        if (trackedEnemyShip == null) {
             targetHp = 0f;
         } else {
-            targetHp = trackedEnemy.getHitpoints() / trackedEnemy.getMaxHitpoints();
+            targetHp = trackedEnemyShip.getHitpoints() / trackedEnemyShip.getMaxHitpoints();
             if (targetHp == 0f) {
-                trackedEnemy = null;
+                trackedEnemyShip = null;
             }
         }
 
         currentHp = MathHelper.moveTowards(currentHp, targetHp, hpLerpSpeed * delta);
-        drawAlpha = MathHelper.moveTowards(drawAlpha, trackedEnemy != null ? 1f : 0f, alphaSpeed * delta);
+        drawAlpha = MathHelper.moveTowards(drawAlpha, trackedEnemyShip != null ? 1f : 0f, alphaSpeed * delta);
     }
 
     @Override

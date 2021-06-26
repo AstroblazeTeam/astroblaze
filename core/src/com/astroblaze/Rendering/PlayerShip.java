@@ -6,15 +6,9 @@ import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
-import com.badlogic.gdx.utils.Array;
 
-public class Ship extends Renderable implements ITargetable {
+public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
-
-    private final Scene3D scene;
-    private final PlayerState playerState;
-    private final AstroblazeGame game;
-    private final Vector3 moveVector = new Vector3();
     private final float gunInterval = 1f / 20f;
     private final float radius = 3f;
     private final float deathTimerMax = 5f;
@@ -23,12 +17,8 @@ public class Ship extends Renderable implements ITargetable {
     private float moveSpeed;
     private float currentBank;
     private int missileSalvos = 0; // amount of missile salvos player has.
-    private float gunClock = 0f;
-    private float turretClock = 0f;
     private float gunDamage;
     private float noControlTimer;
-    private float hp;
-    private float modelRadius = 1f;
     private boolean isDying;
     private float deathTimer;
     private float destroyExplosionTimer = 0f;
@@ -36,21 +26,17 @@ public class Ship extends Renderable implements ITargetable {
     private boolean hpBarEnabled = false; // flag to avoid event spam
     private PlayerShipVariant shipVariant;
 
-    private final Array<DecalController.DecalInfo> exhaustDecals = new Array<>(8);
-
-    public Ship(Scene3D scene) {
-        this.scene = scene;
-        this.game = AstroblazeGame.getInstance();
-        this.playerState = AstroblazeGame.getPlayerState();
+    public PlayerShip(Scene3D scene) {
+        super(scene);
     }
 
     @Override
     public void show(Scene3D scene) {
         super.show(scene);
         float engineScale = getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade);
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, -modelRadius * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
         exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f, 1.25f * engineScale));
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, +modelRadius * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(scene.getDecalController().addExhaust(position, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
         // normalize to 0f..1f range
         float colorScale = MathUtils.map(1f, 1.5f, 0f, 1f, engineScale);
         Color startColor = Color.WHITE;
@@ -69,15 +55,11 @@ public class Ship extends Renderable implements ITargetable {
         exhaustDecals.clear();
     }
 
-    public Scene3D getScene() {
-        return this.scene;
-    }
-
     public float getRadius() {
-        return this.radius;
+        return shipVariant.modelScale * 0.4f; // slightly less than half scale
     }
 
-    public float getMaxHp() {
+    public float getMaxHitpoints() {
         return shipVariant.getMaxHp(playerState);
     }
 
@@ -95,7 +77,7 @@ public class Ship extends Renderable implements ITargetable {
         if (hpModifier < 0f && godModeTimer > 0f) {
             return;
         }
-        hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHp());
+        hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHitpoints());
         game.reportStateChanged(this, hp, oldHp);
         if (hpModifier < 0f) {
             scene.getCamera().shake();
@@ -131,7 +113,7 @@ public class Ship extends Renderable implements ITargetable {
     public void resetShipType(PlayerShipVariant variant) {
         // ship variant
         shipVariant = variant;
-        modHp(getMaxHp());
+        modHp(getMaxHitpoints());
         gunDamage = variant.getDamage(playerState);
         moveSpeed = variant.getSpeed(playerState);
         setModel(variant.modelDescriptor);
@@ -140,8 +122,6 @@ public class Ship extends Renderable implements ITargetable {
         deathTimer = deathTimerMax;
         isDying = false;
         modMissileSalvos(-missileSalvos);
-        // set to slightly closer than destroy bounds
-        modelRadius = variant.modelScale;
         setMoveVector(new Vector3(), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
@@ -165,7 +145,7 @@ public class Ship extends Renderable implements ITargetable {
         final Vector3 pos = this.getPosition().cpy();
         final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
         final int ports = shipVariant.gunPorts;
-        final float offset = this.modelRadius / ports * 0.5f;
+        final float offset = shipVariant.modelScale / ports * 0.5f;
         for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
             scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
                     .ignorePlayerCollision = true;
@@ -193,7 +173,7 @@ public class Ship extends Renderable implements ITargetable {
             }
             final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
             final int turretPorts = shipVariant.turretPorts;
-            final float turretOffset = this.modelRadius / turretPorts * 0.5f;
+            final float turretOffset = shipVariant.modelScale / turretPorts * 0.5f;
             float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
             if (Float.isNaN(angle) || Float.isInfinite(angle)) {
                 return;
@@ -252,7 +232,8 @@ public class Ship extends Renderable implements ITargetable {
                 destroyExplosionTimer = destroyExplosionInterval;
                 Vector3 v = new Vector3();
                 v.setToRandomDirection();
-                DecalController.DecalInfo info = scene.getDecalController().addExplosion(v.scl(MathUtils.random(radius, 2f * radius)),
+                DecalController.DecalInfo info = scene.getDecalController().addExplosion(
+                        v.scl(MathUtils.random(0f, 1f) * shipVariant.modelScale),
                         new Vector3(), 0.05f);
                 info.origin = this.getPosition();
             }
@@ -306,10 +287,5 @@ public class Ship extends Renderable implements ITargetable {
     @Override
     public Vector3 estimatePosition(float time) {
         return getPosition().cpy().mulAdd(moveVector.cpy().sub(position).nor(), time);
-    }
-
-    @Override
-    public float distanceSquaredTo(Vector3 pos) {
-        return this.position.dst2(pos);
     }
 }

@@ -7,29 +7,22 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.utils.Array;
 
-public class Enemy extends Renderable implements ICollisionProvider, ITargetable {
-    private final Scene3D scene;
-    private final Vector3 moveVector = new Vector3();
+public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private float modelRadius;
     private float moveClock = 0f;
     private final float moveMagnitude = 50f;
     private final float moveClockSpeed = 2f;
     private float aiDecisionClock = 0f;
     private Vector3 aiDecisionMove = new Vector3();
-    private float gunClock = 0f;
-    private float turretClock = 0f;
     private EnemyType typeId = EnemyType.Idle;
     private boolean enabled;
-    private float hitpoints;
 
     private final float exhaustScaleModifier = 1f / 10f;
-    private final Array<DecalController.DecalInfo> exhaustDecals = new Array<>(8);
 
-    public Enemy(Scene3D scene, EnemyType typeId) {
-        this.scene = scene;
-        setType(typeId);
+    public EnemyShip(Scene3D scene) {
+        super(scene);
+        setType(EnemyType.Idle);
     }
 
     @Override
@@ -51,10 +44,6 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
             d.life = 0f;
         }
         exhaustDecals.clear();
-    }
-
-    public float getHitpoints() {
-        return this.hitpoints;
     }
 
     public float getMaxHitpoints() {
@@ -91,7 +80,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
         setScale(typeId.modelScale);
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
-        hitpoints = typeId.hp;
+        hp = typeId.hp;
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
 
@@ -204,7 +193,7 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
 
     @Override
     public boolean checkCollision(Vector3 pos, float radius) {
-        if (!enabled || this.hitpoints <= 0f)
+        if (!enabled || this.hp <= 0f)
             return false;
         float dst2 = this.getPosition().dst2(pos);
         radius += modelRadius * getScale().x; // assume uniform scale
@@ -215,8 +204,8 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     public void damageFromCollision(float damage, boolean isPlayer) {
         if (!enabled)
             return;
-        this.hitpoints -= damage;
-        if (this.hitpoints <= 0f) {
+        this.hp -= damage;
+        if (this.hp <= 0f) {
             scene.removeActor(this);
             AstroblazeGame.getSoundController().playExplosionSound();
             scene.getDecalController().addExplosion(this.getPosition(), moveVector, 0.1f);
@@ -241,10 +230,5 @@ public class Enemy extends Renderable implements ICollisionProvider, ITargetable
     @Override
     public Vector3 estimatePosition(float time) {
         return position.cpy().mulAdd(moveVector, time);
-    }
-
-    @Override
-    public float distanceSquaredTo(Vector3 pos) {
-        return position.dst2(pos);
     }
 }

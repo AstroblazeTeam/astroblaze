@@ -1,10 +1,9 @@
 package com.astroblaze.Rendering;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Pool;
 
-public class EnemyPool extends Pool<Enemy> {
+public class EnemyPool extends Pool<EnemyShip> {
     private final Scene3D scene;
 
     public EnemyPool(Scene3D scene) {
@@ -13,30 +12,30 @@ public class EnemyPool extends Pool<Enemy> {
     }
 
     @Override
-    protected void reset(Enemy enemy) {
+    protected void reset(EnemyShip enemyShip) {
         // super.reset(pfx); - no need, default implementation only handles Poolable
-        enemy.reset(scene.getGameBounds());
+        enemyShip.reset(scene.getGameBounds());
     }
 
     @Override
-    public Enemy obtain() {
-        Enemy enemy = super.obtain();
+    public EnemyShip obtain() {
+        EnemyShip enemyShip = super.obtain();
         Gdx.app.debug("EnemyPool", "Added enemy to scene");
-        scene.addActor(enemy);
-        return enemy;
+        scene.addActor(enemyShip);
+        return enemyShip;
     }
 
     @Override
-    public void free(Enemy enemy) {
-        super.free(enemy);
+    public void free(EnemyShip enemyShip) {
+        super.free(enemyShip);
         Gdx.app.debug("EnemyPool", "Removed enemy from scene");
-        scene.removeActor(enemy);
+        scene.removeActor(enemyShip);
     }
 
     @Override
-    protected Enemy newObject() {
-        Enemy enemy = new Enemy(scene, EnemyType.Idle);
-        reset(enemy);
-        return enemy;
+    protected EnemyShip newObject() {
+        EnemyShip enemyShip = new EnemyShip(scene);
+        reset(enemyShip);
+        return enemyShip;
     }
 }

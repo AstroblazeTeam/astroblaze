@@ -15,7 +15,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.astroblaze.Interfaces.IUIChangeListener;
-import com.astroblaze.Rendering.Ship;
+import com.astroblaze.Rendering.PlayerShip;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -84,15 +84,15 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
     }
 
     @Override
-    public void onHpChanged(Ship ship, float oldHp, float newHp) {
+    public void onHpChanged(PlayerShip playerShip, float oldHp, float newHp) {
     }
 
     @Override
-    public void onHpEnabled(Ship ship, boolean enabled) {
+    public void onHpEnabled(PlayerShip playerShip, boolean enabled) {
     }
 
     @Override
-    public void onSpecialTextChanged(Ship ship, String text1, String text2) {
+    public void onSpecialTextChanged(PlayerShip playerShip, String text1, String text2) {
         tvSpecial1.post(new Runnable() {
             @Override
             public void run() {
