@@ -57,19 +57,11 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
         tvSpecial2 = view.findViewById(R.id.tvExtra2Text);
         tvMoney = view.findViewById(R.id.tvMoney);
 
-        view.findViewById(R.id.btnExtra1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AstroblazeGame.getInstance().handleBtnExtra1Click();
-            }
-        });
+        view.findViewById(R.id.btnExtra1).setOnClickListener(v
+                -> AstroblazeGame.getInstance().handleBtnExtra1Click());
 
-        view.findViewById(R.id.btnExtra2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AstroblazeGame.getInstance().handleBtnExtra2Click();
-            }
-        });
+        view.findViewById(R.id.btnExtra2).setOnClickListener(v
+                -> AstroblazeGame.getInstance().handleBtnExtra2Click());
     }
 
     @Override
@@ -82,16 +74,24 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
     @Override
     public void onPause() {
         super.onPause();
-        NavHostFragment.findNavController(FragmentGame.this)
-                .popBackStack(R.id.fragmentPause, false);
-        AstroblazeGame.getInstance().pauseGame();
+        // pause was requested
+        if (AstroblazeGame.getInstance().getScene().getLives() != 0) {
+            NavHostFragment.findNavController(FragmentGame.this)
+                    .popBackStack(R.id.fragmentPause, false);
+            AstroblazeGame.getInstance().pauseGame();
+        } // else we're navigating to game over fragment
         AstroblazeGame.getInstance().removeUIChangeListener(this);
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }
 
     @Override
     public void onStateChanged(PlayerState state) {
-        tvMoney.post(() -> tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney())));
+        tvMoney.post(() -> {
+            if (getContext() == null) {
+                return; // ignore state updates while not attached
+            }
+            tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney()));
+        });
     }
 
     @Override

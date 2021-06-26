@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.*;
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
     private final float gunInterval = 1f / 20f;
-    private final float radius = 3f;
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
 

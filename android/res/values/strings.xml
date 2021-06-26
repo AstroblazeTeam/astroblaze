@@ -14,6 +14,7 @@
     <string name="upgrades_for">Upgrades for %1$s</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>
+    <string name="gameOver">Game Over</string>
     <string name="unlockShip">Unlock\n$ %1$d</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>

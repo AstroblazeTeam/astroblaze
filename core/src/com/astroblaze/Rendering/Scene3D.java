@@ -360,6 +360,7 @@ public class Scene3D implements ILoadingFinishedListener {
             player.setMoveVector(moveAway, true);
             player.setGodModeTimer(1000000f);
             player.setNoControlTime(1000000f);
+            game.getGuiRenderer().navigateToGameOver();
             game.renderText(0, "Game Over");
         }
     }

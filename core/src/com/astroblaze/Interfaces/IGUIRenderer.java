@@ -6,4 +6,6 @@ public interface IGUIRenderer {
     void renderText(int id, int textId, float fontSize, float x, float y);
 
     void backToLevelSelect();
+
+    void navigateToGameOver();
 }

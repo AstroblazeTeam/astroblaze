@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,17 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
             NavController nc = ((MainActivity) requireActivity()).getNavController();
             nc.popBackStack();
             nc.popBackStack();
+        });
+    }
+
+    @Override
+    public void navigateToGameOver() {
+        tvRenders.get(0).post(() -> {
+            NavController nc = ((MainActivity) requireActivity()).getNavController();
+
+            nc.popBackStack();
+            nc.popBackStack();
+            nc.navigate(R.id.action_fragmentLevelSelect_to_fragmentGameOver);
         });
     }
 }
