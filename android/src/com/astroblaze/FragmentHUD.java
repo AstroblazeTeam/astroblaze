@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.astroblaze.Interfaces.IGUIRenderer;
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
+import com.astroblaze.Interfaces.TranslatedStringId;
 import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
@@ -81,6 +82,36 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
                 fontSize + ", " + x + ", " + y);
 
         renderText(id, getString(textId), fontSize, x, y);
+    }
+
+    @Override
+    public String getTranslatedString(TranslatedStringId id) {
+        switch (id) {
+            case LevelStartReady:
+                return getString(R.string.LevelStartReady);
+            case LevelStartSet:
+                return getString(R.string.LevelStartSet);
+            case LevelStartGo:
+                return getString(R.string.LevelStartGo);
+            case LevelComplete:
+                return getString(R.string.LevelComplete);
+            case BossIncoming:
+                return getString(R.string.BossIncoming);
+            case TutorialTouchScreenToMove:
+                return getString(R.string.TutorialTouchScreenToMove);
+            case TutorialPrimaryWeapon:
+                return getString(R.string.TutorialPrimaryWeapon);
+            case TutorialDodgeBulletsAndEnemies:
+                return getString(R.string.TutorialDodgeBulletsAndEnemies);
+            case TutorialUseButtonToFireMissiles:
+                return getString(R.string.TutorialUseButtonToFireMissiles);
+            case TutorialComplete:
+                return getString(R.string.TutorialComplete);
+            case Invalid:
+            default:
+                return id.toString();
+
+        }
     }
 
     @Override

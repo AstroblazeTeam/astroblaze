@@ -5,6 +5,8 @@ public interface IGUIRenderer {
 
     void renderText(int id, int textId, float fontSize, float x, float y);
 
+    String getTranslatedString(TranslatedStringId id);
+
     void backToLevelSelect();
 
     void navigateToGameOver();

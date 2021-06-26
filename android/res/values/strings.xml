@@ -70,4 +70,14 @@
     <string name="ship2">Destroyer</string>
     <string name="ship3">Battlecruiser</string>
     <string name="ship4">Battleship</string>
+    <string name="LevelStartReady">Ready!</string>
+    <string name="LevelStartSet">Set!</string>
+    <string name="LevelStartGo">Go!</string>
+    <string name="LevelComplete">Level Complete!</string>
+    <string name="BossIncoming">Boss Incoming!</string>
+    <string name="TutorialTouchScreenToMove">Touch the screen to move</string>
+    <string name="TutorialPrimaryWeapon">Primary weapon is always active, just aim and kill</string>
+    <string name="TutorialDodgeBulletsAndEnemies">Dodge the bullets and enemies</string>
+    <string name="TutorialUseButtonToFireMissiles">Hold the button to fire missiles</string>
+    <string name="TutorialComplete">Tutorial complete!</string>
 </resources>

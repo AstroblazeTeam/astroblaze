@@ -1,6 +1,7 @@
 package com.astroblaze.GdxActors;
 
 import com.astroblaze.*;
+import com.astroblaze.Interfaces.TranslatedStringId;
 import com.astroblaze.Rendering.*;
 import com.astroblaze.PlayerState;
 import com.astroblaze.Utils.*;
@@ -33,18 +34,18 @@ public class LevelControllerActor extends Actor {
         float defaultDelay = 3f;
         this.addAction(Actions.sequence(
                 delay(defaultDelay),
-                showText("Touch the screen to move!"),
+                showText(TranslatedStringId.TutorialTouchScreenToMove),
                 new Action() {
                     @Override
                     public boolean act(float delta) {
                         return !scene.getPlayer().getMoveVector().isZero();
                     }
                 },
-                showText("Primary weapon is always active, just aim and kill!"),
+                showText(TranslatedStringId.TutorialPrimaryWeapon),
                 spawnEnemyAndWaitDeath(EnemyType.TrainingDummy),
-                showText("Dodge the bullets and enemies!"),
+                showText(TranslatedStringId.TutorialDodgeBulletsAndEnemies),
                 spawnWallOfEnemiesAndWaitDeath(EnemyType.Rammer, 9),
-                showText("Use buttons below to fire missiles"),
+                showText(TranslatedStringId.TutorialUseButtonToFireMissiles),
                 new RunnableAction() {
                     @Override
                     public void run() {
@@ -57,7 +58,7 @@ public class LevelControllerActor extends Actor {
                         return scene.getPlayer().getMissileSalvos() < 1;
                     }
                 },
-                showText("Tutorial complete"),
+                showText(TranslatedStringId.TutorialComplete),
                 finishLevel()
         ));
     }
@@ -95,6 +96,11 @@ public class LevelControllerActor extends Actor {
                         AstroblazeGame.getInstance().getGuiRenderer().backToLevelSelect();
                     }
                 });
+    }
+
+    private RunnableAction showText(final TranslatedStringId id) {
+        String text = AstroblazeGame.getInstance().getGuiRenderer().getTranslatedString(id);
+        return showText(text);
     }
 
     private RunnableAction showText(final String txt) {
@@ -148,7 +154,7 @@ public class LevelControllerActor extends Actor {
 
         return Actions.sequence(
                 delay(5f),
-                showText("Boss incoming!"),
+                showText(TranslatedStringId.BossIncoming),
                 playSound(Assets.soundWarning),
                 delay(2f),
                 showText(""),
@@ -262,11 +268,11 @@ public class LevelControllerActor extends Actor {
             float waveDelay = 3.5f;
             SequenceAction seq = Actions.sequence(
                     delay(textDelay),
-                    showText("Ready!"),
+                    showText(TranslatedStringId.LevelStartReady),
                     delay(textDelay),
-                    showText("Set!"),
+                    showText(TranslatedStringId.LevelStartSet),
                     delay(textDelay),
-                    showText("Go!"),
+                    showText(TranslatedStringId.LevelStartGo),
                     delay(textDelay),
                     showText(""));
 
@@ -283,7 +289,7 @@ public class LevelControllerActor extends Actor {
 
             seq.addAction(spawnBoss(EnemyType.Boss));
 
-            seq.addAction(showText("Level complete"));
+            seq.addAction(showText(TranslatedStringId.LevelComplete));
             seq.addAction(finishLevel());
 
             this.addAction(seq);

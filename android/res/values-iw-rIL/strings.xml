@@ -56,5 +56,15 @@
         "$10000\n\n"
         "חי או מת\n"
     </string>
+    <string name="LevelStartReady">היכון!</string>
+    <string name="LevelStartSet">הכן!</string>
+    <string name="LevelStartGo">צא!</string>
+    <string name="LevelComplete">השלב הושלם!</string>
+    <string name="BossIncoming">התכונן לקרב!</string>
+    <string name="TutorialTouchScreenToMove">גע/י במסך כדי לזוז</string>
+    <string name="TutorialPrimaryWeapon">נשק ראשי תמיד פועל, כוון ופגע</string>
+    <string name="TutorialDodgeBulletsAndEnemies">התחמק/י מאויבים וקליעים</string>
+    <string name="TutorialUseButtonToFireMissiles">החזק בכפתור כדי לירות טילים</string>
+    <string name="TutorialComplete">שלב הדרכה הושלם</string>
 
 </resources>
