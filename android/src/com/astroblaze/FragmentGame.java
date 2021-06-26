@@ -34,12 +34,9 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NavHostFragment.findNavController(FragmentGame.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if (navDestination.getId() == R.id.fragmentPause) {
-                    AstroblazeGame.getInstance().pauseGame();
-                }
+        NavHostFragment.findNavController(FragmentGame.this).addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            if (navDestination.getId() == R.id.fragmentPause) {
+                AstroblazeGame.getInstance().pauseGame();
             }
         });
     }

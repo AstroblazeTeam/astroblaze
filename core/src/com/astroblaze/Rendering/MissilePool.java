@@ -6,11 +6,18 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 
+import java.util.ArrayList;
+
 public class MissilePool extends Pool<Missile> {
     private final Scene3D scene;
+    private final Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
+    private final ArrayList<Missile> activeMissiles = new ArrayList<>(256);
     private AssetDescriptor<Model> model;
     private ParticlePool particles;
-    private Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
+
+    public ArrayList<Missile> getActiveMissiles() {
+        return this.activeMissiles;
+    }
 
     public MissilePool(Scene3D scene) {
         super(64, 512);
@@ -32,7 +39,7 @@ public class MissilePool extends Pool<Missile> {
     public Missile obtain() {
         Missile missile = super.obtain();
         missile.effect = particles.obtain();
-        scene.addActor(missile);
+        activeMissiles.add(missile);
         return missile;
     }
 
@@ -42,11 +49,11 @@ public class MissilePool extends Pool<Missile> {
         if (missile.effect == null) {
             Gdx.app.debug("MissilePool", "free() on missile with null effect");
         } else {
-            particles.free(missile.effect);
             missile.effect.translate(offscreenPosition);
+            particles.free(missile.effect);
             missile.effect = null;
         }
-        scene.removeActor(missile);
+        activeMissiles.remove(missile);
     }
 
     @Override

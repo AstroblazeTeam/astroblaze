@@ -19,6 +19,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,6 @@ public class Scene3D implements ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
     private final ArrayList<SceneActor> addActors = new ArrayList<>(64);
     private final ArrayList<SceneActor> removeActors = new ArrayList<>(64);
-    private final ArrayList<Missile> activeMissiles = new ArrayList<>(64);
     private final WeightedCollection<IPlayerBonus> bonusDistribution = new WeightedCollection<>();
 
     private final Vector3 moveVector = new Vector3();
@@ -160,6 +160,10 @@ public class Scene3D implements ILoadingFinishedListener {
             actor.act(delta);
         }
 
+        for (Missile m : missilePool.getActiveMissiles()) {
+            m.act(delta);
+        }
+
         particles.update(delta);
         decalController.update(delta);
 
@@ -197,13 +201,17 @@ public class Scene3D implements ILoadingFinishedListener {
 
             // check missile <-> enemy collisions
             if (!(provider instanceof PlayerShip)) {
-                for (Missile m : activeMissiles) {
+                Array<Missile> missilesToDelete = new Array<>(64);
+                for (Missile m : missilePool.getActiveMissiles()) {
                     if (!provider.checkCollision(m.getPosition(), 3f)) {
                         continue;
                     }
 
                     provider.damageFromCollision(m.getDamage(), true);
                     decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
+                    missilesToDelete.add(m);
+                }
+                for (Missile m : missilesToDelete) {
                     missilePool.free(m);
                 }
             }
@@ -231,55 +239,58 @@ public class Scene3D implements ILoadingFinishedListener {
         for (SceneActor actor : actors) {
             actor.render(batch, environment);
         }
+        for (SceneActor actor : missilePool.getActiveMissiles()) {
+            actor.render(batch, environment);
+        }
         batch.end();
         decalController.render();
-
-        if (Gdx.graphics.getFrameId() % 15 == 0) {
-            // every few frames do cleanup of objects that go out of bounds
-            for (SceneActor actor : actors) {
-                if (actor instanceof Renderable) {
-                    if (actor instanceof PlayerShip) {
-                        continue;
-                    }
-                    Vector3 pos = ((Renderable) actor).getPosition();
-                    if (!destroyBounds.contains(pos)) {
-                        if (actor instanceof EnemyShip) {
-                            enemyPool.free(((EnemyShip) actor));
-                        } else if (actor instanceof Missile) {
-                            missilePool.free((Missile) actor);
-                        } else {
-                            removeActors.add(actor);
-                        }
-                    }
-                }
-            }
-        }
 
         processActorMigrations();
     }
 
     private void processActorMigrations() {
-        // complete actor actions
+        if (Gdx.graphics.getFrameId() % 15 == 0) {
+            // every few frames do cleanup of objects that go out of bounds
+            for (SceneActor actor : actors) {
+                if (actor instanceof PlayerShip || !(actor instanceof Renderable)) {
+                    continue; // ignore player
+                }
+
+                Renderable r = ((Renderable) actor);
+                if (!destroyBounds.contains(r.getPosition())) {
+                    if (actor instanceof EnemyShip) {
+                        enemyPool.free(((EnemyShip) actor));
+                    } else {
+                        removeActors.add(actor);
+                    }
+                }
+            }
+
+            Array<Missile> missilesToDelete = new Array<>(64);
+            for (Missile m : missilePool.getActiveMissiles()) {
+                if (!destroyBounds.contains(m.getPosition())) {
+                    missilesToDelete.add(m);
+                }
+            }
+            for (Missile m : missilesToDelete) {
+                missilePool.free(m);
+            }
+        }
+
         for (SceneActor actor : addActors) {
             if (actor instanceof Renderable) {
                 actor.show(game.getScene());
-            }
-            if (actor instanceof Missile) {
-                activeMissiles.add((Missile) actor);
             }
             actors.add(actor);
         }
         addActors.clear();
         for (SceneActor actor : removeActors) {
-            if (actor instanceof Missile) {
-                activeMissiles.remove(actor);
-            } else if (actor instanceof Renderable) {
+            if (actor instanceof Renderable) {
                 actor.hide(game.getScene());
+                actors.remove(actor);
             } else {
                 Gdx.app.error("Scene3D", "Removing unknown actor type " + actor.toString());
             }
-
-            actors.remove(actor);
         }
         actors.removeAll(removeActors);
         removeActors.clear();
