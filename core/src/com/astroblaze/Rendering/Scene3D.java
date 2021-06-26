@@ -195,15 +195,17 @@ public class Scene3D implements ILoadingFinishedListener {
                 }
             }
 
-            // check missile collisions
-            for (Missile m : activeMissiles) {
-                if (!provider.checkCollision(m.getPosition(), 3f)) {
-                    continue;
-                }
+            // check missile <-> enemy collisions
+            if (!(provider instanceof PlayerShip)) {
+                for (Missile m : activeMissiles) {
+                    if (!provider.checkCollision(m.getPosition(), 3f)) {
+                        continue;
+                    }
 
-                provider.damageFromCollision(m.getDamage(), true);
-                decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
-                missilePool.free(m);
+                    provider.damageFromCollision(m.getDamage(), true);
+                    decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
+                    missilePool.free(m);
+                }
             }
 
             for (DecalController.DecalInfo d : decalController.getDecals()) {
@@ -243,6 +245,8 @@ public class Scene3D implements ILoadingFinishedListener {
                     if (!destroyBounds.contains(pos)) {
                         if (actor instanceof EnemyShip) {
                             enemyPool.free(((EnemyShip) actor));
+                        } else if (actor instanceof Missile) {
+                            missilePool.free((Missile) actor);
                         } else {
                             removeActors.add(actor);
                         }

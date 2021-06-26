@@ -59,11 +59,14 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
         tvMoney = view.findViewById(R.id.tvMoney);
 
         view.findViewById(R.id.btnExtra1).setOnTouchListener((v, event) -> {
+            final PlayerShip ship = AstroblazeGame.getInstance().getScene().getPlayer();
+            if (ship == null)
+                return false;
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                AstroblazeGame.getInstance().getScene().getPlayer().setAutoFireMissiles(false);
+                ship.setAutoFireMissiles(false);
                 return v.performClick();
             } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                AstroblazeGame.getInstance().getScene().getPlayer().setAutoFireMissiles(true);
+                ship.setAutoFireMissiles(true);
                 return v.performClick();
             }
             return false;
