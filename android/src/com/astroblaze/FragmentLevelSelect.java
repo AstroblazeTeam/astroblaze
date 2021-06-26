@@ -122,8 +122,10 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         super.onResume();
         preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
         Vector3 worldPos = new Vector3();
+        final float xFrac = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft() ?
+                0.75f : 0.25f;
         if (AstroblazeGame.getInstance().getScene().getXZIntersection(
-                Gdx.graphics.getWidth() * 0.25f,
+                Gdx.graphics.getWidth() * xFrac,
                 Gdx.graphics.getHeight() * 0.5f, worldPos)) {
             preview.setSelectedPosition(worldPos);
         }

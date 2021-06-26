@@ -8,6 +8,7 @@
         android:icon="@mipmap/ic_launcher"
         android:isGame="true"
         android:label="@string/app_name"
+        android:supportsRtl="true"
         android:theme="@style/Theme.Astroblaze">
         <activity android:name=".MainActivity"
             android:configChanges="layoutDirection|locale|keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"

@@ -1,24 +1,20 @@
 package com.astroblaze;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.*;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.astroblaze.Interfaces.IGUIRenderer;
-import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.astroblaze.Interfaces.TranslatedStringId;
 import com.badlogic.gdx.Gdx;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class FragmentHUD extends Fragment implements IGUIRenderer {
     private final ArrayList<TextView> tvRenders = new ArrayList<>(16);
@@ -132,5 +128,12 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
             nc.popBackStack();
             nc.navigate(R.id.action_fragmentLevelSelect_to_fragmentGameOver);
         });
+    }
+
+    @Override
+    public boolean isRightToLeft() {
+        boolean isRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) != View.LAYOUT_DIRECTION_LTR;
+        Gdx.app.log("FragmentHUD", "isRightToLeft: " + isRtl);
+        return isRtl;
     }
 }

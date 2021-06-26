@@ -10,4 +10,6 @@ public interface IGUIRenderer {
     void backToLevelSelect();
 
     void navigateToGameOver();
+
+    boolean isRightToLeft();
 }
