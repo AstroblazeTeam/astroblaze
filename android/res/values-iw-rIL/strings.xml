@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start">התחל</string>
+    <string name="hiscores">טבלת שיאים</string>
+    <string name="options">הגדרות</string>
+    <string name="exit">יציאה</string>
+    <string name="sound">צלילים</string>
+    <string name="music">מוזיקה</string>
+    <string name="back">חזרה</string>
+    <string name="screenShake">רעידת מצלמה</string>
+    <string name="upgrades_for">שידרוגים עבור  %1$s</string>
+    <string name="backToGame">המשך</string>
+    <string name="backToMenu">חזרה לתפריט</string>
+    <string name="gameOver">הפסד</string>
+    <string name="unlockShip">" קנה $ %1$d"</string>
+    <string name="previous">קודם</string>
+    <string name="next">הבא</string>
+    <string name="swipeRight">החלק ימין</string>
+    <string name="swipeLeft">החלק שמאלה</string>
+    <string name="buyUpgrade">שדרג</string>
+    <string name="changePilotName">החלף</string>
+    <string name="enterPilotName">הכנס שם טייס:</string>
+    <string name="anonymous">אנונימי</string>
+    <string name="scoreLabel">נקודות:</string>
+    <string name="moneyLabel">כסף:</string>
+    <string name="rankLabel">דירוג:</string>
+    <string name="shieldUpgrade">מגן (%1$s)</string>
+    <string name="speedUpgrade">מהירות (%1$s)</string>
+    <string name="damageUpgrade">נזק (%1$s)</string>
+    <string name="shipStatHp">מגן: %1$d</string>
+    <string name="shipStatDamage">נזק תותחים: %1$d</string>
+    <string name="shipStatMissiles">נזק טילים: %1$d</string>
+    <string name="shipStatSpeed">מהירות: %1$d</string>
+    <string name="ship0">גשש</string>
+    <string name="ship1">סיירת</string>
+    <string name="ship2">משחתת</string>
+    <string name="ship3">סיירת מערכה</string>
+    <string name="ship4">ספינת מלחמה</string>
+
+    <string name="levelGeneric">
+        "שלב %1$d\n"
+        "קריאה לכל שכירי חרב!\n\n"
+
+        "פיראתים נראו בפרוורי מערכת השמש."
+        "מצה והשמד, העברת פרס לאחר שליחת דגימות חיישנים.\n\n"
+        "פרס: $ %2$d"
+    </string>
+    <string name="level0">שלב הדרכה והכרה</string>
+
+    <string name="level1">
+        "שלב 1.\n\n\n"
+
+        "מצא את הפיראת בשם BadBoy6663 והשמד."
+        "מבוקש:\n"
+        "BadBoy6663\n"
+        "$10000\n\n"
+        "חי או מת\n"
+    </string>
+
+</resources>
