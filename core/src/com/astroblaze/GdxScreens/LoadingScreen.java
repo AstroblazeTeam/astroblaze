@@ -1,6 +1,7 @@
 package com.astroblaze.GdxScreens;
 
 import com.astroblaze.*;
+import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,13 +32,13 @@ public class LoadingScreen extends ScreenAdapter {
         loadingTime += delta;
 
         final float minLoadingTime = 2f;
-        float p = Assets.getInstance().getProgress();
-        pgLoading.setValue(p < 1f ? MathUtils.lerp(pgLoading.getValue(), p, 0.1f * delta) : 1f);
-        if (Assets.getInstance().update() && !loaded) {
+        final float p = Assets.getInstance().getProgress();
+        pgLoading.setValue(MathUtils.lerp(pgLoading.getValue(), p, delta));
+        if (!loaded && Assets.getInstance().update() && pgLoading.getValue() >= 0.95f) {
             loaded = true;
             Gdx.app.log("LoadingScreen", "Assets loaded in " + loadingTime + " secs.");
             pgLoading.addAction(Actions.sequence(
-                    Actions.fadeOut(0.5f),
+                    Actions.fadeOut(1f),
                     Actions.delay(MathUtils.clamp(minLoadingTime - loadingTime, 0f, minLoadingTime)),
                     new RunnableAction() {
                         @Override
@@ -78,7 +79,7 @@ public class LoadingScreen extends ScreenAdapter {
         layout.row();
         image.setScaling(Scaling.fit);
 
-        pgLoading = new ProgressBar(0, 1f, 0.1f, false, Assets.asset(Assets.uiSkin));
+        pgLoading = new ProgressBar(0, 1f, 0.001f, false, Assets.asset(Assets.uiSkin));
         float h = 16 * Gdx.graphics.getDensity();
         pgLoading.setPosition(viewport.getScreenWidth() * 0.25f, h);
         pgLoading.setSize(viewport.getScreenWidth() * 0.5f, pgLoading.getHeight());
