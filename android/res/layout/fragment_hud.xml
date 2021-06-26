@@ -25,17 +25,4 @@
         android:textSize="40sp"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/tvMoney"
-        android:layout_width="100dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/moneyPrint"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textStyle="bold"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

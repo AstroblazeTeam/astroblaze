@@ -18,9 +18,8 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 
-public class FragmentHUD extends Fragment implements IGUIRenderer, IPlayerStateChangedListener {
+public class FragmentHUD extends Fragment implements IGUIRenderer {
     private final ArrayList<TextView> tvRenders = new ArrayList<>(16);
-    private TextView tvMoney;
     private View view;
 
     public FragmentHUD() {
@@ -38,22 +37,20 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IPlayerStateC
         super.onViewCreated(view, savedInstanceState);
 
         this.view = view;
-        this.tvMoney = view.findViewById(R.id.tvMoney);
         this.tvRenders.add(view.findViewById(R.id.tvRenderText1));
         this.tvRenders.add(view.findViewById(R.id.tvRenderText2));
-        AstroblazeGame.getInstance().setGuiRenderer(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
+        AstroblazeGame.getInstance().setGuiRenderer(null);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+        AstroblazeGame.getInstance().setGuiRenderer(this);
     }
 
     @Override
@@ -92,10 +89,5 @@ public class FragmentHUD extends Fragment implements IGUIRenderer, IPlayerStateC
             nc.popBackStack();
             nc.popBackStack();
         });
-    }
-
-    @Override
-    public void onStateChanged(PlayerState state) {
-        tvMoney.post(() -> tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney())));
     }
 }

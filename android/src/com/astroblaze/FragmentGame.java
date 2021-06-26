@@ -14,13 +14,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.astroblaze.Interfaces.IUIChangeListener;
 import com.astroblaze.Rendering.PlayerShip;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FragmentGame extends Fragment implements IUIChangeListener {
+public class FragmentGame extends Fragment implements IUIChangeListener, IPlayerStateChangedListener {
+    private TextView tvMoney;
     private TextView tvSpecial1;
     private TextView tvSpecial2;
 
@@ -42,14 +44,6 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        NavHostFragment.findNavController(FragmentGame.this)
-                .popBackStack(R.id.fragmentPause, false);
-        AstroblazeGame.getInstance().pauseGame();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_game, container, false);
@@ -61,6 +55,7 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
 
         tvSpecial1 = view.findViewById(R.id.tvExtra1Text);
         tvSpecial2 = view.findViewById(R.id.tvExtra2Text);
+        tvMoney = view.findViewById(R.id.tvMoney);
 
         view.findViewById(R.id.btnExtra1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +73,25 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         AstroblazeGame.getInstance().addUIChangeListener(this);
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        NavHostFragment.findNavController(FragmentGame.this)
+                .popBackStack(R.id.fragmentPause, false);
+        AstroblazeGame.getInstance().pauseGame();
+        AstroblazeGame.getInstance().removeUIChangeListener(this);
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
+    }
+
+    @Override
+    public void onStateChanged(PlayerState state) {
+        tvMoney.post(() -> tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney())));
     }
 
     @Override
@@ -93,15 +104,12 @@ public class FragmentGame extends Fragment implements IUIChangeListener {
 
     @Override
     public void onSpecialTextChanged(PlayerShip playerShip, String text1, String text2) {
-        tvSpecial1.post(new Runnable() {
-            @Override
-            public void run() {
-                tvSpecial1.setText(text1);
-                tvSpecial2.setText(text2);
-                TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(tvSpecial1,
-                        1, 36, 1, TypedValue.COMPLEX_UNIT_DIP);
+        tvSpecial1.post(() -> {
+            tvSpecial1.setText(text1);
+            tvSpecial2.setText(text2);
+            TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(tvSpecial1,
+                    1, 36, 1, TypedValue.COMPLEX_UNIT_DIP);
 
-            }
         });
     }
 }
