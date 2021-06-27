@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,5 +52,11 @@ public class FragmentLevelComplete extends Fragment {
                     NavController nc = ((MainActivity) requireActivity()).getNavController();
                     nc.popBackStack();
                 }));
+
+        RecyclerView rvBoard = view.findViewById(R.id.rvKills);
+        if (rvBoard != null) {
+            rvBoard.setLayoutManager(new GridLayoutManager(rvBoard.getContext(), 4));
+            rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker.getKills()));
+        }
     }
 }
