@@ -93,6 +93,8 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
                 return getString(R.string.LevelComplete);
             case BossIncoming:
                 return getString(R.string.BossIncoming);
+            case MiniBossIncoming:
+                return getString(R.string.MiniBossIncoming);
             case TutorialTouchScreenToMove:
                 return getString(R.string.TutorialTouchScreenToMove);
             case TutorialPrimaryWeapon:

@@ -75,6 +75,7 @@
     <string name="LevelStartGo">Go!</string>
     <string name="LevelComplete">Level Complete!</string>
     <string name="BossIncoming">Boss Incoming!</string>
+    <string name="MiniBossIncoming">MiniBoss Incoming!</string>
     <string name="TutorialTouchScreenToMove">Touch the screen to move</string>
     <string name="TutorialPrimaryWeapon">Primary weapon is always active, just aim and kill</string>
     <string name="TutorialDodgeBulletsAndEnemies">Dodge the bullets and enemies</string>
@@ -85,4 +86,5 @@
     <string name="statsDamageTaken">Damage Taken:</string>
     <string name="statsMoney">Money:</string>
     <string name="statsScore">Score:</string>
+    <string name="multiplesOf" translatable="false">%1$dx %2$s</string>
 </resources>

@@ -165,6 +165,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
                 float phase = MathUtils.sin(moveClock);
                 getPosition().mulAdd(moveVector, delta).add(phase * moveMagnitude * delta, 0f, 0f);
                 break;
+            case MiniBoss1:
             case Boss:
                 if (typeId.aiMoveDecisionTime != 0f) {
                     if (aiDecisionClock < 0f) {

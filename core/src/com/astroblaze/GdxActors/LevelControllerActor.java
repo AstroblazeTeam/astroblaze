@@ -167,6 +167,35 @@ public class LevelControllerActor extends Actor {
                 });
     }
 
+    private Action spawnMiniBoss(final EnemyType bossType) {
+        RunnableAction r = new RunnableAction();
+        final EnemyShip[] enemyShip = new EnemyShip[1]; // array wrapper for closure
+        r.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                Vector3 spawnPos = scene.getPlayer().getPosition().cpy();
+                // spawn away by mirrored x axis just in case
+                spawnPos.add(
+                        Math.copySign(scene.getGameBounds().max.x * 0.75f, -spawnPos.x),
+                        0f,
+                        scene.getGameBounds().max.z * 0.75f);
+
+                enemyShip[0] = scene.getEnemyPool().obtain();
+                enemyShip[0].setType(bossType);
+                enemyShip[0].setPosition(spawnPos);
+
+                AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemyShip[0]);
+            }
+        });
+
+        return Actions.sequence(
+                showText(TranslatedStringId.MiniBossIncoming),
+                playSound(Assets.soundWarning),
+                delay(3f),
+                showText(""),
+                r);
+    }
+
     private Action spawnEnemyAndWaitDeath(final EnemyType type) {
         RunnableAction r = new RunnableAction();
         final EnemyShip[] enemyShip = new EnemyShip[1]; // array wrapper for closure
@@ -276,10 +305,16 @@ public class LevelControllerActor extends Actor {
                     delay(textDelay),
                     showText(""));
 
-            for (int i = 0; i < 10 + level; i++) {
+            final int waveCount = 10 + level;
+            final int minibossSpawn1 = MathUtils.random(waveCount / 3, waveCount * 2 / 3);
+            final int minibossSpawn2 = MathUtils.random() > 0.5f // 50% chance for additional miniboss
+                    ? -1 : MathUtils.random(waveCount / 3, waveCount * 2 / 3);
+            for (int i = 0; i < waveCount; i++) {
                 EnemyType waveType = waveTypeWeights.getRandom();
                 int count = MathUtils.random(3 + level, 7 + level);
-                if (MathUtils.random(0f, 1f) > 0.5f) {
+                if (i == minibossSpawn1 || i == minibossSpawn2) {
+                    seq.addAction(spawnMiniBoss(EnemyType.MiniBoss1));
+                } else if (MathUtils.random(0f, 1f) > 0.5f) {
                     seq.addAction(spawnWallOfEnemies(waveType, count));
                 } else {
                     seq.addAction(spawnSequenceOfEnemies(waveType, count, 2f * waveDelay / count));

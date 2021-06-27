@@ -7,6 +7,7 @@ public enum TranslatedStringId {
     LevelStartGo,
     LevelComplete,
     BossIncoming,
+    MiniBossIncoming,
     TutorialTouchScreenToMove,
     TutorialPrimaryWeapon,
     TutorialDodgeBulletsAndEnemies,

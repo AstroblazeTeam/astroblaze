@@ -71,5 +71,6 @@
     <string name="statsDamageTaken">הזק התקבל:</string>
     <string name="statsMoney">כסף:</string>
     <string name="statsScore">ניקוד:</string>
+    <string name="MiniBossIncoming">מיניבוס מתקרב!</string>
 
 </resources>
