@@ -292,6 +292,7 @@ public class LevelControllerActor extends Actor {
             seq.addAction(showText(TranslatedStringId.LevelComplete));
             seq.addAction(finishLevel());
 
+            AstroblazeGame.getLevelStatTracker().reset();
             this.addAction(seq);
         }
     }

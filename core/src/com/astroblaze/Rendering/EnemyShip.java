@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class EnemyShip extends SpaceShip implements ICollisionProvider {
+    private final LevelStatTracker statTracker;
     private float modelRadius;
     private float moveClock = 0f;
     private final float moveMagnitude = 50f;
@@ -23,6 +24,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     public EnemyShip(Scene3D scene) {
         super(scene);
         setType(EnemyType.Idle);
+        statTracker = AstroblazeGame.getLevelStatTracker();
     }
 
     @Override
@@ -205,12 +207,14 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         if (!enabled)
             return;
         this.hp -= damage;
+        statTracker.addDamageDone(damage);
         if (this.hp <= 0f) {
             scene.removeActor(this);
             AstroblazeGame.getSoundController().playExplosionSound();
             scene.getDecalController().addExplosion(this.getPosition(), moveVector, 0.1f);
 
             if (isPlayer) {
+                statTracker.addKill(typeId);
                 AstroblazeGame.getPlayerState().modPlayerScore(typeId.value);
             }
             dropBonus();

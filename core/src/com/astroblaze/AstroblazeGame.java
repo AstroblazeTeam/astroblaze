@@ -28,6 +28,7 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
     private SoundController soundController;
     private MusicController musicController;
     private Scene3D scene;
+    private final LevelStatTracker statTracker = new LevelStatTracker();
     private GLProfiler profiler;
     private ModelBatch batch;
     private IGUIRenderer guiRenderer;
@@ -47,6 +48,14 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
 
     public Scene3D getScene() {
         return this.scene;
+    }
+
+    public static LevelStatTracker getLevelStatTracker() {
+        return instance.statTracker;
+    }
+
+    public static LevelControllerActor getLevelController() {
+        return instance.gameScreen.getLevelController();
     }
 
     public static SoundController getSoundController() {

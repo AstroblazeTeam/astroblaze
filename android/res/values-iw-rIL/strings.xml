@@ -66,5 +66,10 @@
     <string name="TutorialDodgeBulletsAndEnemies">התחמק/י מאויבים וקליעים</string>
     <string name="TutorialUseButtonToFireMissiles">החזק בכפתור כדי לירות טילים</string>
     <string name="TutorialComplete">שלב הדרכה הושלם</string>
+    <string name="statsKills">הריגות:</string>
+    <string name="statsDamageDone">נזק נעשה:</string>
+    <string name="statsDamageTaken">הזק התקבל:</string>
+    <string name="statsMoney">כסף:</string>
+    <string name="statsScore">ניקוד:</string>
 
 </resources>

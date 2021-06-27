@@ -83,6 +83,7 @@ public class PlayerShip extends SpaceShip {
         hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHitpoints());
         game.reportStateChanged(this, hp, oldHp);
         if (hpModifier < 0f) {
+            AstroblazeGame.getLevelStatTracker().addDamageTaken(hpModifier);
             scene.getCamera().shake();
         }
         Gdx.app.log("Ship", "Player hp modded from " + oldHp + " to " + hp);

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,18 @@ public class FragmentLevelComplete extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @androidx.annotation.Nullable @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        final LevelStatTracker tracker = AstroblazeGame.getLevelStatTracker();
+
+        int kills = 0;
+        for (int k : tracker.getKills().values()) {
+            kills += k;
+        }
+        ((TextView) view.findViewById(R.id.tvKills)).setText(String.valueOf(kills));
+        ((TextView) view.findViewById(R.id.tvDamageDone)).setText(String.valueOf((long) tracker.getDamageDone()));
+        ((TextView) view.findViewById(R.id.tvDamageTaken)).setText(String.valueOf((long) tracker.getDamageTaken()));
+        ((TextView) view.findViewById(R.id.tvScoreDiff)).setText(String.valueOf((long) tracker.getScore()));
+        ((TextView) view.findViewById(R.id.tvMoneyDiff)).setText(String.valueOf((long) tracker.getMoney()));
 
         view.findViewById(R.id.btnGameOverExit2).setOnClickListener(v ->
                 this.requireView().post(() -> {

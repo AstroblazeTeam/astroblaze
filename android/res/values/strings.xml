@@ -80,4 +80,9 @@
     <string name="TutorialDodgeBulletsAndEnemies">Dodge the bullets and enemies</string>
     <string name="TutorialUseButtonToFireMissiles">Hold the button to fire missiles</string>
     <string name="TutorialComplete">Tutorial complete!</string>
+    <string name="statsKills">Kills:</string>
+    <string name="statsDamageDone">Damage Done:</string>
+    <string name="statsDamageTaken">Damage Taken:</string>
+    <string name="statsMoney">Money:</string>
+    <string name="statsScore">Score:</string>
 </resources>
