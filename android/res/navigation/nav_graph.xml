@@ -107,6 +107,13 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_fragmentLevelSelect_to_fragmentLevelComplete"
+            app:destination="@id/fragmentLevelComplete"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -123,4 +130,9 @@
         android:name="com.astroblaze.FragmentGameOver"
         android:label="fragment_gameover"
         tools:layout="@layout/fragment_gameover" />
+    <fragment
+        android:id="@+id/fragmentLevelComplete"
+        android:name="com.astroblaze.FragmentLevelComplete"
+        android:label="fragment_level_complete"
+        tools:layout="@layout/fragment_level_complete" />
 </navigation>

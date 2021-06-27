@@ -131,6 +131,17 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
     }
 
     @Override
+    public void navigateToLevelComplete() {
+        tvRenders.get(0).post(() -> {
+            NavController nc = ((MainActivity) requireActivity()).getNavController();
+
+            nc.popBackStack();
+            nc.popBackStack();
+            nc.navigate(R.id.action_fragmentLevelSelect_to_fragmentLevelComplete);
+        });
+    }
+
+    @Override
     public boolean isRightToLeft() {
         boolean isRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) != View.LAYOUT_DIRECTION_LTR;
         Gdx.app.log("FragmentHUD", "isRightToLeft: " + isRtl);

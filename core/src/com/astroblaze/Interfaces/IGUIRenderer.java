@@ -12,4 +12,6 @@ public interface IGUIRenderer {
     void navigateToGameOver();
 
     boolean isRightToLeft();
+
+    void navigateToLevelComplete();
 }

@@ -93,7 +93,7 @@ public class LevelControllerActor extends Actor {
                     public void run() {
                         PlayerState state = AstroblazeGame.getPlayerState();
                         state.setMaxLevel(Math.max(level + 1, state.getMaxLevel()));
-                        AstroblazeGame.getInstance().getGuiRenderer().backToLevelSelect();
+                        AstroblazeGame.getInstance().getGuiRenderer().navigateToLevelComplete();
                     }
                 });
     }

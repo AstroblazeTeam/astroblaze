@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutLevelComplete"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="32dp"
+    android:layout_marginBottom="32dp"
+    tools:context=".FragmentLevelComplete">
+
+    <ImageView
+        android:layout_width="@dimen/button_width"
+        android:layout_height="0dp"
+        android:src="@drawable/skull_gradient"
+        app:layout_constraintBottom_toTopOf="@+id/tvGameOver2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvGameOver2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:shadowColor="@color/seekbar_high"
+        android:shadowDx="3.3"
+        android:shadowDy="3.5"
+        android:shadowRadius="5.6"
+        android:text="@string/LevelComplete"
+        android:textAlignment="center"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnGameOverExit2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height"
+        android:background="@drawable/menubutton"
+        android:shadowColor="@color/menu_bg_color"
+        android:shadowDx="2.3"
+        android:shadowDy="2.5"
+        android:shadowRadius="3.6"
+        android:text="@string/backToMenu"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameOver2" />
+</androidx.constraintlayout.widget.ConstraintLayout>
