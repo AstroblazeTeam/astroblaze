@@ -40,7 +40,7 @@
             android:id="@+id/tvKillsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/statsKills"
             android:textAlignment="textEnd" />
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/moneyPrint" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +67,7 @@
             android:id="@+id/tvDamageDoneLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/statsDamageDone"
             android:textAlignment="textEnd" />
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/moneyPrint" />
     </LinearLayout>
 
     <LinearLayout
@@ -94,7 +94,7 @@
             android:id="@+id/tvDamageTakenLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/statsDamageTaken" />
 
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/moneyPrint" />
     </LinearLayout>
 
     <LinearLayout
@@ -120,7 +120,7 @@
             android:id="@+id/tvMoneyDiffLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/statsMoney" />
 
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/moneyPrint" />
     </LinearLayout>
 
     <LinearLayout
@@ -146,7 +146,7 @@
             android:id="@+id/tvScoreDiffLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/statsScore" />
 
@@ -155,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/moneyPrint" />
     </LinearLayout>
 
     <Button
