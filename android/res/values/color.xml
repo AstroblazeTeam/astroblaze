@@ -9,4 +9,5 @@
     <color name="button_outline">#FFFFFF</color>
     <color name="seekbar_high">#FF0000</color>
     <color name="seekbar_low">#FFA500</color>
+    <color name="level_complete">#FFD700</color>
 </resources>
