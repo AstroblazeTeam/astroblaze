@@ -134,8 +134,10 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
     @Override
     public void onStateChanged(PlayerState state) {
-        tvPilotName.setText(state.getName());
-        tvScore.setText(String.valueOf((long) state.getPlayerScore()));
-        tvMoney.setText(getString(R.string.moneyPrint, (long) state.getPlayerMoney()));
+        tvPilotName.post(() -> {
+            tvPilotName.setText(state.getName());
+            tvScore.setText(String.valueOf((long) state.getPlayerScore()));
+            tvMoney.setText(getString(R.string.moneyPrint, (long) state.getPlayerMoney()));
+        });
     }
 }
