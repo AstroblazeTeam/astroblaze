@@ -9,6 +9,7 @@
         android:isGame="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/Theme.Astroblaze">
         <activity android:name=".MainActivity"
             android:configChanges="layoutDirection|locale|keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
