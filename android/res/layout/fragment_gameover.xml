@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/btnGameOverExit"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/button_width"
         android:layout_height="@dimen/button_height"
         android:background="@drawable/menubutton"
         android:shadowColor="@color/menu_bg_color"
@@ -47,7 +47,7 @@
         android:shadowDy="2.5"
         android:shadowRadius="3.6"
         android:text="@string/backToMenu"
-        android:textSize="32sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

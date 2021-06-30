@@ -14,7 +14,8 @@
         android:id="@+id/tvGameOver2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center"
         android:shadowColor="@color/level_complete"
         android:shadowDx="3.3"
@@ -30,26 +31,29 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvKills"
-        android:layout_width="0dp"
+        android:layout_width="479dp"
         android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/menu_background"
         app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/LinearLayouttv"
-        app:layout_constraintTop_toBottomOf="@id/tvGameOver2"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameOver2"
         tools:listitem="@layout/kill_item" />
 
     <LinearLayout
         android:id="@+id/LinearLayouttv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/menu_background"
         android:orientation="vertical"
+        android:padding="24dp"
         app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit2"
         app:layout_constraintEnd_toStartOf="@+id/rvKills"
         app:layout_constraintHorizontal_bias="0.5"
@@ -61,8 +65,7 @@
             android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="8sp"
+            android:layout_marginBottom="12sp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout11"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +76,11 @@
                 android:id="@+id/tvKillsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/statsKills"
                 android:textAlignment="textEnd"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvKills"
@@ -85,14 +88,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/moneyPrint"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8sp"
+            android:layout_marginBottom="12sp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,11 +106,11 @@
                 android:id="@+id/tvDamageDoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/statsDamageDone"
                 android:textAlignment="textEnd"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvDamageDone"
@@ -115,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/moneyPrint"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
 
@@ -123,7 +126,7 @@
             android:id="@+id/linearLayout8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8sp"
+            android:layout_marginBottom="12sp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout10"
             app:layout_constraintEnd_toEndOf="parent"
@@ -134,10 +137,10 @@
                 android:id="@+id/tvDamageTakenLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/statsDamageTaken"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvDamageTaken"
@@ -145,14 +148,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/moneyPrint"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8sp"
+            android:layout_marginBottom="12sp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout12"
             app:layout_constraintEnd_toEndOf="parent"
@@ -163,10 +166,10 @@
                 android:id="@+id/tvMoneyDiffLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/statsMoney"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvMoneyDiff"
@@ -174,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/moneyPrint"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,10 +193,10 @@
                 android:id="@+id/tvScoreDiffLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
                 android:text="@string/statsScore"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvScoreDiff"
@@ -201,24 +204,26 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/moneyPrint"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btnGameOverExit2"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginBottom="4dp"
+        android:layout_width="@dimen/button_width"
+        android:layout_height="@dimen/button_height_var2"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/menu_button_states"
         android:shadowColor="@color/menu_bg_color"
         android:shadowDx="2.3"
         android:shadowDy="2.5"
         android:shadowRadius="3.6"
         android:text="@string/backToMenu"
-        android:textSize="32sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvKills" />
 </androidx.constraintlayout.widget.ConstraintLayout>

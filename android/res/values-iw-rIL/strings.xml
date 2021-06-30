@@ -42,7 +42,7 @@
         "קריאה לכל שכירי חרב!\n\n"
 
         "פיראתים נראו בפרוורי מערכת השמש."
-        "מצה והשמד, העברת פרס לאחר שליחת דגימות חיישנים.\n\n"
+        "מצא והשמד, העברת פרס לאחר שליחת דגימות חיישנים.\n\n"
         "פרס: $ %2$d"
     </string>
     <string name="level0">שלב הדרכה והכרה</string>
@@ -68,7 +68,7 @@
     <string name="TutorialComplete">שלב הדרכה הושלם</string>
     <string name="statsKills">הריגות:</string>
     <string name="statsDamageDone">נזק נעשה:</string>
-    <string name="statsDamageTaken">הזק התקבל:</string>
+    <string name="statsDamageTaken">נזק התקבל:</string>
     <string name="statsMoney">כסף:</string>
     <string name="statsScore">ניקוד:</string>
     <string name="MiniBossIncoming">מיניבוס מתקרב!</string>
