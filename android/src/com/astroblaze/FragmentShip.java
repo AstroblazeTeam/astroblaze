@@ -1,6 +1,5 @@
 package com.astroblaze;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,8 +16,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 
@@ -46,11 +43,9 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvDescription = requireView().findViewById(R.id.tvShipDescription);
-        tvStats = requireView().findViewById(R.id.tvShipStats);
-        btnAction = requireView().findViewById(R.id.btnAction);
+        resetText(AstroblazeGame.getPlayerState());
     }
 
     @Override
@@ -66,49 +61,51 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     }
 
     private void resetText(PlayerState state) {
-        btnAction.post(() -> {
-            tvDescription.setText(getString(R.string.ship0 + variant.id));
-            String hpText = getString(R.string.shipStatHp, (int) variant.getMaxHp(state));
-            String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade) - 1f) * 100f));
-            String damageText = getString(R.string.shipStatDamage, (int) variant.getDamage(state));
-            String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
-            String speedText = getString(R.string.shipStatSpeed, (int) variant.getSpeed(state));
-            String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade) - 1f) * 100f));
+        tvDescription = requireView().findViewById(R.id.tvShipDescription);
+        tvStats = requireView().findViewById(R.id.tvShipStats);
+        btnAction = requireView().findViewById(R.id.btnAction);
 
-            CharSequence combined = TextUtils.concat(
-                    hpText, hpModText, "<br>",
-                    damageText, damageModifier, "<br>",
-                    speedText, speedModifier, "<br>"
-            );
-            tvStats.setText(Html.fromHtml(combined.toString()));
+        tvDescription.setText(getString(R.string.ship0 + variant.id));
+        String hpText = getString(R.string.shipStatHp, (int) variant.getMaxHp(state));
+        String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade) - 1f) * 100f));
+        String damageText = getString(R.string.shipStatDamage, (int) variant.getDamage(state));
+        String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
+        String speedText = getString(R.string.shipStatSpeed, (int) variant.getSpeed(state));
+        String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade) - 1f) * 100f));
 
-            if (!state.isShipVariantUnlocked(variant)) {
-                btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
-                btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
-                btnAction.setOnClickListener(v -> {
-                    AstroblazeGame.getPlayerState().unlockShipVariant(variant);
-                });
-            } else {
-                btnAction.setEnabled(true);
-                btnAction.setText(getString(R.string.buyUpgrade));
-                btnAction.setOnClickListener(v -> {
-                    Fragment parentFragment = getParentFragment();
-                    if (parentFragment == null) {
-                        Gdx.app.error("FragmentShip", "Parent fragment was null!");
-                        return;
-                    }
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("variant", variant.id);
+        CharSequence combined = TextUtils.concat(
+                hpText, hpModText, "<br>",
+                damageText, damageModifier, "<br>",
+                speedText, speedModifier, "<br>"
+        );
+        tvStats.setText(Html.fromHtml(combined.toString()));
 
-                    NavHostFragment.findNavController(parentFragment)
-                            .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
-                });
-            }
-        });
+        if (!state.isShipVariantUnlocked(variant)) {
+            btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
+            btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
+            btnAction.setOnClickListener(v -> {
+                AstroblazeGame.getPlayerState().unlockShipVariant(variant);
+            });
+        } else {
+            btnAction.setEnabled(true);
+            btnAction.setText(getString(R.string.buyUpgrade));
+            btnAction.setOnClickListener(v -> {
+                Fragment parentFragment = getParentFragment();
+                if (parentFragment == null) {
+                    Gdx.app.error("FragmentShip", "Parent fragment was null!");
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putInt("variant", variant.id);
+
+                NavHostFragment.findNavController(parentFragment)
+                        .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
+            });
+        }
     }
 
     @Override
     public void onStateChanged(PlayerState state) {
-        resetText(state);
+        btnAction.post(() -> resetText(state));
     }
 }

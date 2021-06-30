@@ -10,22 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.astroblaze.GdxActors.ShipPreviewActor;
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
-import org.jetbrains.annotations.NotNull;
-
 public class FragmentLevelSelect extends Fragment implements IPlayerStateChangedListener {
     private ShipPreviewActor preview;
-    private ViewPager pagerLevels;
-    private ViewPager pagerShips;
+    private ViewPager2 pagerLevels;
+    private ViewPager2 pagerShips;
     private TextView tvLevelSwipeLeft;
     private TextView tvLevelSwipeRight;
     private TextView tvShipSwipeLeft;
@@ -44,7 +41,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         btnPlay = view.findViewById(R.id.btnPlay);
@@ -73,7 +70,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         pagerLevels = view.findViewById(R.id.pagerLevels);
         pagerShips = view.findViewById(R.id.pagerShips);
 
-        pagerLevels.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        pagerLevels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -81,24 +78,25 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             }
         });
 
-        pagerShips.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        pagerShips.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                preview.setSlide(position, positionOffset - prevShipSliderPosition);
-                prevShipSliderPosition = positionOffset;
+                if (preview != null) {
+                    preview.setSlide(position, positionOffset - prevShipSliderPosition);
+                    prevShipSliderPosition = positionOffset;
+                }
             }
 
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 FragmentLevelSelect.this.refreshShipSwipeButtons(position);
-                AstroblazeGame.getPlayerState().setLastSelectedShip(position);
             }
         });
 
-        pagerLevels.setAdapter(new LevelsPagerAdapter(getChildFragmentManager()));
-        pagerShips.setAdapter(new ShipsPagerAdapter(getChildFragmentManager()));
+        pagerLevels.setAdapter(new LevelsPagerAdapter(requireParentFragment()));
+        pagerShips.setAdapter(new ShipsPagerAdapter(requireParentFragment()));
 
         refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
     }
@@ -111,7 +109,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
     public void refreshShipSwipeButtons(int position) {
         tvShipSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
-        tvShipSwipeRight.setVisibility(position < preview.getVariantCount() - 1
+        tvShipSwipeRight.setVisibility(position < ShipPreviewActor.getVariantCount() - 1
                 ? View.VISIBLE : View.INVISIBLE);
         PlayerShipVariant variant = PlayerShipVariant.values()[position];
         btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipVariantUnlocked(variant));
@@ -120,28 +118,37 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     @Override
     public void onResume() {
         super.onResume();
-        preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
-        Vector3 worldPos = new Vector3();
-        final float xFrac = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft() ?
-                0.75f : 0.25f;
-        if (AstroblazeGame.getInstance().getScene().getXZIntersection(
-                Gdx.graphics.getWidth() * xFrac,
-                Gdx.graphics.getHeight() * 0.5f, worldPos)) {
-            preview.setSelectedPosition(worldPos);
-        }
-        preview.setVisible(true);
+        requireView().postDelayed(() -> {
+            preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
+            Vector3 worldPos = new Vector3();
 
-        PlayerState state = AstroblazeGame.getPlayerState();
+            final float xFrac = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft() ?
+                    0.75f : 0.25f;
+            if (AstroblazeGame.getInstance().getScene().getXZIntersection(
+                    Gdx.graphics.getWidth() * xFrac,
+                    Gdx.graphics.getHeight() * 0.5f, worldPos)) {
+                preview.setSelectedPosition(worldPos);
+            }
+            preview.setVisible(true);
 
-        state.addPlayerStateChangeListener(this);
-        pagerShips.setCurrentItem(state.getLastSelectedShip(), true);
-        pagerLevels.setCurrentItem(state.getMaxLevel(), true);
+            PlayerState state = AstroblazeGame.getPlayerState();
+
+            state.addPlayerStateChangeListener(FragmentLevelSelect.this);
+
+            pagerShips.setOffscreenPageLimit(10);
+            pagerLevels.setOffscreenPageLimit(5);
+
+            pagerShips.setCurrentItem(state.getLastSelectedShip(), true);
+            pagerLevels.setCurrentItem(state.getMaxLevel(), true);
+
+        }, 100);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
+        AstroblazeGame.getPlayerState().setLastSelectedShip(pagerShips.getCurrentItem());
         AstroblazeGame.getInstance().gameScreen.getShipPreview().setVisible(false);
     }
 
@@ -153,47 +160,36 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         });
     }
 
-    private static class LevelsPagerAdapter extends FragmentPagerAdapter {
-        public LevelsPagerAdapter(FragmentManager fm) {
-            super(fm);
+    private static class LevelsPagerAdapter extends FragmentStateAdapter {
+        public LevelsPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
-        @NotNull
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             return new FragmentLevel(position);
         }
 
         @Override
-        public void setPrimaryItem(@NonNull @NotNull ViewGroup container, int position, @NonNull @NotNull Object object) {
-            super.setPrimaryItem(container, position, object);
-        }
-
-        @Override
-        public int getCount() {
+        public int getItemCount() {
             return AstroblazeGame.getPlayerState().getMaxLevel() + 1;
         }
     }
 
-    // not static - needs reference to preview actor
-    private class ShipsPagerAdapter extends FragmentPagerAdapter {
-        public ShipsPagerAdapter(FragmentManager fm) {
-            super(fm);
+    private static class ShipsPagerAdapter extends FragmentStateAdapter {
+        public ShipsPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
-        @NotNull
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
-            return new FragmentShip(preview.getVariant(position));
-        }
-
-        @Override
-        public void setPrimaryItem(@NonNull @NotNull ViewGroup container, int position, @NonNull @NotNull Object object) {
-            super.setPrimaryItem(container, position, object);
+        public Fragment createFragment(int position) {
+            return new FragmentShip(ShipPreviewActor.getVariant(position));
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return ShipPreviewActor.VARIANT_COUNT;
         }
     }
