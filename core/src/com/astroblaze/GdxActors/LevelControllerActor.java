@@ -286,6 +286,10 @@ public class LevelControllerActor extends Actor {
         return new SceneDelayAction(duration);
     }
 
+    public int getLevel() {
+        return this.level;
+    }
+
     public void setLevel(int level) {
         this.level = level;
         Gdx.app.log("LevelController", "Set level to " + level);

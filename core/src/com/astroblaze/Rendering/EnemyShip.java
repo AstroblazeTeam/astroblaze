@@ -15,7 +15,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private final float moveMagnitude = 50f;
     private final float moveClockSpeed = 2f;
     private float aiDecisionClock = 0f;
-    private Vector3 aiDecisionMove = new Vector3();
+    private final Vector3 aiDecisionMove = new Vector3();
     private EnemyType typeId = EnemyType.Idle;
     private boolean enabled;
 
@@ -49,7 +49,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     }
 
     public float getMaxHitpoints() {
-        return this.typeId.hp;
+        return this.typeId.baseHp * AstroblazeGame.getLevelController().getLevel();
     }
 
     public void setEnabled(boolean enabled) {
@@ -82,7 +82,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         setScale(typeId.modelScale);
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
-        hp = typeId.hp;
+        hp = typeId.baseHp;
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
 
@@ -129,6 +129,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
             final Vector3 dir = targetPos.cpy().sub(pos).nor();
             final int turretPorts = typeId.turrets;
             final float turretOffset = 0.5f * typeId.modelScale / turretPorts;
+            //noinspection SuspiciousNameCombination
             final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
             if (Float.isNaN(angle) || Float.isInfinite(angle)) {
                 return;

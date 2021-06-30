@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import java.util.ArrayList;
 
 public enum PlayerShipVariant {
-    Scout(0, 0, 15f, 100f, 0f, 1, 0, 2),
-    Destroyer(1, 1, 15f, 150f, 10000f, 2, 0, 3),
-    Cruiser(2, 2, 15f, 200f, 50000f, 3, 1, 4),
-    Battlecruiser(3, 3, 15f, 250f, 100000f, 4, 1, 5),
-    Battleship(4, 9, 15f, 300f, 1000000f, 5, 2, 6);
+    Scout(0, 0, 15f, 100f, 0f, 1, 1, 2),
+    Destroyer(1, 1, 15f, 150f, 10000f, 2, 1, 3),
+    Cruiser(2, 2, 15f, 200f, 50000f, 3, 2, 4),
+    Battlecruiser(3, 3, 15f, 250f, 100000f, 4, 2, 5),
+    Battleship(4, 9, 15f, 300f, 1000000f, 5, 3, 6);
 
     public final int id;
     public final int modelDescriptorId;
