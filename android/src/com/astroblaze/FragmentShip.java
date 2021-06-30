@@ -1,7 +1,9 @@
 package com.astroblaze;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +23,11 @@ import java.text.DecimalFormat;
 
 public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
-    private TextView tvDescription;
-    private TextView tvStats;
     private Button btnAction;
 
     public FragmentShip() {
-        this.variant = PlayerShipVariant.Scout;
         // Required empty public constructor
+        this.variant = PlayerShipVariant.Scout;
     }
 
     public FragmentShip(PlayerShipVariant variant) {
@@ -61,8 +61,8 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     }
 
     private void resetText(PlayerState state) {
-        tvDescription = requireView().findViewById(R.id.tvShipDescription);
-        tvStats = requireView().findViewById(R.id.tvShipStats);
+        TextView tvDescription = requireView().findViewById(R.id.tvShipDescription);
+        TextView tvStats = requireView().findViewById(R.id.tvShipStats);
         btnAction = requireView().findViewById(R.id.btnAction);
 
         tvDescription.setText(getString(R.string.ship0 + variant.id));
@@ -78,14 +78,18 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 damageText, damageModifier, "<br>",
                 speedText, speedModifier, "<br>"
         );
-        tvStats.setText(Html.fromHtml(combined.toString()));
+        Spanned htmlText;
+        if (Build.VERSION.SDK_INT >= 24) {
+            htmlText = Html.fromHtml(combined.toString(), Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            htmlText = Html.fromHtml(combined.toString());
+        }
+        tvStats.setText(htmlText);
 
         if (!state.isShipVariantUnlocked(variant)) {
             btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
             btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
-            btnAction.setOnClickListener(v -> {
-                AstroblazeGame.getPlayerState().unlockShipVariant(variant);
-            });
+            btnAction.setOnClickListener(v -> AstroblazeGame.getPlayerState().unlockShipVariant(variant));
         } else {
             btnAction.setEnabled(true);
             btnAction.setText(getString(R.string.buyUpgrade));
