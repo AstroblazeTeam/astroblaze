@@ -136,6 +136,7 @@ public class GameScreen extends ScreenAdapter {
             levelControllerActor.remove();
             levelControllerActor = null;
         }
+        bossHealthBarActor.setTrackedEnemy(null);
         stage.act(30f);
         stage.addAction(Actions.sequence(
                 Actions.fadeOut(duration),
