@@ -30,6 +30,18 @@
 # Required if using Gdx-Controllers extension
 -keep class com.badlogic.gdx.controllers.android.AndroidControllers
 
+# Required for skin json to deserialize (uses json)
+-keep class com.badlogic.**{
+   **[] $VALUES;
+    *;
+}
+
+# Required for GSON to deserialize game save file
+-keep class com.astroblaze.**{
+   **[] $VALUES;
+    *;
+}
+
 # Required if using Box2D extension
 -keepclassmembers class com.badlogic.gdx.physics.box2d.World {
    boolean contactFilter(long, long);
