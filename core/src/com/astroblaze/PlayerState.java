@@ -189,7 +189,11 @@ public class PlayerState {
 
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
-        AstroblazeGame.getSoundController().playPurchaseSound();
+
+        if (AstroblazeGame.getSoundController() != null) {
+            // avoid NPE when initializing new player state
+            AstroblazeGame.getSoundController().playPurchaseSound();
+        }
         return true;
     }
 

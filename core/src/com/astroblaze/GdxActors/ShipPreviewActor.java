@@ -76,7 +76,7 @@ public class ShipPreviewActor extends Actor {
         boolean isRtl = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft();
         model.index = variants.size();
         model.variant = variant;
-        model.assetDescriptor = variant.modelDescriptor;
+        model.assetDescriptor = variant.getVariantAssetModel();
         model.modelInstance = new ModelInstance(Assets.asset(model.assetDescriptor));
         model.baseRotation = isRtl
                 ? new Quaternion(Vector3.Z, -45f).mul(new Quaternion(Vector3.X, 0f))

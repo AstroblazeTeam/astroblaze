@@ -120,7 +120,7 @@ public class PlayerShip extends SpaceShip {
         modHp(getMaxHitpoints());
         gunDamage = variant.getDamage(playerState);
         moveSpeed = variant.getSpeed(playerState);
-        setModel(variant.modelDescriptor);
+        setModel(variant.getVariantAssetModel());
         setScale(variant.modelScale);
         noControlTimer = respawnNoControlTime;
         deathTimer = deathTimerMax;
