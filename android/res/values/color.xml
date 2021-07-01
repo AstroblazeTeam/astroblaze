@@ -13,4 +13,5 @@
     <color name="level_complete_table_item">#191970</color>
     <color name="switch_thumb_color">#32CD32</color>
     <color name="color_text_disabled">#8B0000</color>
+    <color name="rocket_text_color">#FFD700</color>
 </resources>
