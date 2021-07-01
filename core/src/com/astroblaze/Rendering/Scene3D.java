@@ -65,11 +65,11 @@ public class Scene3D implements ILoadingFinishedListener {
     }
 
     private void setupBonusDistribution() {
-        bonusDistribution.add(50, null);
+        bonusDistribution.add(60, null);
         bonusDistribution.add(40, new PlayerBonusCash());
         bonusDistribution.add(40, new PlayerBonusMissiles());
-        bonusDistribution.add(20, new PlayerBonusShieldRestore());
-        bonusDistribution.add(2, new PlayerBonusLife());
+        bonusDistribution.add(30, new PlayerBonusShieldRestore());
+        bonusDistribution.add(1, new PlayerBonusLife());
     }
 
     public PlayerShip getPlayer() {
