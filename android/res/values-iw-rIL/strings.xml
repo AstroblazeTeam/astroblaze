@@ -72,5 +72,12 @@
     <string name="statsMoney">כסף:</string>
     <string name="statsScore">ניקוד:</string>
     <string name="MiniBossIncoming">מיניבוס מתקרב!</string>
+    <string name="enemyBoss">בוס</string>
+    <string name="enemySimple">חייל</string>
+    <string name="enemyTrainingDummy">אויב דמי</string>
+    <string name="enemyWavy">סינוס</string>
+    <string name="enemyRammer">דורס</string>
+    <string name="enemyMoneyDrop">מוביל כסף</string>
+    <string name="enemyMiniboss1">מיניבוס</string>
 
 </resources>

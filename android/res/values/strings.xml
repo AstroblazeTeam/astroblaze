@@ -86,5 +86,14 @@
     <string name="statsDamageTaken">Damage Taken:</string>
     <string name="statsMoney">Money:</string>
     <string name="statsScore">Score:</string>
-    <string name="multiplesOf" translatable="false">%1$dx %2$s</string>
+    <string name="multiplesOf" translatable="false">%1$dx %2$d</string>
+
+    <string name="enemyBoss">Enemy Boss</string>
+    <string name="enemySimple">Grunt</string>
+    <string name="enemyTrainingDummy">Training Dummy</string>
+    <string name="enemyWavy">Wavy enemy</string>
+    <string name="enemyRammer">Rammer</string>
+    <string name="enemyMoneyDrop">Cash hauler</string>
+    <string name="enemyMiniboss1">Miniboss</string>
+
 </resources>

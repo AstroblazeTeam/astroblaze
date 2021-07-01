@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astroblaze.Interfaces.TranslatedStringId;
 import com.astroblaze.Rendering.EnemyType;
 
 import java.text.MessageFormat;
@@ -50,10 +51,10 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EnemyKillCount item = items.get(position);
-
-        holder.getTextViewName().setText(holder.itemView.getContext()
-                .getString(R.string.multiplesOf, item.count, item.type.name()));
-        holder.getTextViewPrice().setText(String.valueOf((int) item.type.value));
+        Context context = holder.itemView.getContext();
+        String translatedName = AstroblazeGame.getInstance().getGuiRenderer().getTranslatedEnemyName(item.type);
+        holder.getTextViewName().setText(translatedName);
+        holder.getTextViewPrice().setText(context.getString(R.string.multiplesOf, item.count, (int)item.type.value));
     }
 
     @Override

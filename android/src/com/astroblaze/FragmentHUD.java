@@ -12,6 +12,7 @@ import androidx.navigation.NavController;
 
 import com.astroblaze.Interfaces.IGUIRenderer;
 import com.astroblaze.Interfaces.TranslatedStringId;
+import com.astroblaze.Rendering.EnemyType;
 import com.badlogic.gdx.Gdx;
 
 import java.util.*;
@@ -110,6 +111,29 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
                 return id.toString();
 
         }
+    }
+
+    @Override
+    public String getTranslatedEnemyName(EnemyType type) {
+        switch(type) {
+            case Boss:
+                return getString(R.string.enemyBoss);
+            case Simple:
+                return getString(R.string.enemySimple);
+            case Rammer:
+                return getString(R.string.enemyRammer);
+            case SineWave:
+                return getString(R.string.enemyWavy);
+            case MiniBoss1:
+                return getString(R.string.enemyMiniboss1);
+            case MoneyDrop:
+                return getString(R.string.enemyMoneyDrop);
+            case TrainingDummy:
+                return getString(R.string.enemyTrainingDummy);
+            default:
+                return type.name();
+        }
+
     }
 
     @Override

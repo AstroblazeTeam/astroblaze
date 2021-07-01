@@ -16,14 +16,14 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private final float moveClockSpeed = 2f;
     private float aiDecisionClock = 0f;
     private final Vector3 aiDecisionMove = new Vector3();
-    private EnemyType typeId = EnemyType.Idle;
+    private EnemyType typeId = EnemyType.Simple;
     private boolean enabled;
 
     private final float exhaustScaleModifier = 1f / 10f;
 
     public EnemyShip(Scene3D scene) {
         super(scene);
-        setType(EnemyType.Idle);
+        setType(typeId);
         statTracker = AstroblazeGame.getLevelStatTracker();
     }
 
@@ -156,7 +156,6 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         moveClock += moveClockSpeed * delta;
         switch (this.typeId) {
             default:
-            case Idle:
             case Simple:
             case MoneyDrop:
                 getPosition().mulAdd(moveVector, delta);
