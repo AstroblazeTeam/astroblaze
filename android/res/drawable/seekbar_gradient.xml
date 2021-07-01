@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <scale android:scaleWidth="100%">
-            <shape>
-                <size android:height="3dp"/>
-                <corners android:radius="3dp"/>
-                <gradient
-                    android:startColor="@color/seekbar_low"
-                    android:endColor="@color/seekbar_high"
-                    />
-            </shape>
-        </scale>
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="5dip" />
+            <solid android:color="#80AAAAAA" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <scale android:scaleWidth="100%">
+                <shape>
+                    <size android:height="3dp" />
+                    <corners android:radius="3dp" />
+                    <gradient
+                        android:endColor="@color/seekbar_high"
+                        android:startColor="@color/seekbar_low" />
+                </shape>
+            </scale>
+        </clip>
     </item>
 </layer-list>
