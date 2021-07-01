@@ -47,7 +47,7 @@ public class ShipPreviewActor extends Actor {
     private final Scene3D scene;
     private final Vector3 selectedPosition = new Vector3();
     private final float spaceBetween = 80f;
-    private final float scaleSpeed = 3f;
+    private final float scaleSpeed = 10f;
     private float slidePosition;
     private float scaleTarget;
     private int page;
@@ -94,7 +94,7 @@ public class ShipPreviewActor extends Actor {
     public void setVisible(boolean visible) {
         // super.setVisible(visible);
         // don't run base class - we'll handle "visibility" via scaling
-        scaleTarget = visible ? 1f : 0f;
+        scaleTarget = visible ? 2.5f : 0f;
     }
 
     @Override
