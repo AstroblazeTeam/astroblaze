@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BossHealthBarActor extends Actor {
     private final float hpWidth = 4f; // width of hp bar (accounts for dpi)
-    private final float hpLerpSpeed = 0.5f; // velocity of hp bar change
+    private final float hpLerpSpeed = 1f; // velocity of hp bar change
     private final float alphaSpeed = 2f; // velocity of opacity change
     private float targetHp = 0f; // percentage 0f .. 1f
     private float currentHp = 0f; // percentage 0f .. 1f
