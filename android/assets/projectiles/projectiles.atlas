@@ -6,28 +6,28 @@ filter: Nearest, Nearest
 repeat: none
 01
   rotate: false
-  xy: 975, 474
+  xy: 1224, 763
   size: 126, 121
   orig: 126, 121
   offset: 0, 0
   index: -1
 02
   rotate: false
-  xy: 965, 597
+  xy: 974, 346
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
   index: -1
 03
   rotate: false
-  xy: 1095, 722
+  xy: 1096, 722
   size: 126, 123
   orig: 126, 123
   offset: 0, 0
   index: -1
 04
   rotate: false
-  xy: 1094, 597
+  xy: 1199, 886
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
@@ -41,7 +41,7 @@ repeat: none
   index: -1
 06
   rotate: false
-  xy: 966, 722
+  xy: 965, 592
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
@@ -55,14 +55,14 @@ repeat: none
   index: -1
 08
   rotate: false
-  xy: 1103, 476
+  xy: 975, 471
   size: 122, 119
   orig: 122, 119
   offset: 0, 0
   index: -1
 09
   rotate: false
-  xy: 974, 353
+  xy: 973, 225
   size: 123, 119
   orig: 123, 119
   offset: 0, 0
@@ -538,28 +538,35 @@ explosion1
   index: 3
 heart_icon
   rotate: false
-  xy: 1223, 809
+  xy: 1906, 1223
   size: 115, 99
   orig: 115, 99
   offset: 0, 0
   index: -1
 life-upgrade
   rotate: false
-  xy: 1199, 910
+  xy: 1224, 662
   size: 115, 99
   orig: 115, 99
   offset: 0, 0
   index: -1
 missile-bonus
   rotate: false
-  xy: 1990, 1664
+  xy: 580, 1740
   size: 53, 64
   orig: 53, 64
   offset: 0, 0
   index: -1
+money_drop
+  rotate: false
+  xy: 966, 717
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 shield-restore
   rotate: false
-  xy: 973, 241
+  xy: 1906, 1324
   size: 115, 110
   orig: 115, 110
   offset: 0, 0
