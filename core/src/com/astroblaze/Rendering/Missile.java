@@ -17,7 +17,7 @@ public class Missile extends Renderable {
     private final Vector3 moveVector = new Vector3();
     private final float moveSpeed = 80f;
     private float unpoweredTime = 0.5f;
-    private float damage = 35f;
+    private float damage = 100f;
 
     public Missile(AssetDescriptor<Model> model) {
         setModel(model);
