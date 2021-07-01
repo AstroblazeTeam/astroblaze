@@ -15,8 +15,8 @@
     <string name="unlockShip">" קנה $ %1$d"</string>
     <string name="previous">קודם</string>
     <string name="next">הבא</string>
-    <string name="swipeRight">החלק ימין</string>
-    <string name="swipeLeft">החלק שמאלה</string>
+    <string name="swipeRight">החלק שמאלה</string>
+    <string name="swipeLeft">החלק ימינה</string>
     <string name="buyUpgrade">שדרג</string>
     <string name="changePilotName">החלף</string>
     <string name="enterPilotName">הכנס שם טייס:</string>
