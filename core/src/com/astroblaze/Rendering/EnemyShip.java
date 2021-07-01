@@ -48,6 +48,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         exhaustDecals.clear();
     }
 
+    @Override
     public float getMaxHitpoints() {
         return this.typeId.baseHp * AstroblazeGame.getLevelController().getLevel();
     }
@@ -82,7 +83,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         setScale(typeId.modelScale);
         moveVector.set(0f, 0f, -typeId.speed);
         applyTRS();
-        hp = typeId.baseHp;
+        hp = getMaxHitpoints();
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
 
