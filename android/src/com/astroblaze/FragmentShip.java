@@ -78,13 +78,8 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 damageText, damageModifier, "<br>",
                 speedText, speedModifier, "<br>"
         );
-        Spanned htmlText;
-        if (Build.VERSION.SDK_INT >= 24) {
-            htmlText = Html.fromHtml(combined.toString(), Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            htmlText = Html.fromHtml(combined.toString());
-        }
-        tvStats.setText(htmlText);
+
+        tvStats.setText(Html.fromHtml(combined.toString(), Html.FROM_HTML_MODE_LEGACY));
 
         if (!state.isShipVariantUnlocked(variant)) {
             btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
