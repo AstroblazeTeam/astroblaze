@@ -63,12 +63,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/btnExtra1Layout">
 
-        <ImageButton
+        <Button
             android:id="@+id/btnExtra2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/start"
-            android:src="@android:drawable/btn_star_big_on" />
+            android:background="@drawable/laser_button_states"
+            />
 
         <TextView
             android:id="@+id/tvExtra2Text"
@@ -76,6 +77,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/app_name"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="2.5"
+            android:shadowDy="2.3"
+            android:shadowRadius="3.5"
+            android:textSize="18sp"
+            android:textColor="@color/rocket_text_color"
             app:autoSizeTextType="uniform" />
     </FrameLayout>
 
