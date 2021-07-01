@@ -138,8 +138,8 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             pagerShips.setOffscreenPageLimit(10);
             pagerLevels.setOffscreenPageLimit(5);
 
-            pagerShips.setCurrentItem(state.getLastSelectedShip(), true);
-            pagerLevels.setCurrentItem(state.getMaxLevel(), true);
+            pagerShips.setCurrentItem(state.getLastSelectedShip(), false);
+            pagerLevels.setCurrentItem(state.getMaxLevel(), false);
 
         }, 100);
     }
