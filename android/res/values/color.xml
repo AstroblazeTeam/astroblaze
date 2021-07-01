@@ -11,4 +11,5 @@
     <color name="seekbar_low">#FFA500</color>
     <color name="level_complete">#FFD700</color>
     <color name="level_complete_table_item">#191970</color>
+    <color name="switch_thumb_color">#32CD32</color>
 </resources>
