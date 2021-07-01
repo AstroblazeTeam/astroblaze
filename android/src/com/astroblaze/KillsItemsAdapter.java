@@ -1,20 +1,18 @@
 package com.astroblaze;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.astroblaze.Interfaces.TranslatedStringId;
 import com.astroblaze.Rendering.EnemyType;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +52,8 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
         Context context = holder.itemView.getContext();
         String translatedName = AstroblazeGame.getInstance().getGuiRenderer().getTranslatedEnemyName(item.type);
         holder.getTextViewName().setText(translatedName);
-        holder.getTextViewPrice().setText(context.getString(R.string.multiplesOf, item.count, (int)item.type.value));
+        Spanned countXvalue = Html.fromHtml(context.getString(R.string.multiplesOf, item.count, (int)item.type.value), Html.FROM_HTML_MODE_LEGACY);
+        holder.getTextViewPrice().setText(countXvalue);
     }
 
     @Override

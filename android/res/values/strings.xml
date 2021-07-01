@@ -86,7 +86,7 @@
     <string name="statsDamageTaken">Damage Taken:</string>
     <string name="statsMoney">Money:</string>
     <string name="statsScore">Score:</string>
-    <string name="multiplesOf" translatable="false">%1$dx %2$d</string>
+    <string name="multiplesOf" translatable="false"><![CDATA[<b>%1$dx <font color=#00ff00>&nbsp;$ %2$d</font></b>]]></string>
 
     <string name="enemyBoss">Enemy Boss</string>
     <string name="enemySimple">Grunt</string>

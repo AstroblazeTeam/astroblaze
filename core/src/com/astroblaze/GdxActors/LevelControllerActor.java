@@ -295,6 +295,7 @@ public class LevelControllerActor extends Actor {
         Gdx.app.log("LevelController", "Set level to " + level);
 
         if (level == 0) {
+            AstroblazeGame.getLevelStatTracker().reset();
             runTutorial();
         } else {
             float textDelay = 1f;
