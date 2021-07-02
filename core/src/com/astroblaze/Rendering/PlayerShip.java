@@ -28,6 +28,7 @@ public class PlayerShip extends SpaceShip {
     private boolean hpBarEnabled = false; // flag to avoid event spam
     private PlayerShipVariant shipVariant;
     private boolean autoFireMissiles;
+    private boolean autoFireLaser;
 
     public PlayerShip(Scene3D scene) {
         super(scene);
@@ -217,6 +218,7 @@ public class PlayerShip extends SpaceShip {
             fireGuns(delta);
             fireTurrets(delta);
             fireMissiles(delta);
+            fireLaser(delta);
 
             if (hp <= 0f) {
                 isDying = true;
@@ -254,7 +256,17 @@ public class PlayerShip extends SpaceShip {
         return noControlTimer <= 0f;
     }
 
-    public void fireMissiles(float delta) {
+    private void fireLaser(float delta) {
+        if (!autoFireLaser || !isControlled())
+            return;
+
+        scene.getLaserController().addLaser(scene.getPlayer().getPosition());
+        for (EnemyShip enemy : scene.beamCast(this)) {
+            enemy.damageFromCollision(3000f * delta, true);
+        }
+    }
+
+    private void fireMissiles(float delta) {
         if (!autoFireMissiles || !isControlled() || missileSalvos <= 0)
             return;
 
@@ -299,5 +311,9 @@ public class PlayerShip extends SpaceShip {
 
     public void setAutoFireMissiles(boolean autoFire) {
         this.autoFireMissiles = autoFire;
+    }
+
+    public void setAutoFireLaser(boolean autoFire) {
+        this.autoFireLaser = autoFire;
     }
 }

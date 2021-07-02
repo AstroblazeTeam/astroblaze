@@ -28,12 +28,14 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
 
     public final static AssetDescriptor<Music> gameMusic = new AssetDescriptor<>("music/space_flight.ogg", Music.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
+    public final static AssetDescriptor<Texture> laser = new AssetDescriptor<>("laser/laser.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax1 = new AssetDescriptor<>("parallax/parallax1.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax2 = new AssetDescriptor<>("parallax/parallax2.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax3 = new AssetDescriptor<>("parallax/parallax3.png", Texture.class);
     public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
     public final static AssetDescriptor<ShaderProgram> fadeShader = new AssetDescriptor<>("shaders/fade.vert", ShaderProgram.class);
+    public final static AssetDescriptor<ShaderProgram> laserShader = new AssetDescriptor<>("shaders/laser.vert", ShaderProgram.class);
     public final static AssetDescriptor<Sound> soundExplosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundPurchase = new AssetDescriptor<>("sfx/cha_ching.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundWarning = new AssetDescriptor<>("sfx/warning.ogg", Sound.class);
@@ -85,6 +87,8 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         load(soundWarning);
         load(atlas);
         load(fadeShader);
+        load(laser);
+        load(laserShader);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("projectiles/flame2.pfx", ParticleEffect.class, loaderParams);

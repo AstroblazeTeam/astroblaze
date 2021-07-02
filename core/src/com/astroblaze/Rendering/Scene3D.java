@@ -39,6 +39,7 @@ public class Scene3D implements ILoadingFinishedListener {
     private final AstroblazeGame game;
     private final EnemyPool enemyPool;
     private final DecalController decalController;
+    private final LaserController laserController;
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
     private final int defaultMaxLives = 3;
@@ -61,6 +62,7 @@ public class Scene3D implements ILoadingFinishedListener {
         batch.setCamera(camera);
         particles.add(batch);
         decalController = new DecalController(this, camera);
+        laserController = new LaserController();
         setupBonusDistribution();
     }
 
@@ -94,6 +96,10 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public DecalController getDecalController() {
         return decalController;
+    }
+
+    public LaserController getLaserController() {
+        return laserController;
     }
 
     public Vector3 getRespawnPosition() {
@@ -133,6 +139,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particlePool.setEffect(Assets.asset(Assets.flame));
         missilePool.setAssets(particlePool, Assets.missile);
         decalController.loadTextures();
+        laserController.loadTextures();
     }
 
     public void act(float delta) {
@@ -167,6 +174,7 @@ public class Scene3D implements ILoadingFinishedListener {
 
         particles.update(delta);
         decalController.update(delta);
+        laserController.update(delta);
 
         if (player != null) {
             Vector3 playerPos = player.getPosition();
@@ -228,6 +236,10 @@ public class Scene3D implements ILoadingFinishedListener {
         }
     }
 
+    public void dispose() {
+        laserController.dispose();
+    }
+
     public void render(ModelBatch batch) {
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -245,6 +257,7 @@ public class Scene3D implements ILoadingFinishedListener {
         }
         batch.end();
         decalController.render();
+        laserController.render(batch, camera);
 
         processActorMigrations();
     }
@@ -314,6 +327,7 @@ public class Scene3D implements ILoadingFinishedListener {
         processActorMigrations();
         particles.update(60f); // finish playing all particles
         decalController.getDecals().clear();
+        //laserController.getLasers().clear();
         moveVector.setZero();
         lives = defaultMaxLives;
     }
@@ -411,5 +425,22 @@ public class Scene3D implements ILoadingFinishedListener {
     public void removeActor(SceneActor actor) {
         if (!removeActors.contains(actor))
             removeActors.add(actor);
+    }
+
+    public Array<EnemyShip> beamCast(PlayerShip playerShip) {
+        Array<EnemyShip> result = new Array<>(16);
+        float beamWidth = 10f;
+        float minX = playerShip.position.x - 0.5f * beamWidth;
+        float maxX = playerShip.position.x + 0.5f * beamWidth;
+        for (SceneActor actor : actors) {
+            if (!(actor instanceof EnemyShip)) {
+                continue;
+            }
+            EnemyShip enemy = (EnemyShip) actor;
+            if (enemy.position.x > minX && enemy.position.x < maxX) {
+                result.add(enemy);
+            }
+        }
+        return result;
     }
 }

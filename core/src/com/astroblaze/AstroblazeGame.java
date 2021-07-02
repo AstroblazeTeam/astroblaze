@@ -132,14 +132,6 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         playerState.setProfilerEnabled(profiler.isEnabled());
     }
 
-    public void handleBtnExtra2Click() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-            }
-        });
-    }
-
     @Override
     public void render() {
         musicController.update(Gdx.graphics.getDeltaTime());
