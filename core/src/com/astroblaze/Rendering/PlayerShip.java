@@ -127,7 +127,7 @@ public class PlayerShip extends SpaceShip {
         isDying = false;
         modMissileSalvos(-missileSalvos);
         modMissileSalvos(defaultMissileSalvos);
-        setMoveVector(new Vector3(), true);
+        setMoveVector(new Vector3(0f, 0f, scene.getGameBounds().min.z + getRadius() * 3f), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
         applyTRS();
