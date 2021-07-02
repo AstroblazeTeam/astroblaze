@@ -34,7 +34,7 @@ public class LoadingScreen extends ScreenAdapter {
         final float minLoadingTime = 2f;
         final float p = Assets.getInstance().getProgress();
         pgLoading.setValue(MathUtils.lerp(pgLoading.getValue(), p, delta));
-        if (!loaded && Assets.getInstance().update() && pgLoading.getValue() >= 0.95f) {
+        if (!loaded && Assets.getInstance().update(8) && pgLoading.getValue() >= 0.95f) {
             loaded = true;
             Gdx.app.log("LoadingScreen", "Assets loaded in " + loadingTime + " secs.");
             pgLoading.addAction(Actions.sequence(
