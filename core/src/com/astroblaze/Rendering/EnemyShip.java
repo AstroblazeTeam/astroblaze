@@ -50,7 +50,10 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
 
     @Override
     public float getMaxHitpoints() {
-        return typeId.baseHp + typeId.hpPerLevel * AstroblazeGame.getLevelController().getLevel();
+        int level = AstroblazeGame.getLevelController() != null
+                ? AstroblazeGame.getLevelController().getLevel()
+                : AstroblazeGame.getPlayerState().getMaxLevel();
+        return typeId.baseHp + typeId.hpPerLevel * level;
     }
 
     public void setEnabled(boolean enabled) {

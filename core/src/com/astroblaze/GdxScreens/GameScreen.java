@@ -90,7 +90,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void startGame(int level, int shipSelect) {
         final float duration = 0.5f;
-        final PlayerShipVariant shipVariant = getShipPreview().getVariant(shipSelect);
+        final PlayerShipVariant shipVariant = ShipPreviewActor.getVariant(shipSelect);
 
         levelControllerActor = new LevelControllerActor(scene);
         levelControllerActor.setLevel(level);

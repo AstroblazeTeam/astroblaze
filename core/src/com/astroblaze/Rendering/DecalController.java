@@ -121,7 +121,6 @@ public class DecalController {
         info.bonus = bonus;
         info.decal = Decal.newDecal(bonus.getDecalTexture(), true);
         info.decal.setPosition(info.position);
-        //info.decal.setRotation(billboardDirection, Vector3.Y);
         info.decal.setScale(bonus.getDecalScale());
         activeDecals.add(info);
         return info;
