@@ -3,12 +3,18 @@ package com.astroblaze.Rendering;
 import com.astroblaze.*;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class EnemyShip extends SpaceShip implements ICollisionProvider {
+    private final static Color white = new Color(1f, 1f, 1f, 1f);
+    private final static Color hitColor = new Color(1f, 0f, 0f, 1f);
+
     private final LevelStatTracker statTracker;
     private float modelRadius;
     private float moveClock = 0f;
@@ -18,6 +24,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private final Vector3 aiDecisionMove = new Vector3();
     private EnemyType typeId = EnemyType.Simple;
     private boolean enabled;
+    private long lastHitTime = 0;
 
     private final float exhaustScaleModifier = 1f / 10f;
 
@@ -195,6 +202,12 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
 
     @Override
     public void render(ModelBatch batch, Environment environment) {
+        final float timeDiff = 10f * TimeUtils.timeSinceMillis(lastHitTime) / 1000f;
+        if (visible && modelInstance != null) {
+            Color c = new Color(hitColor).lerp(white, timeDiff);
+            modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(c));
+        }
+
         super.render(batch, environment);
     }
 
@@ -213,6 +226,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
             return;
         this.hp -= damage;
         statTracker.addDamageDone(damage);
+        lastHitTime = TimeUtils.millis();
         if (this.hp <= 0f) {
             scene.removeActor(this);
             AstroblazeGame.getSoundController().playExplosionSound();
