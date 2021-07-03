@@ -54,7 +54,7 @@ public class FragmentOptions extends Fragment {
         tvUIVolume = view.findViewById(R.id.tvUI);
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUICancelSound();
+            AstroblazeGame.getSoundController().playUINegative();
             NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
         });
 

@@ -55,7 +55,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // btnChangeName -> AlertDialog
         btnChangeName.setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIGenericSound();
+            AstroblazeGame.getSoundController().playUIPositive();
             showChangeNameDialog();
         });
 
@@ -76,21 +76,21 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // menu -> hiscores
         view.findViewById(R.id.btnHiscores).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIGenericSound();
+            AstroblazeGame.getSoundController().playUIPositive();
             NavHostFragment.findNavController(FragmentMenu.this)
                     .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
         });
 
         // menu -> options
         view.findViewById(R.id.btnOptions).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIGenericSound();
+            AstroblazeGame.getSoundController().playUIPositive();
             NavHostFragment.findNavController(FragmentMenu.this)
                     .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
         });
 
         // exit button
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUICancelSound();
+            AstroblazeGame.getSoundController().playUINegative();
             ((MainActivity) requireActivity()).exit();
         });
     }
@@ -122,7 +122,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alert.setOnKeyListener((dialog, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                AstroblazeGame.getSoundController().playUICancelSound();
+                AstroblazeGame.getSoundController().playUINegative();
                 dialog.dismiss();
                 return true;
             }
@@ -146,7 +146,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         viewInflated.findViewById(R.id.btnCancelPilotName).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AstroblazeGame.getSoundController().playUICancelSound();
+                AstroblazeGame.getSoundController().playUINegative();
                 alert.dismiss();
             }
         });

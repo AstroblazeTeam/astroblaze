@@ -66,7 +66,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
         // back button
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUICancelSound();
+            AstroblazeGame.getSoundController().playUINegative();
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .popBackStack();
         });

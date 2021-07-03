@@ -41,10 +41,10 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Sound> soundExplosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundPurchase = new AssetDescriptor<>("sfx/cha_ching.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundWarning = new AssetDescriptor<>("sfx/warning.ogg", Sound.class);
-    public final static AssetDescriptor<Sound> soundBoop = new AssetDescriptor<>("sfx/boop.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundPositive = new AssetDescriptor<>("sfx/positive.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundNegative = new AssetDescriptor<>("sfx/negative.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundConfirm = new AssetDescriptor<>("sfx/confirm.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundSwap = new AssetDescriptor<>("sfx/swap.ogg", Sound.class);
-    public final static AssetDescriptor<Sound> soundBleep = new AssetDescriptor<>("sfx/bleep.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundBonus = new AssetDescriptor<>("sfx/bonus.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundLaser = new AssetDescriptor<>("laser/laser.ogg", Sound.class);
 
@@ -96,10 +96,10 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         load(soundExplosion);
         load(soundPurchase);
         load(soundWarning);
-        load(soundBoop);
+        load(soundPositive);
+        load(soundNegative);
         load(soundConfirm);
         load(soundSwap);
-        load(soundBleep);
         load(soundBonus);
         load(atlas);
         load(fadeShader);

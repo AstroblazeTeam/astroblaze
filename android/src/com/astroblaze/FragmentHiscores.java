@@ -42,7 +42,7 @@ public class FragmentHiscores extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUICancelSound();
+            AstroblazeGame.getSoundController().playUINegative();
             NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
         });
 
