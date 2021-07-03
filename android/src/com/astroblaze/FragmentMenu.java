@@ -143,6 +143,13 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
                 alert.dismiss();
             }
         });
+        viewInflated.findViewById(R.id.btnCancelPilotName).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AstroblazeGame.getSoundController().playUICancelSound();
+                alert.dismiss();
+            }
+        });
         alert.show();
     }
 

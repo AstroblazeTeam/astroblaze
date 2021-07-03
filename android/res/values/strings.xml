@@ -10,6 +10,7 @@
     <string name="music">Music</string>
     <string name="screenShake">Screen Shake</string>
     <string name="back">Back</string>
+    <string name="cancel">cancel</string>
     <string name="upgrades_for">Upgrades for %1$s</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>

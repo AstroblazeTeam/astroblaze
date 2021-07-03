@@ -79,5 +79,6 @@
     <string name="enemyRammer">דורס</string>
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
+    <string name="cancel">ביטול</string>
 
 </resources>
