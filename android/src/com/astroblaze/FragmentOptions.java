@@ -11,10 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,11 +39,13 @@ public class FragmentOptions extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final int progressSnapTo100 = 15;
+
         musicController = AstroblazeGame.getMusicController();
         soundController = AstroblazeGame.getSoundController();
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playCancelSound();
+            AstroblazeGame.getSoundController().playUICancelSound();
             NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
         });
 
@@ -55,7 +54,11 @@ public class FragmentOptions extends Fragment {
         sbMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                musicController.setVolume(progress / 100f);
+                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
+                    sbMusic.setProgress(100);
+                } else {
+                    musicController.setVolume(progress / 100f);
+                }
             }
 
             @Override
@@ -68,11 +71,36 @@ public class FragmentOptions extends Fragment {
         });
 
         SeekBar sbSound = view.findViewById(R.id.seekBarSound);
-        sbSound.setProgress((int) (soundController.getVolume() * 100f));
+        sbSound.setProgress((int) (soundController.getSfxVolume() * 100f));
         sbSound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soundController.setVolume(progress / 100f);
+                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
+                    sbSound.setProgress(100);
+                } else {
+                    soundController.setSfxVolume(progress / 100f);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        SeekBar sbUI = view.findViewById(R.id.seekBarUI);
+        sbUI.setProgress((int) (soundController.getUIVolume() * 100f));
+        sbUI.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
+                    sbUI.setProgress(100);
+                } else {
+                    soundController.setUIVolume(progress / 100f);
+                }
             }
 
             @Override
@@ -88,7 +116,7 @@ public class FragmentOptions extends Fragment {
         cbShake.setChecked(AstroblazeGame.getPlayerState().getScreenShake());
         cbShake.setOnCheckedChangeListener((buttonView, isChecked) -> {
             AstroblazeGame.getPlayerState().setScreenShake(isChecked);
-            AstroblazeGame.getSoundController().playSwapSound();
+            AstroblazeGame.getSoundController().playUISwapSound();
         });
     }
 }

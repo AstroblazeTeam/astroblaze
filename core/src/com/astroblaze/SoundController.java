@@ -16,12 +16,14 @@ public class SoundController implements ILoadingFinishedListener {
     private Sound soundConfirm;
     private Sound soundSwap;
 
-    private float volume;
+    private float sfxVolume;
+    private float UIVolume;
 
     SoundController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
         state = AstroblazeGame.getPlayerState();
-        volume = state.getSoundVolume();
+        sfxVolume = state.getSoundVolume();
+        UIVolume = state.getUiVolume();
     }
 
     @Override
@@ -39,46 +41,60 @@ public class SoundController implements ILoadingFinishedListener {
         playSound(soundExplosion);
     }
 
-    public void playPurchaseSound() {
-        playSound(soundPurchase);
-    }
-
     public void playBonusSound() {
         playSound(soundBonus);
     }
 
-    public void playCancelSound() {
-        playSound(soundBoop);
+    public void playUIPurchaseSound() {
+        playUISound(soundPurchase);
+    }
+
+    public void playUICancelSound() {
+        playUISound(soundBoop);
     }
 
     public void playUIGenericSound() {
-        playSound(soundBleep);
+        playUISound(soundBleep);
     }
 
-    public void playConfirmSound() {
-        playSound(soundConfirm);
+    public void playUIConfirm() {
+        playUISound(soundConfirm);
     }
 
-    public void playSwapSound() {
-        playSound(soundSwap);
+    public void playUISwapSound() {
+        playUISound(soundSwap);
     }
 
     private void playSound(Sound sfx) {
-        sfx.play(volume);
+        sfx.play(sfxVolume);
+    }
+
+    private void playUISound(Sound uiSfx) {
+        uiSfx.play(UIVolume);
     }
 
     public void playSoundAsset(AssetDescriptor<Sound> sfx) {
-        Gdx.app.log("SoundController", "Playing " + sfx.toString() + " at " + (int) (volume * 100f) + " volume.");
-        Assets.asset(sfx).play(volume);
+        Gdx.app.log("SoundController", "Playing " + sfx.toString() + " at " + (int) (sfxVolume * 100f) + " volume.");
+        Assets.asset(sfx).play(sfxVolume);
     }
 
-    public float getVolume() {
-        return volume;
+    public float getSfxVolume() {
+        return sfxVolume;
     }
 
-    public void setVolume(float newVolume) {
-        volume = newVolume;
-        state.setSoundVolume(newVolume);
-        Gdx.app.log("SoundManager", "Set sound volume to " + this.volume);
+    public void setSfxVolume(float newSfxVolume) {
+        sfxVolume = newSfxVolume;
+        state.setSoundVolume(newSfxVolume);
+        Gdx.app.log("SoundManager", "Set SFX volume to " + sfxVolume);
+    }
+
+    public float getUIVolume() {
+        return UIVolume;
+    }
+
+    public void setUIVolume(float newUIVolume) {
+        UIVolume = newUIVolume;
+        state.setUiVolume(newUIVolume);
+        Gdx.app.log("SoundManager", "Set UI volume to " + UIVolume);
     }
 }

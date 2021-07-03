@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +42,7 @@ public class FragmentHiscores extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playCancelSound();
+            AstroblazeGame.getSoundController().playUICancelSound();
             NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
         });
 

@@ -26,6 +26,7 @@ public class PlayerState {
         public boolean profilerEnabled;
         public boolean screenShake = true;
         public float soundVolume = 1f;
+        public float uiVolume = 1f;
         public float musicVolume = 1f;
         public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
@@ -86,6 +87,15 @@ public class PlayerState {
 
     public void setMusicVolume(float newVolume) {
         data.musicVolume = newVolume;
+        saveState();
+    }
+
+    public float getUiVolume() {
+        return data.uiVolume;
+    }
+
+    public void setUiVolume(float newVolume) {
+        data.uiVolume = newVolume;
         saveState();
     }
 
@@ -192,7 +202,7 @@ public class PlayerState {
 
         if (AstroblazeGame.getSoundController() != null) {
             // avoid NPE when initializing new player state
-            AstroblazeGame.getSoundController().playPurchaseSound();
+            AstroblazeGame.getSoundController().playUIPurchaseSound();
         }
         return true;
     }
@@ -223,7 +233,7 @@ public class PlayerState {
         }
         item.currentTier = MathUtils.clamp(item.currentTier + 1, 0, item.maxTier);
         modPlayerMoney(-item.price);
-        AstroblazeGame.getSoundController().playPurchaseSound();
+        AstroblazeGame.getSoundController().playUIPurchaseSound();
         saveState();
         return true;
     }

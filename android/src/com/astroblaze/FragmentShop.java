@@ -61,7 +61,7 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         super.onViewCreated(view, savedInstanceState);
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playCancelSound();
+            AstroblazeGame.getSoundController().playUICancelSound();
             NavHostFragment.findNavController(FragmentShop.this).popBackStack();
         });
         rvShopItems = view.findViewById(R.id.rvShopItems);

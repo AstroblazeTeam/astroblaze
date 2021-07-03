@@ -32,7 +32,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     private final ViewPager2.OnPageChangeCallback soundCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
-            AstroblazeGame.getSoundController().playSwapSound();
+            AstroblazeGame.getSoundController().playUISwapSound();
         }
     };
 
@@ -58,7 +58,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             bundle.putInt("level", FragmentLevelSelect.this.pagerLevels.getCurrentItem());
             bundle.putInt("ship", FragmentLevelSelect.this.pagerShips.getCurrentItem());
 
-            AstroblazeGame.getSoundController().playConfirmSound();
+            AstroblazeGame.getSoundController().playUIConfirm();
 
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
@@ -66,7 +66,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
         // back button
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playCancelSound();
+            AstroblazeGame.getSoundController().playUICancelSound();
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .popBackStack();
         });

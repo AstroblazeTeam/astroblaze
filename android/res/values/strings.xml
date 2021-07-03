@@ -96,4 +96,6 @@
     <string name="enemyMoneyDrop">Cash hauler</string>
     <string name="enemyMiniboss1">Miniboss</string>
 
+    <string name="ui_volume">UI Volume</string>
+
 </resources>

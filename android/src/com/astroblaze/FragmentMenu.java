@@ -69,7 +69,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // menu -> level select
         view.findViewById(R.id.btnStart).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playConfirmSound();
+            AstroblazeGame.getSoundController().playUIConfirm();
             NavHostFragment.findNavController(FragmentMenu.this)
                     .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
         });
@@ -90,7 +90,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // exit button
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playCancelSound();
+            AstroblazeGame.getSoundController().playUICancelSound();
             ((MainActivity) requireActivity()).exit();
         });
     }
@@ -122,7 +122,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alert.setOnKeyListener((dialog, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                AstroblazeGame.getSoundController().playCancelSound();
+                AstroblazeGame.getSoundController().playUICancelSound();
                 dialog.dismiss();
                 return true;
             }
@@ -139,7 +139,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
                         tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
                     }
                 }, false);
-                AstroblazeGame.getSoundController().playConfirmSound();
+                AstroblazeGame.getSoundController().playUIConfirm();
                 alert.dismiss();
             }
         });

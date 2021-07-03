@@ -1,9 +1,7 @@
 package com.astroblaze;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,7 +95,7 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 Bundle bundle = new Bundle();
                 bundle.putInt("variant", variant.id);
 
-                AstroblazeGame.getSoundController().playConfirmSound();
+                AstroblazeGame.getSoundController().playUIConfirm();
 
                 NavHostFragment.findNavController(parentFragment)
                         .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);

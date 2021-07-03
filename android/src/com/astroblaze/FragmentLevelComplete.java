@@ -49,7 +49,7 @@ public class FragmentLevelComplete extends Fragment {
 
         view.findViewById(R.id.btnGameOverExit2).setOnClickListener(v ->
                 this.requireView().post(() -> {
-                    AstroblazeGame.getSoundController().playConfirmSound();
+                    AstroblazeGame.getSoundController().playUIConfirm();
                     NavController nc = ((MainActivity) requireActivity()).getNavController();
                     nc.popBackStack();
                 }));
