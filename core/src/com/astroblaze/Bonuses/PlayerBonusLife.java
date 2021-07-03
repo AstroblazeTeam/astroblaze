@@ -18,6 +18,7 @@ public class PlayerBonusLife implements IPlayerBonus {
 
     @Override
     public void applyBonus(PlayerShip playerShip) {
+        AstroblazeGame.getSoundController().playBonusSound();
         playerShip.getScene().modLives(+1);
     }
 }

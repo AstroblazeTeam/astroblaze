@@ -45,8 +45,10 @@ public class FragmentOptions extends Fragment {
         musicController = AstroblazeGame.getMusicController();
         soundController = AstroblazeGame.getSoundController();
 
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
-                -> NavHostFragment.findNavController(FragmentOptions.this).popBackStack());
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playCancelSound();
+            NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
+        });
 
         SeekBar sbMusic = view.findViewById(R.id.seekBarMusic);
         sbMusic.setProgress((int) (musicController.getVolume() * 100f));
@@ -84,7 +86,9 @@ public class FragmentOptions extends Fragment {
 
         SwitchCompat cbShake = view.findViewById(R.id.checkBox);
         cbShake.setChecked(AstroblazeGame.getPlayerState().getScreenShake());
-        cbShake.setOnCheckedChangeListener((buttonView, isChecked)
-                -> AstroblazeGame.getPlayerState().setScreenShake(isChecked));
+        cbShake.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AstroblazeGame.getPlayerState().setScreenShake(isChecked);
+            AstroblazeGame.getSoundController().playSwapSound();
+        });
     }
 }

@@ -43,6 +43,7 @@ public class FragmentGameOver extends Fragment {
 
         view.findViewById(R.id.btnGameOverExit).setOnClickListener(v ->
                 this.requireView().post(() -> {
+                    AstroblazeGame.getSoundController().playCancelSound();
                     NavController nc = ((MainActivity) requireActivity()).getNavController();
                     nc.popBackStack();
                 }));

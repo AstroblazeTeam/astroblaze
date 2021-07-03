@@ -82,6 +82,8 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
             }
             return false;
         });
+
+        onSpecialTextChanged(null, "", "");
     }
 
     @Override
@@ -129,7 +131,6 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
             tvSpecial2.setText(text2);
             TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(tvSpecial1,
                     1, 36, 1, TypedValue.COMPLEX_UNIT_DIP);
-
         });
     }
 }

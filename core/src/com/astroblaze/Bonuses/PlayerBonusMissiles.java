@@ -18,6 +18,7 @@ public class PlayerBonusMissiles implements IPlayerBonus {
 
     @Override
     public void applyBonus(PlayerShip playerShip) {
+        AstroblazeGame.getSoundController().playBonusSound();
         playerShip.modMissileSalvos(+3);
     }
 }

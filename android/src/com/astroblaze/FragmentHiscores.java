@@ -42,8 +42,10 @@ public class FragmentHiscores extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
-                -> NavHostFragment.findNavController(FragmentHiscores.this).popBackStack());
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playCancelSound();
+            NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
+        });
 
 
         pgLoading = view.findViewById(R.id.pgLoading);

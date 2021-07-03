@@ -10,6 +10,11 @@ public class SoundController implements ILoadingFinishedListener {
 
     private Sound soundExplosion;
     private Sound soundPurchase;
+    private Sound soundBonus;
+    private Sound soundBleep;
+    private Sound soundBoop;
+    private Sound soundConfirm;
+    private Sound soundSwap;
 
     private float volume;
 
@@ -23,6 +28,11 @@ public class SoundController implements ILoadingFinishedListener {
     public void finishedLoadingAssets() {
         soundExplosion = Assets.asset(Assets.soundExplosion);
         soundPurchase = Assets.asset(Assets.soundPurchase);
+        soundBonus = Assets.asset(Assets.soundBonus);
+        soundBleep = Assets.asset(Assets.soundBleep);
+        soundBoop = Assets.asset(Assets.soundBoop);
+        soundConfirm = Assets.asset(Assets.soundConfirm);
+        soundSwap = Assets.asset(Assets.soundSwap);
     }
 
     public void playExplosionSound() {
@@ -31,6 +41,26 @@ public class SoundController implements ILoadingFinishedListener {
 
     public void playPurchaseSound() {
         playSound(soundPurchase);
+    }
+
+    public void playBonusSound() {
+        playSound(soundBonus);
+    }
+
+    public void playCancelSound() {
+        playSound(soundBoop);
+    }
+
+    public void playUIGenericSound() {
+        playSound(soundBleep);
+    }
+
+    public void playConfirmSound() {
+        playSound(soundConfirm);
+    }
+
+    public void playSwapSound() {
+        playSound(soundSwap);
     }
 
     private void playSound(Sound sfx) {

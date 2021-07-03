@@ -29,6 +29,12 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     private TextView tvShipSwipeRight;
     private Button btnPlay;
     private float prevShipSliderPosition = 0f;
+    private final ViewPager2.OnPageChangeCallback soundCallback = new ViewPager2.OnPageChangeCallback() {
+        @Override
+        public void onPageSelected(int position) {
+            AstroblazeGame.getSoundController().playSwapSound();
+        }
+    };
 
     public FragmentLevelSelect() {
         // Required empty public constructor
@@ -52,14 +58,18 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             bundle.putInt("level", FragmentLevelSelect.this.pagerLevels.getCurrentItem());
             bundle.putInt("ship", FragmentLevelSelect.this.pagerShips.getCurrentItem());
 
+            AstroblazeGame.getSoundController().playConfirmSound();
+
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
         });
 
         // back button
-        view.findViewById(R.id.btnBack).setOnClickListener(v ->
-                NavHostFragment.findNavController(FragmentLevelSelect.this)
-                        .popBackStack());
+        view.findViewById(R.id.btnBack).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playCancelSound();
+            NavHostFragment.findNavController(FragmentLevelSelect.this)
+                    .popBackStack();
+        });
 
         tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
         tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
@@ -140,8 +150,13 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
             pagerShips.setCurrentItem(state.getLastSelectedShip(), false);
             pagerLevels.setCurrentItem(state.getMaxLevel(), false);
-
         }, 100);
+
+        // wait 300ms before registering sound effect callbacks
+        requireView().postDelayed(() -> {
+            pagerLevels.registerOnPageChangeCallback(this.soundCallback);
+            pagerShips.registerOnPageChangeCallback(this.soundCallback);
+        }, 400);
     }
 
     @Override
@@ -150,6 +165,9 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
         AstroblazeGame.getPlayerState().setLastSelectedShip(pagerShips.getCurrentItem());
         AstroblazeGame.getInstance().gameScreen.getShipPreview().setVisible(false);
+
+        pagerLevels.unregisterOnPageChangeCallback(this.soundCallback);
+        pagerShips.unregisterOnPageChangeCallback(this.soundCallback);
     }
 
     @Override

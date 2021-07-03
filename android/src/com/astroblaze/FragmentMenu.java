@@ -52,7 +52,12 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         tvMoney = view.findViewById(R.id.tvMoneyVal);
 
         btnChangeName = view.findViewById(R.id.btnChangePilotName);
-        btnChangeName.setOnClickListener(v -> showChangeNameDialog());
+
+        // btnChangeName -> AlertDialog
+        btnChangeName.setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playUIGenericSound();
+            showChangeNameDialog();
+        });
 
         HiscoresController.submitRank(new HiscoresController.RunnableResponseHandler<Integer>() {
             @Override
@@ -63,23 +68,31 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         }, true);
 
         // menu -> level select
-        view.findViewById(R.id.btnStart).setOnClickListener(v
-                -> NavHostFragment.findNavController(FragmentMenu.this)
-                .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect));
+        view.findViewById(R.id.btnStart).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playConfirmSound();
+            NavHostFragment.findNavController(FragmentMenu.this)
+                    .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
+        });
 
         // menu -> hiscores
-        view.findViewById(R.id.btnHiscores).setOnClickListener(v
-                -> NavHostFragment.findNavController(FragmentMenu.this)
-                .navigate(R.id.action_fragmentMenu_to_fragmentHiscores));
+        view.findViewById(R.id.btnHiscores).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playUIGenericSound();
+            NavHostFragment.findNavController(FragmentMenu.this)
+                    .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
+        });
 
         // menu -> options
-        view.findViewById(R.id.btnOptions).setOnClickListener(v
-                -> NavHostFragment.findNavController(FragmentMenu.this)
-                .navigate(R.id.action_fragmentMenu_to_fragmentOptions));
+        view.findViewById(R.id.btnOptions).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playUIGenericSound();
+            NavHostFragment.findNavController(FragmentMenu.this)
+                    .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
+        });
 
         // exit button
-        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v
-                -> ((MainActivity) requireActivity()).exit());
+        view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playCancelSound();
+            ((MainActivity) requireActivity()).exit();
+        });
     }
 
     @Override
@@ -109,6 +122,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alert.setOnKeyListener((dialog, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
+                AstroblazeGame.getSoundController().playCancelSound();
                 dialog.dismiss();
                 return true;
             }
@@ -125,6 +139,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
                         tvRank.post(() -> tvRank.setText(String.valueOf(this.response)));
                     }
                 }, false);
+                AstroblazeGame.getSoundController().playConfirmSound();
                 alert.dismiss();
             }
         });

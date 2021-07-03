@@ -39,6 +39,11 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Sound> soundExplosion = new AssetDescriptor<>("sfx/explosion1.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundPurchase = new AssetDescriptor<>("sfx/cha_ching.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundWarning = new AssetDescriptor<>("sfx/warning.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundBoop = new AssetDescriptor<>("sfx/boop.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundConfirm = new AssetDescriptor<>("sfx/confirm.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundSwap = new AssetDescriptor<>("sfx/swap.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundBleep = new AssetDescriptor<>("sfx/bleep.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundBonus = new AssetDescriptor<>("sfx/bonus.ogg", Sound.class);
 
     // these are loaded late, don't rely on them available at start!
     public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
@@ -85,6 +90,11 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         load(soundExplosion);
         load(soundPurchase);
         load(soundWarning);
+        load(soundBoop);
+        load(soundConfirm);
+        load(soundSwap);
+        load(soundBleep);
+        load(soundBonus);
         load(atlas);
         load(fadeShader);
         load(laser);

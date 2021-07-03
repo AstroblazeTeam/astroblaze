@@ -19,6 +19,7 @@ public class PlayerBonusCash implements IPlayerBonus {
 
     @Override
     public void applyBonus(PlayerShip playerShip) {
+        AstroblazeGame.getSoundController().playBonusSound();
         AstroblazeGame.getPlayerState().modPlayerMoney(1000f);
     }
 }

@@ -97,6 +97,8 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 Bundle bundle = new Bundle();
                 bundle.putInt("variant", variant.id);
 
+                AstroblazeGame.getSoundController().playConfirmSound();
+
                 NavHostFragment.findNavController(parentFragment)
                         .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
             });

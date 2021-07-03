@@ -18,6 +18,7 @@ public class PlayerBonusShieldRestore implements IPlayerBonus {
 
     @Override
     public void applyBonus(PlayerShip playerShip) {
+        AstroblazeGame.getSoundController().playBonusSound();
         playerShip.modHp(playerShip.getMaxHitpoints());
     }
 }
