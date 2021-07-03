@@ -38,11 +38,11 @@ public class SoundController implements ILoadingFinishedListener {
     }
 
     public void playExplosionSound() {
-        playSound(soundExplosion);
+        playSfxSound(soundExplosion);
     }
 
     public void playBonusSound() {
-        playSound(soundBonus);
+        playSfxSound(soundBonus);
     }
 
     public void playUIPurchaseSound() {
@@ -65,12 +65,12 @@ public class SoundController implements ILoadingFinishedListener {
         playUISound(soundSwap);
     }
 
-    private void playSound(Sound sfx) {
+    private void playSfxSound(Sound sfx) {
         sfx.play(sfxVolume);
     }
 
     private void playUISound(Sound uiSfx) {
-        uiSfx.play(UIVolume);
+        uiSfx.play(0.25f * UIVolume);
     }
 
     public void playSoundAsset(AssetDescriptor<Sound> sfx) {

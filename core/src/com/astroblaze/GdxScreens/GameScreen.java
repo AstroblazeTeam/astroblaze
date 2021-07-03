@@ -92,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
         final float duration = 0.5f;
         final PlayerShipVariant shipVariant = ShipPreviewActor.getVariant(shipSelect);
 
+        AstroblazeGame.getMusicController().randomizeGameTrack();
         levelControllerActor = new LevelControllerActor(scene);
         levelControllerActor.setLevel(level);
         game.clearText();

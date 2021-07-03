@@ -24,9 +24,11 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     // these 3 assets loaded first to show loading screen
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
     public final static AssetDescriptor<Texture> logo = new AssetDescriptor<>("logo.png", Texture.class);
-    public final static AssetDescriptor<Music> uiMusic = new AssetDescriptor<>("music/ObservingTheStar.ogg", Music.class);
-
-    public final static AssetDescriptor<Music> gameMusic = new AssetDescriptor<>("music/space_flight.ogg", Music.class);
+    public final static AssetDescriptor<Music> musicUI = new AssetDescriptor<>("music/ui.ogg", Music.class);
+    public final static AssetDescriptor<Music> musicLevel1 = new AssetDescriptor<>("music/level1.ogg", Music.class);
+    public final static AssetDescriptor<Music> musicLevel2 = new AssetDescriptor<>("music/level2.ogg", Music.class);
+    public final static AssetDescriptor<Music> musicLevel3 = new AssetDescriptor<>("music/level3.ogg", Music.class);
+    public final static AssetDescriptor<Music> musicEnding = new AssetDescriptor<>("music/ending.ogg", Music.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
     public final static AssetDescriptor<Texture> laser = new AssetDescriptor<>("laser/laser.png", Texture.class);
     public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
@@ -70,7 +72,7 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
 
     public void loadLoadingScreenAssets() {
         load(uiSkin);
-        load(uiMusic);
+        load(musicUI);
         load(logo);
     }
 
@@ -86,7 +88,10 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         load(parallax2);
         load(parallax3);
         load(missile);
-        load(gameMusic);
+        load(musicLevel1);
+        load(musicLevel2);
+        load(musicLevel3);
+        load(musicEnding);
         load(soundExplosion);
         load(soundPurchase);
         load(soundWarning);

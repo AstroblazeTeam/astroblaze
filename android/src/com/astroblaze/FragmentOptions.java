@@ -39,7 +39,7 @@ public class FragmentOptions extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final int progressSnapTo100 = 15;
+        final int progressSnapTo50 = 8;
 
         musicController = AstroblazeGame.getMusicController();
         soundController = AstroblazeGame.getSoundController();
@@ -54,8 +54,9 @@ public class FragmentOptions extends Fragment {
         sbMusic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
-                    sbMusic.setProgress(100);
+                if (progress > 50 - progressSnapTo50 && progress < 50 + progressSnapTo50) {
+                    sbMusic.setProgress(50);
+                    musicController.setVolume(0.5f);
                 } else {
                     musicController.setVolume(progress / 100f);
                 }
@@ -75,8 +76,9 @@ public class FragmentOptions extends Fragment {
         sbSound.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
-                    sbSound.setProgress(100);
+                if (progress > 50 - progressSnapTo50 && progress < 50 + progressSnapTo50) {
+                    sbSound.setProgress(50);
+                    soundController.setSfxVolume(0.5f);
                 } else {
                     soundController.setSfxVolume(progress / 100f);
                 }
@@ -96,8 +98,9 @@ public class FragmentOptions extends Fragment {
         sbUI.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress > 100 - progressSnapTo100 && progress < 100 + progressSnapTo100) {
-                    sbUI.setProgress(100);
+                if (progress > 50 - progressSnapTo50 && progress < 50 + progressSnapTo50) {
+                    sbUI.setProgress(50);
+                    soundController.setUIVolume(0.5f);
                 } else {
                     soundController.setUIVolume(progress / 100f);
                 }

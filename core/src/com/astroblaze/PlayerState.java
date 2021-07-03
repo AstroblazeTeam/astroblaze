@@ -25,9 +25,9 @@ public class PlayerState {
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
         public boolean screenShake = true;
-        public float soundVolume = 1f;
-        public float uiVolume = 1f;
-        public float musicVolume = 1f;
+        public float soundVolume = 0.5f;
+        public float uiVolume = 0.5f;
+        public float musicVolume = 0.5f;
         public Date lastScoreSubmit = new Date(0);
         public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
         public HashMap<Integer, ArrayList<UpgradeEntry>> unlockedUpgrades = new HashMap<>();

@@ -95,7 +95,7 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
 
         assets.loadLoadingScreenAssets();
         assets.finishLoadingAsset(Assets.uiSkin);
-        assets.finishLoadingAsset(Assets.uiMusic);
+        assets.finishLoadingAsset(Assets.musicUI);
         assets.finishLoadingAsset(Assets.logo);
 
         soundController = new SoundController(this);

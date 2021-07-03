@@ -5,39 +5,45 @@ import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.HashMap;
 
-class MusicController implements ILoadingFinishedListener {
-    public enum MusicTrackType {None, UI, Game}
+public class MusicController implements ILoadingFinishedListener {
+    public enum MusicTrackType {None, UI, Game1, Game2, Game3, Ending}
 
     private final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
     private final PlayerState state;
-    private final float fadeSpeed = 1f / 2f; // music tracks crossfade time
+    private final float fadeSpeed = 3f; // music tracks crossfade time
     private final float intervalUpdate = 0.1f;
 
     private MusicTrackType currentTrack = MusicTrackType.None;
     private float volume = 1f;
     private float time = 0f;
+    private MusicTrackType randomGameTrack;
 
     MusicController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
         state = AstroblazeGame.getPlayerState();
+        randomizeGameTrack();
     }
 
     public void loadLoadingScreenAssets() {
-        if (!Assets.getInstance().isLoaded(Assets.uiMusic)) {
+        if (!Assets.getInstance().isLoaded(Assets.musicUI)) {
             Gdx.app.error("MusicManager", "uiMusic assets is not loaded");
             return;
         }
 
-        assignTrack(MusicTrackType.UI, Assets.uiMusic);
+        assignTrack(MusicTrackType.UI, Assets.musicUI);
         volume = state.getMusicVolume();
     }
 
     @Override
     public void finishedLoadingAssets() {
-        assignTrack(MusicTrackType.Game, Assets.gameMusic);
+        assignTrack(MusicTrackType.Ending, Assets.musicEnding);
+        assignTrack(MusicTrackType.Game1, Assets.musicLevel1);
+        assignTrack(MusicTrackType.Game2, Assets.musicLevel2);
+        assignTrack(MusicTrackType.Game3, Assets.musicLevel3);
     }
 
     private void assignTrack(MusicTrackType type, AssetDescriptor<Music> music) {
@@ -94,6 +100,33 @@ class MusicController implements ILoadingFinishedListener {
         state.setMusicVolume(volume);
         this.volume = volume;
         Gdx.app.log("MusicManager", "Set target volume to " + this.volume);
+    }
+
+    public void setTrackToRandomGameTrack() {
+        setTrack(randomGameTrack);
+    }
+
+    public void randomizeGameTrack() {
+        int roll = MathUtils.random(1, 3);
+        Gdx.app.log("MusicManager", "Game track rolled " + roll);
+        switch (roll) {
+            case 3:
+                randomGameTrack = MusicTrackType.Game3;
+                break;
+            case 2:
+                randomGameTrack = MusicTrackType.Game2;
+                break;
+            case 1:
+            default:
+                randomGameTrack = MusicTrackType.Game1;
+                break;
+        }
+
+        if (getTrack() == MusicTrackType.Game1 ||
+                getTrack() == MusicTrackType.Game2 ||
+                getTrack() == MusicTrackType.Game3) {
+            setTrack(randomGameTrack);
+        }
     }
 
     public void setTrack(MusicTrackType track) {
