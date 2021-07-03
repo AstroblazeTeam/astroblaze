@@ -6,13 +6,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 
 public class MusicController implements ILoadingFinishedListener {
     public enum MusicTrackType {None, UI, Game1, Game2, Game3, Ending}
 
-    private final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(4);
+    private final HashMap<MusicTrackType, Music> musicTracks = new HashMap<>(8);
+    private final Array<MusicTrackType> gameMusicTracks = new Array<>(8);
     private final PlayerState state;
     private final float fadeSpeed = 3f; // music tracks crossfade time
     private final float intervalUpdate = 0.1f;
@@ -25,12 +27,15 @@ public class MusicController implements ILoadingFinishedListener {
     MusicController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
         state = AstroblazeGame.getPlayerState();
+        gameMusicTracks.add(MusicTrackType.Game1);
+        gameMusicTracks.add(MusicTrackType.Game2);
+        gameMusicTracks.add(MusicTrackType.Game3);
         randomizeGameTrack();
     }
 
     public void loadLoadingScreenAssets() {
         if (!Assets.getInstance().isLoaded(Assets.musicUI)) {
-            Gdx.app.error("MusicManager", "uiMusic assets is not loaded");
+            Gdx.app.error("MusicController", "uiMusic assets is not loaded");
             return;
         }
 
@@ -82,10 +87,10 @@ public class MusicController implements ILoadingFinishedListener {
             float current = music.getVolume();
             float target = MathHelper.moveTowards(current, end, delta * fadeSpeed);
             if (current == 0f && target == 0f && music.isPlaying()) {
-                Gdx.app.log("MusicManager", "Track " + trackType + ": playing -> stopped");
+                Gdx.app.log("MusicController", "Track " + trackType + ": playing -> stopped");
                 music.pause();
             } else if (current != target && target > 0f && !music.isPlaying()) {
-                Gdx.app.log("MusicManager", "Track " + trackType + " stopped -> playing.");
+                Gdx.app.log("MusicController", "Track " + trackType + ": stopped -> playing.");
                 music.play();
             }
             music.setVolume(target);
@@ -99,7 +104,7 @@ public class MusicController implements ILoadingFinishedListener {
     public void setVolume(float volume) {
         state.setMusicVolume(volume);
         this.volume = volume;
-        Gdx.app.log("MusicManager", "Set target volume to " + this.volume);
+        Gdx.app.log("MusicController", "Set target volume to " + this.volume);
     }
 
     public void setTrackToRandomGameTrack() {
@@ -107,35 +112,21 @@ public class MusicController implements ILoadingFinishedListener {
     }
 
     public void randomizeGameTrack() {
-        int roll = MathUtils.random(1, 3);
-        Gdx.app.log("MusicManager", "Game track rolled " + roll);
-        switch (roll) {
-            case 3:
-                randomGameTrack = MusicTrackType.Game3;
-                break;
-            case 2:
-                randomGameTrack = MusicTrackType.Game2;
-                break;
-            case 1:
-            default:
-                randomGameTrack = MusicTrackType.Game1;
-                break;
-        }
+        randomGameTrack = gameMusicTracks.random();
+        Gdx.app.log("MusicController", "Game track rolled " + randomGameTrack);
 
-        if (getTrack() == MusicTrackType.Game1 ||
-                getTrack() == MusicTrackType.Game2 ||
-                getTrack() == MusicTrackType.Game3) {
+        if (gameMusicTracks.contains(getTrack(), false)) {
             setTrack(randomGameTrack);
         }
     }
 
     public void setTrack(MusicTrackType track) {
         if (this.currentTrack == track) {
-            Gdx.app.log("MusicManager", "Music track already was " + currentTrack + ", skipping.");
+            Gdx.app.log("MusicController", "Music track already was " + currentTrack + ", skipping.");
             return;
         }
         this.currentTrack = track;
-        Gdx.app.log("MusicManager", "Set music track to " + currentTrack);
+        Gdx.app.log("MusicController", "Set music track to " + currentTrack);
     }
 
     public MusicTrackType getTrack() {
