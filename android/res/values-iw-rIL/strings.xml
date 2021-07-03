@@ -7,6 +7,7 @@
     <string name="sound">צלילים</string>
     <string name="music">מוזיקה</string>
     <string name="back">חזרה</string>
+    <string name="cancel">ביטול</string>
     <string name="screenShake">רעידת מצלמה</string>
     <string name="upgrades_for">שידרוגים עבור  %1$s</string>
     <string name="backToGame">המשך</string>
@@ -79,6 +80,6 @@
     <string name="enemyRammer">דורס</string>
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
-    <string name="cancel">ביטול</string>
+    <string name="ui_volume">צלילי ממשק</string>
 
 </resources>
