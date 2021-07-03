@@ -134,7 +134,9 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
 
     @Override
     public void render() {
-        musicController.update(Gdx.graphics.getDeltaTime());
+        float delta = Gdx.graphics.getDeltaTime();
+        soundController.update(delta);
+        musicController.update(delta);
 
         if (Gdx.input.isTouched(3)) { // profiler/cheat mode with 4 finger tap
             toggleProfiler();

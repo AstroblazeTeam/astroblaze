@@ -1,6 +1,7 @@
 package com.astroblaze.Rendering;
 
 import com.astroblaze.Assets;
+import com.astroblaze.AstroblazeGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,6 +29,10 @@ public class LaserController {
 
     public LaserController() {
         mesh = makeMesh(0f, 0f, 1f, beamLength);
+    }
+
+    public Array<LaserInfo> getLasers() {
+        return lasers;
     }
 
     public void addLaser(Vector3 position) {
@@ -90,7 +95,9 @@ public class LaserController {
         shaderProgram.setUniformi("u_texture", 0);
         Gdx.gl20.glEnable(GL20.GL_BLEND);
         Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        boolean anyLaserActive = false;
         for (LaserInfo laser : lasers) {
+            anyLaserActive = true;
             setVertices(mesh, laser.origin.x, laser.origin.z, laser.width, beamLength);
 
             shaderProgram.setUniformf("time", TimeUtils.timeSinceMillis(timeStartup) / 373f);
@@ -100,5 +107,6 @@ public class LaserController {
             mesh.render(shaderProgram, GL20.GL_TRIANGLES);
         }
         batch.end();
+        AstroblazeGame.getSoundController().setLaserActive(anyLaserActive);
     }
 }

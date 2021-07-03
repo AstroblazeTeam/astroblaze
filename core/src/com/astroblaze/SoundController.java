@@ -1,6 +1,7 @@
 package com.astroblaze;
 
 import com.astroblaze.Interfaces.ILoadingFinishedListener;
+import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Sound;
@@ -19,11 +20,18 @@ public class SoundController implements ILoadingFinishedListener {
     private float sfxVolume;
     private float UIVolume;
 
+    // laser hum
+    private Sound laserSound;
+    private boolean laserActive;
+    private long laserSoundId;
+    private float laserVolume;
+
     SoundController(AstroblazeGame game) {
         game.addOnLoadingFinishedListener(this);
         state = AstroblazeGame.getPlayerState();
         sfxVolume = state.getSoundVolume();
         UIVolume = state.getUiVolume();
+
     }
 
     @Override
@@ -35,6 +43,8 @@ public class SoundController implements ILoadingFinishedListener {
         soundBoop = Assets.asset(Assets.soundBoop);
         soundConfirm = Assets.asset(Assets.soundConfirm);
         soundSwap = Assets.asset(Assets.soundSwap);
+
+        laserSound = Assets.asset(Assets.soundLaser);
     }
 
     public void playExplosionSound() {
@@ -96,5 +106,28 @@ public class SoundController implements ILoadingFinishedListener {
         UIVolume = newUIVolume;
         state.setUiVolume(newUIVolume);
         Gdx.app.log("SoundManager", "Set UI volume to " + UIVolume);
+    }
+
+    public boolean getLaserActive() {
+        return laserActive;
+    }
+
+    public void setLaserActive(boolean active) {
+        laserActive = active;
+    }
+
+    public void update(float delta) {
+        if (laserSound == null) // assets not loaded yet
+            return;
+        laserVolume = MathHelper.moveTowards(laserVolume, laserActive ? 1f : 0f, 5f * delta);
+
+        if (laserSoundId == -1) {
+            laserSoundId = laserSound.loop(laserVolume);
+        } else if (laserVolume == 0f) {
+            laserSound.stop(laserSoundId);
+            laserSoundId = -1;
+        } else {
+            laserSound.setVolume(laserSoundId, laserVolume);
+        }
     }
 }

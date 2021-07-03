@@ -327,7 +327,7 @@ public class Scene3D implements ILoadingFinishedListener {
         processActorMigrations();
         particles.update(60f); // finish playing all particles
         decalController.getDecals().clear();
-        //laserController.getLasers().clear();
+        laserController.getLasers().clear();
         moveVector.setZero();
         lives = defaultMaxLives;
     }
