@@ -32,7 +32,7 @@
 
                 <TextView
                     android:id="@+id/tvSound"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -42,10 +42,12 @@
                     android:shadowDx="2.3"
                     android:shadowDy="2.5"
                     android:shadowRadius="3.6"
-                    android:text="@string/sound"
+                    android:text="@string/sound_volume"
+                    android:textAlignment="textStart"
                     android:textColor="@color/button_outline"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@id/tvUI"
+                    app:layout_constraintEnd_toStartOf="@+id/seekBarSound"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +66,7 @@
 
                 <TextView
                     android:id="@+id/tvUI"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/tenderness"
                     android:gravity="center_horizontal|center_vertical"
@@ -73,9 +75,11 @@
                     android:shadowDy="2.5"
                     android:shadowRadius="3.6"
                     android:text="@string/ui_volume"
+                    android:textAlignment="textStart"
                     android:textColor="@color/button_outline"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@id/tvMusic"
+                    app:layout_constraintEnd_toStartOf="@+id/seekBarUI"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvSound" />
 
@@ -83,7 +87,6 @@
                     android:id="@+id/seekBarUI"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:maxHeight="8dp"
                     android:progressDrawable="@drawable/seekbar_gradient"
                     app:layout_constraintBottom_toBottomOf="@+id/tvUI"
@@ -93,7 +96,7 @@
 
                 <TextView
                     android:id="@+id/tvMusic"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -103,10 +106,12 @@
                     android:shadowDx="2.3"
                     android:shadowDy="2.5"
                     android:shadowRadius="3.6"
-                    android:text="@string/music"
+                    android:text="@string/music_volume"
+                    android:textAlignment="textStart"
                     android:textColor="@color/button_outline"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/seekBarMusic"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvUI" />
 
@@ -114,7 +119,6 @@
                     android:id="@+id/seekBarMusic"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:maxHeight="8dp"
                     android:progressDrawable="@drawable/seekbar_gradient"
                     app:layout_constraintBottom_toBottomOf="@+id/tvMusic"

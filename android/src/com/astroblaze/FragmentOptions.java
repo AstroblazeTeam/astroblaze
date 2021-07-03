@@ -12,12 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 
 public class FragmentOptions extends Fragment {
     private SoundController soundController;
     private MusicController musicController;
+
+    private TextView tvMusicVolume;
+    private TextView tvSoundVolume;
+    private TextView tvUIVolume;
 
     public FragmentOptions() {
         // Required empty public constructor
@@ -44,10 +49,16 @@ public class FragmentOptions extends Fragment {
         musicController = AstroblazeGame.getMusicController();
         soundController = AstroblazeGame.getSoundController();
 
+        tvMusicVolume = view.findViewById(R.id.tvMusic);
+        tvSoundVolume = view.findViewById(R.id.tvSound);
+        tvUIVolume = view.findViewById(R.id.tvUI);
+
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
             AstroblazeGame.getSoundController().playUICancelSound();
             NavHostFragment.findNavController(FragmentOptions.this).popBackStack();
         });
+
+        refreshTextValues();
 
         SeekBar sbMusic = view.findViewById(R.id.seekBarMusic);
         sbMusic.setProgress((int) (musicController.getVolume() * 100f));
@@ -60,6 +71,7 @@ public class FragmentOptions extends Fragment {
                 } else {
                     musicController.setVolume(progress / 100f);
                 }
+                refreshTextValues();
             }
 
             @Override
@@ -82,6 +94,7 @@ public class FragmentOptions extends Fragment {
                 } else {
                     soundController.setSfxVolume(progress / 100f);
                 }
+                refreshTextValues();
             }
 
             @Override
@@ -104,6 +117,7 @@ public class FragmentOptions extends Fragment {
                 } else {
                     soundController.setUIVolume(progress / 100f);
                 }
+                refreshTextValues();
             }
 
             @Override
@@ -121,5 +135,11 @@ public class FragmentOptions extends Fragment {
             AstroblazeGame.getPlayerState().setScreenShake(isChecked);
             AstroblazeGame.getSoundController().playUISwapSound();
         });
+    }
+
+    private void refreshTextValues() {
+        tvMusicVolume.setText(getString(R.string.music_volume, (int) (musicController.getVolume() * 100f)));
+        tvSoundVolume.setText(getString(R.string.sound_volume, (int) (soundController.getSfxVolume() * 100f)));
+        tvUIVolume.setText(getString(R.string.ui_volume, (int) (soundController.getUIVolume() * 100f)));
     }
 }

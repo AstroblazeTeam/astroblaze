@@ -4,8 +4,8 @@
     <string name="hiscores">טבלת שיאים</string>
     <string name="options">הגדרות</string>
     <string name="exit">יציאה</string>
-    <string name="sound">צלילים</string>
-    <string name="music">מוזיקה</string>
+    <string name="sound_volume">%1$d%% צלילים</string>
+    <string name="music_volume">%1$d%% מוזיקה</string>
     <string name="back">חזרה</string>
     <string name="cancel">ביטול</string>
     <string name="screenShake">רעידת מצלמה</string>
@@ -80,6 +80,6 @@
     <string name="enemyRammer">דורס</string>
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
-    <string name="ui_volume">צלילי ממשק</string>
+    <string name="ui_volume">%1$d%% צלילי ממשק</string>
 
 </resources>
