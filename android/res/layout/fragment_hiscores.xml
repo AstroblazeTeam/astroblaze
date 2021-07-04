@@ -42,9 +42,10 @@
             android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:visibility="invisible" />
+            app:layout_constraintTop_toBottomOf="@+id/btnExitToMenu"
+            tools:listitem="@layout/hiscores_item" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExitToMenu"
@@ -53,20 +54,118 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/menu_button_states"
             android:gravity="center"
-            android:text="@string/back"
-            android:textAllCaps="true"
-            android:textAlignment="center"
-            android:textSize="20sp"
             android:shadowColor="@color/menu_bg_color"
             android:shadowDx="2.3"
             android:shadowDy="2.5"
             android:shadowRadius="3.6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="@string/back"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/rvHiscoresBoard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="75dp"
+            android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toTopOf="@+id/rvHiscoresBoard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnExitToMenu"
+            app:layout_constraintVertical_bias="1.0">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/rank_hiscore"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="30dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/name_hiscore"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView11"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/score_hiscore"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView12"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/level_hiscore"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/table_barrier"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:background="@drawable/table_barrier_style"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/rvHiscoresBoard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

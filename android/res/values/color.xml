@@ -14,4 +14,5 @@
     <color name="switch_thumb_color">#32CD32</color>
     <color name="color_text_disabled">#8B0000</color>
     <color name="rocket_text_color">#FFD700</color>
+    <color name="table_barrier_color">#88E1D1</color>
 </resources>

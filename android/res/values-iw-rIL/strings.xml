@@ -6,6 +6,7 @@
     <string name="exit">יציאה</string>
     <string name="sound_volume">%1$d%% צלילים</string>
     <string name="music_volume">%1$d%% מוזיקה</string>
+    <string name="ui_volume">%1$d%% צלילי ממשק</string>
     <string name="back">חזרה</string>
     <string name="cancel">ביטול</string>
     <string name="screenShake">רעידת מצלמה</string>
@@ -25,6 +26,10 @@
     <string name="scoreLabel">נקודות:</string>
     <string name="moneyLabel">כסף:</string>
     <string name="rankLabel">דירוג:</string>
+    <string name="rank_hiscore">דירוג</string>
+    <string name="name_hiscore">שם</string>
+    <string name="score_hiscore">ניקוד</string>
+    <string name="level_hiscore">שלב</string>
     <string name="shieldUpgrade">מגן (%1$s)</string>
     <string name="speedUpgrade">מהירות (%1$s)</string>
     <string name="damageUpgrade">נזק (%1$s)</string>
@@ -80,6 +85,6 @@
     <string name="enemyRammer">דורס</string>
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
-    <string name="ui_volume">%1$d%% צלילי ממשק</string>
+
 
 </resources>

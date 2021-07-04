@@ -30,6 +30,10 @@
     <string name="moneyLabel">Cash:</string>
     <string name="rankLabel">Rank:</string>
     <string name="rankPrintLoading" translatable="false">…</string>
+    <string name="rank_hiscore">Rank</string>
+    <string name="name_hiscore">Name</string>
+    <string name="score_hiscore">Score</string>
+    <string name="level_hiscore">Level</string>
 
     <string name="shieldUpgrade">Shield (%1$s)</string>
     <string name="speedUpgrade">Speed (%1$s)</string>
@@ -97,6 +101,7 @@
     <string name="enemyRammer">Rammer</string>
     <string name="enemyMoneyDrop">Cash hauler</string>
     <string name="enemyMiniboss1">Miniboss</string>
+
 
 
 </resources>
