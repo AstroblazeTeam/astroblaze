@@ -40,7 +40,7 @@ public enum PlayerShipVariant {
             return modifier;
         for (UpgradeEntry upgrade : upgrades) {
             if (upgrade.type == upgradeType) {
-                modifier += upgrade.multiplier * upgrade.currentTier;
+                modifier += upgrade.getCurrentMultiplier();
             }
         }
         return modifier;

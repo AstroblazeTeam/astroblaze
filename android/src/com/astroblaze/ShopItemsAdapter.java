@@ -1,7 +1,6 @@
 package com.astroblaze;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +36,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UpgradeEntry item = items.get(position);
-        String qty = item.currentTier == item.maxTier
-                ? "MAX" : item.currentTier + " / " + item.maxTier;
+        String qty;
+        if (item.currentTier < item.maxTier) qty = item.currentTier + " / " + item.maxTier;
+        else if (item.currentTier == item.maxTier) qty = "MAX";
+        else qty = "MAX + " + (item.currentTier - item.maxTier);
+
         switch (item.type) {
             case ShieldUpgrade:
                 holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_hp);
@@ -54,9 +56,9 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
                 holder.getTextViewName().setText(context.getString(R.string.damageUpgrade, qty));
                 break;
         }
-        holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##%}", item.getCurrent()));
-        holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##%}", item.multiplier));
-        holder.getTextViewPrice().setText(MessageFormat.format("${0,number,#.##}", item.price));
+        holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##}%", 100f * item.getCurrentMultiplier()));
+        holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##}%", 100 * item.getNextMultiplier()));
+        holder.getTextViewPrice().setText(MessageFormat.format("${0,number,#.##}", item.getUpgradePrice()));
         holder.getBtnBuy().setOnClickListener(v -> {
             if (!AstroblazeGame.getPlayerState().buyUpgrade(variant, item)) {
                 return;

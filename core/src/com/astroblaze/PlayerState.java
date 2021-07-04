@@ -193,9 +193,9 @@ public class PlayerState {
         data.unlockedShips.add(unlocked);
         ArrayList<UpgradeEntry> upgrades = new ArrayList<>();
 
-        upgrades.add(new UpgradeEntry("Shield", 1f, 0, 5, 0.1f, 3000f, UpgradeEntryType.ShieldUpgrade));
-        upgrades.add(new UpgradeEntry("Damage", 1f, 0, 5, 0.1f, 5000f, UpgradeEntryType.DamageUpgrade));
-        upgrades.add(new UpgradeEntry("Speed", 1f, 0, 5, 0.1f, 10000f, UpgradeEntryType.SpeedUpgrade));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, "Shield", 1f, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.DamageUpgrade, "Damage", 1f, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, "Speed", 1f, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
 
         data.unlockedUpgrades.put(unlocked.id, upgrades);
         saveState();
@@ -209,8 +209,7 @@ public class PlayerState {
 
     public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         return isShipVariantUnlocked(variant)
-                && item.currentTier < item.maxTier
-                && data.money >= item.price;
+                && data.money >= item.getUpgradePrice();
     }
 
     private UnlockedShip getUnlockedShip(PlayerShipVariant variant) {
@@ -231,8 +230,8 @@ public class PlayerState {
             Gdx.app.error("PlayerState", "Ship " + variant + " is not unlocked yet!");
             return false;
         }
-        item.currentTier = MathUtils.clamp(item.currentTier + 1, 0, item.maxTier);
-        modPlayerMoney(-item.price);
+        modPlayerMoney(-item.getUpgradePrice());
+        item.currentTier++;
         AstroblazeGame.getSoundController().playUIPurchaseSound();
         saveState();
         return true;

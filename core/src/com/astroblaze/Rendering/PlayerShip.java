@@ -37,7 +37,7 @@ public class PlayerShip extends SpaceShip {
     @Override
     public void show(Scene3D scene) {
         super.show(scene);
-        float engineScale = getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade);
+        float engineScale = Math.min(1.5f, getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade));
         exhaustDecals.add(scene.getDecalController().addExhaust(position, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
         exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f, 1.25f * engineScale));
         exhaustDecals.add(scene.getDecalController().addExhaust(position, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
