@@ -79,10 +79,10 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
 
         tvStats.setText(Html.fromHtml(combined.toString(), Html.FROM_HTML_MODE_LEGACY));
 
-        if (!state.isShipVariantUnlocked(variant)) {
-            btnAction.setEnabled(AstroblazeGame.getPlayerState().canUnlockShip(variant));
+        if (!state.isShipOwned(variant)) {
+            btnAction.setEnabled(AstroblazeGame.getPlayerState().canBuyShip(variant));
             btnAction.setText(getString(R.string.unlockShip, (int) variant.price));
-            btnAction.setOnClickListener(v -> AstroblazeGame.getPlayerState().unlockShipVariant(variant));
+            btnAction.setOnClickListener(v -> AstroblazeGame.getPlayerState().buyShip(variant));
         } else {
             btnAction.setEnabled(true);
             btnAction.setText(getString(R.string.buyUpgrade));

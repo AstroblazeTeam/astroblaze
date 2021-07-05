@@ -122,7 +122,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         tvShipSwipeRight.setVisibility(position < ShipPreviewActor.getVariantCount() - 1
                 ? View.VISIBLE : View.INVISIBLE);
         PlayerShipVariant variant = PlayerShipVariant.values()[position];
-        btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipVariantUnlocked(variant));
+        btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipOwned(variant));
     }
 
     @Override

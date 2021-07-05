@@ -29,12 +29,7 @@ public class PlayerState {
         public float uiVolume = 0.5f;
         public float musicVolume = 0.5f;
         public Date lastScoreSubmit = new Date(0);
-        public ArrayList<UnlockedShip> unlockedShips = new ArrayList<>(4);
-        public HashMap<Integer, ArrayList<UpgradeEntry>> unlockedUpgrades = new HashMap<>();
-    }
-
-    public static class UnlockedShip {
-        public int id;
+        public HashMap<Integer, ArrayList<UpgradeEntry>> ownedShips = new HashMap<>();
     }
 
     public String getId() {
@@ -159,74 +154,75 @@ public class PlayerState {
     }
 
     public ArrayList<UpgradeEntry> getUpgrades(int variantId) {
-        return data.unlockedUpgrades.get(variantId);
+        return data.ownedShips.get(variantId);
     }
 
     public ArrayList<PlayerShipVariant> getUnlockedShips() {
         ArrayList<PlayerShipVariant> result = new ArrayList<>();
         PlayerShipVariant[] variants = PlayerShipVariant.values();
-        for (int i = 0; i < data.unlockedShips.size(); i++) {
-            result.add(variants[data.unlockedShips.get(i).id]);
+        for (int shipId : data.ownedShips.keySet()) {
+            result.add(variants[shipId]);
         }
         return result;
     }
 
-    public boolean isShipVariantUnlocked(PlayerShipVariant variant) {
-        for (UnlockedShip s : data.unlockedShips) {
-            if (s.id == variant.id) {
+    public boolean isShipOwned(PlayerShipVariant variant) {
+        for (int shipId : data.ownedShips.keySet()) {
+            if (variant.id == shipId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean canUnlockShip(PlayerShipVariant variant) {
+    public boolean canBuyShip(PlayerShipVariant variant) {
         return data.money >= variant.price;
     }
 
-    public boolean unlockShipVariant(PlayerShipVariant variant) {
-        if (!canUnlockShip(variant) || isShipVariantUnlocked(variant))
-            return false;
-        UnlockedShip unlocked = new UnlockedShip();
-        unlocked.id = variant.id;
+    public void buyShip(PlayerShipVariant variant) {
+        if (!canBuyShip(variant)) {
+            Gdx.app.log("PlayerState", "Player can't buy ship but buyShipVariant was called");
+            return;
+        }
+        if (isShipOwned(variant)) {
+            Gdx.app.log("PlayerState", "Player already owns variant " + variant.id);
+            return;
+        }
         modPlayerMoney(-variant.price);
-        data.unlockedShips.add(unlocked);
         ArrayList<UpgradeEntry> upgrades = new ArrayList<>();
 
         upgrades.add(new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, "Shield", 1f, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
         upgrades.add(new UpgradeEntry(UpgradeEntryType.DamageUpgrade, "Damage", 1f, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
         upgrades.add(new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, "Speed", 1f, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
 
-        data.unlockedUpgrades.put(unlocked.id, upgrades);
+        data.ownedShips.put(variant.id, upgrades);
         saveState();
 
         if (AstroblazeGame.getSoundController() != null) {
             // avoid NPE when initializing new player state
             AstroblazeGame.getSoundController().playUIPurchaseSound();
         }
-        return true;
     }
 
     public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
-        return isShipVariantUnlocked(variant)
+        return isShipOwned(variant)
                 && data.money >= item.getUpgradePrice();
     }
 
-    private UnlockedShip getUnlockedShip(PlayerShipVariant variant) {
-        for (UnlockedShip s : data.unlockedShips) {
-            if (s.id == variant.id) {
-                return s;
+    private boolean isShipUnlocked(PlayerShipVariant variant) {
+        for (int shipId : data.ownedShips.keySet()) {
+            if (shipId == variant.id) {
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     public boolean buyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         if (!canBuyUpgrade(variant, item)) {
             return false;
         }
-        UnlockedShip unlocked = getUnlockedShip(variant);
-        if (unlocked == null) {
+        if (!isShipUnlocked(variant)) {
             Gdx.app.error("PlayerState", "Ship " + variant + " is not unlocked yet!");
             return false;
         }
@@ -252,10 +248,10 @@ public class PlayerState {
             // init fresh state
             data = new PlayerStateData();
             Gdx.app.log("PlayerState", "Initialized fresh state.");
-            unlockShipVariant(PlayerShipVariant.Scout);
+            buyShip(PlayerShipVariant.Scout);
         } else {
             data = gson.fromJson(stateString, PlayerStateData.class);
-            Gdx.app.log("PlayerState", "Restored state: " + stateString);
+            Gdx.app.log("PlayerState", "Restored existing state.");
         }
     }
 
