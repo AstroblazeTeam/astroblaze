@@ -9,7 +9,8 @@ import com.badlogic.gdx.math.*;
 
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
-    private final float gunInterval = 1f / 20f;
+    private final float gunInterval = 1f / 15f;
+    private final float gunBulletSpeed = 200f;
     private final float missileInterval = 1f / 8f;
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
@@ -144,13 +145,13 @@ public class PlayerShip extends SpaceShip {
             return;
 
         gunClock -= delta;
-        if (gunClock >= 0f) {
+        if (gunClock > 0f) {
             return;
         }
         gunClock += gunInterval;
 
         final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
+        final Vector3 vel = new Vector3(0f, 0f, gunBulletSpeed);
         final int ports = shipVariant.gunPorts;
         final float offset = shipVariant.modelScale / ports * 0.5f;
         for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
@@ -170,7 +171,7 @@ public class PlayerShip extends SpaceShip {
         turretClock += gunInterval;
 
         final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0f, 0f, 3f * moveSpeed);
+        final Vector3 vel = new Vector3(0f, 0f, gunBulletSpeed);
 
         ITargetable t = scene.getClosestTarget(this, pos);
         if (t != null) {
@@ -185,7 +186,7 @@ public class PlayerShip extends SpaceShip {
             if (Float.isNaN(angle) || Float.isInfinite(angle)) {
                 return;
             }
-            vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
+            vel.set(0f, 0f, gunBulletSpeed).rotate(Vector3.Y, angle);
             for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
                 scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * damageMod)
                         .ignorePlayerCollision = true;

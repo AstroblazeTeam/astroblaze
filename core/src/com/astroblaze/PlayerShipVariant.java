@@ -51,7 +51,7 @@ public enum PlayerShipVariant {
     }
 
     public float getDamage(PlayerState state) {
-        return 3f * getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade);
+        return 6f * getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade);
     }
 
     public float getSpeed(PlayerState state) {
