@@ -77,14 +77,14 @@ public class LevelControllerActor extends Actor {
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        scene.getPlayer().setMoveVector(new Vector3(0f, 0f, 300f), true);
+                        scene.getPlayer().setMoveVector(new Vector3(0f, 0f, 2f * scene.getGameBounds().max.z), true);
                     }
                 },
                 new Action() {
                     @Override
                     public boolean act(float delta) {
                         PlayerShip player = scene.getPlayer();
-                        player.setPosition(player.getPosition().cpy().add(0f, 0f, 500f * delta));
+                        player.setPosition(player.getPosition().cpy().add(0f, 0f, 300f * delta));
                         return !scene.getGameBounds().contains(player.getPosition());
                     }
                 },
