@@ -119,7 +119,7 @@ public class SoundController implements ILoadingFinishedListener {
     public void update(float delta) {
         if (laserSound == null) // assets not loaded yet
             return;
-        laserVolume = MathHelper.moveTowards(laserVolume, laserActive ? 1f : 0f, 5f * delta);
+        laserVolume = MathHelper.moveTowards(laserVolume, laserActive ? sfxVolume : 0f, 5f * delta);
 
         if (laserSoundId == -1) {
             laserSoundId = laserSound.loop(laserVolume);
