@@ -13,7 +13,6 @@ public class GameScreen extends ScreenAdapter {
     private final AstroblazeGame game;
     private final Stage stage;
 
-    private ParallaxActor parallaxActor; // background painter
     private FadeOverlayActor fadeOverlayActor; // fade transition translucent overlay
     private HealthBarActor healthBarActor; // health bar display
     private BossHealthBarActor bossHealthBarActor; // health bar display
@@ -69,7 +68,6 @@ public class GameScreen extends ScreenAdapter {
         this.scene = game.getScene();
 
         fadeOverlayActor = new FadeOverlayActor(scene.getCamera());
-        parallaxActor = new ParallaxActor(8f);
 
         healthBarActor = new HealthBarActor(scene);
         healthBarActor.setVisible(false);
@@ -80,7 +78,6 @@ public class GameScreen extends ScreenAdapter {
         shipPreviewActor = new ShipPreviewActor(scene);
         shipPreviewActor.setVisible(false);
 
-        stage.addActor(parallaxActor);
         stage.addActor(healthBarActor);
         stage.addActor(bossHealthBarActor);
         stage.addActor(shipPreviewActor);

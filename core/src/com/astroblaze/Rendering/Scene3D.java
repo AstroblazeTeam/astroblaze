@@ -42,6 +42,7 @@ public class Scene3D implements ILoadingFinishedListener {
     private final LaserController laserController;
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
+    private final SkyJunkController skyJunkController;
     private final int defaultMaxLives = 3;
 
     private PlayerShip player;
@@ -63,6 +64,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.add(batch);
         decalController = new DecalController(this, camera);
         laserController = new LaserController();
+        skyJunkController = new SkyJunkController(this, decalController);
         setupBonusDistribution();
     }
 
@@ -175,6 +177,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.update(delta);
         decalController.update(delta);
         laserController.update(delta);
+        skyJunkController.update(delta);
 
         if (player != null) {
             Vector3 playerPos = player.getPosition();
@@ -240,24 +243,26 @@ public class Scene3D implements ILoadingFinishedListener {
         laserController.dispose();
     }
 
-    public void render(ModelBatch batch) {
-        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
-
+    public void render(ModelBatch modelBatch) {
         camera.update();
-        batch.begin(camera);
+        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+        skyJunkController.render();
+        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
+        modelBatch.begin(camera);
         particles.begin();
         particles.draw();
         particles.end();
-        batch.render(particles);
+        modelBatch.render(particles);
         for (SceneActor actor : actors) {
-            actor.render(batch, environment);
+            actor.render(modelBatch, environment);
         }
         for (SceneActor actor : missilePool.getActiveMissiles()) {
-            actor.render(batch, environment);
+            actor.render(modelBatch, environment);
         }
-        batch.end();
+        modelBatch.end();
+
         decalController.render();
-        laserController.render(batch, camera);
+        laserController.render(modelBatch, camera);
 
         processActorMigrations();
     }

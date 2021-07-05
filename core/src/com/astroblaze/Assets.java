@@ -31,10 +31,6 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Music> musicEnding = new AssetDescriptor<>("music/ending.ogg", Music.class);
     public final static AssetDescriptor<Model> missile = new AssetDescriptor<>("projectiles/missile.obj", Model.class);
     public final static AssetDescriptor<Texture> laser = new AssetDescriptor<>("laser/laser.png", Texture.class);
-    public final static AssetDescriptor<Texture> parallax0 = new AssetDescriptor<>("parallax/parallax0.png", Texture.class);
-    public final static AssetDescriptor<Texture> parallax1 = new AssetDescriptor<>("parallax/parallax1.png", Texture.class);
-    public final static AssetDescriptor<Texture> parallax2 = new AssetDescriptor<>("parallax/parallax2.png", Texture.class);
-    public final static AssetDescriptor<Texture> parallax3 = new AssetDescriptor<>("parallax/parallax3.png", Texture.class);
     public final static AssetDescriptor<TextureAtlas> atlas = new AssetDescriptor<>("projectiles/projectiles.atlas", TextureAtlas.class);
     public final static AssetDescriptor<ShaderProgram> fadeShader = new AssetDescriptor<>("shaders/fade.vert", ShaderProgram.class);
     public final static AssetDescriptor<ShaderProgram> laserShader = new AssetDescriptor<>("shaders/laser.vert", ShaderProgram.class);
@@ -50,17 +46,12 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
 
     // these are loaded late, don't rely on them available at start!
     public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
-    public final static Array<AssetDescriptor<Texture>> parallaxArray = new Array<>(16);
     public final static Array<AssetDescriptor<Model>> spaceShipAssets = new Array<>(16);
     public final static Array<Model> spaceShipModels = new Array<>(16);
     public static AssetDescriptor<ParticleEffect> flame;
     public static TextureAtlas atlas1;
     public static TextureAtlas.AtlasRegion whitePixel;
     public static TextureAtlas.AtlasRegion heartTexture;
-
-    static {
-        parallaxArray.add(parallax0, parallax1, parallax2, parallax3);
-    }
 
     public Assets(AstroblazeGame game) {
         instance = this;
@@ -84,10 +75,6 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
             load(spaceShipAsset);
             spaceShipAssets.add(spaceShipAsset);
         }
-        load(parallax0);
-        load(parallax1);
-        load(parallax2);
-        load(parallax3);
         load(missile);
         load(musicLevel1);
         load(musicLevel2);

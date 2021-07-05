@@ -95,6 +95,7 @@ public class HealthBarActor extends Actor implements IUIChangeListener {
 
     private void drawLives(Batch batch) {
         float scale = 0.5f;
+        batch.setColor(Color.WHITE);
         for (int i = 0; i < scene.getLives(); i++) {
             batch.draw(heart, i * heart.getRegionWidth() * scale * 1.25f + hpWidth * 2f, hpWidth * 2f,
                     0, 0, heart.getRegionWidth(), heart.getRegionHeight(),

@@ -468,14 +468,14 @@ repeat: none
   index: -1
 exhaust
   rotate: false
-  xy: 1737, 1793
+  xy: 1194, 1790
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
 exhaust
   rotate: false
-  xy: 1194, 1790
+  xy: 1689, 1639
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -552,7 +552,7 @@ life-upgrade
   index: -1
 missile-bonus
   rotate: false
-  xy: 580, 1740
+  xy: 753, 1187
   size: 53, 64
   orig: 53, 64
   offset: 0, 0
@@ -571,6 +571,20 @@ shield-restore
   orig: 115, 110
   offset: 0, 0
   index: -1
+stars
+  rotate: false
+  xy: 580, 1740
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+stars
+  rotate: false
+  xy: 1737, 1777
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: 1
 white_pixel
   rotate: false
   xy: 1442, 1673

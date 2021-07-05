@@ -57,6 +57,10 @@ public class DecalController {
         return this.activeDecals;
     }
 
+    public DecalBatch getDecalBatch() {
+        return this.batch;
+    }
+
     public DecalInfo addExhaust(Vector3 origin, float offset, float scale) {
         DecalInfo info = new DecalInfo();
         info.position = new Vector3(offset, -2f, -5f);
@@ -146,6 +150,9 @@ public class DecalController {
 
     public void render() {
         for (DecalInfo info : activeDecals) {
+            if (info.time == 0f)
+                continue; // skip fresh decals that update() hasn't processed yet
+
             if (info.animation != null) {
                 info.decal.setTextureRegion(info.animation.getKeyFrame(info.time));
             }
