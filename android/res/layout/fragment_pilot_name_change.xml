@@ -27,6 +27,7 @@
             android:contentDescription="@string/enterPilotName"
             android:imeOptions="actionDone"
             android:inputType="textPersonName|text"
+            android:maxLength="12"
             android:textStyle="bold"
             tools:ignore="LabelFor" />
 
