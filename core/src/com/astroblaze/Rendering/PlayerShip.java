@@ -19,7 +19,7 @@ public class PlayerShip extends SpaceShip {
     private float moveSpeed;
     private float currentBank;
     private int missileSalvos; // amount of missile salvos player has.
-    private float gunDamage;
+    private float damageMod;
     private float noControlTimer;
     private boolean isDying;
     private float deathTimer;
@@ -119,7 +119,7 @@ public class PlayerShip extends SpaceShip {
         // ship variant
         shipVariant = variant;
         modHp(getMaxHitpoints());
-        gunDamage = variant.getDamage(playerState);
+        damageMod = variant.getDamage(playerState);
         moveSpeed = variant.getSpeed(playerState);
         setModel(variant.getVariantAssetModel());
         setScale(variant.modelScale);
@@ -153,7 +153,7 @@ public class PlayerShip extends SpaceShip {
         final int ports = shipVariant.gunPorts;
         final float offset = shipVariant.modelScale / ports * 0.5f;
         for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
-            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, gunDamage)
+            scene.getDecalController().addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, 0.1f, damageMod)
                     .ignorePlayerCollision = true;
         }
     }
@@ -186,7 +186,7 @@ public class PlayerShip extends SpaceShip {
             }
             vel.set(0f, 0f, 3f * moveSpeed).rotate(Vector3.Y, angle);
             for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * gunDamage)
+                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, 0.75f * damageMod)
                         .ignorePlayerCollision = true;
             }
         }
@@ -262,7 +262,7 @@ public class PlayerShip extends SpaceShip {
 
         scene.getLaserController().addLaser(scene.getPlayer().getPosition());
         for (EnemyShip enemy : scene.beamCast(this)) {
-            enemy.damageFromCollision(3000f * delta, true);
+            enemy.damageFromCollision(damageMod * 500f * delta, true);
         }
     }
 
@@ -281,6 +281,7 @@ public class PlayerShip extends SpaceShip {
         for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
             float offset = x * speed * Missile.maxUnpoweredTime;
             Missile missile = scene.getMissilesPool().obtain();
+            missile.setDamageModifier(damageMod);
             missile.setUnpoweredDir(x * speed, 0f, 0f);
             missile.setPosition(pos);
             missile.setTargetVector(pos.cpy().add(offset, 0f, 1000f));
