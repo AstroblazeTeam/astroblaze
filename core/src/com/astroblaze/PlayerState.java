@@ -101,6 +101,8 @@ public class PlayerState {
     public void setScreenShake(boolean screenShake) {
         data.screenShake = screenShake;
         saveState();
+        if (data.screenShake)
+            AstroblazeGame.getInstance().getScene().getCamera().shake();
     }
 
     public int getMaxLevel() {
