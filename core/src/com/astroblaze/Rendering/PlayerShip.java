@@ -10,12 +10,12 @@ import com.badlogic.gdx.math.*;
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
     private final float gunInterval = 1f / 20f;
+    private final float missileInterval = 1f / 8f;
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
     private final int defaultMissileSalvos = 8;
 
     private float missileClock;
-    private float missileInterval = 1f / 8f;
     private float moveSpeed;
     private float currentBank;
     private int missileSalvos; // amount of missile salvos player has.
@@ -37,13 +37,14 @@ public class PlayerShip extends SpaceShip {
     @Override
     public void show(Scene3D scene) {
         super.show(scene);
+        DecalController decals = scene.getDecalController();
         float engineScale = Math.min(1.5f, getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade));
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f, 1.25f * engineScale));
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(decals.addExhaust(position, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(decals.addExhaust(position, 0f, 1.25f * engineScale));
+        exhaustDecals.add(decals.addExhaust(position, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
         // normalize to 0f..1f range
         float colorScale = MathUtils.map(1f, 1.5f, 0f, 1f, engineScale);
-        Color startColor = Color.WHITE;
+        Color startColor = new Color(1f, 1f, 1f, 1f);
         Color endColor = new Color(0.95f, 0.32f, 0.25f, 1f);
         for (DecalController.DecalInfo d : exhaustDecals) {
             d.decal.setColor(startColor.lerp(endColor, colorScale));
