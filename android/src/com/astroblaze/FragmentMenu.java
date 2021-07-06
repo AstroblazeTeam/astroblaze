@@ -57,13 +57,13 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         tvMoney = view.findViewById(R.id.tvMoneyVal);
 
         moneyAnimator = ValueAnimator.ofInt(0, 0);
-        moneyAnimator.setDuration(3000); // animate over 1.5 secs
+        moneyAnimator.setDuration(2500); // animate over 1.5 secs
         moneyAnimator.addUpdateListener(valueAnimator
                 -> tvMoney.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue())));
         moneyAnimator.start();
 
         scoreAnimator = ValueAnimator.ofInt(0, 0);
-        scoreAnimator.setDuration(3000); // animate over 1.5 secs
+        scoreAnimator.setDuration(2500); // animate over 1.5 secs
         scoreAnimator.addUpdateListener(valueAnimator
                 -> tvScore.setText(String.valueOf(valueAnimator.getAnimatedValue())));
         scoreAnimator.start();

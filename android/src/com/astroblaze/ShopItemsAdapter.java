@@ -63,8 +63,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
             if (!AstroblazeGame.getPlayerState().buyUpgrade(variant, item)) {
                 return;
             }
-
             ShopItemsAdapter.this.notifyDataSetChanged();
+
+            // delay the next update so both upgrade buttons update and animation also plays properly
+            holder.getImageViewUpgrade().postDelayed(()
+                    -> ShopItemsAdapter.this.notifyItemChanged(position), 10);
         });
         holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState()
                 .canBuyUpgrade(variant, item));

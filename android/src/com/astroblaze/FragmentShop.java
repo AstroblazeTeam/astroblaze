@@ -86,10 +86,11 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         rvShopItems = view.findViewById(R.id.rvShopItems);
         rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
         rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), new ArrayList<>()));
+        rvShopItems.setItemAnimator(new RVItemAnimator());
         view.postDelayed((Runnable) () -> {
             rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), upgradeEntries));
             rvShopItems.scheduleLayoutAnimation();
-        }, (int)(1.5f * requireContext().getResources().getInteger(R.integer.anim_slide))); // wait until fragment slides in
+        }, requireContext().getResources().getInteger(R.integer.anim_slide)); // wait until fragment slides in
     }
 
     @Override
