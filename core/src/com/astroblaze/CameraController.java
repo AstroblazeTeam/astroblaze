@@ -44,6 +44,7 @@ public class CameraController extends PerspectiveCamera {
 
     public void shake(float time, int amp, int freq, boolean fade) {
         Gdx.app.log("CustomCamera", "shake(" + time + ", " + amp + ", " + freq + ", " + fade + ")");
+        Gdx.input.vibrate((int) (time * 100f)); // vibrate for 1/10 the shaking time
         shake = true;
         timer = 0f;
         duration = time;
