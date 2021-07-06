@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -56,9 +58,28 @@ public class FragmentHiscores extends Fragment {
             @Override
             public void run() {
                 rvBoard.postDelayed(() -> {
-                    pgLoading.setVisibility(View.INVISIBLE);
+                    AlphaAnimation fadeOut = new AlphaAnimation(1f, 0f);
+                    pgLoading.setAnimation(fadeOut);
+                    fadeOut.setDuration(500);
+                    fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            pgLoading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    fadeOut.start();
                     rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), response));
                     rvBoard.setVisibility(View.VISIBLE);
+                    rvBoard.scheduleLayoutAnimation();
                 }, 500);
             }
         });

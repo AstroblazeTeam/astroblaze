@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FragmentLevelComplete extends Fragment {
+    RecyclerView rvBoard;
+
     public FragmentLevelComplete() {
         // Required empty public constructor
     }
@@ -51,11 +53,9 @@ public class FragmentLevelComplete extends Fragment {
                     nc.popBackStack();
                 }));
 
-        RecyclerView rvBoard = view.findViewById(R.id.rvKills);
-        if (rvBoard != null) {
-            rvBoard.setLayoutManager(new GridLayoutManager(rvBoard.getContext(), 4));
-            rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker.getKills()));
-        }
+        rvBoard = view.findViewById(R.id.rvKills);
+        rvBoard.setLayoutManager(new GridLayoutManager(rvBoard.getContext(), 4));
+        rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker.getKills()));
     }
 
     private void animateText(TextView tv, int value) {
