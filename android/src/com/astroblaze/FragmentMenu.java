@@ -50,6 +50,7 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        btnChangeName = view.findViewById(R.id.btnChangePilotName);
         tvPilotName = view.findViewById(R.id.tvPilotName);
         tvRank = view.findViewById(R.id.tvRank);
         tvScore = view.findViewById(R.id.tvScore);
@@ -66,8 +67,6 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         scoreAnimator.addUpdateListener(valueAnimator
                 -> tvScore.setText(String.valueOf(valueAnimator.getAnimatedValue())));
         scoreAnimator.start();
-
-        btnChangeName = view.findViewById(R.id.btnChangePilotName);
 
         // btnChangeName -> AlertDialog
         btnChangeName.setOnClickListener(v -> {

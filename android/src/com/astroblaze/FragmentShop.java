@@ -70,11 +70,10 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         PlayerState state = AstroblazeGame.getPlayerState();
 
         moneyDisplay = view.findViewById(R.id.tvMoneyDisplay);
-        int money = (int) state.getPlayerMoney();
-        moneyAnimator = ValueAnimator.ofInt(money, money);
+        moneyAnimator = ValueAnimator.ofInt(0, (int) state.getPlayerMoney());
         moneyAnimator.setDuration(1500); // animate over 1.5 secs
         moneyAnimator.addUpdateListener(valueAnimator
-                -> moneyDisplay.setText(getString(R.string.moneyPrint, (int)valueAnimator.getAnimatedValue())));
+                -> moneyDisplay.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue())));
         moneyAnimator.start();
         TextView title = view.findViewById(R.id.tvTitleShop);
         title.setText(getString(R.string.upgrades_for, getString(R.string.ship0 + variant.id)));
