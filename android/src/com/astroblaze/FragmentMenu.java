@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -27,6 +28,9 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
     TextView tvMoney;
     Button btnChangeName;
 
+    ValueAnimator scoreAnimator;
+    ValueAnimator moneyAnimator;
+
     public FragmentMenu() {
         // Required empty public constructor
     }
@@ -50,6 +54,18 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
         tvRank = view.findViewById(R.id.tvRank);
         tvScore = view.findViewById(R.id.tvScore);
         tvMoney = view.findViewById(R.id.tvMoneyVal);
+
+        moneyAnimator = ValueAnimator.ofInt(0, 0);
+        moneyAnimator.setDuration(3000); // animate over 1.5 secs
+        moneyAnimator.addUpdateListener(valueAnimator
+                -> tvMoney.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue())));
+        moneyAnimator.start();
+
+        scoreAnimator = ValueAnimator.ofInt(0, 0);
+        scoreAnimator.setDuration(3000); // animate over 1.5 secs
+        scoreAnimator.addUpdateListener(valueAnimator
+                -> tvScore.setText(String.valueOf(valueAnimator.getAnimatedValue())));
+        scoreAnimator.start();
 
         btnChangeName = view.findViewById(R.id.btnChangePilotName);
 
@@ -143,12 +159,9 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
                 alert.dismiss();
             }
         });
-        viewInflated.findViewById(R.id.btnCancelPilotName).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AstroblazeGame.getSoundController().playUINegative();
-                alert.dismiss();
-            }
+        viewInflated.findViewById(R.id.btnCancelPilotName).setOnClickListener(v -> {
+            AstroblazeGame.getSoundController().playUINegative();
+            alert.dismiss();
         });
         alert.show();
     }
@@ -157,8 +170,14 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
     public void onStateChanged(PlayerState state) {
         tvPilotName.post(() -> {
             tvPilotName.setText(state.getName());
-            tvScore.setText(String.valueOf((long) state.getPlayerScore()));
-            tvMoney.setText(getString(R.string.moneyPrint, (long) state.getPlayerMoney()));
+            moneyAnimator.setIntValues((int) moneyAnimator.getAnimatedValue(), (int) state.getPlayerMoney());
+            scoreAnimator.setIntValues((int) scoreAnimator.getAnimatedValue(), (int) state.getPlayerScore());
+            if (!moneyAnimator.isRunning()) {
+                moneyAnimator.start();
+            }
+            if (!scoreAnimator.isRunning()) {
+                scoreAnimator.start();
+            }
         });
     }
 }
