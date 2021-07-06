@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,8 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
@@ -26,6 +25,9 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
     private TextView tvMoney;
     private TextView tvSpecial1;
     private TextView tvSpecial2;
+
+    private int lastAnimatedMoneyValue;
+    private ValueAnimator moneyAnimator;
 
     public FragmentGame() {
         // Required empty public constructor
@@ -83,6 +85,19 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
             return false;
         });
 
+        int money = (int) AstroblazeGame.getPlayerState().getPlayerMoney();
+        moneyAnimator = ValueAnimator.ofInt(money, money);
+        moneyAnimator.setDuration(1500); // animate over 1.5 secs
+        moneyAnimator.addUpdateListener(animator -> {
+            if (getContext() == null) {
+                return; // fragment is detached, abort
+            }
+
+            lastAnimatedMoneyValue = (int) animator.getAnimatedValue();
+            tvMoney.setText(getString(R.string.moneyPrint, lastAnimatedMoneyValue));
+        });
+        moneyAnimator.start();
+
         onSpecialTextChanged(null, "", "");
     }
 
@@ -112,7 +127,10 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
             if (getContext() == null) {
                 return; // ignore state updates while not attached
             }
-            tvMoney.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney()));
+            moneyAnimator.setIntValues((int) moneyAnimator.getAnimatedValue(), (int) state.getPlayerMoney());
+            if (!moneyAnimator.isRunning()) {
+                moneyAnimator.start();
+            }
         });
     }
 
