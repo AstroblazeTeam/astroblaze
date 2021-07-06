@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +38,11 @@ public class FragmentLevelComplete extends Fragment {
 
         final LevelStatTracker tracker = AstroblazeGame.getLevelStatTracker();
 
-        int kills = 0;
-        for (int k : tracker.getKills().values()) {
-            kills += k;
-        }
-        ((TextView) view.findViewById(R.id.tvKills)).setText(String.valueOf(kills));
-        ((TextView) view.findViewById(R.id.tvDamageDone)).setText(String.valueOf((long) tracker.getDamageDone()));
-        ((TextView) view.findViewById(R.id.tvDamageTaken)).setText(String.valueOf((long) tracker.getDamageTaken()));
-        ((TextView) view.findViewById(R.id.tvScoreDiff)).setText(String.valueOf((long) tracker.getScore()));
-        ((TextView) view.findViewById(R.id.tvMoneyDiff)).setText(String.valueOf((long) tracker.getMoney()));
+        animateText((TextView) view.findViewById(R.id.tvKills), tracker.getTotalKills());
+        animateText((TextView) view.findViewById(R.id.tvDamageDone), (int) tracker.getDamageDone());
+        animateText((TextView) view.findViewById(R.id.tvDamageTaken), (int) tracker.getDamageTaken());
+        animateText((TextView) view.findViewById(R.id.tvScoreDiff), (int) tracker.getScore());
+        animateText((TextView) view.findViewById(R.id.tvMoneyDiff), (int) tracker.getMoney());
 
         view.findViewById(R.id.btnGameOverExit2).setOnClickListener(v ->
                 this.requireView().post(() -> {
@@ -59,5 +56,13 @@ public class FragmentLevelComplete extends Fragment {
             rvBoard.setLayoutManager(new GridLayoutManager(rvBoard.getContext(), 4));
             rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker.getKills()));
         }
+    }
+
+    private void animateText(TextView tv, int value) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, value);
+        animator.setDuration(3000); // animate over 1.5 secs
+        animator.addUpdateListener(valueAnimator
+                -> tv.setText(String.valueOf(valueAnimator.getAnimatedValue())));
+        animator.start();
     }
 }

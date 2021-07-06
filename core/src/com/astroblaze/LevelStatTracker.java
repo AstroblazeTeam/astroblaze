@@ -41,6 +41,14 @@ public class LevelStatTracker {
         return killsMap;
     }
 
+    public int getTotalKills() {
+        int kills = 0;
+        for (int k : killsMap.values()) {
+            kills += k;
+        }
+        return kills;
+    }
+
     public float getScore() {
         return state.getPlayerScore() - startScore;
     }

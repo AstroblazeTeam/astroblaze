@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
@@ -49,11 +50,19 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EnemyKillCount item = items.get(position);
-        Context context = holder.itemView.getContext();
         String translatedName = AstroblazeGame.getInstance().getGuiRenderer().getTranslatedEnemyName(item.type);
         holder.getTextViewName().setText(translatedName);
-        Spanned countXvalue = Html.fromHtml(context.getString(R.string.multiplesOf, item.count, (int)item.type.value), Html.FROM_HTML_MODE_LEGACY);
-        holder.getTextViewPrice().setText(countXvalue);
+        animateKillCountText(holder.getTextViewPrice(), item.count, (int) item.type.value);
+    }
+
+    private void animateKillCountText(TextView tv, int count, int value) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, count);
+        animator.setDuration(3000); // animate over 3 secs
+        animator.addUpdateListener(valueAnimator -> {
+            Spanned countXvalue = Html.fromHtml(context.getString(R.string.multiplesOf, (int) valueAnimator.getAnimatedValue(), value), Html.FROM_HTML_MODE_LEGACY);
+            tv.setText(countXvalue);
+        });
+        animator.start();
     }
 
     @Override
