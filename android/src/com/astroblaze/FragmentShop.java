@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
     PlayerShipVariant variant;
     TextView moneyDisplay;
     RecyclerView rvShopItems;
+    ValueAnimator moneyAnimator;
 
     public FragmentShop() {
         // Required empty public constructor
@@ -64,23 +66,35 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
             AstroblazeGame.getSoundController().playUINegative();
             NavHostFragment.findNavController(FragmentShop.this).popBackStack();
         });
-        rvShopItems = view.findViewById(R.id.rvShopItems);
-        rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
+
+        PlayerState state = AstroblazeGame.getPlayerState();
+
         moneyDisplay = view.findViewById(R.id.tvMoneyDisplay);
+        int money = (int) state.getPlayerMoney();
+        moneyAnimator = ValueAnimator.ofInt(money, money);
+        moneyAnimator.setDuration(1500); // animate over 1.5 secs
+        moneyAnimator.addUpdateListener(valueAnimator
+                -> moneyDisplay.setText(getString(R.string.moneyPrint, (int)valueAnimator.getAnimatedValue())));
+        moneyAnimator.start();
         TextView title = view.findViewById(R.id.tvTitleShop);
         title.setText(getString(R.string.upgrades_for, getString(R.string.ship0 + variant.id)));
 
-        ArrayList<PlayerShipVariant> variants = AstroblazeGame.getPlayerState().getUnlockedShips();
+        ArrayList<PlayerShipVariant> variants = state.getUnlockedShips();
 
         PlayerShipVariant v = variants.get(variants.indexOf(variant));
-        ArrayList<UpgradeEntry> upgradeEntries = AstroblazeGame.getPlayerState().getUpgrades(v.id);
+        ArrayList<UpgradeEntry> upgradeEntries = state.getUpgrades(v.id);
 
+        rvShopItems = view.findViewById(R.id.rvShopItems);
+        rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
         rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), upgradeEntries));
     }
 
     @Override
     public void onStateChanged(PlayerState state) {
-        moneyDisplay.post(() ->
-                moneyDisplay.setText(getString(R.string.moneyPrint, (int) state.getPlayerMoney())));
+        moneyDisplay.post(() -> {
+            moneyAnimator.setIntValues((int) moneyAnimator.getAnimatedValue(), (int) state.getPlayerMoney());
+            if (!moneyAnimator.isRunning())
+                moneyAnimator.start();
+        });
     }
 }
