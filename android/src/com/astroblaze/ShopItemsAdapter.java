@@ -43,16 +43,13 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
 
         switch (item.type) {
             case ShieldUpgrade:
-                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_hp);
                 holder.getTextViewName().setText(context.getString(R.string.shieldUpgrade, qty));
                 break;
             case SpeedUpgrade:
-                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_speed);
                 holder.getTextViewName().setText(context.getString(R.string.speedUpgrade, qty));
                 break;
             case DamageUpgrade:
             default:
-                holder.getImageViewUpgrade().setImageResource(R.drawable.upgrade_damage);
                 holder.getTextViewName().setText(context.getString(R.string.damageUpgrade, qty));
                 break;
         }
@@ -66,7 +63,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
             ShopItemsAdapter.this.notifyDataSetChanged();
 
             // delay the next update so both upgrade buttons update and animation also plays properly
-            holder.getImageViewUpgrade().postDelayed(()
+            holder.getTextViewCurrent().postDelayed(()
                     -> ShopItemsAdapter.this.notifyItemChanged(position), 10);
         });
         holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState()
@@ -79,7 +76,6 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivIcon;
         private final TextView tvName;
         private final TextView tvCurrent;
         private final TextView tvUpgrade;
@@ -89,7 +85,6 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
         public ViewHolder(View view) {
             super(view);
 
-            ivIcon = (ImageView) view.findViewById(R.id.ivUpgradeIcon);
             tvName = (TextView) view.findViewById(R.id.tvName);
             tvCurrent = (TextView) view.findViewById(R.id.tvCurrentUpgrade);
             tvUpgrade = (TextView) view.findViewById(R.id.tvNextUpgrade);
@@ -103,10 +98,6 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
 
         public TextView getTextViewNext() {
             return tvUpgrade;
-        }
-
-        public ImageView getImageViewUpgrade() {
-            return ivIcon;
         }
 
         public Button getBtnBuy() {

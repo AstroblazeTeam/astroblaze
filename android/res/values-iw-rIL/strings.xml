@@ -30,7 +30,7 @@
     <string name="name_hiscore">שם</string>
     <string name="score_hiscore">ניקוד</string>
     <string name="level_hiscore">שלב</string>
-    <string name="name_shopitem">שם</string>
+    <string name="upgradename_shopitem">שם שדרוג</string>
     <string name="currentupgrade_shopitem">שדרוג נוכחי</string>
     <string name="nextupgrade_shopitem">שדרוג הבא</string>
     <string name="price_shopitem">מחיר</string>
