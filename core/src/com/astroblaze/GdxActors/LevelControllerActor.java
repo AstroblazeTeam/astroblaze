@@ -165,6 +165,7 @@ public class LevelControllerActor extends Actor {
                 enemyShip[0].setPosition(spawnPos);
 
                 AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemyShip[0]);
+                Gdx.app.log("LevelControllerActor", "Spawned " + bossType);
             }
         });
 
@@ -201,6 +202,7 @@ public class LevelControllerActor extends Actor {
                 enemyShip[0].setPosition(spawnPos);
 
                 AstroblazeGame.getInstance().gameScreen.getBossTracker().setTrackedEnemy(enemyShip[0]);
+                Gdx.app.log("LevelControllerActor", "Spawned " + bossType);
             }
         });
 
@@ -260,7 +262,7 @@ public class LevelControllerActor extends Actor {
                     result.set(i, enemyShip);
                 }
 
-                Gdx.app.log("LevelControllerActor", "Spawned wall of " + type.name());
+                Gdx.app.log("LevelControllerActor", "Spawned wall of " + result.size + " x " + type.name());
             }
         };
     }
@@ -290,7 +292,7 @@ public class LevelControllerActor extends Actor {
                     enemyShip.setPosition(spawnPos);
                 }
                 if (count <= 0) {
-                    Gdx.app.log("LevelControllerActor", "Finished spawning sequence of " + type.name());
+                    Gdx.app.log("LevelControllerActor", "Finished spawning sequence of " + enemyCount + " x " + type.name());
                     return true;
                 }
                 return false;
@@ -314,8 +316,9 @@ public class LevelControllerActor extends Actor {
             AstroblazeGame.getLevelStatTracker().reset(0);
             runTutorial();
         } else {
+            float levelLog = level > 4 ? (float) Math.log(level) : 1f;
             float textDelay = 1f;
-            float waveDelay = 3.5f;
+            float waveDelay = 6f - levelLog;
             SequenceAction seq = Actions.sequence(
                     delay(textDelay),
                     showText(TranslatedStringId.LevelStartReady),
@@ -326,13 +329,18 @@ public class LevelControllerActor extends Actor {
                     delay(textDelay),
                     showText(""));
 
-            final int waveCount = 10 + level;
-            final int minibossSpawn1 = MathUtils.random(waveCount / 3, waveCount * 2 / 3);
+            final int waveCount = 6 + (int) (MathUtils.random(0.8f, 1.2f) * 4f * levelLog);
+            final int minibossSpawn1 = MathUtils.random(waveCount / 3, (waveCount * 2 / 3) - 1);
             final int minibossSpawn2 = MathUtils.random() > 0.5f // 50% chance for additional miniboss
-                    ? -1 : MathUtils.random(waveCount / 3, waveCount * 2 / 3);
+                    ? -1 : MathUtils.random((waveCount / 3) + 1, waveCount * 2 / 3);
+
+            Gdx.app.log("LevelControllerActor", "Starting level " + level + " level logarithm is " + levelLog);
+            Gdx.app.log("LevelControllerActor", "Generating " + waveCount + " waves.");
+            Gdx.app.log("LevelControllerActor", "Wave delay = " + waveDelay);
+            Gdx.app.log("LevelControllerActor", "Miniboss spawns at " + minibossSpawn1 + " and " + minibossSpawn2);
             for (int i = 0; i < waveCount; i++) {
                 EnemyType waveType = waveTypeWeights.getRandom();
-                int count = MathUtils.random(3 + level, 7 + level);
+                int count = (int) (MathUtils.random(0.8f, 1.2f) * 8f * levelLog);
                 if (i == minibossSpawn1 || i == minibossSpawn2) {
                     seq.addAction(spawnMiniBoss(EnemyType.MiniBoss1));
                 } else if (MathUtils.random(0f, 1f) > 0.5f) {
