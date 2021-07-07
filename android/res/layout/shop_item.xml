@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp">
 
     <ImageView
         android:id="@+id/ivUpgradeIcon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:adjustViewBounds="true"
         android:layout_marginEnd="10dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/buyUpgrade"
         android:cropToPadding="false"
         android:scaleType="fitCenter"
@@ -24,7 +26,7 @@
 
     <TextView
         android:id="@+id/tvCurrentUpgrade"
-        android:layout_width="50dp"
+        android:layout_width="90dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -52,7 +54,7 @@
 
     <TextView
         android:id="@+id/tvNextUpgrade"
-        android:layout_width="50dp"
+        android:layout_width="90dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -66,7 +68,7 @@
 
     <TextView
         android:id="@+id/tvPrice"
-        android:layout_width="70dp"
+        android:layout_width="90dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -86,12 +88,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/menu_button_states"
-        android:text="@string/buyUpgrade"
-        android:textSize="16sp"
         android:shadowColor="@color/menu_bg_color"
         android:shadowDx="2.3"
         android:shadowDy="2.5"
         android:shadowRadius="3.6"
+        android:text="@string/buyUpgrade"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
