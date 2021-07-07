@@ -443,7 +443,8 @@ public class Scene3D implements ILoadingFinishedListener {
                 continue;
             }
             EnemyShip enemy = (EnemyShip) actor;
-            if (enemy.position.x > minX && enemy.position.x < maxX) {
+            if (enemy.position.x > minX && enemy.position.x < maxX &&
+                    enemy.position.z > playerShip.position.z) {
                 result.add(enemy);
             }
         }
