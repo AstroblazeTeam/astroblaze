@@ -6,28 +6,28 @@ filter: Nearest, Nearest
 repeat: none
 01
   rotate: false
-  xy: 1224, 763
+  xy: 1225, 759
   size: 126, 121
   orig: 126, 121
   offset: 0, 0
   index: -1
 02
   rotate: false
-  xy: 974, 346
+  xy: 974, 337
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
   index: -1
 03
   rotate: false
-  xy: 1096, 722
+  xy: 975, 462
   size: 126, 123
   orig: 126, 123
   offset: 0, 0
   index: -1
 04
   rotate: false
-  xy: 1199, 886
+  xy: 1199, 882
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
@@ -41,7 +41,7 @@ repeat: none
   index: -1
 06
   rotate: false
-  xy: 965, 592
+  xy: 1096, 722
   size: 127, 123
   orig: 127, 123
   offset: 0, 0
@@ -55,21 +55,21 @@ repeat: none
   index: -1
 08
   rotate: false
-  xy: 975, 471
+  xy: 1200, 1007
   size: 122, 119
   orig: 122, 119
   offset: 0, 0
   index: -1
 09
   rotate: false
-  xy: 973, 225
+  xy: 1225, 638
   size: 123, 119
   orig: 123, 119
   offset: 0, 0
   index: -1
 10
   rotate: false
-  xy: 1200, 1011
+  xy: 973, 220
   size: 119, 115
   orig: 119, 115
   offset: 0, 0
@@ -538,14 +538,21 @@ explosion1
   index: 3
 heart_icon
   rotate: false
-  xy: 1906, 1223
+  xy: 1295, 1300
   size: 115, 99
   orig: 115, 99
   offset: 0, 0
   index: -1
+laser_pickup
+  rotate: false
+  xy: 965, 587
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 life-upgrade
   rotate: false
-  xy: 1224, 662
+  xy: 1906, 1223
   size: 115, 99
   orig: 115, 99
   offset: 0, 0

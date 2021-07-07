@@ -7,6 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
 
+import java.text.DecimalFormat;
+
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
 
@@ -20,6 +22,7 @@ public class PlayerShip extends SpaceShip {
     private float missileClock;
     private float moveSpeed;
     private float currentBank;
+    private float laserTime; // time remaining for laser shots
     private int missileSalvos; // amount of missile salvos player has.
 
     private float noControlTimer;
@@ -76,7 +79,7 @@ public class PlayerShip extends SpaceShip {
 
     public void modMissileSalvos(int mod) {
         missileSalvos += mod;
-        game.reportExtrasChanged(this, String.valueOf(missileSalvos), "");
+        reportExtras();
     }
 
     public void modHp(float hpModifier) {
@@ -130,6 +133,7 @@ public class PlayerShip extends SpaceShip {
         isDying = false;
         modMissileSalvos(-missileSalvos);
         modMissileSalvos(defaultMissileSalvos);
+        laserTime = 3f;
         setMoveVector(new Vector3(0f, 0f, scene.getGameBounds().min.z + getRadius() * 3f), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
@@ -260,10 +264,19 @@ public class PlayerShip extends SpaceShip {
         return noControlTimer <= 0f;
     }
 
-    private void fireLaser(float delta) {
-        if (!autoFireLaser || !isControlled())
-            return;
+    public void modLaserTime(float delta) {
+        laserTime = MathHelper.moveTowards(laserTime, MathUtils.clamp(laserTime + delta, 0f, 15f), Math.abs(delta));
+        reportExtras();
+    }
 
+    public void reportExtras() {
+        game.reportExtrasChanged(this, String.valueOf(missileSalvos), new DecimalFormat("#.#").format(laserTime));
+    }
+
+    private void fireLaser(float delta) {
+        if (!autoFireLaser || !isControlled() || laserTime <= 0f)
+            return;
+        modLaserTime(-delta);
         scene.getLaserController().addLaser(scene.getPlayer().getPosition());
         float damage = shipVariant.getLaserDamage(playerState) * delta;
         for (EnemyShip enemy : scene.beamCast(this)) {

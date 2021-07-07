@@ -169,6 +169,8 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
 
     public void resumeGame() {
         scene.setTimeScale(1f);
+        if (scene.getPlayer() != null)
+            scene.getPlayer().reportExtras();
     }
 
     public void addOnLoadingFinishedListener(ILoadingFinishedListener listener) {
