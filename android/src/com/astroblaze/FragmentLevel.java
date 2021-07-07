@@ -51,7 +51,7 @@ public class FragmentLevel extends Fragment {
         for (int i = 0; i < level; i++) {
             int nextLevelPick;
             do { // loop makes sure 2 adjacent levels don't have same description.
-                nextLevelPick = rng.nextInt(4) + 1; // 4 level descriptions in pool
+                nextLevelPick = rng.nextInt(8) + 1; // 8 level descriptions in pool
             } while (levelPick == nextLevelPick);
             levelPick = nextLevelPick;
         }
@@ -60,6 +60,7 @@ public class FragmentLevel extends Fragment {
             case 0:
                 tv.setText(getString(R.string.level0, reward));
                 break;
+            default:
             case 1:
                 tv.setText(getString(R.string.level1, level, pirateName, reward));
                 break;
@@ -72,8 +73,17 @@ public class FragmentLevel extends Fragment {
             case 4:
                 tv.setText(getString(R.string.level4, level, reward));
                 break;
-            default:
-                tv.setText(getString(R.string.levelGeneric, level, reward));
+            case 5:
+                tv.setText(getString(R.string.level5, level, reward));
+                break;
+            case 6:
+                tv.setText(getString(R.string.level6, level, pirateName, reward));
+                break;
+            case 7:
+                tv.setText(getString(R.string.level7, level, pirateName, reward));
+                break;
+            case 8:
+                tv.setText(getString(R.string.level8, level, pirateName, reward));
                 break;
         }
     }

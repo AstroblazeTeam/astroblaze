@@ -46,7 +46,7 @@
 
 
     <string name="level0">
-        "Tutorial mission.\n\n\n"
+        "Mission: Tutorial.\n\n\n"
 
         "An introduction to game controls and gameplay flow.\n\n"
         "Reward: $%1$d.\n"
@@ -62,14 +62,14 @@
     </string>
 
     <string name="level2">
-        "Mission %1$d.\n\n\n"
+        "Mission %1$d.\n\n"
 
         "Clear nearby area from pirates.\n\n"
         "Reward: $%2$d"
     </string>
 
     <string name="level3">
-        "Mission %1$d.\n\n\n"
+        "Mission %1$d.\n\n"
 
         "Pirates made an derelict station their home.\n"
         "Make sure they vacate the area.\n\n"
@@ -77,20 +77,45 @@
     </string>
 
     <string name="level4">
-        "Mission %1$d.\n\n\n"
+        "Mission %1$d.\n\n"
 
-        "Mercenaries are pestering a business man.\n"
+        "Mercenaries are pestering operations of anonymous corporation.\n"
         "Scout the area and destroy their ships.\n\n"
         "Reward: $%2$d"
     </string>
 
-    <string name="levelGeneric">
-        "Level %1$d\n"
+    <string name="level5">
+        "Mission %1$d\n\n"
         "Calling any mercenaries!\n\n"
 
         "Pirates have been spotted in outskirts of the solar system.\n"
         "Find and destroy, reward upon uploading sensor readings of attached coordinates.\n\n"
         "Reward: $ %2$d"
+    </string>
+
+    <string name="level6">
+        "Mission %1$d\n\n"
+
+        "A hostile surveillance station is defended by a group of pirates led by %2$s.\n"
+        "Intercept and destroy them and their boss, bombers will clean up the station shortly after.\n\n"
+        "Reward: $ %3$d"
+    </string>
+
+    <string name="level7">
+        "Mission %1$d\n\n"
+
+        "A convoy of transports intends to pass a dangerous trade route.\n"
+        "Notorious pirate named %2$s is rumored to set up an ambush, clear out the pirates so
+        that the convoy can pass safely .\n\n"
+        "Reward: $ %3$d"
+    </string>
+
+    <string name="level8">
+        "Mission %1$d\n\n"
+
+        "A group of pirates led by %2$s is blocking resupplying a station on the outskirts of the solar system.\n"
+        "Find and kill them.\n\n"
+        "Reward: $ %3$d"
     </string>
 
     <string name="shipStatHp">Shield: %1$.2f</string>
