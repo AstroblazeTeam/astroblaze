@@ -20,6 +20,7 @@ public class PlayerState {
         public String name = "Anonymous"; // not localized on purpose
         public float money;
         public float score;
+        public int seed; // seed for things such as level select, level reward randomizer etc
         public int level; // max unlocked level
         public int selectedShip; // last selected ship
         public float lastScoreSubmitted;
@@ -35,6 +36,10 @@ public class PlayerState {
 
     public String getId() {
         return data.id;
+    }
+
+    public int getSeed() {
+        return data.seed;
     }
 
     public String getName() {
@@ -260,6 +265,7 @@ public class PlayerState {
         if (stateString == null || stateString.trim().equals("")) {
             // init fresh state
             data = new PlayerStateData();
+            data.seed = MathUtils.random(1 << 24);
             Gdx.app.log("PlayerState", "Initialized fresh state.");
             buyShip(PlayerShipVariant.Shuttle);
         } else {

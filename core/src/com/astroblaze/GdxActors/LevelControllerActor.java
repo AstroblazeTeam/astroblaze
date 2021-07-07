@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Random;
+
 public class LevelControllerActor extends Actor {
     private final Scene3D scene;
     private final WeightedCollection<EnemyType> waveTypeWeights = new WeightedCollection<>();
@@ -96,6 +98,20 @@ public class LevelControllerActor extends Actor {
                         AstroblazeGame.getInstance().getGuiRenderer().navigateToLevelComplete();
                     }
                 });
+    }
+
+    public float getCurrentLevelReward() {
+        return getLevelReward(getLevel());
+    }
+
+    public static float getLevelReward(int level) {
+        Random rng = new Random(AstroblazeGame.getPlayerState().getSeed()); // 123 is just random seed
+        float sum = 500f;
+        if (level == 0) return sum;
+        for (int i = 0; i < level; i++) {
+            sum += (level + 2) * 250f * rng.nextFloat();
+        }
+        return sum; // somewhat pseudo-random reward sum
     }
 
     private RunnableAction showText(final TranslatedStringId id) {
@@ -295,7 +311,7 @@ public class LevelControllerActor extends Actor {
         Gdx.app.log("LevelController", "Set level to " + level);
 
         if (level == 0) {
-            AstroblazeGame.getLevelStatTracker().reset();
+            AstroblazeGame.getLevelStatTracker().reset(0);
             runTutorial();
         } else {
             float textDelay = 1f;
@@ -332,7 +348,7 @@ public class LevelControllerActor extends Actor {
             seq.addAction(showText(TranslatedStringId.LevelComplete));
             seq.addAction(finishLevel());
 
-            AstroblazeGame.getLevelStatTracker().reset();
+            AstroblazeGame.getLevelStatTracker().reset(getLevel());
             this.addAction(seq);
         }
     }

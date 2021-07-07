@@ -63,16 +63,26 @@
         "מצא והשמד, העברת פרס לאחר שליחת דגימות חיישנים.\n\n"
         "פרס: $ %2$d"
     </string>
-    <string name="level0">שלב הדרכה והכרה</string>
+    <string name="level0">
+        "\n\nשלב הדרכה והכרה"
+        "פרס: $%1$d"
+    </string>
 
     <string name="level1">
-        "שלב 1.\n\n\n"
+        "שלב %1$d.\n\n\n"
 
-        "מצא את הפיראת בשם BadBoy6663 והשמד."
+        "מצא את הפיראת בשם %2$s והשמד."
         "מבוקש:\n"
-        "BadBoy6663\n"
-        "$10000\n\n"
+        "%2$s\n"
+        "$%3$d\n\n"
         "חי או מת\n"
+    </string>
+
+    <string name="level2">
+        "שלב %1$d.\n\n\n"
+
+        "נקה את האיזור מפיראטים"
+        "$%2$d\n\n"
     </string>
     <string name="LevelStartReady">היכון!</string>
     <string name="LevelStartSet">הכן!</string>

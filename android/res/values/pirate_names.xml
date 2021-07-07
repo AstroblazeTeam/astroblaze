@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="pirate0" translatable="false" type="string">Captain Seadog</item>
+    <item name="pirate1" translatable="false" type="string">Captain Mack Calabran</item>
+    <item name="pirate2" translatable="false" type="string">Captain Vex Totem</item>
+    <item name="pirate3" translatable="false" type="string">Captain Black Jack</item>
+    <item name="pirate4" translatable="false" type="string">Captain Blackbeard</item>
+    <item name="pirate5" translatable="false" type="string">Captain Silver-Tongue</item>
+    <item name="pirate6" translatable="false" type="string">Captain Silver-Hook</item>
+    <item name="pirate7" translatable="false" type="string">Admiral Davey</item>
+    <item name="pirate8" translatable="false" type="string">Admiral Williams</item>
+    <item name="pirate9" translatable="false" type="string">Captain Jolly</item>
+    <item name="pirate10" translatable="false" type="string">Captain O’Fish</item>
+    <item name="pirate11" translatable="false" type="string">Admiral Storm</item>
+    <item name="pirate12" translatable="false" type="string">Captain Booty</item>
+    <item name="pirate13" translatable="false" type="string">Captain Crabby</item>
+    <item name="pirate14" translatable="false" type="string">Captain Redbeard</item>
+    <item name="pirate15" translatable="false" type="string">Captain Puffypants</item>
+    <item name="pirate16" translatable="false" type="string">Captain Cannon</item>
+    <item name="pirate17" translatable="false" type="string">Admiral Spike</item>
+    <item name="pirate18" translatable="false" type="string">Admiral Wade</item>
+    <item name="pirate19" translatable="false" type="string">Captain Lazyjacks</item>
+    <item name="pirate20" translatable="false" type="string">Admiral Mullins</item>
+    <item name="pirate21" translatable="false" type="string">Captain Rattlebones</item>
+    <item name="pirate22" translatable="false" type="string">Cap’n Skully</item>
+    <item name="pirate23" translatable="false" type="string">Captain Crawford</item>
+    <item name="pirate24" translatable="false" type="string">Sir John Winters</item>
+    <item name="pirate25" translatable="false" type="string">Admiral Hawk</item>
+    <item name="pirate26" translatable="false" type="string">Captain Drake Deranged</item>
+    <item name="pirate27" translatable="false" type="string">Captain Slyvester Shadows</item>
+    <item name="pirate28" translatable="false" type="string">Admiral Simpson</item>
+    <item name="pirate29" translatable="false" type="string">Captain Deepsea Davey</item>
+    <item name="pirate30" translatable="false" type="string">Captain David Death</item>
+    <item name="pirate31" translatable="false" type="string">Captain Mildred McCoy</item>
+    <item name="pirate32" translatable="false" type="string">Captain Rivers McGee</item>
+    <item name="pirate33" translatable="false" type="string">Captain Julie Jagger</item>
+    <item name="pirate34" translatable="false" type="string">Captain Patty Price</item>
+    <item name="pirate35" translatable="false" type="string">Captain McKraken</item>
+    <item name="pirate36" translatable="false" type="string">Captain Van Horne</item>
+    <item name="pirate37" translatable="false" type="string">Captain Sandy Shores</item>
+    <item name="pirate38" translatable="false" type="string">Captain McFilthy</item>
+    <item name="pirate39" translatable="false" type="string">Captain Scurvyshorts</item>
+    <item name="pirate40" translatable="false" type="string">Captain Randell Red-Lord</item>
+    <item name="pirate41" translatable="false" type="string">Captain Fish-Lips</item>
+    <item name="pirate42" translatable="false" type="string">Admiral Henry Heart</item>
+    <item name="pirate43" translatable="false" type="string">Captain Renshaw Vance</item>
+    <item name="pirate44" translatable="false" type="string">Captain Eldar Nightwind</item>
+    <item name="pirate45" translatable="false" type="string">Cap’n Chipper Toes</item>
+</resources>

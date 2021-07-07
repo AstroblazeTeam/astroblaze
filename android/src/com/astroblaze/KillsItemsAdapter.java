@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.astroblaze.GdxActors.LevelControllerActor;
 import com.astroblaze.Rendering.EnemyType;
 
 import java.util.ArrayList;
@@ -30,11 +31,13 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
     }
 
     private final Context context;
+    private final LevelStatTracker tracker;
     private final ArrayList<EnemyKillCount> items = new ArrayList<>();
 
-    public KillsItemsAdapter(Context context, HashMap<EnemyType, Integer> sourceItems) {
+    public KillsItemsAdapter(Context context, LevelStatTracker tracker) {
         this.context = context;
-        for (Map.Entry<EnemyType, Integer> x : sourceItems.entrySet()) {
+        this.tracker = tracker;
+        for (Map.Entry<EnemyType, Integer> x : tracker.getKills().entrySet()) {
             items.add(new EnemyKillCount(x.getKey(), x.getValue()));
         }
     }
@@ -52,7 +55,12 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
         EnemyKillCount item = items.get(position);
         String translatedName = AstroblazeGame.getInstance().getGuiRenderer().getTranslatedEnemyName(item.type);
         holder.getTextViewName().setText(translatedName);
-        animateKillCountText(holder.getTextViewPrice(), item.count, (int) item.type.value);
+        if (item.type != EnemyType.Boss) {
+            animateKillCountText(holder.getTextViewPrice(), item.count, (int) item.type.value);
+        } else {
+            float reward = LevelControllerActor.getLevelReward(tracker.getLevel());
+            animateKillCountText(holder.getTextViewPrice(), item.count, (int) reward);
+        }
     }
 
     private void animateKillCountText(TextView tv, int count, int value) {

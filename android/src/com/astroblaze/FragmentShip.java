@@ -60,6 +60,10 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
 
     @android.annotation.SuppressLint("SetTextI18n")
     private void resetText(PlayerState state) {
+        if (getContext() == null) {
+            return; // too early in the lifecycle
+        }
+
         TextView tvDescription = requireView().findViewById(R.id.tvShipDescription);
         TextView tvStats = requireView().findViewById(R.id.tvShipStats);
         btnAction = requireView().findViewById(R.id.btnAction);

@@ -11,7 +11,7 @@
     <string name="ui_volume">UI Volume %1$d%%</string>
     <string name="screenShake">Screen Shake</string>
     <string name="back">Back</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="upgrades_for">Upgrades for %1$s</string>
     <string name="backToGame">Continue</string>
     <string name="backToMenu">Exit to menu</string>
@@ -48,16 +48,48 @@
         "Tutorial mission.\n\n\n"
 
         "An introduction to game controls and gameplay flow.\n\n"
+        "Reward: $%1$d.\n"
     </string>
 
     <string name="level1">
-        "Mission 1.\n\n\n"
+        "Mission %1$d.\n\n"
 
-        "Launch a scout mission after pirate nicknamed BadBoy6663.\n\n"
-        "WANTED:\n"
-        "BadBoy6663\n"
-        "$10000\n\n"
-        "DEAD OR ALIVE\n"
+        "Launch a scout mission after pirate nicknamed %2$s.\n\n"
+        "WANTED: %2$s\n"
+        "DEAD OR ALIVE\n\n"
+        "Reward: $%3$d"
+    </string>
+
+    <string name="level2">
+        "Mission %1$d.\n\n\n"
+
+        "Clear nearby area from pirates.\n\n"
+        "Reward: $%2$d"
+    </string>
+
+    <string name="level3">
+        "Mission %1$d.\n\n\n"
+
+        "Pirates made an derelict station their home.\n"
+        "Make sure they vacate the area.\n\n"
+        "Reward: $%2$d"
+    </string>
+
+    <string name="level4">
+        "Mission %1$d.\n\n\n"
+
+        "Mercenaries are pestering a business man.\n"
+        "Scout the area and destroy their ships.\n\n"
+        "Reward: $%2$d"
+    </string>
+
+    <string name="levelGeneric">
+        "Level %1$d\n"
+        "Calling any mercenaries!\n\n"
+
+        "Pirates have been spotted in outskirts of the solar system.\n"
+        "Find and destroy, reward upon uploading sensor readings of attached coordinates.\n\n"
+        "Reward: $ %2$d"
     </string>
 
     <string name="shipStatHp">Shield: %1$.2f</string>
@@ -67,15 +99,6 @@
     <string name="shipStatLasers">Lasers: %1$.1f</string>
     <string name="shipStatSpeed">Speed: %1$.1f</string>
     <string name="shipStatBonus" translatable="false"><![CDATA[<b><font color=#00ff00>&nbsp;( %1$s%% )</font></b>]]></string>
-
-    <string name="levelGeneric">
-        "Level %1$d\n"
-        "Calling any mercenaries!\n\n"
-
-        "Pirates have been spotted in outskirts of the solar system."
-        "Find and destroy, reward upon uploading sensor readings of attached coordinates.\n\n"
-        "Reward: $ %2$d"
-    </string>
 
     <string name="ship0">Shuttle</string>
     <string name="ship1">Yacht</string>

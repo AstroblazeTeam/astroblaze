@@ -1,6 +1,7 @@
 package com.astroblaze.Rendering;
 
 import com.astroblaze.*;
+import com.astroblaze.GdxActors.LevelControllerActor;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.graphics.Color;
@@ -235,8 +236,14 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
             if (isPlayer) {
                 statTracker.addKill(typeId);
                 AstroblazeGame.getPlayerState().modPlayerScore(typeId.value);
+                if (typeId == EnemyType.Boss) {
+                    float reward = AstroblazeGame.getLevelController().getCurrentLevelReward();
+                    AstroblazeGame.getPlayerState().modPlayerMoney(reward);
+                }
             }
-            dropBonus();
+            if (typeId != EnemyType.Boss) { // boss doesn't drop bonuses
+                dropBonus();
+            }
         }
     }
 

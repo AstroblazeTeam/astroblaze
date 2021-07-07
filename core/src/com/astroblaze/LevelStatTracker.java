@@ -11,9 +11,14 @@ public class LevelStatTracker {
     private float damageTaken;
     private float startMoney;
     private float startScore;
+    private int level;
 
     public LevelStatTracker() {
         state = AstroblazeGame.getPlayerState();
+    }
+
+    public int getLevel() {
+        return this.level;
     }
 
     public void addKill(EnemyType typeId) {
@@ -57,7 +62,8 @@ public class LevelStatTracker {
         return state.getPlayerMoney() - startMoney;
     }
 
-    public void reset() {
+    public void reset(int level) {
+        this.level = level;
         startScore = state.getPlayerScore();
         startMoney = state.getPlayerMoney();
         killsMap.clear();

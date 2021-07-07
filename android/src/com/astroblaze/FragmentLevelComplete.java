@@ -40,11 +40,11 @@ public class FragmentLevelComplete extends Fragment {
 
         final LevelStatTracker tracker = AstroblazeGame.getLevelStatTracker();
 
-        animateText((TextView) view.findViewById(R.id.tvKills), tracker.getTotalKills());
-        animateText((TextView) view.findViewById(R.id.tvDamageDone), (int) tracker.getDamageDone());
-        animateText((TextView) view.findViewById(R.id.tvDamageTaken), (int) tracker.getDamageTaken());
-        animateText((TextView) view.findViewById(R.id.tvScoreDiff), (int) tracker.getScore());
-        animateText((TextView) view.findViewById(R.id.tvMoneyDiff), (int) tracker.getMoney());
+        animateText(view.findViewById(R.id.tvKills), tracker.getTotalKills());
+        animateText(view.findViewById(R.id.tvDamageDone), (int) tracker.getDamageDone());
+        animateText(view.findViewById(R.id.tvDamageTaken), (int) tracker.getDamageTaken());
+        animateText(view.findViewById(R.id.tvScoreDiff), (int) tracker.getScore());
+        animateText(view.findViewById(R.id.tvMoneyDiff), (int) tracker.getMoney());
 
         view.findViewById(R.id.btnGameOverExit2).setOnClickListener(v ->
                 this.requireView().post(() -> {
@@ -55,7 +55,7 @@ public class FragmentLevelComplete extends Fragment {
 
         rvBoard = view.findViewById(R.id.rvKills);
         rvBoard.setLayoutManager(new GridLayoutManager(rvBoard.getContext(), 4));
-        rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker.getKills()));
+        rvBoard.setAdapter(new KillsItemsAdapter(getContext(), tracker));
     }
 
     private void animateText(TextView tv, int value) {
