@@ -57,9 +57,11 @@
     </string>
 
     <string name="shipStatHp">Shield: %1$.2f</string>
-    <string name="shipStatDamage">Gun damage: %1$.2f</string>
-    <string name="shipStatMissiles">Missile damage: %1$.2f</string>
-    <string name="shipStatSpeed">Speed: %1$.2f</string>
+    <string name="shipStatGuns">Guns: %1$dx %2$.1f</string>
+    <string name="shipStatMissiles">Missiles: %1$dx %2$.1f</string>
+    <string name="shipStatTurrets">Turrets: %1$dx %2$.1f</string>
+    <string name="shipStatLasers">Lasers: %1$.1f</string>
+    <string name="shipStatSpeed">Speed: %1$.1f</string>
     <string name="shipStatBonus" translatable="false"><![CDATA[<b><font color=#00ff00>&nbsp;( %1$s%% )</font></b>]]></string>
 
     <string name="levelGeneric">
@@ -71,11 +73,18 @@
         "Reward: $ %2$d"
     </string>
 
-    <string name="ship0">Scout</string>
-    <string name="ship1">Cruiser</string>
+    <string name="ship0">Shuttle</string>
+    <string name="ship1">Yacht</string>
     <string name="ship2">Destroyer</string>
-    <string name="ship3">Battlecruiser</string>
-    <string name="ship4">Battleship</string>
+    <string name="ship3">Sentinel</string>
+    <string name="ship4">Archer</string>
+
+    <string name="shipDesc0">Small, fast, lightly armed, but extremely fragile ship</string>
+    <string name="shipDesc1">Fast, armored ship but light on weapons</string>
+    <string name="shipDesc2">Armored but slow warship with large amount of forward facing guns.</string>
+    <string name="shipDesc3">Light armored fast ship with large amount of turrets</string>
+    <string name="shipDesc4">Medium armored ship with large amount of missile ports</string>
+
     <string name="LevelStartReady">Ready!</string>
     <string name="LevelStartSet">Set!</string>
     <string name="LevelStartGo">Go!</string>
@@ -101,7 +110,6 @@
     <string name="enemyRammer">Rammer</string>
     <string name="enemyMoneyDrop">Cash hauler</string>
     <string name="enemyMiniboss1">Miniboss</string>
-
 
 
 </resources>

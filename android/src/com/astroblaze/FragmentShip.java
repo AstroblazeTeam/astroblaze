@@ -25,7 +25,7 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
 
     public FragmentShip() {
         // Required empty public constructor
-        this.variant = PlayerShipVariant.Scout;
+        this.variant = PlayerShipVariant.Shuttle;
     }
 
     public FragmentShip(PlayerShipVariant variant) {
@@ -58,22 +58,32 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }
 
+    @android.annotation.SuppressLint("SetTextI18n")
     private void resetText(PlayerState state) {
         TextView tvDescription = requireView().findViewById(R.id.tvShipDescription);
         TextView tvStats = requireView().findViewById(R.id.tvShipStats);
         btnAction = requireView().findViewById(R.id.btnAction);
 
-        tvDescription.setText(getString(R.string.ship0 + variant.id));
+        tvDescription.setText(getString(R.string.ship0 + variant.id) + "\n" + getString(R.string.shipDesc0 + variant.id));
         String hpText = getString(R.string.shipStatHp, variant.getMaxHp(state));
         String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade) - 1f) * 100f));
-        String damageText = getString(R.string.shipStatDamage, variant.getGunDamage(state));
-        String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
+        String gunText = getString(R.string.shipStatGuns, variant.gunPorts, variant.getGunDamage(state));
+        String gunModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
+        String turretText = getString(R.string.shipStatTurrets, variant.turretPorts, variant.getTurretDamage(state));
+        String turretModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
+        String missileText = getString(R.string.shipStatMissiles, variant.missilePorts, variant.getMissileDamage(state));
+        String missileModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
+        String laserText = getString(R.string.shipStatLasers, variant.getLaserDamage(state));
+        String laserModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
         String speedText = getString(R.string.shipStatSpeed, variant.getSpeed(state));
         String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade) - 1f) * 100f));
 
         CharSequence combined = TextUtils.concat(
                 hpText, hpModText, "<br>",
-                damageText, damageModifier, "<br>",
+                gunText, gunModifier, "<br>",
+                turretText, turretModifier, "<br>",
+                missileText, missileModifier, "<br>",
+                laserText, laserModifier, "<br>",
                 speedText, speedModifier, "<br>"
         );
 

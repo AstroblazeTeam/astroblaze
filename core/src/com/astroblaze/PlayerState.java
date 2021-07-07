@@ -250,7 +250,7 @@ public class PlayerState {
             // init fresh state
             data = new PlayerStateData();
             Gdx.app.log("PlayerState", "Initialized fresh state.");
-            buyShip(PlayerShipVariant.Scout);
+            buyShip(PlayerShipVariant.Shuttle);
         } else {
             data = gson.fromJson(stateString, PlayerStateData.class);
             Gdx.app.log("PlayerState", "Restored existing state.");

@@ -34,14 +34,22 @@
     <string name="speedUpgrade">מהירות (%1$s)</string>
     <string name="damageUpgrade">נזק (%1$s)</string>
     <string name="shipStatHp">מגן: %1$.2f</string>
-    <string name="shipStatDamage">נזק תותחים: %1$.2f</string>
-    <string name="shipStatMissiles">נזק טילים: %1$.2f</string>
+    <string name="shipStatGuns">נזק תותחים: $1%dx %2$.1f</string>
+    <string name="shipStatMissiles">נזק טילים: $1%dx %2$.1f</string>
+    <string name="shipStatTurrets">נזק צריחים: $1%dx %2$.1f</string>
+    <string name="shipStatLasers">נזק לייזר: %1$.1f</string>
     <string name="shipStatSpeed">מהירות: %1$.2f</string>
     <string name="ship0">גשש</string>
     <string name="ship1">סיירת</string>
     <string name="ship2">משחתת</string>
     <string name="ship3">סיירת מערכה</string>
     <string name="ship4">ספינת מלחמה</string>
+
+    <string name="shipDesc0">ספינה קטנה, זולה, מהירה אבל לא נועדה לקרב</string>
+    <string name="shipDesc1">ספינה מהירה, משוריינת אבל לא מיועדת לקרב</string>
+    <string name="shipDesc2">ספינה משוריינת, איטית, עם הרבה תותחים מיועדת לקרב ישיר.</string>
+    <string name="shipDesc3">ספינה מהירה עם שריון קל הרבה תותחים משניים.</string>
+    <string name="shipDesc4">ספינה עם שריון בינוני ומספר רב של משגרי טילים.</string>
 
     <string name="levelGeneric">
         "שלב %1$d\n"
