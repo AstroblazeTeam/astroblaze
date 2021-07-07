@@ -44,7 +44,7 @@ public class CameraController extends PerspectiveCamera {
 
     public void shake(float time, int amp, int freq, boolean fade) {
         Gdx.app.log("CustomCamera", "shake(" + time + ", " + amp + ", " + freq + ", " + fade + ")");
-        Gdx.input.vibrate((int) (time * 100f)); // vibrate for 1/10 the shaking time
+        vibrate(0.1f * time);
         shake = true;
         timer = 0f;
         duration = time;
@@ -55,6 +55,18 @@ public class CameraController extends PerspectiveCamera {
         for (int i = 0; i < frequency; i++) {
             samples[i] = rng.nextFloat() * 2f - 1f;
         }
+    }
+
+    public void vibrate() {
+        vibrate(0.1f);
+    }
+
+    public void vibrate(float time) {
+        if (!state.getVibrate()) {
+            return;
+        }
+
+        Gdx.input.vibrate((int) (time * 1000f));
     }
 
     @Override

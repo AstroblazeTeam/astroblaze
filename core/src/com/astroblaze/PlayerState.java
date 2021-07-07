@@ -25,6 +25,7 @@ public class PlayerState {
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
         public boolean screenShake = true;
+        public boolean vibrate = true;
         public float soundVolume = 0.5f;
         public float uiVolume = 0.5f;
         public float musicVolume = 0.5f;
@@ -103,6 +104,16 @@ public class PlayerState {
         saveState();
         if (data.screenShake)
             AstroblazeGame.getInstance().getScene().getCamera().shake();
+    }
+
+    public boolean getVibrate() {
+        return data.vibrate;
+    }
+
+    public void setVibrate(boolean vibrate) {
+        data.vibrate = vibrate;
+        saveState();
+        AstroblazeGame.getInstance().getScene().getCamera().vibrate();
     }
 
     public int getMaxLevel() {
