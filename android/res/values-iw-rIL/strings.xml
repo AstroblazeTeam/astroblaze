@@ -33,10 +33,10 @@
     <string name="shieldUpgrade">מגן (%1$s)</string>
     <string name="speedUpgrade">מהירות (%1$s)</string>
     <string name="damageUpgrade">נזק (%1$s)</string>
-    <string name="shipStatHp">מגן: %1$d</string>
-    <string name="shipStatDamage">נזק תותחים: %1$d</string>
-    <string name="shipStatMissiles">נזק טילים: %1$d</string>
-    <string name="shipStatSpeed">מהירות: %1$d</string>
+    <string name="shipStatHp">מגן: %1$.2f</string>
+    <string name="shipStatDamage">נזק תותחים: %1$.2f</string>
+    <string name="shipStatMissiles">נזק טילים: %1$.2f</string>
+    <string name="shipStatSpeed">מהירות: %1$.2f</string>
     <string name="ship0">גשש</string>
     <string name="ship1">סיירת</string>
     <string name="ship2">משחתת</string>

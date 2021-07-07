@@ -16,17 +16,24 @@ public enum PlayerShipVariant {
     public final int modelDescriptorId;
     public final float modelScale;
     public final float price;
+
     public final int gunPorts;
     public final int turretPorts;
     public final int missilePorts;
-    private final float maxHp;
 
-    PlayerShipVariant(int id, int modelDescriptorId, float modelScale, float maxHp,
+    public final float baseHp;
+    public final float baseGunDamage = 5f;
+    public final float baseSpeed = 50f;
+    public final float baseTurretDamage = 4f;
+    public final float baseMissileDamage = 100f;
+    public final float baseLaserDamage = 500f;
+
+    PlayerShipVariant(int id, int modelDescriptorId, float modelScale, float baseHp,
                       float price, int gunPorts, int turretPorts, int missilePorts) {
         this.id = id;
         this.modelDescriptorId = modelDescriptorId;
         this.modelScale = modelScale;
-        this.maxHp = maxHp;
+        this.baseHp = baseHp;
         this.price = price;
         this.gunPorts = gunPorts;
         this.turretPorts = turretPorts;
@@ -34,28 +41,48 @@ public enum PlayerShipVariant {
     }
 
     public float getUpgradeModifier(PlayerState state, UpgradeEntryType upgradeType) {
-        float modifier = 1.0f;
+        float modifier = 1f;
         ArrayList<UpgradeEntry> upgrades = state.getUpgrades(this.id);
         if (upgrades == null)
             return modifier;
         for (UpgradeEntry upgrade : upgrades) {
             if (upgrade.type == upgradeType) {
-                modifier += upgrade.getCurrentMultiplier();
+                modifier *= upgrade.getCurrentMultiplier();
             }
         }
         return modifier;
     }
 
     public float getMaxHp(PlayerState state) {
-        return this.maxHp * getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade);
+        return baseHp * getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade);
     }
 
-    public float getDamage(PlayerState state) {
-        return 6f * getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade);
+    public float getGunDamage(PlayerState state) {
+        return baseGunDamage * getDamageModifier(state);
+    }
+
+    public float getTurretDamage(PlayerState state) {
+        return baseTurretDamage * getDamageModifier(state);
+    }
+
+    public float getMissileDamage(PlayerState state) {
+        return baseMissileDamage * getDamageModifier(state);
+    }
+
+    public float getLaserDamage(PlayerState state) {
+        return baseLaserDamage * getDamageModifier(state);
+    }
+
+    public float getDamageModifier(PlayerState state) {
+        return getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade);
     }
 
     public float getSpeed(PlayerState state) {
-        return 50f * getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade);
+        return baseSpeed * getSpeedModifier(state);
+    }
+
+    public float getSpeedModifier(PlayerState state) {
+        return getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade);
     }
 
     public AssetDescriptor<Model> getVariantAssetModel() {

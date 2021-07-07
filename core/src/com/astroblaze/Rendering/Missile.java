@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector3;
 public class Missile extends Renderable {
     public final static float unpoweredSpeed = 150f;
     public final static float maxUnpoweredTime = 0.25f;
-    private final float baseDamage = 100f;
 
     protected ParticleEffect effect;
 
@@ -18,7 +17,7 @@ public class Missile extends Renderable {
     private final Vector3 moveVector = new Vector3();
     private final float moveSpeed = 80f;
     private float unpoweredTime = 0.5f;
-    private float damage = baseDamage;
+    private float damage = 100f;
 
     public Missile(AssetDescriptor<Model> model) {
         setModel(model);
@@ -74,8 +73,8 @@ public class Missile extends Renderable {
         }
     }
 
-    public void setDamageModifier(float damageModifier) {
-        this.damage = baseDamage * damageModifier;
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     public float getDamage() {

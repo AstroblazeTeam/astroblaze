@@ -64,11 +64,11 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
         btnAction = requireView().findViewById(R.id.btnAction);
 
         tvDescription.setText(getString(R.string.ship0 + variant.id));
-        String hpText = getString(R.string.shipStatHp, (int) variant.getMaxHp(state));
+        String hpText = getString(R.string.shipStatHp, variant.getMaxHp(state));
         String hpModText = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.ShieldUpgrade) - 1f) * 100f));
-        String damageText = getString(R.string.shipStatDamage, (int) variant.getDamage(state));
+        String damageText = getString(R.string.shipStatDamage, variant.getGunDamage(state));
         String damageModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.DamageUpgrade) - 1f) * 100f));
-        String speedText = getString(R.string.shipStatSpeed, (int) variant.getSpeed(state));
+        String speedText = getString(R.string.shipStatSpeed, variant.getSpeed(state));
         String speedModifier = getString(R.string.shipStatBonus, new DecimalFormat("+#").format((variant.getUpgradeModifier(state, UpgradeEntryType.SpeedUpgrade) - 1f) * 100f));
 
         CharSequence combined = TextUtils.concat(

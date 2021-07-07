@@ -207,7 +207,7 @@ public class Scene3D implements ILoadingFinishedListener {
                 // check if player clips enemy ship
                 if (provider.checkCollision(playerPos, player.getRadius())) {
                     player.modHp(-player.getMaxHitpoints() * 0.5f);
-                    provider.damageFromCollision(100f, true);
+                    provider.applyDamage(100f, true);
                 }
             }
 
@@ -219,7 +219,7 @@ public class Scene3D implements ILoadingFinishedListener {
                         continue;
                     }
 
-                    provider.damageFromCollision(m.getDamage(), true);
+                    provider.applyDamage(m.getDamage(), true);
                     decalController.addExplosion(m.getPosition(), m.getVelocity().scl(0.5f), 0.05f);
                     missilesToDelete.add(m);
                 }
@@ -233,7 +233,7 @@ public class Scene3D implements ILoadingFinishedListener {
                     continue;
                 }
 
-                provider.damageFromCollision(d.collisionDamage, d.ignorePlayerCollision);
+                provider.applyDamage(d.collisionDamage, d.ignorePlayerCollision);
                 d.life = 0f;
             }
         }

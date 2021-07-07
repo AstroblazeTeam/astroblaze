@@ -221,7 +221,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     }
 
     @Override
-    public void damageFromCollision(float damage, boolean isPlayer) {
+    public void applyDamage(float damage, boolean isPlayer) {
         if (!enabled)
             return;
         this.hp -= damage;

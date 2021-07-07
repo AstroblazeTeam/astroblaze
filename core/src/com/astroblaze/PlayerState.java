@@ -193,9 +193,9 @@ public class PlayerState {
         modPlayerMoney(-variant.price);
         ArrayList<UpgradeEntry> upgrades = new ArrayList<>();
 
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, "Shield", 1f, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.DamageUpgrade, "Damage", 1f, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, "Speed", 1f, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, "Shield", 0, 5, 0.1f, 3000f, 0.01f, 10000f));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.DamageUpgrade, "Damage", 0, 5, 0.1f, 5000f, 0.01f, 10000f));
+        upgrades.add(new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, "Speed", 0, 5, 0.1f, 10000f, 0.01f, 10000f));
 
         data.ownedShips.put(variant.id, upgrades);
         saveState();
