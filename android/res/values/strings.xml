@@ -10,6 +10,7 @@
     <string name="music_volume">Music %1$d%%</string>
     <string name="ui_volume">UI Volume %1$d%%</string>
     <string name="screenShake">Screen Shake</string>
+    <string name="vibration">Vibration</string>
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="upgrades_for">Upgrades for %1$s</string>

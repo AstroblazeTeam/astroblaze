@@ -4,28 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/menu_background"
-        tools:context=".FragmentOptions">
+        tools:context=".FragmentOptions"
+        tools:layout_editor_absoluteY="1dp">
 
-        <LinearLayout android:id="@+id/linearoptionsmenu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:id="@+id/linearoptionsmenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/checkBox"
+            app:layout_constraintBottom_toTopOf="@+id/shake_switch"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp">
@@ -37,7 +43,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/tenderness"
-                    android:gravity="center_horizontal|center_vertical"
                     android:shadowColor="@color/menu_bg_color"
                     android:shadowDx="2.3"
                     android:shadowDy="2.5"
@@ -66,10 +71,9 @@
 
                 <TextView
                     android:id="@+id/tvUI"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/tenderness"
-                    android:gravity="center_horizontal|center_vertical"
                     android:shadowColor="@color/menu_bg_color"
                     android:shadowDx="2.3"
                     android:shadowDy="2.5"
@@ -101,7 +105,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/tenderness"
-                    android:gravity="center_horizontal|center_vertical"
                     android:shadowColor="@color/menu_bg_color"
                     android:shadowDx="2.3"
                     android:shadowDy="2.5"
@@ -129,11 +132,11 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/checkBox"
-            android:layout_width="0dp"
+            android:id="@+id/shake_switch"
+            android:layout_width="200dp"
             android:layout_height="@dimen/button_height"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/textholder"
             android:fontFamily="@font/tenderness"
             android:gravity="center_horizontal|center_vertical"
@@ -146,11 +149,34 @@
             android:textColor="@color/button_outline"
             android:textSize="18sp"
             android:theme="@style/SwitchStyle"
+            app:layout_constraintBottom_toTopOf="@+id/vibrate_switch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearoptionsmenu" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/vibrate_switch"
+            android:layout_width="200dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/textholder"
+            android:fontFamily="@font/tenderness"
+            android:gravity="center_horizontal|center_vertical"
+            android:padding="10dp"
+            android:shadowColor="@color/menu_bg_color"
+            android:shadowDx="2.3"
+            android:shadowDy="2.5"
+            android:shadowRadius="3.6"
+            android:text="@string/vibration"
+            android:textColor="@color/button_outline"
+            android:textSize="18sp"
+            android:theme="@style/SwitchStyle"
             app:layout_constraintBottom_toTopOf="@+id/btnExitToMenu"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearoptionsmenu"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/shake_switch" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExitToMenu"
@@ -171,7 +197,10 @@
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vibrate_switch" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

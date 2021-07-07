@@ -129,10 +129,17 @@ public class FragmentOptions extends Fragment {
             }
         });
 
-        SwitchCompat cbShake = view.findViewById(R.id.checkBox);
+        SwitchCompat cbShake = view.findViewById(R.id.shake_switch);
         cbShake.setChecked(AstroblazeGame.getPlayerState().getScreenShake());
         cbShake.setOnCheckedChangeListener((buttonView, isChecked) -> {
             AstroblazeGame.getPlayerState().setScreenShake(isChecked);
+            AstroblazeGame.getSoundController().playUISwapSound();
+        });
+
+        SwitchCompat cbVibrate = view.findViewById(R.id.vibrate_switch);
+        cbVibrate.setChecked(AstroblazeGame.getPlayerState().getVibrate());
+        cbVibrate.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AstroblazeGame.getPlayerState().setVibrate(isChecked);
             AstroblazeGame.getSoundController().playUISwapSound();
         });
     }

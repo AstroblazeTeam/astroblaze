@@ -10,6 +10,7 @@
     <string name="back">חזרה</string>
     <string name="cancel">ביטול</string>
     <string name="screenShake">רעידת מצלמה</string>
+    <string name="vibration">רטט</string>
     <string name="upgrades_for">שידרוגים עבור  %1$s</string>
     <string name="backToGame">המשך</string>
     <string name="backToMenu">חזרה לתפריט</string>
@@ -107,7 +108,6 @@
     <string name="enemyRammer">דורס</string>
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
-
 
 
 </resources>
