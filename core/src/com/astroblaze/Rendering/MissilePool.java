@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Pool;
 import java.util.ArrayList;
 
 public class MissilePool extends Pool<Missile> {
-    private final Scene3D scene;
     private final Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
     private final ArrayList<Missile> activeMissiles = new ArrayList<>(256);
     private AssetDescriptor<Model> model;
@@ -21,7 +20,6 @@ public class MissilePool extends Pool<Missile> {
 
     public MissilePool(Scene3D scene) {
         super(64, 512);
-        this.scene = scene;
     }
 
     public void setAssets(ParticlePool particles, AssetDescriptor<Model> model) {

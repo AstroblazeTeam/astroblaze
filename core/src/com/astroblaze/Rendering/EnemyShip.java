@@ -63,12 +63,12 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         return typeId.baseHp + typeId.hpPerLevel * level;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean getEnabled() {
         return this.enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -227,7 +227,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         this.hp -= damage;
         statTracker.addDamageDone(damage);
         lastHitTime = TimeUtils.millis();
-        if (this.hp <= 0f) {
+        if (this.hp <= 0f) { // die, give kills/score/reward and drop bonuses
             scene.removeActor(this);
             AstroblazeGame.getSoundController().playExplosionSound();
             scene.getDecalController().addExplosion(this.getPosition(), moveVector, 0.1f);

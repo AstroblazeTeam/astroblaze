@@ -20,7 +20,6 @@ public class EnemyPool extends Pool<EnemyShip> {
     @Override
     public EnemyShip obtain() {
         EnemyShip enemyShip = super.obtain();
-        Gdx.app.debug("EnemyPool", "Added enemy to scene");
         scene.addActor(enemyShip);
         return enemyShip;
     }
@@ -28,7 +27,6 @@ public class EnemyPool extends Pool<EnemyShip> {
     @Override
     public void free(EnemyShip enemyShip) {
         super.free(enemyShip);
-        Gdx.app.debug("EnemyPool", "Removed enemy from scene");
         scene.removeActor(enemyShip);
     }
 

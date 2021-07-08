@@ -10,7 +10,7 @@ public class ParticlePool extends Pool<ParticleEffect> {
     private ParticleEffect effect;
 
     public ParticlePool(ParticleSystem system, ParticleEffect effect) {
-        super(64, 256);
+        super(0, 512);
         this.system = system;
         this.setEffect(effect);
     }
