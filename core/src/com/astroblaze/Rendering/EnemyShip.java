@@ -1,7 +1,6 @@
 package com.astroblaze.Rendering;
 
 import com.astroblaze.*;
-import com.astroblaze.GdxActors.LevelControllerActor;
 import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.graphics.Color;
@@ -38,7 +37,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     @Override
     public void show(Scene3D scene) {
         super.show(scene);
-        exhaustDecals.add(scene.getDecalController().addExhaust(position, 0f,
+        exhaustDecals.add(scene.getDecalController().addExhaust(this, 0f,
                 exhaustScaleModifier * typeId.modelScale));
         for (DecalController.DecalInfo d : exhaustDecals) {
             // flip exhaust position (enemy forward is reverse from player)

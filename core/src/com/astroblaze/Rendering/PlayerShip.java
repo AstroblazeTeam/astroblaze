@@ -44,9 +44,9 @@ public class PlayerShip extends SpaceShip {
         super.show(scene);
         DecalController decals = scene.getDecalController();
         float engineScale = Math.min(1.5f, getShipVariant().getUpgradeModifier(playerState, UpgradeEntryType.SpeedUpgrade));
-        exhaustDecals.add(decals.addExhaust(position, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
-        exhaustDecals.add(decals.addExhaust(position, 0f, 1.25f * engineScale));
-        exhaustDecals.add(decals.addExhaust(position, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(decals.addExhaust(this, -shipVariant.modelScale * 0.25f, 0.75f * engineScale));
+        exhaustDecals.add(decals.addExhaust(this, 0f, 1.25f * engineScale));
+        exhaustDecals.add(decals.addExhaust(this, +shipVariant.modelScale * 0.25f, 0.75f * engineScale));
         // normalize to 0f..1f range
         float colorScale = MathUtils.map(1f, 1.5f, 0f, 1f, engineScale);
         Color startColor = new Color(1f, 1f, 1f, 1f);

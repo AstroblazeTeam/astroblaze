@@ -62,7 +62,7 @@ public class Scene3D implements ILoadingFinishedListener {
         PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);
         batch.setCamera(camera);
         particles.add(batch);
-        decalController = new DecalController(this, camera);
+        decalController = new DecalController(camera);
         laserController = new LaserController();
         skyJunkController = new SkyJunkController(this, decalController);
         setupBonusDistribution();
