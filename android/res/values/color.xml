@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="hiscore_normal">#FFFFFF</color>
+    <color name="hiscore_self">#FFA500</color>
     <color name="ic_background_color">#FFFFFFFF</color>
     <color name="menu_bg_color">#000000</color>
     <color name="button_gradient_1">#800080</color>

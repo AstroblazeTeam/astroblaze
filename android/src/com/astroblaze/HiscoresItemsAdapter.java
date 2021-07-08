@@ -1,6 +1,8 @@
 package com.astroblaze;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
@@ -41,6 +44,18 @@ public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdap
         holder.getTextViewName().setText(name);
         holder.getTextViewScore().setText(String.valueOf((int) item.score));
         holder.getTextViewLevel().setText(String.valueOf(item.maxLevel));
+
+        // highlight the user's own highscore if exists
+        boolean isSelf = item.id.equals(AstroblazeGame.getPlayerState().getId());
+
+        int color = isSelf
+                ? holder.itemView.getContext().getColor(R.color.hiscore_self)
+                : holder.itemView.getContext().getColor(R.color.hiscore_normal);
+
+        for (TextView textView : holder.allTextViews) {
+            textView.setTextColor(color);
+            textView.setTypeface(textView.getTypeface(), isSelf ? Typeface.BOLD : Typeface.NORMAL);
+        }
     }
 
     @Override
@@ -53,6 +68,7 @@ public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdap
         private final TextView tvName;
         private final TextView tvScore;
         private final TextView tvLevel;
+        private final ArrayList<TextView> allTextViews = new ArrayList<>(4);
 
         public ViewHolder(View view) {
             super(view);
@@ -61,6 +77,11 @@ public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdap
             tvName = view.findViewById(R.id.tvEntryName);
             tvScore = view.findViewById(R.id.tvEntryScore);
             tvLevel = view.findViewById(R.id.tvEntryLevel);
+
+            allTextViews.add(tvRank);
+            allTextViews.add(tvName);
+            allTextViews.add(tvScore);
+            allTextViews.add(tvLevel);
         }
 
         public TextView getTextViewRank() {
