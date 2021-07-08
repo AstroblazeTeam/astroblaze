@@ -57,10 +57,10 @@ public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdap
         public ViewHolder(View view) {
             super(view);
 
-            tvRank = (TextView) view.findViewById(R.id.tvEntryRank);
-            tvName = (TextView) view.findViewById(R.id.tvEntryName);
-            tvScore = (TextView) view.findViewById(R.id.tvEntryScore);
-            tvLevel = (TextView) view.findViewById(R.id.tvEntryLevel);
+            tvRank = view.findViewById(R.id.tvEntryRank);
+            tvName = view.findViewById(R.id.tvEntryName);
+            tvScore = view.findViewById(R.id.tvEntryScore);
+            tvLevel = view.findViewById(R.id.tvEntryLevel);
         }
 
         public TextView getTextViewRank() {

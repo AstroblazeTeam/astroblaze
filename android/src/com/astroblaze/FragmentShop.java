@@ -21,10 +21,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class FragmentShop extends Fragment implements IPlayerStateChangedListener {
-    PlayerShipVariant variant;
-    TextView moneyDisplay;
-    RecyclerView rvShopItems;
-    ValueAnimator moneyAnimator;
+    private PlayerShipVariant variant;
+    private TextView moneyDisplay;
+    private RecyclerView rvShopItems;
+    private ValueAnimator moneyAnimator;
 
     public FragmentShop() {
         // Required empty public constructor
@@ -81,14 +81,13 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         ArrayList<PlayerShipVariant> variants = state.getUnlockedShips();
 
         PlayerShipVariant v = variants.get(variants.indexOf(variant));
-        ArrayList<UpgradeEntry> upgradeEntries = state.getUpgrades(v.id);
 
         rvShopItems = view.findViewById(R.id.rvShopItems);
         rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
         rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), new ArrayList<>()));
         rvShopItems.setItemAnimator(new RVItemAnimator());
-        view.postDelayed((Runnable) () -> {
-            rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), upgradeEntries));
+        view.postDelayed(() -> {
+            rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), state.getUpgrades(v.id)));
             rvShopItems.scheduleLayoutAnimation();
         }, requireContext().getResources().getInteger(R.integer.anim_slide)); // wait until fragment slides in
     }

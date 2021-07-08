@@ -60,7 +60,7 @@ public class FragmentLevelComplete extends Fragment {
 
     private void animateText(TextView tv, int value) {
         ValueAnimator animator = ValueAnimator.ofInt(0, value);
-        animator.setDuration(3000); // animate over 1.5 secs
+        animator.setDuration(3000);
         animator.addUpdateListener(valueAnimator
                 -> tv.setText(String.valueOf(valueAnimator.getAnimatedValue())));
         animator.start();

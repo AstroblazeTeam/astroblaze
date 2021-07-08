@@ -16,8 +16,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FragmentPause extends Fragment {
+    private final NavController.OnDestinationChangedListener onDestinationChangedListener;
+
     public FragmentPause() {
         // Required empty public constructor
+        onDestinationChangedListener = (navController, navDestination, bundle) -> {
+            if (navDestination.getId() == R.id.fragmentLevelSelect) {
+                AstroblazeGame.getInstance().gameScreen.stopGame();
+            }
+        };
     }
 
     @Override
@@ -25,6 +32,9 @@ public class FragmentPause extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null && args.getBoolean("startGame")) {
+            // startGame bool in bundle means start button was pressed
+            // in level select fragment and we should directly transition
+            // to game fragment
             NavHostFragment.findNavController(FragmentPause.this)
                     .navigate(R.id.action_fragmentPause_to_fragmentGame);
             AstroblazeGame.getInstance().gameScreen.startGame(
@@ -32,14 +42,15 @@ public class FragmentPause extends Fragment {
                     args.getInt("ship", 0));
             AstroblazeGame.getInstance().resumeGame();
         }
-        NavHostFragment.findNavController(FragmentPause.this).addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NotNull NavController navController, @NotNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if (navDestination.getId() == R.id.fragmentLevelSelect) {
-                    AstroblazeGame.getInstance().gameScreen.stopGame();
-                }
-            }
-        });
+        NavHostFragment.findNavController(FragmentPause.this)
+                .addOnDestinationChangedListener(onDestinationChangedListener);
+    }
+
+    @Override
+    public void onDetach() {
+        NavHostFragment.findNavController(FragmentPause.this)
+                .removeOnDestinationChangedListener(onDestinationChangedListener);
+        super.onDetach();
     }
 
     @Override
@@ -53,31 +64,20 @@ public class FragmentPause extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // resume button
-        view.findViewById(R.id.backToGame).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavHostFragment.findNavController(FragmentPause.this)
-                        .navigate(R.id.action_fragmentPause_to_fragmentGame);
-                AstroblazeGame.getInstance().resumeGame();
-            }
+        view.findViewById(R.id.backToGame).setOnClickListener(v -> {
+            NavHostFragment.findNavController(FragmentPause.this)
+                    .navigate(R.id.action_fragmentPause_to_fragmentGame);
+            AstroblazeGame.getInstance().resumeGame();
         });
 
         // options button
-        view.findViewById(R.id.openOptions).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.openOptions).setOnClickListener(v ->
                 NavHostFragment.findNavController(FragmentPause.this)
-                        .navigate(R.id.action_fragmentPause_to_fragmentOptions);
-            }
-        });
+                        .navigate(R.id.action_fragmentPause_to_fragmentOptions));
 
         // quit button
-        view.findViewById(R.id.backToMenu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        view.findViewById(R.id.backToMenu).setOnClickListener(v ->
                 NavHostFragment.findNavController(FragmentPause.this)
-                        .popBackStack();
-            }
-        });
+                        .popBackStack());
     }
 }

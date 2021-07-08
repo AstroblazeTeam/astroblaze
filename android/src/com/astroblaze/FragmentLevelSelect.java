@@ -132,6 +132,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             preview = AstroblazeGame.getInstance().gameScreen.getShipPreview();
             Vector3 worldPos = new Vector3();
 
+            // setup ship preview 3d position so that it fits LTR/RTL layout
             final float xFrac = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft() ?
                     0.75f : 0.25f;
             if (AstroblazeGame.getInstance().getScene().getXZIntersection(
@@ -145,14 +146,12 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
             state.addPlayerStateChangeListener(FragmentLevelSelect.this);
 
-            pagerShips.setOffscreenPageLimit(10);
-            pagerLevels.setOffscreenPageLimit(5);
-
             pagerShips.setCurrentItem(state.getLastSelectedShip(), false);
             pagerLevels.setCurrentItem(state.getMaxLevel(), false);
         }, 100);
 
-        // wait 300ms before registering sound effect callbacks
+        // wait before registering sound effect callbacks so that selection
+        // from code doesn't trigger it
         requireView().postDelayed(() -> {
             pagerLevels.registerOnPageChangeCallback(this.soundCallback);
             pagerShips.registerOnPageChangeCallback(this.soundCallback);

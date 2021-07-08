@@ -9,8 +9,6 @@ public interface IGUIRenderer {
 
     String getTranslatedString(TranslatedStringId id);
 
-    void backToLevelSelect();
-
     void navigateToGameOver();
 
     boolean isRightToLeft();

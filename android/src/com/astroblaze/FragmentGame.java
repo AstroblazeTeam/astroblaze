@@ -115,7 +115,9 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
             NavHostFragment.findNavController(FragmentGame.this)
                     .popBackStack(R.id.fragmentPause, false);
             AstroblazeGame.getInstance().pauseGame();
-        } // else we're navigating to game over fragment
+        }
+        // else we're actually just starting the game and this fragment
+        // is transient in the navgraph
         AstroblazeGame.getInstance().removeUIChangeListener(this);
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }

@@ -32,7 +32,7 @@ public class HiscoresController {
                     for (int i = 0; i < scoresRaw.length(); i++) {
                         JSONObject obj = scoresRaw.getJSONObject(i);
                         float score = (float) obj.getDouble("score");
-                        if (rankScore > score) {
+                        if (rankScore > score) { // don't increase rank for equal score
                             rankScore = score;
                             rank++;
                         }
@@ -76,7 +76,7 @@ public class HiscoresController {
             @Override
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 try {
-                    r.response = Integer.parseInt(httpResponse.getResultAsString()) + 1;
+                    r.response = Integer.parseInt(httpResponse.getResultAsString()) + 1; // 0 based
                 } catch (Exception e) {
                     Gdx.app.error("HiscoresController", e.toString());
                 }
@@ -122,7 +122,7 @@ public class HiscoresController {
             public void handleHttpResponse(Net.HttpResponse httpResponse) {
                 state.submittedScore();
                 try {
-                    r.response = Integer.parseInt(httpResponse.getResultAsString()) + 1;
+                    r.response = Integer.parseInt(httpResponse.getResultAsString()) + 1; // 0 based
                 } catch (Exception e) {
                     Gdx.app.error("HiscoresController", e.toString());
                 }

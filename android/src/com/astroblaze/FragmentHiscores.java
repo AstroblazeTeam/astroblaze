@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ProgressBar;
@@ -48,10 +49,10 @@ public class FragmentHiscores extends Fragment {
             NavHostFragment.findNavController(FragmentHiscores.this).popBackStack();
         });
 
-
         pgLoading = view.findViewById(R.id.pgLoading);
+
         rvBoard = view.findViewById(R.id.rvHiscoresBoard);
-        rvBoard.setLayoutManager(new LinearLayoutManager(rvBoard.getContext()));
+        rvBoard.setLayoutManager(new LinearLayoutManager(getContext()));
         rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), new ArrayList<>()));
 
         HiscoresController.fetchBoard(new HiscoresController.RunnableResponseHandler<ArrayList<HiscoresEntry>>() {
@@ -59,8 +60,9 @@ public class FragmentHiscores extends Fragment {
             public void run() {
                 rvBoard.postDelayed(() -> {
                     AlphaAnimation fadeOut = new AlphaAnimation(1f, 0f);
+                    pgLoading.setInterpolator(new AccelerateInterpolator(8f));
                     pgLoading.setAnimation(fadeOut);
-                    fadeOut.setDuration(500);
+                    fadeOut.setDuration(800);
                     fadeOut.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
@@ -73,7 +75,6 @@ public class FragmentHiscores extends Fragment {
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
                         }
                     });
                     fadeOut.start();

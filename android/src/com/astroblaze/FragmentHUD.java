@@ -52,6 +52,8 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
         AstroblazeGame.getInstance().setGuiRenderer(this);
     }
 
+    // next functions are a bridge from game loop to android views
+
     @Override
     public void renderText(int id, String text, float fontSize, float x, float y) {
         Gdx.app.log("FragmentRender", "renderText(" + id + ", '" + text + "', " +
@@ -115,7 +117,7 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
 
     @Override
     public String getTranslatedEnemyName(EnemyType type) {
-        switch(type) {
+        switch (type) {
             case Boss:
                 return getString(R.string.enemyBoss);
             case Simple:
@@ -133,16 +135,6 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
             default:
                 return type.name();
         }
-
-    }
-
-    @Override
-    public void backToLevelSelect() {
-        this.requireView().post(() -> {
-            NavController nc = ((MainActivity) requireActivity()).getNavController();
-            nc.popBackStack();
-            nc.popBackStack();
-        });
     }
 
     @Override
@@ -169,8 +161,6 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
 
     @Override
     public boolean isRightToLeft() {
-        boolean isRtl = TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) != View.LAYOUT_DIRECTION_LTR;
-        Gdx.app.log("FragmentHUD", "isRightToLeft: " + isRtl);
-        return isRtl;
+        return TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) != View.LAYOUT_DIRECTION_LTR;
     }
 }

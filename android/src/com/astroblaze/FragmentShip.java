@@ -24,8 +24,8 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     private Button btnAction;
 
     public FragmentShip() {
+        this(PlayerShipVariant.Shuttle);
         // Required empty public constructor
-        this.variant = PlayerShipVariant.Shuttle;
     }
 
     public FragmentShip(PlayerShipVariant variant) {
@@ -58,6 +58,7 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
         AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
     }
 
+    // lint suppressed so we can concat variant name to description
     @android.annotation.SuppressLint("SetTextI18n")
     private void resetText(PlayerState state) {
         if (getContext() == null) {

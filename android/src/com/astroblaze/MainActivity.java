@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                         AstroblazeGame.getMusicController().setTrack(MusicController.MusicTrackType.Ending);
                         break;
                     default:
-                        Gdx.app.log(MainActivity.class.getSimpleName(), "Destination has no assigned music, skipping.");
+                        Gdx.app.log("MainActivity", "Destination has no assigned music, skipping.");
                         break;
                 }
             });

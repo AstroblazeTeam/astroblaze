@@ -85,11 +85,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
         public ViewHolder(View view) {
             super(view);
 
-            tvName = (TextView) view.findViewById(R.id.tvName);
-            tvCurrent = (TextView) view.findViewById(R.id.tvCurrentUpgrade);
-            tvUpgrade = (TextView) view.findViewById(R.id.tvNextUpgrade);
-            tvPrice = (TextView) view.findViewById(R.id.tvPrice);
-            btnBuy = (Button) view.findViewById(R.id.btnBuyUpgrade);
+            tvName = view.findViewById(R.id.tvName);
+            tvCurrent = view.findViewById(R.id.tvCurrentUpgrade);
+            tvUpgrade = view.findViewById(R.id.tvNextUpgrade);
+            tvPrice = view.findViewById(R.id.tvPrice);
+            btnBuy = view.findViewById(R.id.btnBuyUpgrade);
         }
 
         public TextView getTextViewCurrent() {

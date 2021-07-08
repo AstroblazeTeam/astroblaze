@@ -27,6 +27,7 @@ public class FragmentRender extends AndroidFragmentApplication {
                              @Nullable Bundle savedInstanceState) {
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         config.useImmersiveMode = true;
+        // fragment controlled by libgdx, don't do anything weird here
         return initializeForView(AstroblazeGame.getInstance(), config);
     }
 }

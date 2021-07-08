@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.ViewHolder> {
-    public static class EnemyKillCount {
+    private static class EnemyKillCount {
         public final EnemyType type;
         public final int count;
 
@@ -57,7 +57,7 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
         holder.getTextViewName().setText(translatedName);
         if (item.type != EnemyType.Boss) {
             animateKillCountText(holder.getTextViewPrice(), item.count, (int) item.type.value);
-        } else {
+        } else { // boss kills hold the level reward
             float reward = LevelControllerActor.getLevelReward(tracker.getLevel());
             animateKillCountText(holder.getTextViewPrice(), item.count, (int) reward);
         }
