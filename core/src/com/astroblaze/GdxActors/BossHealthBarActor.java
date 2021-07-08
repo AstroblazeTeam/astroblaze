@@ -45,7 +45,7 @@ public class BossHealthBarActor extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        if (drawAlpha == 0f)
+        if (drawAlpha == 0f || currentHp == 0f)
             return;
 
         final float h = Gdx.graphics.getHeight();
