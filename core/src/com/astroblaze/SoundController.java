@@ -48,6 +48,7 @@ public class SoundController implements ILoadingFinishedListener {
     }
 
     public void playExplosionSound() {
+        soundExplosion.stop();
         playSfxSound(soundExplosion);
     }
 
