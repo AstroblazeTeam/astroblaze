@@ -246,7 +246,6 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public void render(ModelBatch modelBatch) {
         camera.update();
-        Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         skyJunkController.render();
         Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT);
         modelBatch.begin(camera);

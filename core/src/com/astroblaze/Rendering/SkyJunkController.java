@@ -38,18 +38,29 @@ public class SkyJunkController implements ILoadingFinishedListener {
         AstroblazeGame.getInstance().addOnLoadingFinishedListener(this);
     }
 
+    private Color randomStarColor() {
+        return new Color((MathUtils.random(0x888888, 0xFFFFFF) << 8) + MathUtils.random(128, 255));
+    }
+
     @Override
     public void finishedLoadingAssets() {
         stars.addAll(Assets.atlas1.findRegions("stars"));
-        BoundingBox gameBounds = scene.getGameBounds();
+
+        final BoundingBox gameBounds = scene.getGameBounds();
+
+        // generate all stars, they will be recycled, no need for pooling
         for (int i = 0; i < starCount; i++) {
-            JunkInfo star = new JunkInfo();
+            final JunkInfo star = new JunkInfo();
             star.decal = Decal.newDecal(stars.random(), true);
-            Color c = new Color((MathUtils.random(0x888888, 0xCCCCCC) << 8) + MathUtils.random(128, 255));
-            star.decal.setColor(c);
+
+            star.decal.setColor(randomStarColor());
             star.decal.setScale(0.15f);
-            final float xPos = (MathUtils.random() - 0.5f) * 2f * gameBounds.getWidth();
-            star.position = new Vector3(xPos, -10f, MathUtils.random(gameBounds.min.z, gameBounds.max.z));
+
+            star.position = new Vector3(
+                    MathUtils.random(-1f, 1f) * gameBounds.getWidth(),
+                    5f, // put slightly above so they're offscreen with perspective projection
+                    MathUtils.random(gameBounds.min.z, gameBounds.max.z));
+
             star.velocity = new Vector3(0f, 0f, MathUtils.random(-5f, -1f));
 
             star.decal.rotateX(90f);
@@ -60,11 +71,14 @@ public class SkyJunkController implements ILoadingFinishedListener {
     }
 
     public void update(float delta) {
-        BoundingBox gameBounds = scene.getGameBounds();
-        float sceneDepth = gameBounds.getDepth();
+        final BoundingBox gameBounds = scene.getGameBounds();
+        final float sceneDepth = gameBounds.getDepth();
+
         for (int i = activeDecals.size - 1; i >= 0; i--) {
-            JunkInfo info = activeDecals.get(i);
-            info.position.mulAdd(info.velocity, delta);
+            final JunkInfo info = activeDecals.get(i);
+
+            info.position.mulAdd(info.velocity, delta); // apply velocity
+
             if (!gameBounds.contains(info.position)) {
                 info.position.z += sceneDepth;
             }
@@ -72,7 +86,7 @@ public class SkyJunkController implements ILoadingFinishedListener {
     }
 
     public void render() {
-        DecalBatch batch = decalsController.getDecalBatch();
+        final DecalBatch batch = decalsController.getDecalBatch();
         for (JunkInfo info : activeDecals) {
             info.decal.setPosition(info.position);
             batch.add(info.decal);
