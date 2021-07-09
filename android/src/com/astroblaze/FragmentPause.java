@@ -68,16 +68,21 @@ public class FragmentPause extends Fragment {
             NavHostFragment.findNavController(FragmentPause.this)
                     .navigate(R.id.action_fragmentPause_to_fragmentGame);
             AstroblazeGame.getInstance().resumeGame();
+            AstroblazeGame.getSoundController().playUIPositive();
         });
 
         // options button
-        view.findViewById(R.id.openOptions).setOnClickListener(v ->
-                NavHostFragment.findNavController(FragmentPause.this)
-                        .navigate(R.id.action_fragmentPause_to_fragmentOptions));
+        view.findViewById(R.id.openOptions).setOnClickListener(v -> {
+            NavHostFragment.findNavController(FragmentPause.this)
+                    .navigate(R.id.action_fragmentPause_to_fragmentOptions);
+            AstroblazeGame.getSoundController().playUIConfirm();
+        });
 
         // quit button
-        view.findViewById(R.id.backToMenu).setOnClickListener(v ->
-                NavHostFragment.findNavController(FragmentPause.this)
-                        .popBackStack());
+        view.findViewById(R.id.backToMenu).setOnClickListener(v -> {
+            NavHostFragment.findNavController(FragmentPause.this)
+                    .popBackStack();
+            AstroblazeGame.getSoundController().playUINegative();
+        });
     }
 }
