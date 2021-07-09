@@ -38,9 +38,14 @@ public class LevelControllerActor extends Actor {
                 delay(defaultDelay),
                 showText(TranslatedStringId.TutorialTouchScreenToMove),
                 new Action() {
+                    private Vector3 origVector;
+
                     @Override
                     public boolean act(float delta) {
-                        return !scene.getPlayer().getMoveVector().isZero();
+                        if (origVector == null) { // first iteration - copy the original vector to compare
+                            origVector = scene.getPlayer().getMoveVector().cpy();
+                        }
+                        return !scene.getPlayer().getMoveVector().epsilonEquals(origVector, 0.1f);
                     }
                 },
                 showText(TranslatedStringId.TutorialPrimaryWeapon),
