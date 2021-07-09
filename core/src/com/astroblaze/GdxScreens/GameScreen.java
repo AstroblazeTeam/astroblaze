@@ -81,7 +81,10 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(healthBarActor);
         stage.addActor(bossHealthBarActor);
         stage.addActor(shipPreviewActor);
+
+        if (AstroblazeGame.getInstance().getGuiRenderer().isDebuggable())
         stage.addActor(new DebugTextActor());
+
         stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 

@@ -1,5 +1,6 @@
 package com.astroblaze;
 
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.*;
@@ -135,6 +136,11 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
             default:
                 return type.name();
         }
+    }
+
+    @Override
+    public boolean isDebuggable() {
+        return (view.getContext().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
     @Override

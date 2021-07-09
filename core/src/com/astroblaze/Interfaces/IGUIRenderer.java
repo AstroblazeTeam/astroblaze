@@ -16,4 +16,6 @@ public interface IGUIRenderer {
     void navigateToLevelComplete();
 
     String getTranslatedEnemyName(EnemyType type);
+
+    boolean isDebuggable();
 }
