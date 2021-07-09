@@ -29,13 +29,11 @@ public class ShipPreviewActor extends Actor {
         private final Vector3 scaleVec = new Vector3(1f, 1f, 1f);
 
         public void applyTRS(Vector3 selectedPosition, int page, float spaceBetween, float slidePosition) {
-            final float final_scale = variant.modelScale * scale;
-            scaleVec.set(final_scale, final_scale, final_scale);
-            modelInstance.transform.set(
-                    selectedPosition.cpy().add(
-                            0f,
-                            0f,
-                            (index - page) * spaceBetween - slidePosition),
+            final float scale = this.scale * variant.modelScale;
+            final float offset = (index - page) * spaceBetween - slidePosition;
+            Vector3 pos = selectedPosition.cpy().add(0f, 0f, AstroblazeGame.getShouldFlip() ? -offset : offset);
+            scaleVec.set(scale, scale, scale);
+            modelInstance.transform.set(pos,
                     baseRotation.cpy().mul(rotation),
                     scaleVec);
         }
@@ -73,12 +71,11 @@ public class ShipPreviewActor extends Actor {
 
     public static void addVariant(PlayerShipVariant variant) {
         PlayerShipVariantInstance model = new PlayerShipVariantInstance();
-        boolean isRtl = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft();
         model.index = variants.size();
         model.variant = variant;
         model.assetDescriptor = variant.getVariantAssetModel();
         model.modelInstance = new ModelInstance(Assets.asset(model.assetDescriptor));
-        model.baseRotation = isRtl
+        model.baseRotation = AstroblazeGame.getShouldFlip()
                 ? new Quaternion(Vector3.Z, -45f).mul(new Quaternion(Vector3.X, 0f))
                 : new Quaternion(Vector3.Z, -30f).mul(new Quaternion(Vector3.X, 30f));
         model.rotation = new Quaternion(Vector3.Y, MathUtils.random(0f, 360f));
@@ -112,7 +109,7 @@ public class ShipPreviewActor extends Actor {
             model.applyTRS(selectedPosition, page, spaceBetween, slidePosition);
 
             model.modelInstance.transform.getTranslation(translation);
-            float mod = 1f - MathUtils.clamp((translation.dst(selectedPosition) / spaceBetween), 0f, 1f);
+            final float mod = 1f - MathUtils.clamp((translation.dst(selectedPosition) / spaceBetween), 0f, 1f);
             model.scale = MathHelper.moveTowards(model.scale, mod * scaleTarget, delta * scaleSpeed);
             model.applyTRS(selectedPosition, page, spaceBetween, slidePosition);
         }

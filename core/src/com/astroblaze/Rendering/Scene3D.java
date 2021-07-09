@@ -152,7 +152,9 @@ public class Scene3D implements ILoadingFinishedListener {
             return;
 
         if (player != null && Gdx.input.isTouched()) {
-            Ray ray = getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
+            Ray ray = AstroblazeGame.getInstance().getFlipHorizontal()
+                    ? getCamera().getPickRay(Gdx.graphics.getWidth() - Gdx.input.getX(), Gdx.input.getY())
+                    : getCamera().getPickRay(Gdx.input.getX(), Gdx.input.getY());
             Vector3 hit = new Vector3();
             if (Intersector.intersectRayPlane(ray, planeXZ, hit)) {
                 final float fingerOffset = 16f;

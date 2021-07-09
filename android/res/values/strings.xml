@@ -39,6 +39,7 @@
     <string name="currentupgrade_shopitem">Current upgrade</string>
     <string name="nextupgrade_shopitem">Next upgrade</string>
     <string name="price_shopitem">Price</string>
+    <string name="flip_screen">Flip Screen</string>
 
     <string name="shieldUpgrade">Shield (%1$s)</string>
     <string name="speedUpgrade">Speed (%1$s)</string>

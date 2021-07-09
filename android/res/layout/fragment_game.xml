@@ -27,16 +27,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/btnExtra1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/start"
             android:background="@drawable/rocket_button_states"
-            />
+            android:contentDescription="@string/start" />
 
         <TextView
             android:id="@+id/tvExtra1Text"
@@ -48,8 +46,8 @@
             android:shadowDy="2.3"
             android:shadowRadius="3.5"
             android:text="@string/app_name"
-            android:textSize="20sp"
             android:textColor="@color/rocket_text_color"
+            android:textSize="20sp"
             app:autoSizeMaxTextSize="60sp"
             app:autoSizeTextType="uniform" />
     </FrameLayout>
@@ -61,28 +59,27 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/btnExtra1Layout">
+        app:layout_constraintEnd_toStartOf="@+id/btnExtra1Layout">
 
         <Button
             android:id="@+id/btnExtra2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/start"
             android:background="@drawable/laser_button_states"
-            />
+            android:contentDescription="@string/start" />
 
         <TextView
             android:id="@+id/tvExtra2Text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/app_name"
             android:shadowColor="@android:color/black"
             android:shadowDx="2.5"
             android:shadowDy="2.3"
             android:shadowRadius="3.5"
-            android:textSize="18sp"
+            android:text="@string/app_name"
             android:textColor="@color/rocket_text_color"
+            android:textSize="18sp"
             app:autoSizeTextType="uniform" />
     </FrameLayout>
 

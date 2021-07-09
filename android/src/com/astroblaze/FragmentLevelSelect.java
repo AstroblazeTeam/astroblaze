@@ -133,8 +133,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             Vector3 worldPos = new Vector3();
 
             // setup ship preview 3d position so that it fits LTR/RTL layout
-            final float xFrac = AstroblazeGame.getInstance().getGuiRenderer().isRightToLeft() ?
-                    0.75f : 0.25f;
+            final float xFrac = AstroblazeGame.getShouldFlip() ? 0.75f : 0.25f;
             if (AstroblazeGame.getInstance().getScene().getXZIntersection(
                     Gdx.graphics.getWidth() * xFrac,
                     Gdx.graphics.getHeight() * 0.5f, worldPos)) {

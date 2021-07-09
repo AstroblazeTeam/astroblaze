@@ -25,6 +25,7 @@ public class PlayerState {
         public int selectedShip; // last selected ship
         public float lastScoreSubmitted;
         public boolean profilerEnabled;
+        public boolean screenFlip = false;
         public boolean screenShake = true;
         public boolean vibrate = true;
         public float soundVolume = 0.5f;
@@ -98,6 +99,16 @@ public class PlayerState {
     public void setUiVolume(float newVolume) {
         data.uiVolume = newVolume;
         saveState();
+    }
+
+    public boolean getScreenFlip() {
+        return data.screenFlip;
+    }
+
+    public void setScreenFlip(boolean screenFlip) {
+        data.screenFlip = screenFlip;
+        saveState();
+        AstroblazeGame.getInstance().setFlipHorizontal(screenFlip);
     }
 
     public boolean getScreenShake() {
@@ -270,6 +281,7 @@ public class PlayerState {
             buyShip(PlayerShipVariant.Shuttle);
         } else {
             data = gson.fromJson(stateString, PlayerStateData.class);
+            AstroblazeGame.getInstance().setFlipHorizontal(data.screenFlip);
             Gdx.app.log("PlayerState", "Restored existing state.");
         }
     }

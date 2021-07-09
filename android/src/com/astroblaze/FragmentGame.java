@@ -105,6 +105,9 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
         super.onResume();
         AstroblazeGame.getInstance().addUIChangeListener(this);
         AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+        this.requireView().setLayoutDirection(AstroblazeGame.getInstance().getFlipHorizontal()
+                ? View.LAYOUT_DIRECTION_RTL
+                : View.LAYOUT_DIRECTION_LTR);
     }
 
     @Override

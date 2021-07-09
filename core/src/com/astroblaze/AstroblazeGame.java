@@ -8,9 +8,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.ArrayList;
 
@@ -33,6 +38,33 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
     private ModelBatch batch;
     private IGUIRenderer guiRenderer;
     private Assets assets;
+
+    // flipping logic
+    private boolean flipRTL = false;
+    private FrameBuffer frameBuffer;
+
+    public boolean getFlipHorizontal() {
+        return flipRTL;
+    }
+
+    public void setFlipHorizontal(final boolean value) {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                flipRTL = value;
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            }
+        });
+    }
+
+    public static boolean getShouldFlip() {
+        boolean result = instance.getFlipHorizontal();
+        IGUIRenderer gui = AstroblazeGame.getInstance().getGuiRenderer();
+        if (gui != null) {
+            result ^= gui.isRightToLeft();
+        }
+        return result;
+    }
 
     public static PlayerState getPlayerState() {
         return playerState;
@@ -111,6 +143,24 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         assets.loadAssets(this.scene.getParticlesSystem());
     }
 
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+        if (frameBuffer != null)
+            frameBuffer.dispose();
+
+        if (flipRTL) {
+            try {
+                frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, width, height, true);
+                Gdx.app.log("AstroblazeGame", "Screen flip using RGBA8888 format");
+            } catch (GdxRuntimeException e) {
+                frameBuffer = new FrameBuffer(Pixmap.Format.RGB565, width, height, true);
+                Gdx.app.log("AstroblazeGame", "Screen flip falling back to RGB565 format (old GPU?): " + e.toString());
+            }
+        }
+    }
+
     public void finishLoading() {
         for (ILoadingFinishedListener listener : loadingFinishedListeners) {
             listener.finishedLoadingAssets();
@@ -147,7 +197,24 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
             profiler.reset();
         }
 
-        super.render();
+        if (flipRTL && getScreen() != loadingScreen) {
+            frameBuffer.begin();
+            super.render();
+            frameBuffer.end();
+
+            Texture fbTex = frameBuffer.getColorBufferTexture();
+            SpriteBatch sbatch = (SpriteBatch) gameScreen.getStage().getBatch();
+            sbatch.disableBlending();
+            sbatch.setColor(1f, 1f, 1f, 1f);
+            sbatch.getProjectionMatrix().idt();
+            sbatch.begin();
+            // flip texture by drawing it backwards on x-axis
+            sbatch.draw(fbTex, 1, 1, -2, -2);
+            sbatch.end();
+            sbatch.enableBlending();
+        } else {
+            super.render();
+        }
 
         if (profiler.isEnabled()) {
             String extra = "draw calls: " + profiler.getDrawCalls() +
@@ -253,6 +320,8 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
 
     @Override
     public void dispose() {
+        if (frameBuffer != null)
+            frameBuffer.dispose();
         assets.dispose();
         instance = null;
         batch.dispose();

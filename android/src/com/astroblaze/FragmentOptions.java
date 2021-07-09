@@ -142,6 +142,13 @@ public class FragmentOptions extends Fragment {
             AstroblazeGame.getPlayerState().setVibrate(isChecked);
             AstroblazeGame.getSoundController().playUISwapSound();
         });
+
+        SwitchCompat cbFlip = view.findViewById(R.id.hflip_switch);
+        cbFlip.setChecked(AstroblazeGame.getPlayerState().getScreenFlip());
+        cbFlip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            AstroblazeGame.getSoundController().playUISwapSound();
+            AstroblazeGame.getPlayerState().setScreenFlip(!AstroblazeGame.getPlayerState().getScreenFlip());
+        });
     }
 
     private void refreshTextValues() {
