@@ -44,6 +44,10 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Sound> soundSwap = new AssetDescriptor<>("sfx/swap.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundBonus = new AssetDescriptor<>("sfx/bonus.ogg", Sound.class);
     public final static AssetDescriptor<Sound> soundLaser = new AssetDescriptor<>("laser/laser.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundShield0 = new AssetDescriptor<>("sfx/shield0.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundShield1 = new AssetDescriptor<>("sfx/shield1.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundShield2 = new AssetDescriptor<>("sfx/shield2.ogg", Sound.class);
+    public final static AssetDescriptor<Sound> soundShield3 = new AssetDescriptor<>("sfx/shield3.ogg", Sound.class);
 
     // these are loaded late, don't rely on them available at start!
     public final static Array<TextureAtlas.AtlasRegion> bullets = new Array<>(16);
@@ -95,6 +99,10 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
         load(laser);
         load(laserShader);
         load(soundLaser);
+        load(soundShield0);
+        load(soundShield1);
+        load(soundShield2);
+        load(soundShield3);
 
         ParticleEffectLoader.ParticleEffectLoadParameter loaderParams = new ParticleEffectLoader.ParticleEffectLoadParameter(particles.getBatches());
         flame = new AssetDescriptor<>("projectiles/flame2.pfx", ParticleEffect.class, loaderParams);

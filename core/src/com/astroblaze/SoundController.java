@@ -5,6 +5,8 @@ import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class SoundController implements ILoadingFinishedListener {
     private final PlayerState state;
@@ -20,6 +22,11 @@ public class SoundController implements ILoadingFinishedListener {
     private float sfxVolume;
     private float UIVolume;
 
+    // player hit shield sfx
+    private final Array<Sound> shieldSounds = new Array<>();
+    private final long minIntervalMillisec = 80; // 80 ms min between sound triggers
+    private long lastShieldSfx;
+
     // laser hum
     private Sound laserSound;
     private boolean laserActive;
@@ -31,7 +38,6 @@ public class SoundController implements ILoadingFinishedListener {
         state = AstroblazeGame.getPlayerState();
         sfxVolume = state.getSoundVolume();
         UIVolume = state.getUiVolume();
-
     }
 
     @Override
@@ -45,6 +51,11 @@ public class SoundController implements ILoadingFinishedListener {
         soundSwap = Assets.asset(Assets.soundSwap);
 
         laserSound = Assets.asset(Assets.soundLaser);
+
+        shieldSounds.add(Assets.asset(Assets.soundShield0));
+        shieldSounds.add(Assets.asset(Assets.soundShield1));
+        shieldSounds.add(Assets.asset(Assets.soundShield2));
+        shieldSounds.add(Assets.asset(Assets.soundShield3));
     }
 
     public void playExplosionSound() {
@@ -74,6 +85,14 @@ public class SoundController implements ILoadingFinishedListener {
 
     public void playUISwapSound() {
         playUISound(soundSwap);
+    }
+
+    public void playShieldSound() {
+        if (TimeUtils.timeSinceMillis(lastShieldSfx) < minIntervalMillisec) {
+            return;
+        }
+        lastShieldSfx = TimeUtils.millis();
+        playUISound(shieldSounds.random());
     }
 
     private void playSfxSound(Sound sfx) {

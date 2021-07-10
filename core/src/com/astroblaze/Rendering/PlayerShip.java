@@ -5,7 +5,11 @@ import com.astroblaze.Interfaces.*;
 import com.astroblaze.Utils.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.text.DecimalFormat;
 
@@ -21,6 +25,7 @@ public class PlayerShip extends SpaceShip {
 
     private float missileClock;
     private float moveSpeed;
+    private long lastShieldHit;
     private float turretAngularSpeed = 180f;
     private float currentBank;
     private float laserTime; // time remaining for laser shots
@@ -93,8 +98,10 @@ public class PlayerShip extends SpaceShip {
         hp = MathUtils.clamp(hp + hpModifier, 0f, getMaxHitpoints());
         game.reportStateChanged(this, hp, oldHp);
         if (hpModifier < 0f) {
+            lastShieldHit = TimeUtils.millis();
             AstroblazeGame.getLevelStatTracker().addDamageTaken(hpModifier);
             scene.getCamera().shake();
+            AstroblazeGame.getSoundController().playShieldSound();
         }
         Gdx.app.log("Ship", "Player hp modded from " + oldHp + " to " + hp);
         if (hp < 0f) {
@@ -332,6 +339,17 @@ public class PlayerShip extends SpaceShip {
             hpBarEnabled = newHpBarEnabled;
             game.reportHpEnabled(this, hpBarEnabled);
         }
+    }
+
+    @Override
+    public void render(ModelBatch batch, Environment environment) {
+        final float timeDiff = TimeUtils.timeSinceMillis(lastShieldHit) / 1000f;
+        if (visible && modelInstance != null) {
+            Color c = new Color(1f, 0f, 0f, 1f).lerp(Color.WHITE, timeDiff);
+            modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(c));
+        }
+
+        super.render(batch, environment);
     }
 
     @Override
