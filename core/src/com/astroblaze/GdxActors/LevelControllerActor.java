@@ -47,7 +47,6 @@ public class LevelControllerActor extends Actor {
     }
 
     public void runTutorial() {
-        final float defaultDelay = 3f;
         final PlayerShip player = scene.getPlayer();
         this.addAction(Actions.sequence(
                 new RunnableAction() {

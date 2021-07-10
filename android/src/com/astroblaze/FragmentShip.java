@@ -16,12 +16,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.text.DecimalFormat;
 
 public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
     private Button btnAction;
+    private long lastStateChange = 0; // timer to prevent flood of events
 
     public FragmentShip() {
         this(PlayerShipVariant.Shuttle);
@@ -61,6 +63,19 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     // lint suppressed so we can concat variant name to description
     @android.annotation.SuppressLint("SetTextI18n")
     private void resetText(PlayerState state) {
+        // next block stops the post() from flooding the UI with redraws
+        // all the FragmentShips for some reason don't get onPause event
+        // delivered when the ViewPager2 goes off screen, also ViewPager2
+        // doesn't have api to get current item to unregister the events
+        // so the workaround is to simply throttle state updates as they
+        // reach the UI, otherwise there's a freeze going from LevelComplete
+        // to LevelSelect fragment when finishing a level
+        long minStateChangeInterval = 50;
+        if (TimeUtils.timeSinceMillis(lastStateChange) < minStateChangeInterval) {
+            return;
+        }
+        lastStateChange = TimeUtils.millis();
+
         if (getContext() == null) {
             return; // too early in the lifecycle
         }
