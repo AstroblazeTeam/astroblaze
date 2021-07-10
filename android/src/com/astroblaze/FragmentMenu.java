@@ -22,14 +22,14 @@ import android.widget.TextView;
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 
 public class FragmentMenu extends Fragment implements IPlayerStateChangedListener {
-    TextView tvPilotName;
-    TextView tvRank;
-    TextView tvScore;
-    TextView tvMoney;
-    Button btnChangeName;
+    private TextView tvPilotName;
+    private TextView tvRank;
+    private TextView tvScore;
+    private TextView tvMoney;
+    private Button btnChangeName;
 
-    ValueAnimator scoreAnimator;
-    ValueAnimator moneyAnimator;
+    private ValueAnimator scoreAnimator;
+    private ValueAnimator moneyAnimator;
 
     public FragmentMenu() {
         // Required empty public constructor

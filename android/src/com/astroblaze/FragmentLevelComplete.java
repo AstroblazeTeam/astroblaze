@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FragmentLevelComplete extends Fragment {
-    RecyclerView rvBoard;
+    private RecyclerView rvBoard;
 
     public FragmentLevelComplete() {
         // Required empty public constructor

@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class FragmentHiscores extends Fragment {
-    RecyclerView rvBoard;
-    ProgressBar pgLoading;
+    private RecyclerView rvBoard;
+    private ProgressBar pgLoading;
 
     public FragmentHiscores() {
         // Required empty public constructor

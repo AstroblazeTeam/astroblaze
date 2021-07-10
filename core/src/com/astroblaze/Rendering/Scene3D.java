@@ -65,7 +65,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.add(batch);
         decalController = new DecalController(camera);
         laserController = new LaserController();
-        turretsController = new TurretsController(this, decalController);
+        turretsController = new TurretsController(decalController);
         skyJunkController = new SkyJunkController(this, decalController);
         setupBonusDistribution();
     }

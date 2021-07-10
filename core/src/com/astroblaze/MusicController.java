@@ -1,11 +1,10 @@
 package com.astroblaze;
 
-import com.astroblaze.Interfaces.*;
-import com.astroblaze.Utils.*;
+import com.astroblaze.Interfaces.ILoadingFinishedListener;
+import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;

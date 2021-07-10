@@ -1,6 +1,5 @@
 package com.astroblaze.Rendering;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Pool;
 
 public class EnemyPool extends Pool<EnemyShip> {

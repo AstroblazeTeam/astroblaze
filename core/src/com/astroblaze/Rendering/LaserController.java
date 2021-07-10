@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class LaserController {
-    static class LaserInfo {
+    private static class LaserInfo {
         Vector3 origin;
         float width = 10f;
         float life;

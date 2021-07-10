@@ -3,24 +3,17 @@ package com.astroblaze.Rendering;
 import com.astroblaze.Assets;
 import com.astroblaze.AstroblazeGame;
 import com.astroblaze.Interfaces.ILoadingFinishedListener;
-import com.astroblaze.Utils.WeightedCollection;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
 public class TurretsController implements ILoadingFinishedListener {
     private final Array<TurretInfo> activeDecals = new Array<>(1024);
     private final Array<TextureAtlas.AtlasRegion> turrets = new Array<>(8);
-    private final Scene3D scene;
     private final DecalController decalsController;
 
     public static class TurretInfo {
@@ -28,8 +21,7 @@ public class TurretsController implements ILoadingFinishedListener {
         public Decal decal;
     }
 
-    TurretsController(Scene3D scene, DecalController decalsController) {
-        this.scene = scene;
+    TurretsController(DecalController decalsController) {
         this.decalsController = decalsController;
 
         AstroblazeGame.getInstance().addOnLoadingFinishedListener(this);
