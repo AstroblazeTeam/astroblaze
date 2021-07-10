@@ -330,6 +330,9 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public void reset() {
         removeActors.addAll(actors);
+        for (Missile m : missilePool.getActiveMissiles()) {
+            m.position.set(0, 0, 5000f); // move missiles out of bounds so they're deleted
+        }
         player = null;
         processActorMigrations();
         particles.update(60f); // finish playing all particles
