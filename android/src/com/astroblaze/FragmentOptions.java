@@ -20,9 +20,9 @@ public class FragmentOptions extends Fragment {
     private SoundController soundController;
     private MusicController musicController;
 
-    private TextView tvMusicVolume;
-    private TextView tvSoundVolume;
-    private TextView tvUIVolume;
+    private TextView tvSoundPercentage;
+    private TextView tvUiPercentage;
+    private TextView tvMusicPercentage;
 
     public FragmentOptions() {
         // Required empty public constructor
@@ -49,9 +49,9 @@ public class FragmentOptions extends Fragment {
         musicController = AstroblazeGame.getMusicController();
         soundController = AstroblazeGame.getSoundController();
 
-        tvMusicVolume = view.findViewById(R.id.tvMusic);
-        tvSoundVolume = view.findViewById(R.id.tvSound);
-        tvUIVolume = view.findViewById(R.id.tvUI);
+        tvSoundPercentage = view.findViewById(R.id.sound_per);
+        tvUiPercentage = view.findViewById(R.id.ui_per);
+        tvMusicPercentage = view.findViewById(R.id.music_per);
 
         view.findViewById(R.id.btnExitToMenu).setOnClickListener(v -> {
             AstroblazeGame.getSoundController().playUINegative();
@@ -152,8 +152,8 @@ public class FragmentOptions extends Fragment {
     }
 
     private void refreshTextValues() {
-        tvMusicVolume.setText(getString(R.string.music_volume, (int) (musicController.getVolume() * 100f)));
-        tvSoundVolume.setText(getString(R.string.sound_volume, (int) (soundController.getSfxVolume() * 100f)));
-        tvUIVolume.setText(getString(R.string.ui_volume, (int) (soundController.getUIVolume() * 100f)));
+        tvMusicPercentage.setText(getString(R.string.music_perc, (int) (musicController.getVolume() * 200f)));
+        tvSoundPercentage.setText(getString(R.string.sound_perc, (int) (soundController.getSfxVolume() * 200f)));
+        tvUiPercentage.setText(getString(R.string.ui_perc, (int) (soundController.getUIVolume() * 200f)));
     }
 }
