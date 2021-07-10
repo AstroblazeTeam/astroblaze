@@ -13,5 +13,10 @@ public enum TranslatedStringId {
     TutorialDodgeBulletsAndEnemies,
     TutorialUseButtonToFireMissiles,
     TutorialUseButtonToFireLasers,
+    TutorialBonusCash,
     TutorialComplete,
+    TutorialBonusShield,
+    TutorialBonusLaser,
+    TutorialBonusMissiles,
+    TutorialBonusLife,
 }

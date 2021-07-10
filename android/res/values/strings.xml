@@ -166,5 +166,10 @@
     <string name="enemyMoneyDrop">Cash hauler</string>
     <string name="enemyMiniboss1">Miniboss</string>
 
+    <string name="TutorialBonusCash">Cash bonuses grant extra money.</string>
+    <string name="TutorialBonusShield">Shield bonuses restore your shield.</string>
+    <string name="TutorialBonusLaser">Laser bonuses restore your laser capacitor charge.</string>
+    <string name="TutorialBonusMissiles">Missile bonuses replenish your missiles.</string>
+    <string name="TutorialBonusLife">Life bonuses grant extra lives.</string>
 
 </resources>

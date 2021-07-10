@@ -1,6 +1,12 @@
 package com.astroblaze.GdxActors;
 
 import com.astroblaze.*;
+import com.astroblaze.Bonuses.PlayerBonusCash;
+import com.astroblaze.Bonuses.PlayerBonusLaserCharge;
+import com.astroblaze.Bonuses.PlayerBonusLife;
+import com.astroblaze.Bonuses.PlayerBonusMissiles;
+import com.astroblaze.Bonuses.PlayerBonusShieldRestore;
+import com.astroblaze.Interfaces.IPlayerBonus;
 import com.astroblaze.Interfaces.TranslatedStringId;
 import com.astroblaze.Rendering.*;
 import com.astroblaze.PlayerState;
@@ -51,7 +57,7 @@ public class LevelControllerActor extends Actor {
                         player.modMissileSalvos(-player.getMissileSalvos());
                     }
                 },
-                delay(defaultDelay),
+                delay(0.5f),
                 showText(TranslatedStringId.TutorialTouchScreenToMove),
                 waitForPlayerMovement(),
                 showText(TranslatedStringId.TutorialPrimaryWeapons),
@@ -76,7 +82,7 @@ public class LevelControllerActor extends Actor {
                     @Override
                     public void run() {
                         player.modLaserTime(-player.getLaserTime());
-                        player.modLaserTime(5f);
+                        player.modLaserTime(3f);
                     }
                 },
                 new Action() {
@@ -85,6 +91,24 @@ public class LevelControllerActor extends Actor {
                         return player.getLaserTime() <= 0f;
                     }
                 },
+                showText(TranslatedStringId.TutorialBonusCash),
+                spawnBonusAndWaitPickup(new PlayerBonusCash()),
+                showText(TranslatedStringId.TutorialBonusShield),
+                new RunnableAction() {
+                    @Override
+                    public void run() {
+                        player.modHp(-0.5f * player.getHitpoints());
+                    }
+                },
+                spawnBonusAndWaitPickup(new PlayerBonusShieldRestore()),
+                showText(TranslatedStringId.TutorialBonusLaser),
+                spawnBonusAndWaitPickup(new PlayerBonusLaserCharge()),
+                showText(TranslatedStringId.TutorialBonusMissiles),
+                spawnBonusAndWaitPickup(new PlayerBonusMissiles()),
+                showText(TranslatedStringId.TutorialBonusLife),
+                spawnBonusAndWaitPickup(new PlayerBonusLife()),
+                showText(""),
+                delay(1.5f),
                 showText(TranslatedStringId.TutorialComplete),
                 finishLevel()
         ));
@@ -261,6 +285,28 @@ public class LevelControllerActor extends Actor {
             @Override
             public boolean act(float delta) {
                 return enemyShip[0].getHitpoints() <= 0f;
+            }
+        });
+    }
+
+    private Action spawnBonusAndWaitPickup(final IPlayerBonus type) {
+        RunnableAction r = new RunnableAction();
+        final DecalController.DecalInfo[] bonus = new DecalController.DecalInfo[1]; // array wrapper for closure
+        r.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                Vector3 spawnPos = scene.getPlayer().getPosition().cpy();
+                // spawn away by mirrored x axis just in case
+                spawnPos.x += Math.copySign(scene.getGameBounds().max.x * 0.75f, -spawnPos.x);
+                spawnPos.z = scene.getGameBounds().max.z;
+
+                bonus[0] = scene.getDecalController().addBonus(spawnPos, type);
+            }
+        });
+        return Actions.sequence(r, new Action() {
+            @Override
+            public boolean act(float delta) {
+                return bonus[0].life <= 0f; // waits until bonus pickup
             }
         });
     }

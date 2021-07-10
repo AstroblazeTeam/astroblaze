@@ -109,6 +109,16 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
                 return getString(R.string.TutorialUseButtonToFireMissiles);
             case TutorialUseButtonToFireLasers:
                 return getString(R.string.TutorialUseButtonToFireLasers);
+            case TutorialBonusCash:
+                return getString(R.string.TutorialBonusCash);
+            case TutorialBonusLife:
+                return getString(R.string.TutorialBonusLife);
+            case TutorialBonusLaser:
+                return getString(R.string.TutorialBonusLaser);
+            case TutorialBonusShield:
+                return getString(R.string.TutorialBonusShield);
+            case TutorialBonusMissiles:
+                return getString(R.string.TutorialBonusMissiles);
             case TutorialComplete:
                 return getString(R.string.TutorialComplete);
             case Invalid:
