@@ -9,8 +9,9 @@ public enum TranslatedStringId {
     BossIncoming,
     MiniBossIncoming,
     TutorialTouchScreenToMove,
-    TutorialPrimaryWeapon,
+    TutorialPrimaryWeapons,
     TutorialDodgeBulletsAndEnemies,
     TutorialUseButtonToFireMissiles,
+    TutorialUseButtonToFireLasers,
     TutorialComplete,
 }

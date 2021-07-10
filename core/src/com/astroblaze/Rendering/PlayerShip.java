@@ -264,6 +264,10 @@ public class PlayerShip extends SpaceShip {
         return noControlTimer <= 0f;
     }
 
+    public float getLaserTime() {
+        return this.laserTime;
+    }
+
     public void modLaserTime(float delta) {
         laserTime = MathHelper.moveTowards(laserTime, MathUtils.clamp(laserTime + delta, 0f, 15f), Math.abs(delta));
         reportExtras();

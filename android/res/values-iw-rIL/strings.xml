@@ -134,9 +134,10 @@
     <string name="LevelComplete">השלב הושלם!</string>
     <string name="BossIncoming">התכונן לקרב!</string>
     <string name="TutorialTouchScreenToMove">גע/י במסך כדי לזוז</string>
-    <string name="TutorialPrimaryWeapon">נשק ראשי תמיד פועל, כוון ופגע</string>
+    <string name="TutorialPrimaryWeapons">נשק ראשי תמיד פועל, כוון ופגע</string>
     <string name="TutorialDodgeBulletsAndEnemies">התחמק/י מאויבים וקליעים</string>
     <string name="TutorialUseButtonToFireMissiles">החזק בכפתור כדי לירות טילים</string>
+    <string name="TutorialUseButtonToFireLasers">החזק בכפתור כדי לירות לייזר</string>
     <string name="TutorialComplete">שלב הדרכה הושלם</string>
     <string name="statsKills">הריגות:</string>
     <string name="statsDamageDone">נזק נעשה:</string>

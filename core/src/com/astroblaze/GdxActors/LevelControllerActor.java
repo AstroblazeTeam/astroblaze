@@ -32,23 +32,29 @@ public class LevelControllerActor extends Actor {
         waveTypeWeights.add(10, EnemyType.MoneyDrop);
     }
 
-    public void runTutorial() {
-        float defaultDelay = 3f;
-        this.addAction(Actions.sequence(
-                delay(defaultDelay),
-                showText(TranslatedStringId.TutorialTouchScreenToMove),
-                new Action() {
-                    private Vector3 origVector;
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        if (this.scene.getLives() == 0) {
+            this.clearActions();
+        }
+    }
 
+    public void runTutorial() {
+        final float defaultDelay = 3f;
+        final PlayerShip player = scene.getPlayer();
+        this.addAction(Actions.sequence(
+                new RunnableAction() {
                     @Override
-                    public boolean act(float delta) {
-                        if (origVector == null) { // first iteration - copy the original vector to compare
-                            origVector = scene.getPlayer().getMoveVector().cpy();
-                        }
-                        return !scene.getPlayer().getMoveVector().epsilonEquals(origVector, 0.1f);
+                    public void run() {
+                        player.modLaserTime(-player.getLaserTime());
+                        player.modMissileSalvos(-player.getMissileSalvos());
                     }
                 },
-                showText(TranslatedStringId.TutorialPrimaryWeapon),
+                delay(defaultDelay),
+                showText(TranslatedStringId.TutorialTouchScreenToMove),
+                waitForPlayerMovement(),
+                showText(TranslatedStringId.TutorialPrimaryWeapons),
                 spawnEnemyAndWaitDeath(EnemyType.TrainingDummy),
                 showText(TranslatedStringId.TutorialDodgeBulletsAndEnemies),
                 spawnWallOfEnemiesAndWaitDeath(EnemyType.Rammer, 9),
@@ -56,13 +62,27 @@ public class LevelControllerActor extends Actor {
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        scene.getPlayer().modMissileSalvos(1);
+                        player.modMissileSalvos(8);
                     }
                 },
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        return scene.getPlayer().getMissileSalvos() < 1;
+                        return player.getMissileSalvos() <= 0;
+                    }
+                },
+                showText(TranslatedStringId.TutorialUseButtonToFireLasers),
+                new RunnableAction() {
+                    @Override
+                    public void run() {
+                        player.modLaserTime(-player.getLaserTime());
+                        player.modLaserTime(5f);
+                    }
+                },
+                new Action() {
+                    @Override
+                    public boolean act(float delta) {
+                        return player.getLaserTime() <= 0f;
                     }
                 },
                 showText(TranslatedStringId.TutorialComplete),
@@ -375,11 +395,17 @@ public class LevelControllerActor extends Actor {
         };
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-        if (this.scene.getLives() == 0) {
-            this.clearActions();
-        }
+    private Action waitForPlayerMovement() {
+        return new Action() {
+            private Vector3 origVector;
+
+            @Override
+            public boolean act(float delta) {
+                if (origVector == null) { // first iteration - copy the original vector to compare
+                    origVector = scene.getPlayer().getMoveVector().cpy();
+                }
+                return !scene.getPlayer().getMoveVector().epsilonEquals(origVector, 0.1f);
+            }
+        };
     }
 }

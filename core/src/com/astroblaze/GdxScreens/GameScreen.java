@@ -83,18 +83,17 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(shipPreviewActor);
 
         if (AstroblazeGame.getInstance().getGuiRenderer().isDebuggable())
-        stage.addActor(new DebugTextActor());
+            stage.addActor(new DebugTextActor());
 
         stage.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.fadeIn(1f)));
     }
 
-    public void startGame(int level, int shipSelect) {
+    public void startGame(final int level, int shipSelect) {
         final float duration = 0.5f;
         final PlayerShipVariant shipVariant = ShipPreviewActor.getVariant(shipSelect);
 
         AstroblazeGame.getMusicController().randomizeGameTrack();
         levelControllerActor = new LevelControllerActor(scene);
-        levelControllerActor.setLevel(level);
         game.clearText();
         stage.addActor(levelControllerActor);
         stage.addAction(Actions.sequence(
@@ -123,6 +122,12 @@ public class GameScreen extends ScreenAdapter {
                     @Override
                     public void run() {
                         scene.respawnPlayer(shipVariant);
+                    }
+                }),
+                Actions.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        levelControllerActor.setLevel(level);
                     }
                 })));
     }

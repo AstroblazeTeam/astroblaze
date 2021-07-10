@@ -146,9 +146,10 @@
     <string name="BossIncoming">Boss Incoming!</string>
     <string name="MiniBossIncoming">MiniBoss Incoming!</string>
     <string name="TutorialTouchScreenToMove">Touch the screen to move</string>
-    <string name="TutorialPrimaryWeapon">Primary weapon is always active, just aim and kill</string>
+    <string name="TutorialPrimaryWeapons">Guns and turrets are always active, just aim and kill</string>
     <string name="TutorialDodgeBulletsAndEnemies">Dodge the bullets and enemies</string>
-    <string name="TutorialUseButtonToFireMissiles">Hold the button to fire missiles</string>
+    <string name="TutorialUseButtonToFireMissiles">Fire missiles using the button, high damage spread over area</string>
+    <string name="TutorialUseButtonToFireLasers">Fire laser using the button, high damage piercing beam</string>
     <string name="TutorialComplete">Tutorial complete!</string>
     <string name="statsKills">Kills:</string>
     <string name="statsDamageDone">Damage Done:</string>
