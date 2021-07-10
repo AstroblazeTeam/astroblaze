@@ -580,7 +580,7 @@ shield-restore
   index: -1
 stars
   rotate: false
-  xy: 580, 1740
+  xy: 580, 1674
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -592,6 +592,13 @@ stars
   orig: 48, 48
   offset: 0, 0
   index: 1
+turret
+  rotate: false
+  xy: 580, 1740
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 white_pixel
   rotate: false
   xy: 1442, 1673

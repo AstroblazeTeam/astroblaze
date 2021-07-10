@@ -21,6 +21,7 @@ public class PlayerShip extends SpaceShip {
 
     private float missileClock;
     private float moveSpeed;
+    private float turretAngularSpeed = 180f;
     private float currentBank;
     private float laserTime; // time remaining for laser shots
     private int missileSalvos; // amount of missile salvos player has.
@@ -54,6 +55,8 @@ public class PlayerShip extends SpaceShip {
         for (DecalController.DecalInfo d : exhaustDecals) {
             d.decal.setColor(startColor.lerp(endColor, colorScale));
         }
+
+        scene.getTurretsController().addTurret(this);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class PlayerShip extends SpaceShip {
     }
 
     public float getRadius() {
-        return shipVariant.modelScale * 0.4f; // slightly less than half scale
+        return shipVariant.modelScale * 0.4f;
     }
 
     public float getMaxHitpoints() {
@@ -169,34 +172,42 @@ public class PlayerShip extends SpaceShip {
         if (!isControlled() || shipVariant.turretPorts == 0)
             return;
 
+        final Vector3 pos = this.getPosition().cpy();
+        final Vector3 vel = new Vector3(0f, 0f, gunBulletSpeed);
+
+        ITargetable t = scene.getClosestTarget(this, pos);
+        if (t == null) {
+            this.turretAngle = MathHelper.moveTowardsAngle(turretAngle, 0f, 0.25f * delta * turretAngularSpeed);
+            return;
+        }
+        final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
+        if (distance > 1000f) { // don't shoot from off-screen
+            return;
+        }
+        final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
+        final int turretPorts = shipVariant.turretPorts;
+        final float turretOffset = shipVariant.modelScale / turretPorts * 0.5f;
+        float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
+        if (Float.isNaN(angle) || Float.isInfinite(angle)) {
+            return;
+        }
+        this.turretAngle = MathHelper.moveTowardsAngle(turretAngle, angle, delta * turretAngularSpeed);
+
+        // block firing until turretClock clears
         turretClock -= delta;
         if (turretClock >= 0f) {
             return;
         }
         turretClock += gunInterval;
 
-        final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0f, 0f, gunBulletSpeed);
+        vel.set(0f, 0f, gunBulletSpeed).rotate(Vector3.Y, turretAngle);
+        final float turretDamage = shipVariant.getTurretDamage(playerState);
+        for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
+            Vector3 v = new Vector3(x * turretOffset, 0f, 0f);
+            v.mul(TurretsController.getTurretRotation(this));
 
-        ITargetable t = scene.getClosestTarget(this, pos);
-        if (t != null) {
-            final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos));
-            if (distance > 1000f) { // don't shoot from off-screen
-                return;
-            }
-            final Vector3 dir = t.estimatePosition(distance / vel.len()).cpy().sub(pos).nor();
-            final int turretPorts = shipVariant.turretPorts;
-            final float turretOffset = shipVariant.modelScale / turretPorts * 0.5f;
-            float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
-            if (Float.isNaN(angle) || Float.isInfinite(angle)) {
-                return;
-            }
-            vel.set(0f, 0f, gunBulletSpeed).rotate(Vector3.Y, angle);
-            final float turretDamage = shipVariant.getTurretDamage(playerState);
-            for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, turretDamage)
-                        .ignorePlayerCollision = true;
-            }
+            scene.getDecalController().addBullet(pos.cpy().add(v), vel, 0.1f, turretDamage)
+                    .ignorePlayerCollision = true;
         }
     }
 

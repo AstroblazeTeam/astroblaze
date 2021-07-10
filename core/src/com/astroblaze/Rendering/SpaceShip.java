@@ -16,6 +16,7 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     protected float hp;
     protected float gunClock = 0f;
     protected float turretClock = 0f;
+    protected float turretAngle = 0f;
 
     protected SpaceShip(Scene3D scene) {
         this.scene = scene;
@@ -23,8 +24,18 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
         this.playerState = AstroblazeGame.getPlayerState();
     }
 
+    public float getTurretAngle() {
+        return turretAngle;
+    }
+
     public Scene3D getScene() {
-        return this.scene;
+        return scene;
+    }
+
+    @Override
+    public void hide(Scene3D scene) {
+        super.hide(scene);
+        scene.getTurretsController().removeTurrets(this);
     }
 
     public float getHitpoints() {

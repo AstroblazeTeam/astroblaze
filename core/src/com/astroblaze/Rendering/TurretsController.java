@@ -1,0 +1,84 @@
+package com.astroblaze.Rendering;
+
+import com.astroblaze.Assets;
+import com.astroblaze.AstroblazeGame;
+import com.astroblaze.Interfaces.ILoadingFinishedListener;
+import com.astroblaze.Utils.WeightedCollection;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Array;
+
+public class TurretsController implements ILoadingFinishedListener {
+    private final Array<TurretInfo> activeDecals = new Array<>(1024);
+    private final Array<TextureAtlas.AtlasRegion> turrets = new Array<>(8);
+    private final Scene3D scene;
+    private final DecalController decalsController;
+
+    public static class TurretInfo {
+        public SpaceShip ship;
+        public Decal decal;
+    }
+
+    TurretsController(Scene3D scene, DecalController decalsController) {
+        this.scene = scene;
+        this.decalsController = decalsController;
+
+        AstroblazeGame.getInstance().addOnLoadingFinishedListener(this);
+    }
+
+    public void addTurret(SpaceShip ship) {
+        TurretInfo turret = new TurretInfo();
+        turret.ship = ship;
+        turret.decal = Decal.newDecal(turrets.random(), true);
+        turret.decal.setScale(0.15f);
+        turret.decal.rotateX(90f);
+        activeDecals.add(turret);
+    }
+
+    public void removeTurrets(SpaceShip spaceShip) {
+        for (int i = activeDecals.size - 1; i >= 0; i--) {
+            TurretInfo turret = activeDecals.get(i);
+            if (turret.ship == spaceShip) {
+                activeDecals.removeIndex(i);
+            }
+        }
+    }
+
+    @Override
+    public void finishedLoadingAssets() {
+        turrets.addAll(Assets.atlas1.findRegions("turret"));
+    }
+
+    public static Quaternion getTurretRotation(SpaceShip ship) {
+        final Quaternion q1 = new Quaternion(Vector3.Y, ship.turretAngle);
+        final Quaternion q2 = new Quaternion(Vector3.X, 90f);
+        return q1.mul(q2);
+    }
+
+    public void update(float delta) {
+        for (int i = activeDecals.size - 1; i >= 0; i--) {
+            final TurretInfo turret = activeDecals.get(i);
+            turret.decal.setPosition(turret.ship.getPosition().cpy().add(0f, 0.15f * turret.ship.scale.x, 0f));
+            turret.decal.setRotation(getTurretRotation(turret.ship));
+        }
+    }
+
+    public void render() {
+        final DecalBatch batch = decalsController.getDecalBatch();
+        for (TurretInfo info : activeDecals) {
+            batch.add(info.decal);
+        }
+        Gdx.gl20.glDepthMask(false);
+        batch.flush();
+        Gdx.gl20.glDepthMask(true);
+    }
+}

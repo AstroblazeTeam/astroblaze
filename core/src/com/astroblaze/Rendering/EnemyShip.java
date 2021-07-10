@@ -20,6 +20,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private float moveClock = 0f;
     private final float moveMagnitude = 50f;
     private final float moveClockSpeed = 2f;
+    private float turretAngularSpeed = 180f;
     private float aiDecisionClock = 0f;
     private final Vector3 aiDecisionMove = new Vector3();
     private EnemyType typeId = EnemyType.Simple;
@@ -100,7 +101,11 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         hp = getMaxHitpoints();
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
-
+        turretAngle = 180f;
+        scene.getTurretsController().removeTurrets(this);
+        if (typeId.turrets >= 1) {
+            scene.getTurretsController().addTurret(this);
+        }
         for (DecalController.DecalInfo d : exhaustDecals) {
             d.decal.setScale(exhaustScaleModifier * typeId.modelScale);
         }
@@ -126,34 +131,44 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     }
 
     private void fireTurrets(float delta) {
+        final ITargetable t = scene.getPlayer();
+
+        if (t == null || !t.isTargetable()) {
+            this.turretAngle = MathHelper.moveTowardsAngle(turretAngle, 0f, 0.25f * delta * turretAngularSpeed);
+            return;
+        }
+
+        final Vector3 pos = this.getPosition().cpy();
+        final Vector3 vel = new Vector3();
+        final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos.cpy()));
+        final Vector3 targetPos = t.estimatePosition(distance / typeId.turretBulletSpeed);
+        if (!scene.getGameBounds().contains(t.getPosition())) {
+            return;
+        }
+        final Vector3 dir = targetPos.cpy().sub(pos).nor();
+        final int turretPorts = typeId.turrets;
+        final float turretOffset = 0.5f * typeId.modelScale / turretPorts;
+        //noinspection SuspiciousNameCombination
+        final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
+        if (Float.isNaN(angle) || Float.isInfinite(angle)) {
+            return;
+        }
+
+        // prevent firing until turret clock clears
+        this.turretAngle = MathHelper.moveTowardsAngle(turretAngle, angle, delta * turretAngularSpeed);
         turretClock -= delta;
         if (turretClock >= 0f) {
             return;
         }
         turretClock += typeId.turretFireInterval;
 
-        final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3();
-        final ITargetable t = scene.getPlayer();
-        if (t != null && t.isTargetable()) {
-            final float distance = (float) Math.sqrt(t.distanceSquaredTo(pos.cpy()));
-            final Vector3 targetPos = t.estimatePosition(distance / typeId.turretBulletSpeed);
-            if (!scene.getGameBounds().contains(t.getPosition())) {
-                return;
-            }
-            final Vector3 dir = targetPos.cpy().sub(pos).nor();
-            final int turretPorts = typeId.turrets;
-            final float turretOffset = 0.5f * typeId.modelScale / turretPorts;
-            //noinspection SuspiciousNameCombination
-            final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
-            if (Float.isNaN(angle) || Float.isInfinite(angle)) {
-                return;
-            }
-            vel.set(0f, 0f, typeId.turretBulletSpeed).rotate(Vector3.Y, angle);
-            for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
-                scene.getDecalController().addBullet(pos.cpy().add(x * turretOffset, 0f, 3f), vel, 0.1f, typeId.turretDamage)
-                        .ignoreEnemyCollision = true;
-            }
+        vel.set(0f, 0f, typeId.turretBulletSpeed).rotate(Vector3.Y, angle);
+        for (float x = -turretPorts * 0.5f + 0.5f; x < turretPorts * 0.5f + 0.5f; x++) {
+            Vector3 v = new Vector3(x * turretOffset, 0f, 1f);
+            v.mul(TurretsController.getTurretRotation(this));
+
+            scene.getDecalController().addBullet(pos.cpy().add(v), vel, 0.1f, typeId.turretDamage)
+                    .ignoreEnemyCollision = true;
         }
     }
 

@@ -2,6 +2,7 @@ package com.astroblaze.Rendering;
 
 import com.astroblaze.Assets;
 import com.astroblaze.Interfaces.IPlayerBonus;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -119,7 +120,9 @@ public class DecalController {
             // queue to render batch
             batch.add(d.decal);
         }
+        Gdx.gl20.glDepthMask(false);
         batch.flush();
+        Gdx.gl20.glDepthMask(true);
     }
 
     public static class DecalInfo {

@@ -40,6 +40,7 @@ public class Scene3D implements ILoadingFinishedListener {
     private final EnemyPool enemyPool;
     private final DecalController decalController;
     private final LaserController laserController;
+    private final TurretsController turretsController;
     private final ParticlePool particlePool;
     private final MissilePool missilePool;
     private final SkyJunkController skyJunkController;
@@ -64,6 +65,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.add(batch);
         decalController = new DecalController(camera);
         laserController = new LaserController();
+        turretsController = new TurretsController(this, decalController);
         skyJunkController = new SkyJunkController(this, decalController);
         setupBonusDistribution();
     }
@@ -99,6 +101,10 @@ public class Scene3D implements ILoadingFinishedListener {
 
     public DecalController getDecalController() {
         return decalController;
+    }
+
+    public TurretsController getTurretsController() {
+        return turretsController;
     }
 
     public LaserController getLaserController() {
@@ -180,6 +186,7 @@ public class Scene3D implements ILoadingFinishedListener {
         particles.update(delta);
         decalController.update(delta);
         laserController.update(delta);
+        turretsController.update(delta);
         skyJunkController.update(delta);
 
         if (player != null) {
@@ -265,6 +272,7 @@ public class Scene3D implements ILoadingFinishedListener {
 
         decalController.render();
         laserController.render(modelBatch, camera);
+        turretsController.render();
 
         processActorMigrations();
     }
