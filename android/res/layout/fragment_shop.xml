@@ -44,12 +44,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnExitToMenu"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="@dimen/block_button_width"
+            android:layout_height="@dimen/block_button_height"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginEnd="50dp"
-            android:autoMirrored="true"
             android:background="@drawable/back_button_states"
             app:layout_constraintEnd_toEndOf="@+id/rvShopItems"
             app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
