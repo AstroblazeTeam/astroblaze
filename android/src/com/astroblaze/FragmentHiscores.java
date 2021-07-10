@@ -78,6 +78,15 @@ public class FragmentHiscores extends Fragment {
                         }
                     });
                     fadeOut.start();
+
+                    for (int i = 0; i < response.size(); i++) {
+                        if (response.get(i).id.equals(AstroblazeGame.getPlayerState().getId())) {
+                            // reorder self to be at top of the list
+                            HiscoresEntry self = response.remove(i);
+                            response.add(0, self);
+                        }
+                    }
+
                     rvBoard.setAdapter(new HiscoresItemsAdapter(getContext(), response));
                     rvBoard.setVisibility(View.VISIBLE);
                     rvBoard.scheduleLayoutAnimation();
