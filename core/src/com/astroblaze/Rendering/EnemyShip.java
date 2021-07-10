@@ -87,6 +87,10 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         reset(scene.getGameBounds());
     }
 
+    public void setMoveVector(Vector3 newVector) {
+        moveVector.set(newVector);
+    }
+
     public void reset(BoundingBox bb) {
         setPosition(new Vector3(MathUtils.random(bb.min.x, bb.max.x) * 0.9f, 0f, bb.max.z * 1.1f));
         setRotation(new Quaternion(Vector3.Y, 180f)); // rotate to face left

@@ -127,7 +127,9 @@ public class GameScreen extends ScreenAdapter {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        levelControllerActor.setLevel(level);
+                        if (levelControllerActor != null) { // just in case game was aborted
+                            levelControllerActor.setLevel(level);
+                        }
                     }
                 })));
     }

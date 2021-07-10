@@ -16,6 +16,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -370,6 +371,38 @@ public class LevelControllerActor extends Actor {
         };
     }
 
+    private Action spawnDiagonalSequenceOfEnemies(final EnemyType type, final int enemyCount, final float interval) {
+        return new Action() {
+            private final BoundingBox bounds = scene.getGameBounds();
+            private final float spawnX = Math.signum(MathUtils.random() - 0.5f) * 0.55f * bounds.getWidth();
+            private final float spawnZ = MathUtils.random((bounds.max.z - bounds.min.z) / 2f, bounds.max.z);
+            private final Vector3 spawnPos = new Vector3(spawnX, 0f, spawnZ);
+            private final Vector3 moveVector = new Vector3(-Math.signum(spawnX) * type.speed, 0f, -type.speed);
+
+            private int count = enemyCount;
+            private float time = interval;
+
+            @Override
+            public boolean act(float delta) {
+                time -= delta * AstroblazeGame.getInstance().getScene().getTimeScale();
+                if (time < interval) {
+                    time += interval;
+                    count--;
+
+                    EnemyShip enemyShip = scene.getEnemyPool().obtain();
+                    enemyShip.setType(type);
+                    enemyShip.setPosition(spawnPos);
+                    enemyShip.setMoveVector(moveVector);
+                }
+                if (count <= 0) {
+                    Gdx.app.log("LevelControllerActor", "Finished spawning diagonal sequence of " + enemyCount + " x " + type.name());
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
     private Action delay(float duration) {
         return new SceneDelayAction(duration);
     }
@@ -413,10 +446,19 @@ public class LevelControllerActor extends Actor {
                 int count = (int) (MathUtils.random(0.8f, 1.2f) * 8f * levelLog);
                 if (i == minibossSpawn1 || i == minibossSpawn2) {
                     seq.addAction(spawnMiniBoss(EnemyType.MiniBoss1));
-                } else if (MathUtils.random(0f, 1f) > 0.5f) {
-                    seq.addAction(spawnWallOfEnemies(waveType, count));
                 } else {
-                    seq.addAction(spawnSequenceOfEnemies(waveType, count, 2f * waveDelay / count));
+                    switch (MathUtils.random(0, 2)) {
+                        case 0:
+                        default:
+                            seq.addAction(spawnWallOfEnemies(waveType, count));
+                            break;
+                        case 1:
+                            seq.addAction(spawnSequenceOfEnemies(waveType, count, 2f * waveDelay / count));
+                            break;
+                        case 2:
+                            seq.addAction(spawnDiagonalSequenceOfEnemies(waveType, count, 2f * waveDelay / count));
+                            break;
+                    }
                 }
                 seq.addAction(delay(waveDelay));
             }
