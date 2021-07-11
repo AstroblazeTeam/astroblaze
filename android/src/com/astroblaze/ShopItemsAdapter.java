@@ -48,6 +48,15 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
             case SpeedUpgrade:
                 holder.getTextViewName().setText(context.getString(R.string.speedUpgrade, qty));
                 break;
+            case LaserCapacity:
+                holder.getTextViewName().setText(context.getString(R.string.laserCapacityUpgrade, qty));
+                break;
+            case MaxMissiles:
+                holder.getTextViewName().setText(context.getString(R.string.maxMissilesUpgrade, qty));
+                break;
+            case TurretSpeed:
+                holder.getTextViewName().setText(context.getString(R.string.turretSpeedUpgrade, qty));
+                break;
             case DamageUpgrade:
             default:
                 holder.getTextViewName().setText(context.getString(R.string.damageUpgrade, qty));

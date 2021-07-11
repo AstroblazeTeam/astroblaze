@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import java.util.ArrayList;
 
 public enum PlayerShipVariant {
-    Shuttle(0, 0, 10f, 80f, 100f, 0f, 1, 1, 2),
-    Yacht(1, 1, 12f, 150f, 80f, 20000f, 1, 2, 2),
-    Destroyer(2, 2, 15f, 300f, 50f, 70000f, 4, 2, 3),
-    Sentinel(3, 3, 15f, 200f, 50f, 75000f, 2, 4, 2),
-    Archer(4, 9, 15f, 250f, 50f, 60000f, 2, 2, 8);
+    Shuttle(0, 0, 10f, 80f, 100f, 5, 2f, 0f, 1, 1, 2),
+    Yacht(1, 1, 12f, 150f, 80f, 10, 3f, 20000f, 1, 2, 2),
+    Destroyer(2, 2, 15f, 300f, 50f, 20, 10f, 70000f, 4, 2, 3),
+    Sentinel(3, 3, 15f, 200f, 50f, 20, 5f, 75000f, 2, 4, 2),
+    Archer(4, 9, 15f, 250f, 50f, 50, 5f, 60000f, 2, 2, 8);
 
     public final int id;
     public final int modelDescriptorId;
@@ -23,6 +23,8 @@ public enum PlayerShipVariant {
 
     public final float baseHp;
     public final float baseSpeed;
+    public final int maxMissiles;
+    public final float maxLaser;
 
     // constants
     public final float baseGunDamage = 5f;
@@ -31,7 +33,7 @@ public enum PlayerShipVariant {
     public final float baseLaserDamage = 500f;
 
     PlayerShipVariant(int id, int modelDescriptorId, float modelScale,
-                      float baseHp, float baseSpeed,
+                      float baseHp, float baseSpeed, int maxMissiles, float maxLaser,
                       float price, int gunPorts, int turretPorts, int missilePorts) {
         this.id = id;
         this.modelDescriptorId = modelDescriptorId;
@@ -39,6 +41,8 @@ public enum PlayerShipVariant {
 
         this.baseHp = baseHp;
         this.baseSpeed = baseSpeed;
+        this.maxMissiles = maxMissiles;
+        this.maxLaser = maxLaser;
 
         this.price = price;
         this.gunPorts = gunPorts;
@@ -93,5 +97,17 @@ public enum PlayerShipVariant {
 
     public AssetDescriptor<Model> getVariantAssetModel() {
         return Assets.spaceShipAssets.get(modelDescriptorId);
+    }
+
+    public int getMaxMissiles(PlayerState playerState) {
+        return (int) (maxMissiles * getUpgradeModifier(playerState, UpgradeEntryType.MaxMissiles));
+    }
+
+    public float getLaserCapacity(PlayerState playerState) {
+        return maxLaser * getUpgradeModifier(playerState, UpgradeEntryType.LaserCapacity);
+    }
+
+    public float getTurretSpeed(PlayerState playerState) {
+        return 120f * getUpgradeModifier(playerState, UpgradeEntryType.TurretSpeed);
     }
 }

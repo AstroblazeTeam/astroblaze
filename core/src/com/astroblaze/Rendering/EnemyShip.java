@@ -84,7 +84,9 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
         gunInterval = typeId.gunFireInterval;
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
-        turretAngle = 180f;
+        turretAngularSpeed = 180f;
+        turretDefaultAngle = 180f;
+        turretAngle = turretDefaultAngle;
         scene.getTurretsController().removeTurrets(this);
         if (typeId.turrets >= 1) {
             scene.getTurretsController().addTurret(this);

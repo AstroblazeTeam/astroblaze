@@ -49,6 +49,9 @@
     <string name="speedUpgrade">Speed (%1$s)</string>
     <string name="damageUpgrade">Damage (%1$s)</string>
 
+    <string name="laserCapacityUpgrade">Laser Capacitor (%1$s)</string>
+    <string name="maxMissilesUpgrade">Max Missiles (%1$s)</string>
+    <string name="turretSpeedUpgrade">Turret Speed (%1$s)</string>
 
     <string name="level0">
         "Mission: Tutorial.\n\n\n"

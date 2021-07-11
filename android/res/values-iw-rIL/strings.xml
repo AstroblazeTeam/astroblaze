@@ -38,6 +38,9 @@
     <string name="shieldUpgrade">מגן (%1$s)</string>
     <string name="speedUpgrade">מהירות (%1$s)</string>
     <string name="damageUpgrade">נזק (%1$s)</string>
+    <string name="laserCapacityUpgrade">סוללת לייזר (%1$s)</string>
+    <string name="maxMissilesUpgrade">מאגר טילים (%1$s)</string>
+    <string name="turretSpeedUpgrade">מהירות צריח (%1$s)</string>
     <string name="shipStatHp">מגן: %1$.2f</string>
     <string name="shipStatGuns">תותחים: $1%dx %2$.1f</string>
     <string name="shipStatMissiles">טילים: $1%dx %2$.1f</string>

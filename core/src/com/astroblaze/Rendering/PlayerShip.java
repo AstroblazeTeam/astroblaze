@@ -22,7 +22,9 @@ public class PlayerShip extends SpaceShip {
     private float missileClock;
     private float moveSpeed;
     private float currentBank;
+    private float maxLaserTime;
     private float laserTime; // time remaining for laser shots
+    private int maxMissileSalvos; // maximum amount of missile salvos
     private int missileSalvos; // amount of missile salvos player has.
 
     private float noControlTimer;
@@ -71,7 +73,7 @@ public class PlayerShip extends SpaceShip {
     }
 
     public void modMissileSalvos(int mod) {
-        missileSalvos += mod;
+        missileSalvos = MathUtils.clamp(missileSalvos + mod, 0, maxMissileSalvos);
         reportExtras();
     }
 
@@ -126,10 +128,14 @@ public class PlayerShip extends SpaceShip {
         noControlTimer = respawnNoControlTime;
         deathTimer = deathTimerMax;
         isDying = false;
-        modMissileSalvos(-missileSalvos);
-        modMissileSalvos(defaultMissileSalvos);
+        turretAngularSpeed = variant.getTurretSpeed(playerState);
+        turretDefaultAngle = 0f;
+        turretAngle = turretDefaultAngle;
+        maxLaserTime = variant.getLaserCapacity(playerState);
+        laserTime = maxLaserTime;
+        maxMissileSalvos = variant.getMaxMissiles(playerState);
+        modMissileSalvos(maxMissileSalvos);
         gunInterval = 1f / 15f;
-        laserTime = 3f;
         setMoveVector(new Vector3(0f, 0f, scene.getGameBounds().min.z + getRadius() * 3f), true);
         setPosition(scene.getRespawnPosition());
         setRotation(new Quaternion());
@@ -267,7 +273,7 @@ public class PlayerShip extends SpaceShip {
     }
 
     public void modLaserTime(float delta) {
-        laserTime = MathHelper.moveTowards(laserTime, MathUtils.clamp(laserTime + delta, 0f, 15f), Math.abs(delta));
+        laserTime = MathHelper.moveTowards(laserTime, MathUtils.clamp(laserTime + delta, 0f, maxLaserTime), Math.abs(delta));
         reportExtras();
     }
 

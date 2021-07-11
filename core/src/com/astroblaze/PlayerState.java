@@ -219,10 +219,7 @@ public class PlayerState {
         }
         modPlayerMoney(-variant.price);
         ArrayList<UpgradeEntry> upgrades = new ArrayList<>();
-
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, "Shield", 0, 5, 0.1f, 3000f, 0.01f, 10000f));
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.DamageUpgrade, "Damage", 0, 5, 0.1f, 5000f, 0.01f, 10000f));
-        upgrades.add(new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, "Speed", 0, 5, 0.1f, 10000f, 0.01f, 10000f));
+        fillUpgrades(upgrades);
 
         data.ownedShips.put(variant.id, upgrades);
         saveState();
@@ -233,9 +230,33 @@ public class PlayerState {
         }
     }
 
+    private void addUpgradeUnlessExists(ArrayList<UpgradeEntry> upgrades, UpgradeEntry upgrade) {
+        for (UpgradeEntry u : upgrades) {
+            if (u.type == upgrade.type)
+                return;
+        }
+        upgrades.add(upgrade);
+    }
+
+    private void fillUpgrades(ArrayList<UpgradeEntry> upgrades) {
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.DamageUpgrade, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.TurretSpeed, 0, 5, 0.1f, 10000f, 0.0f, 10000f));
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.LaserCapacity, 0, 8, 0.25f, 10000f, 0f, 0f));
+        addUpgradeUnlessExists(upgrades,
+                new UpgradeEntry(UpgradeEntryType.MaxMissiles, 0, 8, 0.25f, 10000f, 0f, 0f));
+    }
+
     public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         return isShipOwned(variant)
-                && data.money >= item.getUpgradePrice();
+                && data.money >= item.getUpgradePrice()
+                && (item.currentTier < item.maxTier || item.multiplierExtra > 0f);
     }
 
     private boolean isShipUnlocked(PlayerShipVariant variant) {
@@ -282,6 +303,9 @@ public class PlayerState {
         } else {
             data = gson.fromJson(stateString, PlayerStateData.class);
             AstroblazeGame.getInstance().setFlipHorizontal(data.screenFlip);
+            for (ArrayList<UpgradeEntry> upgrades : data.ownedShips.values()) {
+                fillUpgrades(upgrades); // add new upgrades for old saves
+            }
             Gdx.app.log("PlayerState", "Restored existing state.");
         }
     }

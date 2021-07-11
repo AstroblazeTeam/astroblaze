@@ -27,9 +27,10 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     protected float gunClock = 0f;
     protected float gunInterval;
 
+    protected float turretDefaultAngle = 0f;
     protected float turretClock = 0f;
     protected float turretAngle = 0f;
-    protected float turretAngularSpeed = 180f;
+    protected float turretAngularSpeed;
 
     protected SpaceShip(Scene3D scene) {
         this.scene = scene;
@@ -106,13 +107,13 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     protected void fireTurrets(float delta) {
         ITargetable t = getClosestTargetable();
         if (t == null) {
-            moveTurretAngle(0f, delta);
+            moveTurretAngle(turretDefaultAngle, delta);
             return;
         }
 
         final float distance = (float) Math.sqrt(t.distanceSquaredTo(position));
         if (distance > 1000f) { // don't shoot from off-screen
-            moveTurretAngle(0f, delta);
+            moveTurretAngle(turretDefaultAngle, delta);
             return;
         }
 
@@ -121,7 +122,7 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
         //noinspection SuspiciousNameCombination
         final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
         if (Float.isNaN(angle) || Float.isInfinite(angle)) {
-            moveTurretAngle(0f, delta);
+            moveTurretAngle(turretDefaultAngle, delta);
             return;
         }
 

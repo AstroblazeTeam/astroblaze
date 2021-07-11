@@ -1,7 +1,6 @@
 package com.astroblaze;
 
 public class UpgradeEntry {
-    public final String name;
     public final int maxTier;
     public final float multiplier;
     public final float price;
@@ -10,9 +9,8 @@ public class UpgradeEntry {
     public final float priceExtra;
     public int currentTier;
 
-    public UpgradeEntry(UpgradeEntryType type, String name, int currentTier, int maxTier, float multiplier, float price,
+    public UpgradeEntry(UpgradeEntryType type, int currentTier, int maxTier, float multiplier, float price,
                         float multiplierExtra, float priceExtra) {
-        this.name = name;
         this.currentTier = currentTier;
         this.maxTier = maxTier;
         this.multiplier = multiplier;
