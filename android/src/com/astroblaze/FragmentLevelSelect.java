@@ -23,11 +23,8 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     private ShipPreviewActor preview;
     private ViewPager2 pagerLevels;
     private ViewPager2 pagerShips;
-    private TextView tvLevelSwipeLeft;
-    private TextView tvLevelSwipeRight;
     private TextView tvShipSwipeLeft;
     private TextView tvShipSwipeRight;
-    private TextView tvLevelSwipeLabel;
     private Button btnPlay;
     private float prevShipSliderPosition = 0f;
     private final ViewPager2.OnPageChangeCallback soundCallback = new ViewPager2.OnPageChangeCallback() {
@@ -72,24 +69,11 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
                     .popBackStack();
         });
 
-        tvLevelSwipeLabel = view.findViewById(R.id.tvswipe);
-
-        tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
-        tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
-
         tvShipSwipeLeft = view.findViewById(R.id.tvShipLeft);
         tvShipSwipeRight = view.findViewById(R.id.tvShipRight);
 
         pagerLevels = view.findViewById(R.id.pagerLevels);
         pagerShips = view.findViewById(R.id.pagerShips);
-
-        pagerLevels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                FragmentLevelSelect.this.refreshLevelSwipeButtons(position);
-            }
-        });
 
         pagerShips.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -110,17 +94,6 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
         pagerLevels.setAdapter(new LevelsPagerAdapter(requireParentFragment()));
         pagerShips.setAdapter(new ShipsPagerAdapter(requireParentFragment()));
-
-        refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
-    }
-
-
-    public void refreshLevelSwipeButtons(int position) {
-        tvLevelSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
-        tvLevelSwipeRight.setVisibility(position < AstroblazeGame.getPlayerState().getMaxLevel()
-                ? View.VISIBLE : View.INVISIBLE);
-        tvLevelSwipeLabel.setVisibility((tvLevelSwipeLeft.getVisibility() == View.VISIBLE ||
-                tvLevelSwipeRight.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void refreshShipSwipeButtons(int position) {
@@ -177,7 +150,6 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     @Override
     public void onStateChanged(PlayerState state) {
         pagerLevels.post(() -> {
-            refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
             refreshShipSwipeButtons(pagerShips.getCurrentItem());
         });
     }

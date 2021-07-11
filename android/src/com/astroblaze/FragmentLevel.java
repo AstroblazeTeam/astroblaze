@@ -11,13 +11,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.astroblaze.GdxActors.LevelControllerActor;
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class FragmentLevel extends Fragment {
+public class FragmentLevel extends Fragment implements IPlayerStateChangedListener {
+    public boolean canSwipeLeft;
+    public boolean canSwipeRight;
+
     private final int level;
+    private TextView tvLevelDescription;
+    private TextView tvLevelSwipeLeft;
+    private TextView tvLevelSwipeLabel;
+    private TextView tvLevelSwipeRight;
 
     public FragmentLevel() {
         // Required empty public constructor
@@ -39,11 +47,35 @@ public class FragmentLevel extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        resetText();
+
+        tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
+        tvLevelSwipeLabel = view.findViewById(R.id.tvLevelSwipe);
+        tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
+        tvLevelDescription = view.findViewById(R.id.tvLevelDescription);
+
+        resetText(tvLevelDescription);
     }
 
-    private void resetText() {
-        TextView tv = requireView().findViewById(R.id.tvShipDescription);
+    @Override
+    public void onResume() {
+        super.onResume();
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(this);
+    }
+
+    private void resetText(TextView tv) {
+        canSwipeLeft = level > 0;
+        canSwipeRight = level < AstroblazeGame.getPlayerState().getMaxLevel();
+
+        tvLevelSwipeLeft.setVisibility(canSwipeLeft ? View.VISIBLE : View.INVISIBLE);
+        tvLevelSwipeRight.setVisibility(canSwipeRight ? View.VISIBLE : View.INVISIBLE);
+        tvLevelSwipeLabel.setVisibility(canSwipeLeft || canSwipeRight ? View.VISIBLE : View.INVISIBLE);
+
         String pirateName = getString(R.string.pirate0 + (level % 44)); // 44 pirate names in pool
         Random rng = new Random(AstroblazeGame.getPlayerState().getSeed());
         int reward = (int) LevelControllerActor.getLevelReward(level);
@@ -86,5 +118,10 @@ public class FragmentLevel extends Fragment {
                 tv.setText(getString(R.string.level8, level, pirateName, reward));
                 break;
         }
+    }
+
+    @Override
+    public void onStateChanged(PlayerState state) {
+        tvLevelDescription.post(() -> resetText(tvLevelDescription));
     }
 }
