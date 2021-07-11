@@ -79,7 +79,8 @@
             android:shadowRadius="3.5"
             android:text="@string/app_name"
             android:textColor="@color/rocket_text_color"
-            android:textSize="18sp"
+            android:textSize="32.5sp"
+            app:autoSizeMaxTextSize="60sp"
             app:autoSizeTextType="uniform" />
     </FrameLayout>
 
