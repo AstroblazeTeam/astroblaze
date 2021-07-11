@@ -18,6 +18,8 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
 
     protected float hp;
     protected float gunClock = 0f;
+    protected float gunInterval;
+
     protected float turretClock = 0f;
     protected float turretAngle = 0f;
     protected float turretAngularSpeed = 180f;
@@ -50,6 +52,14 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
 
     public abstract float getModelScale();
 
+    public abstract int getGunAmount();
+
+    public abstract float getGunDamage();
+
+    public abstract float getGunBulletSpeed();
+
+    public abstract float getGunFireInterval();
+
     public abstract int getTurretAmount();
 
     public abstract float getTurretBulletSpeed();
@@ -61,6 +71,22 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     public abstract ITargetable getClosestTargetable();
 
     protected abstract void addBullet(Vector3 pos, Vector3 vel, float damage);
+
+    protected void fireGuns(float delta) {
+        gunClock -= delta;
+        if (gunClock >= 0f) {
+            return;
+        }
+        gunClock += getGunFireInterval();
+
+        final float count = getGunAmount();
+        final float damage = getGunDamage();
+        final Vector3 vel = new Vector3(0, 0, getGunBulletSpeed());
+        final float offset = getModelScale() / count * 0.5f;
+        for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
+            addBullet(position.cpy().add(x * offset, 0f, -3f), vel, damage);
+        }
+    }
 
     private void moveTurretAngle(float targetAngle, float delta) {
         turretAngle = MathHelper.moveTowardsAngle(turretAngle, targetAngle, delta * turretAngularSpeed);

@@ -99,6 +99,7 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         applyTRS();
         hp = getMaxHitpoints();
         gunClock = MathUtils.random(0f, typeId.gunFireInterval);
+        gunInterval = typeId.gunFireInterval;
         turretClock = MathUtils.random(0f, typeId.turretFireInterval);
         turretAngle = 180f;
         scene.getTurretsController().removeTurrets(this);
@@ -112,20 +113,24 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
         setEnabled(true);
     }
 
-    private void fireGuns(float delta) {
-        gunClock -= delta;
-        if (gunClock >= 0f) {
-            return;
-        }
+    @Override
+    public int getGunAmount() {
+        return typeId.guns;
+    }
 
-        gunClock += typeId.gunFireInterval;
-        final float count = typeId.guns;
-        final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0, 0, -typeId.turretBulletSpeed);
-        final float offset = this.modelRadius * getScale().x / count * 0.5f;
-        for (float x = -count * 0.5f + 0.5f; x < count * 0.5f + 0.5f; x++) {
-            addBullet(pos.cpy().add(x * offset, 0f, -3f), vel, typeId.gunDamage);
-        }
+    @Override
+    public float getGunDamage() {
+        return typeId.gunDamage;
+    }
+
+    @Override
+    public float getGunBulletSpeed() {
+        return -typeId.gunBulletSpeed;
+    }
+
+    @Override
+    public float getGunFireInterval() {
+        return typeId.gunFireInterval;
     }
 
     @Override

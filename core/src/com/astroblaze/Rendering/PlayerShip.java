@@ -16,7 +16,6 @@ import java.text.DecimalFormat;
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
 
-    private final float gunInterval = 1f / 15f;
     private final float gunBulletSpeed = 200f;
     private final float missileInterval = 1f / 8f;
     private final float deathTimerMax = 5f;
@@ -142,6 +141,7 @@ public class PlayerShip extends SpaceShip {
         isDying = false;
         modMissileSalvos(-missileSalvos);
         modMissileSalvos(defaultMissileSalvos);
+        gunInterval = 1f / 15f;
         laserTime = 3f;
         setMoveVector(new Vector3(0f, 0f, scene.getGameBounds().min.z + getRadius() * 3f), true);
         setPosition(scene.getRespawnPosition());
@@ -153,24 +153,24 @@ public class PlayerShip extends SpaceShip {
         this.godModeTimer = time;
     }
 
-    public void fireGuns(float delta) {
-        if (!isControlled())
-            return;
+    @Override
+    public int getGunAmount() {
+        return shipVariant.gunPorts;
+    }
 
-        gunClock -= delta;
-        if (gunClock > 0f) {
-            return;
-        }
-        gunClock += gunInterval;
+    @Override
+    public float getGunDamage() {
+        return shipVariant.getGunDamage(playerState);
+    }
 
-        final Vector3 pos = this.getPosition().cpy();
-        final Vector3 vel = new Vector3(0f, 0f, gunBulletSpeed);
-        final int ports = shipVariant.gunPorts;
-        final float offset = shipVariant.modelScale / ports * 0.5f;
-        final float bulletDamage = shipVariant.getGunDamage(playerState);
-        for (float x = -ports * 0.5f + 0.5f; x < ports * 0.5f + 0.5f; x++) {
-            addBullet(pos.cpy().add(x * offset, 0f, 3f), vel, bulletDamage);
-        }
+    @Override
+    public float getGunBulletSpeed() {
+        return gunBulletSpeed;
+    }
+
+    @Override
+    public float getGunFireInterval() {
+        return gunInterval;
     }
 
     @Override
