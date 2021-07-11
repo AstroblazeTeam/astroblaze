@@ -24,8 +24,9 @@ public class SoundController implements ILoadingFinishedListener {
 
     // player hit shield sfx
     private final Array<Sound> shieldSounds = new Array<>();
-    private final long minIntervalMillisec = 200; // 80 ms min between sound triggers
+    private final long minIntervalMillisec = 50; // min millisec between sfx triggers
     private long lastShieldSfx;
+    private long lastBonusSfx;
 
     // laser hum
     private Sound laserSound;
@@ -64,6 +65,10 @@ public class SoundController implements ILoadingFinishedListener {
     }
 
     public void playBonusSound() {
+        if (TimeUtils.timeSinceMillis(lastBonusSfx) < minIntervalMillisec) {
+            return;
+        }
+        lastBonusSfx = TimeUtils.millis();
         playSfxSound(soundBonus);
     }
 
