@@ -329,7 +329,7 @@ public class PlayerShip extends SpaceShip {
 
     @Override
     public boolean isTargetable() {
-        return true;
+        return hp > 0f;
     }
 
     @Override
