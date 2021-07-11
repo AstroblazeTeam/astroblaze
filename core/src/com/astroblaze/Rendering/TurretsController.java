@@ -68,6 +68,7 @@ public class TurretsController implements ILoadingFinishedListener {
     public void render() {
         final DecalBatch batch = decalsController.getDecalBatch();
         for (TurretInfo info : activeDecals) {
+            info.decal.setColor(info.ship.getTintColor());
             batch.add(info.decal);
         }
         Gdx.gl20.glDepthMask(false);

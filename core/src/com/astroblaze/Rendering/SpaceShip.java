@@ -152,13 +152,16 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
         return position.dst2(pos);
     }
 
+    public Color getTintColor() {
+        final float timeDiff = TimeUtils.timeSinceMillis(lastShieldHit) / 1000f;
+        return new Color(1f, 0f, 0f, 1f)
+                .lerp(new Color(1f, 1f, 1f, 1f), timeDiff);
+    }
+
     @Override
     public void render(ModelBatch batch, Environment environment) {
-        final float timeDiff = TimeUtils.timeSinceMillis(lastShieldHit) / 1000f;
         if (visible && modelInstance != null) {
-            Color c = new Color(1f, 0f, 0f, 1f)
-                    .lerp(new Color(1f, 1f, 1f, 1f), timeDiff);
-            modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(c));
+            modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(getTintColor()));
         }
 
         super.render(batch, environment);
