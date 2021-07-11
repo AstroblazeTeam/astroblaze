@@ -4,10 +4,15 @@ import com.astroblaze.AstroblazeGame;
 import com.astroblaze.Interfaces.ITargetable;
 import com.astroblaze.PlayerState;
 import com.astroblaze.Utils.MathHelper;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public abstract class SpaceShip extends Renderable implements ITargetable {
     protected final Vector3 moveVector = new Vector3();
@@ -17,6 +22,8 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     protected final Array<DecalController.DecalInfo> exhaustDecals = new Array<>(8);
 
     protected float hp;
+    protected long lastShieldHit;
+
     protected float gunClock = 0f;
     protected float gunInterval;
 
@@ -142,5 +149,17 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     @Override
     public float distanceSquaredTo(Vector3 pos) {
         return position.dst2(pos);
+    }
+
+    @Override
+    public void render(ModelBatch batch, Environment environment) {
+        final float timeDiff = TimeUtils.timeSinceMillis(lastShieldHit) / 1000f;
+        if (visible && modelInstance != null) {
+            Color c = new Color(1f, 0f, 0f, 1f)
+                    .lerp(new Color(1f, 1f, 1f, 1f), timeDiff);
+            modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(c));
+        }
+
+        super.render(batch, environment);
     }
 }
