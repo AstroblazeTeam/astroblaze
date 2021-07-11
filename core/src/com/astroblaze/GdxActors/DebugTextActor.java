@@ -1,5 +1,6 @@
 package com.astroblaze.GdxActors;
 
+import com.astroblaze.AstroblazeGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,13 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class DebugTextActor extends Actor {
     private final BitmapFont font = new BitmapFont();
+    private final GlyphLayout layout = new GlyphLayout();
+    private final float fontScale = 3f;
     private final float heightOffset;
     private float timeAccumulator = 0f;
     private static String report = "0 fps   ";
     private static String extraReport = "";
     private static float width;
     private static DebugTextActor instance;
-    private final GlyphLayout layout = new GlyphLayout();
 
     public DebugTextActor() {
         if (instance == null) {
@@ -22,7 +24,7 @@ public class DebugTextActor extends Actor {
         }
 
         heightOffset = 60f * Gdx.graphics.getDensity();
-        font.getData().scale(1.5f);
+        font.getData().setScale(fontScale, fontScale);
         setExtraReport("");
     }
 
@@ -43,6 +45,11 @@ public class DebugTextActor extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+
+        if ((font.getData().scaleX < 0) ^ AstroblazeGame.getInstance().getFlipHorizontal()) {
+            Gdx.app.log("DebugTextActor", "Flipped font");
+            font.getData().setScale(font.getData().scaleX > 0 ? -fontScale : +fontScale, fontScale);
+        }
 
         timeAccumulator += delta;
         float refreshTime = 0.25f;
