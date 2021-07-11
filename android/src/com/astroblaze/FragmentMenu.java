@@ -58,14 +58,22 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         moneyAnimator = ValueAnimator.ofInt(0, 0);
         moneyAnimator.setDuration(2500); // animate over 1.5 secs
-        moneyAnimator.addUpdateListener(valueAnimator
-                -> tvMoney.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue())));
+        moneyAnimator.addUpdateListener(valueAnimator -> {
+            if (FragmentMenu.this.getContext() == null) {
+                return; // fragment is detached, abort
+            }
+            tvMoney.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue()));
+        });
         moneyAnimator.start();
 
         scoreAnimator = ValueAnimator.ofInt(0, 0);
         scoreAnimator.setDuration(2500); // animate over 1.5 secs
-        scoreAnimator.addUpdateListener(valueAnimator
-                -> tvScore.setText(String.valueOf(valueAnimator.getAnimatedValue())));
+        scoreAnimator.addUpdateListener(valueAnimator -> {
+            if (FragmentMenu.this.getContext() == null) {
+                return; // fragment is detached, abort
+            }
+            tvScore.setText(String.valueOf(valueAnimator.getAnimatedValue()));
+        });
         scoreAnimator.start();
 
         // btnChangeName -> AlertDialog

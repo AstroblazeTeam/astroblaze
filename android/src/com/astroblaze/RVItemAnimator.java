@@ -50,6 +50,9 @@ public class RVItemAnimator extends DefaultItemAnimator {
             firstAnimator.setInterpolator(accelInterpolator);
             firstAnimator.setDuration(400);
             firstAnimator.addUpdateListener(animation -> {
+                if (itemView.getContext() == null) {
+                    return; // fragment is detached, abort
+                }
                 float value = (float) animation.getAnimatedValue();
                 itemView.setAlpha(1f - 4f * value);
                 itemView.setTranslationX(translateWidth * value);
@@ -63,6 +66,9 @@ public class RVItemAnimator extends DefaultItemAnimator {
         secondAnimator.setInterpolator(decelInterpolator);
         secondAnimator.setDuration(1200);
         secondAnimator.addUpdateListener(animation -> {
+            if (itemView.getContext() == null) {
+                return; // fragment is detached, abort
+            }
             float value = (float) animation.getAnimatedValue();
             itemView.setAlpha(1f - 0.25f * value);
             itemView.setTranslationX(translateWidth * value);

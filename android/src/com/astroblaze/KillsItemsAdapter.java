@@ -67,6 +67,9 @@ public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.Vi
         ValueAnimator animator = ValueAnimator.ofInt(0, count);
         animator.setDuration(3000); // animate over 3 secs
         animator.addUpdateListener(valueAnimator -> {
+            if (context == null) {
+                return; // fragment is detached, abort
+            }
             Spanned countXvalue = Html.fromHtml(context.getString(R.string.multiplesOf, (int) valueAnimator.getAnimatedValue(), value), Html.FROM_HTML_MODE_LEGACY);
             tv.setText(countXvalue);
         });

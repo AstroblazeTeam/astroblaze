@@ -88,10 +88,9 @@ public class FragmentGame extends Fragment implements IUIChangeListener, IPlayer
         moneyAnimator = ValueAnimator.ofInt(0, (int) AstroblazeGame.getPlayerState().getPlayerMoney());
         moneyAnimator.setDuration(1500); // animate over 1.5 secs
         moneyAnimator.addUpdateListener(animator -> {
-            if (getContext() == null) {
+            if (FragmentGame.this.getContext() == null) {
                 return; // fragment is detached, abort
             }
-
             lastAnimatedMoneyValue = (int) animator.getAnimatedValue();
             tvMoney.setText(getString(R.string.moneyPrint, lastAnimatedMoneyValue));
         });
