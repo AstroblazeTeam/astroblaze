@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
+    android:background="@drawable/ui_table"
     tools:context=".FragmentLevelComplete">
 
 
@@ -14,7 +15,6 @@
         android:id="@+id/tvGameOver2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
         android:layout_marginBottom="4dp"
         android:gravity="center"
         android:shadowColor="@color/level_complete"
@@ -29,33 +29,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/level_complete_rec_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:shadowColor="@color/menu_bg_color"
+        android:shadowDx="3.3"
+        android:shadowDy="3.5"
+        android:shadowRadius="5.6"
+        android:text="@string/enemies_destroyed"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/level_complete_berrier2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/LinearLayouttv"
+        app:layout_constraintTop_toBottomOf="@+id/tvGameOver2" />
+
+    <Button
+        android:id="@+id/btnGameOverExit2"
+        android:layout_width="@dimen/block_button_width"
+        android:layout_height="@dimen/block_button_height"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/back_button_states"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvKills"
-        android:layout_width="479dp"
+        android:layout_width="450dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="4dp"
         android:layoutAnimation="@anim/rv_layout_anim"
-        android:background="@drawable/menu_background"
-        app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/LinearLayouttv"
-        app:layout_constraintTop_toBottomOf="@+id/tvGameOver2"
+        app:layout_constraintTop_toBottomOf="@+id/level_complete_berrier2"
         tools:listitem="@layout/kill_item" />
 
     <LinearLayout
         android:id="@+id/LinearLayouttv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/menu_background"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/ui_table"
         android:orientation="vertical"
-        android:padding="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnGameOverExit2"
+        android:padding="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rvKills"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +87,7 @@
             android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12sp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout11"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,17 +99,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
                 android:text="@string/statsKills"
-                android:textAlignment="textEnd"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvKills"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/moneyPrint"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -108,17 +128,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
                 android:text="@string/statsDamageDone"
-                android:textAlignment="textEnd"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvDamageDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/moneyPrint"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -139,16 +158,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
                 android:text="@string/statsDamageTaken"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvDamageTaken"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/moneyPrint"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -168,16 +187,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
                 android:text="@string/statsMoney"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvMoneyDiff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/moneyPrint"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -195,36 +214,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="1"
                 android:text="@string/statsScore"
+                android:textAlignment="textStart"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tvScoreDiff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/moneyPrint"
+                android:textAlignment="textEnd"
                 android:textSize="20sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnGameOverExit2"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height_var2"
-        android:layout_marginBottom="2dp"
-        android:background="@drawable/menu_button_states"
-        android:shadowColor="@color/menu_bg_color"
-        android:shadowDx="2.3"
-        android:shadowDy="2.5"
-        android:shadowRadius="3.6"
-        android:text="@string/backToMenu"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <LinearLayout
+        android:id="@+id/level_complete_berrier2"
+        android:layout_width="0dp"
+        android:layout_height="5dp"
+        android:background="@drawable/table_barrier_style"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/level_complete_rec_header"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvKills" />
+        app:layout_constraintStart_toStartOf="@+id/rvKills"
+        app:layout_constraintTop_toTopOf="@+id/rvKills" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

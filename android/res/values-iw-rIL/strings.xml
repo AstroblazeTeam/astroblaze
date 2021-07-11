@@ -133,6 +133,7 @@
     <string name="LevelStartGo">צא!</string>
     <string name="LevelComplete">השלב הושלם!</string>
     <string name="BossIncoming">התכונן לקרב!</string>
+    <string name="enemies_destroyed">אויבים נוטרלו</string>
     <string name="TutorialTouchScreenToMove">גע/י במסך כדי לזוז</string>
     <string name="TutorialPrimaryWeapons">נשק ראשי תמיד פועל, כוון ופגע</string>
     <string name="TutorialDodgeBulletsAndEnemies">התחמק/י מאויבים וקליעים</string>
@@ -153,6 +154,11 @@
     <string name="enemyMoneyDrop">מוביל כסף</string>
     <string name="enemyMiniboss1">מיניבוס</string>
     <string name="flip_screen">היפוך מסך</string>
+    <string name="TutorialBonusCash">בונוסי כסף מעניקים כסף נוסף.</string>
+    <string name="TutorialBonusShield">בונוסי מגן מחזירים לך את המגן.</string>
+    <string name="TutorialBonusLaser">בונוסי לייזר מחזירים את טעינת הלייזרים שלך.</string>
+    <string name="TutorialBonusMissiles">בונוסי טילים ממלאים את הטילים שלך.</string>
+    <string name="TutorialBonusLife">בונוסי חיים מעניקים חיים נוספים.</string>
 
 
 </resources>
