@@ -240,27 +240,25 @@ public class PlayerState {
         }
     }
 
-    private void addUpgradeUnlessExists(ArrayList<UpgradeEntry> upgrades, UpgradeEntry upgrade) {
-        for (UpgradeEntry u : upgrades) {
-            if (u.type == upgrade.type)
-                return;
+    private void fixUpgrades(ArrayList<UpgradeEntry> upgrades, UpgradeEntry upgrade) {
+        for (int i = upgrades.size() - 1; i >= 0; i--) {
+            UpgradeEntry u = upgrades.get(i);
+            if (u.type == upgrade.type) {
+                upgrade.currentTier = u.currentTier;
+                upgrades.remove(i);
+                break;
+            }
         }
         upgrades.add(upgrade);
     }
 
-    private void fillUpgrades(ArrayList<UpgradeEntry> upgrades) {
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.DamageUpgrade, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.TurretSpeed, 0, 5, 0.1f, 10000f, 0.0f, 10000f));
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.LaserCapacity, 0, 8, 0.25f, 10000f, 0f, 0f));
-        addUpgradeUnlessExists(upgrades,
-                new UpgradeEntry(UpgradeEntryType.MaxMissiles, 0, 8, 0.25f, 10000f, 0f, 0f));
+    private void fillUpgrades(ArrayList<UpgradeEntry> u) {
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.DamageUpgrade, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.TurretSpeed, 0, 8, 0.25f, 10000f, 0.01f, 10000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.LaserCapacity, 0, 8, 0.25f, 10000f, 0f, 0f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.MaxMissiles, 0, 8, 0.25f, 10000f, 0f, 0f));
     }
 
     public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
