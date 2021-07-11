@@ -19,44 +19,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvShipRight"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constaraintshipswipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/swipeRight"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvShipLeft"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvShipLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/swipeLeft"
-            app:layout_constraintBottom_toBottomOf="@+id/tvShipRight"
-            app:layout_constraintEnd_toStartOf="@+id/tvShipRight"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvShipRight"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipeRight"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvswipeship"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvswipeship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipe"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvShipRight"
+                app:layout_constraintStart_toEndOf="@id/tvShipLeft"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvShipLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipeLeft"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvswipeship"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pagerShips"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvShipRight" />
+            app:layout_constraintTop_toBottomOf="@+id/constaraintshipswipe" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,77 +112,101 @@
             android:id="@+id/pagerLevels"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="2dp"
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toTopOf="@+id/btnPlay"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvLevelRight" />
+            app:layout_constraintTop_toBottomOf="@+id/btnBack"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btnPlay"
             android:layout_width="@dimen/button_width_var2"
             android:layout_height="@dimen/button_height_var2"
-            android:layout_marginBottom="16dp"
             android:background="@drawable/menu_button_states"
-            android:text="@string/start"
-            android:textSize="14sp"
-            android:textAllCaps="true"
             android:shadowColor="@color/menu_bg_color"
-            android:shadowRadius="3.6"
             android:shadowDx="2.3"
             android:shadowDy="2.5"
+            android:shadowRadius="3.6"
+            android:text="@string/start"
+            android:textAllCaps="true"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnBack"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/btnBack"
-            android:layout_width="@dimen/button_width_var2"
-            android:layout_height="@dimen/button_height_var2"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/menu_button_states"
-            android:text="@string/backToMenu"
-            android:textSize="12sp"
-            android:textAllCaps="true"
-            android:shadowColor="@color/menu_bg_color"
-            android:shadowRadius="3.6"
-            android:shadowDx="2.3"
-            android:shadowDy="2.5"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="@dimen/block_button_width"
+            android:layout_height="@dimen/block_button_height"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/back_button_states"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnPlay" />
-
-        <TextView
-            android:id="@+id/tvLevelRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/swipeRight"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvLevelLeft"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvLevelLeft"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/swipeLeft"
-            app:layout_constraintBottom_toBottomOf="@+id/tvLevelRight"
-            app:layout_constraintEnd_toStartOf="@+id/tvLevelRight"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/pagerLevels"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/tvLevelRight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipeRight"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvswipe"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvswipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipe"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvLevelRight"
+                app:layout_constraintStart_toEndOf="@id/tvLevelLeft"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLevelLeft"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:shadowColor="@color/menu_bg_color"
+                android:shadowDx="2.3"
+                android:shadowDy="2.5"
+                android:shadowRadius="3.6"
+                android:text="@string/swipeLeft"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvswipe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

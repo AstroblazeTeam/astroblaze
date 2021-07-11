@@ -24,8 +24,9 @@
     <string name="unlockShip">Unlock $ %1$d</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
-    <string name="swipeRight">Swipe right</string>
-    <string name="swipeLeft">Swipe left</string>
+    <string name="swipeRight">→</string>
+    <string name="swipeLeft">←</string>
+    <string name="swipe">Swipe</string>
     <string name="buyUpgrade">Upgrade</string>
     <string name="moneyPrint" translatable="false">$ %1$d</string>
     <string name="changePilotName">Change</string>

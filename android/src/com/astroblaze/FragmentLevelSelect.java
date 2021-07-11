@@ -27,6 +27,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     private TextView tvLevelSwipeRight;
     private TextView tvShipSwipeLeft;
     private TextView tvShipSwipeRight;
+    private TextView tvLevelSwipeLabel;
     private Button btnPlay;
     private float prevShipSliderPosition = 0f;
     private final ViewPager2.OnPageChangeCallback soundCallback = new ViewPager2.OnPageChangeCallback() {
@@ -71,6 +72,8 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
                     .popBackStack();
         });
 
+        tvLevelSwipeLabel = view.findViewById(R.id.tvswipe);
+
         tvLevelSwipeLeft = view.findViewById(R.id.tvLevelLeft);
         tvLevelSwipeRight = view.findViewById(R.id.tvLevelRight);
 
@@ -111,10 +114,13 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         refreshLevelSwipeButtons(pagerLevels.getCurrentItem());
     }
 
+
     public void refreshLevelSwipeButtons(int position) {
         tvLevelSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
         tvLevelSwipeRight.setVisibility(position < AstroblazeGame.getPlayerState().getMaxLevel()
                 ? View.VISIBLE : View.INVISIBLE);
+        tvLevelSwipeLabel.setVisibility((tvLevelSwipeLeft.getVisibility() == View.VISIBLE ||
+                tvLevelSwipeRight.getVisibility() == View.VISIBLE) ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void refreshShipSwipeButtons(int position) {
