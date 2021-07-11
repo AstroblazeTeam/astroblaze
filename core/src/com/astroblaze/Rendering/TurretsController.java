@@ -31,6 +31,7 @@ public class TurretsController implements ILoadingFinishedListener {
         TurretInfo turret = new TurretInfo();
         turret.ship = ship;
         turret.decal = Decal.newDecal(turrets.random(), true);
+        turret.decal.setPosition(1000f, 0f, 0f);
         turret.decal.setScale(0.15f);
         turret.decal.rotateX(90f);
         activeDecals.add(turret);
