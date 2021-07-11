@@ -8,6 +8,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,15 +33,19 @@ public class FragmentPause extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null && args.getBoolean("startGame")) {
-            // startGame bool in bundle means start button was pressed
-            // in level select fragment and we should directly transition
-            // to game fragment
-            NavHostFragment.findNavController(FragmentPause.this)
-                    .navigate(R.id.action_fragmentPause_to_fragmentGame);
-            AstroblazeGame.getInstance().gameScreen.startGame(
-                    args.getInt("level", 1),
-                    args.getInt("ship", 0));
-            AstroblazeGame.getInstance().resumeGame();
+            try {
+                // startGame bool in bundle means start button was pressed
+                // in level select fragment and we should directly transition
+                // to game fragment
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .navigate(R.id.action_fragmentPause_to_fragmentGame);
+                AstroblazeGame.getInstance().gameScreen.startGame(
+                        args.getInt("level", 1),
+                        args.getInt("ship", 0));
+                AstroblazeGame.getInstance().resumeGame();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "onCreate: fragment navigation failed, possibly duplicate call", ex);
+            }
         }
         NavHostFragment.findNavController(FragmentPause.this)
                 .addOnDestinationChangedListener(onDestinationChangedListener);
@@ -65,24 +70,36 @@ public class FragmentPause extends Fragment {
 
         // resume button
         view.findViewById(R.id.backToGame).setOnClickListener(v -> {
-            NavHostFragment.findNavController(FragmentPause.this)
-                    .navigate(R.id.action_fragmentPause_to_fragmentGame);
-            AstroblazeGame.getInstance().resumeGame();
-            AstroblazeGame.getSoundController().playUIPositive();
+            try {
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .navigate(R.id.action_fragmentPause_to_fragmentGame);
+                AstroblazeGame.getInstance().resumeGame();
+                AstroblazeGame.getSoundController().playUIPositive();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "backToGame onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // options button
         view.findViewById(R.id.openOptions).setOnClickListener(v -> {
-            NavHostFragment.findNavController(FragmentPause.this)
-                    .navigate(R.id.action_fragmentPause_to_fragmentOptions);
-            AstroblazeGame.getSoundController().playUIConfirm();
+            try {
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .navigate(R.id.action_fragmentPause_to_fragmentOptions);
+                AstroblazeGame.getSoundController().playUIConfirm();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "openOptions onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // quit button
         view.findViewById(R.id.backToMenu).setOnClickListener(v -> {
-            NavHostFragment.findNavController(FragmentPause.this)
-                    .popBackStack();
-            AstroblazeGame.getSoundController().playUINegative();
+            try {
+                NavHostFragment.findNavController(FragmentPause.this)
+                        .popBackStack();
+                AstroblazeGame.getSoundController().playUINegative();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "backToMenu onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
     }
 }

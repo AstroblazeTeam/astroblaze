@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,23 +93,35 @@ public class FragmentMenu extends Fragment implements IPlayerStateChangedListene
 
         // menu -> level select
         view.findViewById(R.id.btnStart).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIConfirm();
-            NavHostFragment.findNavController(FragmentMenu.this)
-                    .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
+            try {
+                NavHostFragment.findNavController(FragmentMenu.this)
+                        .navigate(R.id.action_fragmentMenu_to_fragmentLevelSelect);
+                AstroblazeGame.getSoundController().playUIConfirm();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "btnStart onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // menu -> hiscores
         view.findViewById(R.id.btnHiscores).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIPositive();
-            NavHostFragment.findNavController(FragmentMenu.this)
-                    .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
+            try {
+                NavHostFragment.findNavController(FragmentMenu.this)
+                        .navigate(R.id.action_fragmentMenu_to_fragmentHiscores);
+                AstroblazeGame.getSoundController().playUIPositive();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "btnHiscores onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // menu -> options
         view.findViewById(R.id.btnOptions).setOnClickListener(v -> {
-            AstroblazeGame.getSoundController().playUIPositive();
-            NavHostFragment.findNavController(FragmentMenu.this)
-                    .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
+            try {
+                NavHostFragment.findNavController(FragmentMenu.this)
+                        .navigate(R.id.action_fragmentMenu_to_fragmentOptions);
+                AstroblazeGame.getSoundController().playUIPositive();
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentMenu", "btnOptions onClick: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // exit button

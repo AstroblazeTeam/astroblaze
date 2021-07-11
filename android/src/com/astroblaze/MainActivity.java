@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -81,7 +82,12 @@ public class MainActivity extends FragmentActivity implements AndroidFragmentApp
                         break;
                 }
             });
-            navController.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
+
+            try {
+                navController.navigate(R.id.action_fragmentLoading_to_fragmentMenu);
+            } catch (IllegalArgumentException ex) {
+                Log.d("MainActivity", "finishedLoadingAssets: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
     }
 }
