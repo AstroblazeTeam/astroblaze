@@ -24,7 +24,7 @@ public class SoundController implements ILoadingFinishedListener {
 
     // player hit shield sfx
     private final Array<Sound> shieldSounds = new Array<>();
-    private final long minIntervalMillisec = 80; // 80 ms min between sound triggers
+    private final long minIntervalMillisec = 200; // 80 ms min between sound triggers
     private long lastShieldSfx;
 
     // laser hum
