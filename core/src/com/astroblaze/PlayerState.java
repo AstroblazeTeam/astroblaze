@@ -264,6 +264,11 @@ public class PlayerState {
     public boolean canBuyUpgrade(PlayerShipVariant variant, UpgradeEntry item) {
         return isShipOwned(variant)
                 && data.money >= item.getUpgradePrice()
+                && canBuyUpgradeIgnoreMoney(variant, item);
+    }
+
+    public boolean canBuyUpgradeIgnoreMoney(PlayerShipVariant variant, UpgradeEntry item) {
+        return isShipOwned(variant)
                 && (item.currentTier < item.maxTier || item.multiplierExtra > 0f);
     }
 

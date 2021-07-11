@@ -1,7 +1,6 @@
 package com.astroblaze;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -35,8 +36,20 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     }
 
     @Override
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        AstroblazeGame.getPlayerState().addPlayerStateChangeListener(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        AstroblazeGame.getPlayerState().removePlayerStateChangeListener(holder);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (delayForAnimation) {
+        if (!holder.firstDraw && delayForAnimation) {
             holder.itemView.postDelayed(() -> updateData(holder, position),
                     RVItemAnimator.firstAnimDuration); // update after the first animation finishes
         } else {
@@ -45,8 +58,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     }
 
     private void updateData(ViewHolder holder, int position) {
-        UpgradeEntry item = items.get(position);
-        boolean canBuy = AstroblazeGame.getPlayerState().canBuyUpgrade(variant, item);
+        final UpgradeEntry item = items.get(position);
+        final boolean canBuyIgnoreMoney = AstroblazeGame.getPlayerState().canBuyUpgradeIgnoreMoney(variant, item);
+        holder.item = item;
+        holder.variant = variant;
+        holder.firstDraw = false;
         String qty;
         if (item.currentTier < item.maxTier) qty = item.currentTier + " / " + item.maxTier;
         else if (item.currentTier == item.maxTier) qty = "MAX";
@@ -74,10 +90,10 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
                 break;
         }
         holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##}%", 100f * item.getCurrentMultiplier()));
-        holder.getTextViewNext().setText(canBuy
+        holder.getTextViewNext().setText(canBuyIgnoreMoney
                 ? MessageFormat.format("+{0,number,#.##}%", 100f * item.getNextMultiplier())
                 : "-");
-        holder.getTextViewPrice().setText(canBuy
+        holder.getTextViewPrice().setText(canBuyIgnoreMoney
                 ? MessageFormat.format("${0,number,#.##}", item.getUpgradePrice())
                 : "-");
         holder.getBtnBuy().setOnClickListener(v -> {
@@ -87,7 +103,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
 
             ShopItemsAdapter.this.notifyItemChanged(position);
         });
-        holder.getBtnBuy().setEnabled(canBuy);
+        holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState().canBuyUpgrade(variant, item));
     }
 
     @Override
@@ -95,12 +111,16 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
         return items.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements IPlayerStateChangedListener {
         private final TextView tvName;
         private final TextView tvCurrent;
         private final TextView tvUpgrade;
         private final TextView tvPrice;
         private final Button btnBuy;
+
+        public PlayerShipVariant variant;
+        public UpgradeEntry item;
+        public boolean firstDraw = true;
 
         // needs separate flag because setClickable() isn't usable due to weird android shenanigans
         // https://stackoverflow.com/questions/18825747/button-setclickablefalse-is-not-working
@@ -134,6 +154,11 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
 
         public TextView getTextViewPrice() {
             return tvPrice;
+        }
+
+        @Override
+        public void onStateChanged(PlayerState state) {
+            getBtnBuy().setEnabled(AstroblazeGame.getPlayerState().canBuyUpgrade(variant, item));
         }
     }
 }
