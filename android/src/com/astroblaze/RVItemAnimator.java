@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import kotlin.Triple;
 
 public class RVItemAnimator extends DefaultItemAnimator {
+    public static final long firstAnimDuration = 400;
+
     private final AccelerateInterpolator accelInterpolator = new AccelerateInterpolator(2f);
     private final DecelerateInterpolator decelInterpolator = new DecelerateInterpolator(2f);
     private final ArrayMap<RecyclerView.ViewHolder, Triple<Animator, ValueAnimator, ValueAnimator>> animations = new ArrayMap<>();
@@ -48,7 +50,7 @@ public class RVItemAnimator extends DefaultItemAnimator {
         if (animInfo == null || half) {
             firstAnimator = ValueAnimator.ofFloat(0f, 1f);
             firstAnimator.setInterpolator(accelInterpolator);
-            firstAnimator.setDuration(400);
+            firstAnimator.setDuration(firstAnimDuration);
             firstAnimator.addUpdateListener(animation -> {
                 if (itemView.getContext() == null) {
                     return; // fragment is detached, abort
@@ -88,10 +90,12 @@ public class RVItemAnimator extends DefaultItemAnimator {
             @Override
             public void onAnimationStart(@NonNull final Animator animation) {
                 itemView.setTranslationZ(1);
+                ((ShopItemsAdapter.ViewHolder)newHolder).currentlyAnimating = true;
             }
 
             @Override
             public void onAnimationEnd(@NonNull final Animator animation) {
+                ((ShopItemsAdapter.ViewHolder)newHolder).currentlyAnimating = false;
                 itemView.setTranslationZ(0);
                 dispatchAnimationFinished(newHolder);
                 animations.remove(newHolder);

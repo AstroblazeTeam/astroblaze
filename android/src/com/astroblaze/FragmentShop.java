@@ -2,6 +2,7 @@ package com.astroblaze;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +86,8 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         ArrayList<PlayerShipVariant> variants = state.getUnlockedShips();
 
         PlayerShipVariant v = variants.get(variants.indexOf(variant));
+        int slideTime = requireContext().getResources().getInteger(R.integer.anim_slide);
+        int fadeTime = requireContext().getResources().getInteger(R.integer.anim_fade);
 
         rvShopItems = view.findViewById(R.id.rvShopItems);
         rvShopItems.setLayoutManager(new LinearLayoutManager(rvShopItems.getContext()));
@@ -93,7 +96,15 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         view.postDelayed(() -> {
             rvShopItems.setAdapter(new ShopItemsAdapter(variant, getContext(), state.getUpgrades(v.id)));
             rvShopItems.scheduleLayoutAnimation();
-        }, requireContext().getResources().getInteger(R.integer.anim_slide)); // wait until fragment slides in
+            rvShopItems.postDelayed(() -> {
+                RecyclerView.Adapter<?> adapter = rvShopItems.getAdapter();
+                if (adapter instanceof ShopItemsAdapter) {
+                    ((ShopItemsAdapter) adapter).delayForAnimation = true;
+                } else {
+                    Log.e("FragmentShop", "Adapter wasn't a ShopItemsAdapter");
+                }
+            }, fadeTime); // wait until fragment finishes sliding and fading in
+        }, slideTime); // wait until fragment slides in
     }
 
     @Override
