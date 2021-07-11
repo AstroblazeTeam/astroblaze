@@ -24,8 +24,6 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     private ShipPreviewActor preview;
     private ViewPager2 pagerLevels;
     private ViewPager2 pagerShips;
-    private TextView tvShipSwipeLeft;
-    private TextView tvShipSwipeRight;
     private Button btnPlay;
     private float prevShipSliderPosition = 0f;
     private final ViewPager2.OnPageChangeCallback soundCallback = new ViewPager2.OnPageChangeCallback() {
@@ -60,8 +58,8 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             AstroblazeGame.getSoundController().playUIConfirm();
 
             try {
-            NavHostFragment.findNavController(FragmentLevelSelect.this)
-                    .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
+                NavHostFragment.findNavController(FragmentLevelSelect.this)
+                        .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
             } catch (IllegalArgumentException ex) {
                 Log.d("FragmentLevelSelect", "btnPlay click: fragment navigation failed, possibly duplicate event", ex);
             }
@@ -73,9 +71,6 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .popBackStack();
         });
-
-        tvShipSwipeLeft = view.findViewById(R.id.tvShipLeft);
-        tvShipSwipeRight = view.findViewById(R.id.tvShipRight);
 
         pagerLevels = view.findViewById(R.id.pagerLevels);
         pagerShips = view.findViewById(R.id.pagerShips);
@@ -102,9 +97,6 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     }
 
     public void refreshShipSwipeButtons(int position) {
-        tvShipSwipeLeft.setVisibility(position >= 1 ? View.VISIBLE : View.INVISIBLE);
-        tvShipSwipeRight.setVisibility(position < ShipPreviewActor.getVariantCount() - 1
-                ? View.VISIBLE : View.INVISIBLE);
         PlayerShipVariant variant = PlayerShipVariant.values()[position];
         btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipOwned(variant));
     }

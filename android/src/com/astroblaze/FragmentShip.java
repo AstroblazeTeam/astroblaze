@@ -15,16 +15,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.astroblaze.GdxActors.ShipPreviewActor;
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import java.text.DecimalFormat;
 
 public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
     private Button btnAction;
-    private long lastStateChange = 0; // timer to prevent flood of events
+    private TextView tvShipSwipeLeft;
+    private TextView tvShipSwipeLabel;
+    private TextView tvShipSwipeRight;
+    private TextView tvDescription;
+    private TextView tvStats;
 
     public FragmentShip() {
         this(PlayerShipVariant.Shuttle);
@@ -46,6 +50,12 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     @Override
     public void onViewCreated(@NonNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvDescription = view.findViewById(R.id.tvShipDescription);
+        tvStats = view.findViewById(R.id.tvShipStats);
+        btnAction = view.findViewById(R.id.btnAction);
+        tvShipSwipeLeft = view.findViewById(R.id.tvShipLeft);
+        tvShipSwipeLabel = view.findViewById(R.id.tvShipSwipe);
+        tvShipSwipeRight = view.findViewById(R.id.tvShipRight);
         resetText(AstroblazeGame.getPlayerState());
     }
 
@@ -64,26 +74,16 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
     // lint suppressed so we can concat variant name to description
     @android.annotation.SuppressLint("SetTextI18n")
     private void resetText(PlayerState state) {
-        // next block stops the post() from flooding the UI with redraws
-        // all the FragmentShips for some reason don't get onPause event
-        // delivered when the ViewPager2 goes off screen, also ViewPager2
-        // doesn't have api to get current item to unregister the events
-        // so the workaround is to simply throttle state updates as they
-        // reach the UI, otherwise there's a freeze going from LevelComplete
-        // to LevelSelect fragment when finishing a level
-        long minStateChangeInterval = 50;
-        if (TimeUtils.timeSinceMillis(lastStateChange) < minStateChangeInterval) {
-            return;
-        }
-        lastStateChange = TimeUtils.millis();
-
         if (getContext() == null) {
             return; // too early in the lifecycle
         }
 
-        TextView tvDescription = requireView().findViewById(R.id.tvShipDescription);
-        TextView tvStats = requireView().findViewById(R.id.tvShipStats);
-        btnAction = requireView().findViewById(R.id.btnAction);
+        boolean canSwipeLeft = variant.id > 0;
+        boolean canSwipeRight = variant.id < ShipPreviewActor.getVariantCount() - 1;
+
+        tvShipSwipeLeft.setVisibility(canSwipeLeft ? View.VISIBLE : View.INVISIBLE);
+        tvShipSwipeLabel.setVisibility(canSwipeLeft || canSwipeRight ? View.VISIBLE : View.INVISIBLE);
+        tvShipSwipeRight.setVisibility(canSwipeRight ? View.VISIBLE : View.INVISIBLE);
 
         tvDescription.setText(getString(R.string.ship0 + variant.id) + "\n" + getString(R.string.shipDesc0 + variant.id));
         String hpText = getString(R.string.shipStatHp, variant.getMaxHp(state));
@@ -129,8 +129,8 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
                 AstroblazeGame.getSoundController().playUIConfirm();
 
                 try {
-                NavHostFragment.findNavController(parentFragment)
-                        .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
+                    NavHostFragment.findNavController(parentFragment)
+                            .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
                 } catch (IllegalArgumentException ex) {
                     Log.d("FragmentShip", "btnAction click: fragment navigation failed, possibly duplicate event", ex);
                 }

@@ -18,9 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class FragmentLevel extends Fragment implements IPlayerStateChangedListener {
-    public boolean canSwipeLeft;
-    public boolean canSwipeRight;
-
     private final int level;
     private TextView tvLevelDescription;
     private TextView tvLevelSwipeLeft;
@@ -69,12 +66,16 @@ public class FragmentLevel extends Fragment implements IPlayerStateChangedListen
     }
 
     private void resetText(TextView tv) {
-        canSwipeLeft = level > 0;
-        canSwipeRight = level < AstroblazeGame.getPlayerState().getMaxLevel();
+        if (getContext() == null) {
+            return; // too early in the lifecycle
+        }
+
+        boolean canSwipeLeft = level > 0;
+        boolean canSwipeRight = level < AstroblazeGame.getPlayerState().getMaxLevel();
 
         tvLevelSwipeLeft.setVisibility(canSwipeLeft ? View.VISIBLE : View.INVISIBLE);
-        tvLevelSwipeRight.setVisibility(canSwipeRight ? View.VISIBLE : View.INVISIBLE);
         tvLevelSwipeLabel.setVisibility(canSwipeLeft || canSwipeRight ? View.VISIBLE : View.INVISIBLE);
+        tvLevelSwipeRight.setVisibility(canSwipeRight ? View.VISIBLE : View.INVISIBLE);
 
         String pirateName = getString(R.string.pirate0 + (level % 44)); // 44 pirate names in pool
         Random rng = new Random(AstroblazeGame.getPlayerState().getSeed());
