@@ -160,7 +160,7 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
 
     @Override
     public void render(ModelBatch batch, Environment environment) {
-        if (visible && modelInstance != null) {
+        if (modelInstance != null) {
             modelInstance.materials.get(0).set(ColorAttribute.createDiffuse(getTintColor()));
         }
 

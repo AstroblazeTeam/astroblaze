@@ -205,6 +205,15 @@ public class PlayerShip extends SpaceShip {
     }
 
     @Override
+    public Color getTintColor() {
+        if (godModeTimer <= 0f || (((int) (godModeTimer * 8f)) % 2 == 0)) {
+            return super.getTintColor();
+        } else {
+            return super.getTintColor().mul(0.25f);
+        }
+    }
+
+    @Override
     public void act(float delta) {
         super.act(delta);
 
@@ -240,7 +249,6 @@ public class PlayerShip extends SpaceShip {
 
         // handle temporary godmode after respawn
         godModeTimer -= delta;
-        visible = godModeTimer <= 0f || (((int) (godModeTimer * 8f)) % 2 == 0);
 
         // handle destroy explosions animation
         if (isDying) {
