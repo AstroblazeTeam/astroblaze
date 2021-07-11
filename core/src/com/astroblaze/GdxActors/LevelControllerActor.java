@@ -48,13 +48,12 @@ public class LevelControllerActor extends Actor {
     }
 
     public void runTutorial() {
-        final PlayerShip player = scene.getPlayer();
         this.addAction(Actions.sequence(
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        player.modLaserTime(-player.getLaserTime());
-                        player.modMissileSalvos(-player.getMissileSalvos());
+                        scene.getPlayer().modLaserTime(-scene.getPlayer().getLaserTime());
+                        scene.getPlayer().modMissileSalvos(-scene.getPlayer().getMissileSalvos());
                     }
                 },
                 delay(0.5f),
@@ -68,27 +67,27 @@ public class LevelControllerActor extends Actor {
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        player.modMissileSalvos(8);
+                        scene.getPlayer().modMissileSalvos(8);
                     }
                 },
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        return player.getMissileSalvos() <= 0;
+                        return scene.getPlayer().getMissileSalvos() <= 0;
                     }
                 },
                 showText(TranslatedStringId.TutorialUseButtonToFireLasers),
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        player.modLaserTime(-player.getLaserTime());
-                        player.modLaserTime(3f);
+                        scene.getPlayer().modLaserTime(-scene.getPlayer().getLaserTime());
+                        scene.getPlayer().modLaserTime(3f);
                     }
                 },
                 new Action() {
                     @Override
                     public boolean act(float delta) {
-                        return player.getLaserTime() <= 0f;
+                        return scene.getPlayer().getLaserTime() <= 0f;
                     }
                 },
                 showText(TranslatedStringId.TutorialBonusCash),
@@ -97,7 +96,7 @@ public class LevelControllerActor extends Actor {
                 new RunnableAction() {
                     @Override
                     public void run() {
-                        player.modHp(-0.5f * player.getHitpoints());
+                        scene.getPlayer().modHp(-0.5f * scene.getPlayer().getHitpoints());
                     }
                 },
                 spawnBonusAndWaitPickup(new PlayerBonusShieldRestore()),
