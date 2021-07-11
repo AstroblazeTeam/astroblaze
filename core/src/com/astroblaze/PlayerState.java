@@ -319,7 +319,7 @@ public class PlayerState {
     }
 
     private void reportStateChanged() {
-        debouncer.debounce(PlayerState.class, stateChangedUpdaterRunnable, 100, TimeUnit.MILLISECONDS);
+        debouncer.debounce(PlayerState.class, stateChangedUpdaterRunnable, 250, TimeUnit.MILLISECONDS);
     }
 
     public void addPlayerStateChangeListener(IPlayerStateChangedListener listener) {
