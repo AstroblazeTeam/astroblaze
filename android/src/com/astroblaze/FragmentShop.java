@@ -74,7 +74,7 @@ public class FragmentShop extends Fragment implements IPlayerStateChangedListene
         moneyAnimator.setDuration(1500); // animate over 1.5 secs
         moneyAnimator.addUpdateListener(valueAnimator
                 -> {
-            if (moneyDisplay.getContext() != null) {
+            if (FragmentShop.this.getContext() != null) {
                 moneyDisplay.setText(getString(R.string.moneyPrint, (int) valueAnimator.getAnimatedValue()));
             }
         });
