@@ -3,6 +3,7 @@ package com.astroblaze;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,8 +128,12 @@ public class FragmentShip extends Fragment implements IPlayerStateChangedListene
 
                 AstroblazeGame.getSoundController().playUIConfirm();
 
+                try {
                 NavHostFragment.findNavController(parentFragment)
                         .navigate(R.id.action_fragmentLevelSelect_to_shopFragment, bundle);
+                } catch (IllegalArgumentException ex) {
+                    Log.d("FragmentShip", "btnAction click: fragment navigation failed, possibly duplicate event", ex);
+                }
             });
         }
     }

@@ -1,6 +1,7 @@
 package com.astroblaze;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +59,12 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
             AstroblazeGame.getSoundController().playUIConfirm();
 
+            try {
             NavHostFragment.findNavController(FragmentLevelSelect.this)
                     .navigate(R.id.action_fragmentLevelSelect_to_fragmentPause, bundle);
+            } catch (IllegalArgumentException ex) {
+                Log.d("FragmentLevelSelect", "btnPlay click: fragment navigation failed, possibly duplicate event", ex);
+            }
         });
 
         // back button
