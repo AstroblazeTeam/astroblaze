@@ -253,10 +253,10 @@ public class PlayerState {
     }
 
     private void fillUpgrades(ArrayList<UpgradeEntry> u) {
-        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, 0, 5, 0.1f, 3000f, 0.01f, 10000f));
-        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.DamageUpgrade, 0, 5, 0.1f, 5000f, 0.01f, 10000f));
-        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, 0, 5, 0.1f, 10000f, 0.01f, 10000f));
-        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.TurretSpeed, 0, 8, 0.25f, 10000f, 0.01f, 10000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.ShieldUpgrade, 0, 5, 0.1f, 3000f, 0.1f, 100000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.DamageUpgrade, 0, 5, 0.1f, 5000f, 0.1f, 100000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.SpeedUpgrade, 0, 5, 0.1f, 10000f, 0.1f, 100000f));
+        fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.TurretSpeed, 0, 8, 0.25f, 10000f, 0.1f, 100000f));
         fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.LaserCapacity, 0, 8, 0.25f, 10000f, 0f, 0f));
         fixUpgrades(u, new UpgradeEntry(UpgradeEntryType.MaxMissiles, 0, 8, 0.25f, 10000f, 0f, 0f));
     }
