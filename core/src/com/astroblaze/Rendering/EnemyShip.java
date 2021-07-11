@@ -47,15 +47,6 @@ public class EnemyShip extends SpaceShip implements ICollisionProvider {
     }
 
     @Override
-    public void hide(Scene3D scene) {
-        super.hide(scene);
-        for (DecalController.DecalInfo d : exhaustDecals) {
-            d.life = 0f;
-        }
-        exhaustDecals.clear();
-    }
-
-    @Override
     public float getMaxHitpoints() {
         int level = AstroblazeGame.getLevelController() != null
                 ? AstroblazeGame.getLevelController().getLevel()

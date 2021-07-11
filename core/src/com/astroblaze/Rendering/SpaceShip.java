@@ -42,6 +42,10 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
     public void hide(Scene3D scene) {
         super.hide(scene);
         scene.getTurretsController().removeTurrets(this);
+        for (DecalController.DecalInfo d : exhaustDecals) {
+            d.life = 0f;
+        }
+        exhaustDecals.clear();
     }
 
     public float getHitpoints() {

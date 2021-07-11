@@ -62,15 +62,6 @@ public class PlayerShip extends SpaceShip {
         scene.getTurretsController().addTurret(this);
     }
 
-    @Override
-    public void hide(Scene3D scene) {
-        super.hide(scene);
-        for (DecalController.DecalInfo d : exhaustDecals) {
-            d.life = 0f;
-        }
-        exhaustDecals.clear();
-    }
-
     public float getRadius() {
         return shipVariant.modelScale * 0.4f;
     }
