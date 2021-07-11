@@ -27,6 +27,7 @@ public class SoundController implements ILoadingFinishedListener {
     private final long minIntervalMillisec = 50; // min millisec between sfx triggers
     private long lastShieldSfx;
     private long lastBonusSfx;
+    private long lastExplosionSfx;
 
     // laser hum
     private Sound laserSound;
@@ -60,6 +61,10 @@ public class SoundController implements ILoadingFinishedListener {
     }
 
     public void playExplosionSound() {
+        if (TimeUtils.timeSinceMillis(lastExplosionSfx) < minIntervalMillisec) {
+            return;
+        }
+        lastExplosionSfx = TimeUtils.millis();
         soundExplosion.stop();
         playSfxSound(soundExplosion);
     }

@@ -1,6 +1,7 @@
 package com.astroblaze;
 
 import com.astroblaze.Interfaces.*;
+import com.astroblaze.Utils.Debouncer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
@@ -14,6 +15,15 @@ public class PlayerState {
     private final transient ArrayList<IPlayerStateChangedListener> playerStateChangeListeners = new ArrayList<>(4);
     private final transient static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private PlayerStateData data = new PlayerStateData();
+    private final Debouncer debouncer = new Debouncer();
+    private final Runnable stateChangedUpdaterRunnable = new Runnable() {
+        @Override
+        public void run() {
+            for (IPlayerStateChangedListener listener : playerStateChangeListeners) {
+                listener.onStateChanged(PlayerState.this);
+            }
+        }
+    };
 
     private static class PlayerStateData {
         public String id = UUID.randomUUID().toString();
@@ -311,9 +321,7 @@ public class PlayerState {
     }
 
     private void reportStateChanged() {
-        for (IPlayerStateChangedListener listener : playerStateChangeListeners) {
-            listener.onStateChanged(this);
-        }
+        debouncer.debounce(PlayerState.class, stateChangedUpdaterRunnable, 100, TimeUnit.MILLISECONDS);
     }
 
     public void addPlayerStateChangeListener(IPlayerStateChangedListener listener) {
