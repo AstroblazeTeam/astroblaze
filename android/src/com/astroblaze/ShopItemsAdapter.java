@@ -36,6 +36,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UpgradeEntry item = items.get(position);
+        boolean canBuy = AstroblazeGame.getPlayerState().canBuyUpgrade(variant, item);
         String qty;
         if (item.currentTier < item.maxTier) qty = item.currentTier + " / " + item.maxTier;
         else if (item.currentTier == item.maxTier) qty = "MAX";
@@ -63,8 +64,12 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
                 break;
         }
         holder.getTextViewCurrent().setText(MessageFormat.format("{0,number,#.##}%", 100f * item.getCurrentMultiplier()));
-        holder.getTextViewNext().setText(MessageFormat.format("+{0,number,#.##}%", 100 * item.getNextMultiplier()));
-        holder.getTextViewPrice().setText(MessageFormat.format("${0,number,#.##}", item.getUpgradePrice()));
+        holder.getTextViewNext().setText(canBuy
+                ? MessageFormat.format("+{0,number,#.##}%", 100 * item.getNextMultiplier())
+                : "-");
+        holder.getTextViewPrice().setText(canBuy
+                ? MessageFormat.format("${0,number,#.##}", item.getUpgradePrice())
+                : "-");
         holder.getBtnBuy().setOnClickListener(v -> {
             if (!AstroblazeGame.getPlayerState().buyUpgrade(variant, item)) {
                 return;
@@ -75,8 +80,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.View
             holder.getTextViewCurrent().postDelayed(()
                     -> ShopItemsAdapter.this.notifyItemChanged(position), 10);
         });
-        holder.getBtnBuy().setEnabled(AstroblazeGame.getPlayerState()
-                .canBuyUpgrade(variant, item));
+        holder.getBtnBuy().setEnabled(canBuy);
     }
 
     @Override
