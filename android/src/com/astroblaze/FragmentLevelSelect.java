@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,7 +87,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                FragmentLevelSelect.this.refreshShipSwipeButtons(position);
+                FragmentLevelSelect.this.refreshPlayButtonAvailability(position);
             }
         });
 
@@ -96,7 +95,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
         pagerShips.setAdapter(new ShipsPagerAdapter(requireParentFragment()));
     }
 
-    public void refreshShipSwipeButtons(int position) {
+    public void refreshPlayButtonAvailability(int position) {
         PlayerShipVariant variant = PlayerShipVariant.values()[position];
         btnPlay.setEnabled(AstroblazeGame.getPlayerState().isShipOwned(variant));
     }
@@ -147,7 +146,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
     @Override
     public void onStateChanged(PlayerState state) {
         pagerLevels.post(() -> {
-            refreshShipSwipeButtons(pagerShips.getCurrentItem());
+            refreshPlayButtonAvailability(pagerShips.getCurrentItem());
         });
     }
 
