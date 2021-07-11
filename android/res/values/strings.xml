@@ -5,6 +5,7 @@
     <string name="start">Start</string>
     <string name="hiscores">Hiscores</string>
     <string name="options">Options</string>
+    <string name="pause" translatable="false">Pause</string>
     <string name="exit">Exit</string>
     <string name="sound_volume">Sound</string>
     <string name="sound_perc" translatable="false">%1$d%%</string>
