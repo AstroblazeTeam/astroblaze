@@ -6,6 +6,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+// debounce implementation by simon04
+// https://stackoverflow.com/a/38296055/2687978
 public class Debouncer {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final ConcurrentHashMap<Object, Future<?>> delayedMap = new ConcurrentHashMap<>();
