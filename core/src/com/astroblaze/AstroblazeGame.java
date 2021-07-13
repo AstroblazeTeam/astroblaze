@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.ArrayList;
@@ -283,15 +282,6 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         }
     }
 
-    public void renderText(int idx, String txt) {
-        if (guiRenderer == null) {
-            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
-            return;
-        }
-        guiRenderer.renderText(idx, txt, 24f,
-                Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f);
-    }
-
     public void renderText(int idx, String txt, float x, float y) {
         if (guiRenderer == null) {
             Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
@@ -300,30 +290,13 @@ public class AstroblazeGame extends Game implements ILoadingFinishedListener {
         guiRenderer.renderText(idx, txt, 24f, x, Gdx.graphics.getHeight() - y);
     }
 
-    public void renderTextAt(int idx, String txt, Renderable renderable) {
-        if (guiRenderer == null) {
-            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
-            return;
-        }
-        renderTextAt(idx, txt, renderable, 0f, 0f);
-    }
-
-    public void renderTextAt(int idx, String txt, Renderable renderable, float offsetX, float offsetY) {
-        if (guiRenderer == null || scene.getCamera() == null || renderable == null) {
-            Gdx.app.log("AstroblazeGame", "renderTextAt with null reference, too early?");
-            return;
-        }
-        Vector3 screenPos = scene.getCamera().project(renderable.getPosition().cpy());
-        guiRenderer.renderText(idx, txt, 24f,
-                screenPos.x + offsetX, Gdx.graphics.getHeight() - screenPos.y + offsetY);
-    }
-
     @Override
     public void dispose() {
         if (frameBuffer != null)
             frameBuffer.dispose();
         assets.dispose();
         instance = null;
+        gameScreen.dispose();
         batch.dispose();
     }
 }

@@ -145,9 +145,7 @@ public class FragmentLevelSelect extends Fragment implements IPlayerStateChanged
 
     @Override
     public void onStateChanged(PlayerState state) {
-        pagerLevels.post(() -> {
-            refreshPlayButtonAvailability(pagerShips.getCurrentItem());
-        });
+        pagerLevels.post(() -> refreshPlayButtonAvailability(pagerShips.getCurrentItem()));
     }
 
     private static class LevelsPagerAdapter extends FragmentStateAdapter {

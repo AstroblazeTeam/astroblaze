@@ -64,6 +64,8 @@ public class DecalController {
         info.life = 5f;
         info.radiusSquared = 1f;
         info.collisionDamage = damage;
+        // axis x, z are the correct ones
+        //noinspection SuspiciousNameCombination
         info.angle = MathUtils.atan2(velocity.x, velocity.z) * MathUtils.radiansToDegrees;
         return info;
     }

@@ -77,14 +77,6 @@ public class FragmentHUD extends Fragment implements IGUIRenderer {
     }
 
     @Override
-    public void renderText(int id, int textId, float fontSize, float x, float y) {
-        Gdx.app.log("FragmentRender", "renderText(" + id + ", '" + textId + "', " +
-                fontSize + ", " + x + ", " + y);
-
-        renderText(id, getString(textId), fontSize, x, y);
-    }
-
-    @Override
     public String getTranslatedString(TranslatedStringId id) {
         switch (id) {
             case LevelStartReady:

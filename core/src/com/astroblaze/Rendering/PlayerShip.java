@@ -17,7 +17,6 @@ public class PlayerShip extends SpaceShip {
     private final float missileInterval = 1f / 8f;
     private final float deathTimerMax = 5f;
     private final float destroyExplosionInterval = 0.1f;
-    private final int defaultMissileSalvos = 8;
 
     private float missileClock;
     private float moveSpeed;

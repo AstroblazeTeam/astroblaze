@@ -2,7 +2,6 @@ package com.astroblaze.GdxActors;
 
 import com.astroblaze.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -12,20 +11,11 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 public class FadeOverlayActor {
     private final ShaderProgram shader;
-    private final Camera camera;
-    private Mesh mesh;
+    private final Mesh mesh;
 
-    public FadeOverlayActor(Camera camera) {
-        this.camera = camera;
+    public FadeOverlayActor() {
         this.shader = Assets.asset(Assets.fadeShader);
         this.mesh = makeMesh();
-    }
-
-    public void remakeMesh() {
-        if (mesh != null) {
-            mesh.dispose();
-        }
-        mesh = makeMesh();
     }
 
     private Mesh makeMesh() {

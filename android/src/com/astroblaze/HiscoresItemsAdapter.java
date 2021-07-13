@@ -1,21 +1,15 @@
 package com.astroblaze;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdapter.ViewHolder> {

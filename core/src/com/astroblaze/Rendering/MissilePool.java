@@ -18,7 +18,7 @@ public class MissilePool extends Pool<Missile> {
         return this.activeMissiles;
     }
 
-    public MissilePool(Scene3D scene) {
+    public MissilePool() {
         super(64, 512);
     }
 

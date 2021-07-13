@@ -26,6 +26,7 @@ public class Assets extends AssetManager implements ILoadingFinishedListener {
     public final static AssetDescriptor<Skin> uiSkin = new AssetDescriptor<>("ui/clean-crispy-ui.json", Skin.class);
     public final static AssetDescriptor<Texture> logo = new AssetDescriptor<>("logo.png", Texture.class);
     public final static AssetDescriptor<Music> musicUI = new AssetDescriptor<>("music/ui.ogg", Music.class);
+
     public final static AssetDescriptor<Music> musicLevel1 = new AssetDescriptor<>("music/level1.ogg", Music.class);
     public final static AssetDescriptor<Music> musicLevel2 = new AssetDescriptor<>("music/level2.ogg", Music.class);
     public final static AssetDescriptor<Music> musicLevel3 = new AssetDescriptor<>("music/level3.ogg", Music.class);

@@ -57,7 +57,7 @@ public class Scene3D implements ILoadingFinishedListener {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
         particlePool = new ParticlePool(particles);
-        missilePool = new MissilePool(this);
+        missilePool = new MissilePool();
         enemyPool = new EnemyPool(this);
 
         PointSpriteParticleBatch batch = new PointSpriteParticleBatch(1024);

@@ -119,6 +119,7 @@ public abstract class SpaceShip extends Renderable implements ITargetable {
 
         final Vector3 targetPos = t.estimatePosition(distance / getTurretBulletSpeed());
         final Vector3 dir = new Vector3(targetPos.cpy().sub(position).nor());
+        // axis x, z are the correct ones
         //noinspection SuspiciousNameCombination
         final float angle = MathUtils.atan2(dir.x, dir.z) * MathUtils.radiansToDegrees;
         if (Float.isNaN(angle) || Float.isInfinite(angle)) {

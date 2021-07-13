@@ -64,10 +64,16 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
+    public void dispose() {
+        super.dispose();
+        scene.dispose();
+    }
+
+    @Override
     public void show() {
         this.scene = game.getScene();
 
-        fadeOverlayActor = new FadeOverlayActor(scene.getCamera());
+        fadeOverlayActor = new FadeOverlayActor();
 
         healthBarActor = new HealthBarActor(scene);
         healthBarActor.setVisible(false);

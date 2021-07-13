@@ -16,7 +16,6 @@ import com.astroblaze.GdxActors.LevelControllerActor;
 import com.astroblaze.Rendering.EnemyType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.ViewHolder> {

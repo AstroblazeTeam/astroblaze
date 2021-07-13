@@ -21,11 +21,6 @@ public class CameraController extends PerspectiveCamera {
         state = AstroblazeGame.getPlayerState();
     }
 
-    public CameraController(float fieldOfViewY, float viewportWidth, float viewportHeight) {
-        super(fieldOfViewY, viewportWidth, viewportHeight);
-        state = AstroblazeGame.getPlayerState();
-    }
-
     public void shake() {
         shake(1f);
     }

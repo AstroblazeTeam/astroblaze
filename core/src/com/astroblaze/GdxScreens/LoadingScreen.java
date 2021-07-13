@@ -1,7 +1,6 @@
 package com.astroblaze.GdxScreens;
 
 import com.astroblaze.*;
-import com.astroblaze.Utils.MathHelper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;

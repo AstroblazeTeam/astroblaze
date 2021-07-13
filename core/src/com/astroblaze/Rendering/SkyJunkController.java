@@ -3,7 +3,6 @@ package com.astroblaze.Rendering;
 import com.astroblaze.Assets;
 import com.astroblaze.AstroblazeGame;
 import com.astroblaze.Interfaces.ILoadingFinishedListener;
-import com.astroblaze.Utils.WeightedCollection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -20,7 +19,6 @@ public class SkyJunkController implements ILoadingFinishedListener {
     private final int starCount = 512;
     private final Array<JunkInfo> activeDecals = new Array<>(1024);
     private final Array<TextureAtlas.AtlasRegion> stars = new Array<>(8);
-    private final WeightedCollection<TextureAtlas.AtlasRegion> junkDistribution = new WeightedCollection<>();
     private final Scene3D scene;
     private final DecalController decalsController;
 
