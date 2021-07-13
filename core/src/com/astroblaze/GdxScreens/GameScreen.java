@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * This is the main screen for LibGDX, this mostly deals with Actors and
+ * the start/stop game animation sequence
+ */
 public class GameScreen extends ScreenAdapter {
     private final AstroblazeGame game;
     private final Stage stage;

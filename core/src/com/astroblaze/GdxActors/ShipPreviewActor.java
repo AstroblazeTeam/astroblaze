@@ -15,6 +15,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
 
+/**
+ * This Actor provides a ship model render so that the Android UI can showcase it on
+ * FragmentLevelSelect screen
+ */
 public class ShipPreviewActor extends Actor {
     public static final int VARIANT_COUNT = PlayerShipVariant.values().length;
 

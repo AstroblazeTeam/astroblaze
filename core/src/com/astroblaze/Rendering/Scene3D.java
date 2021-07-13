@@ -23,6 +23,12 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the game 'world', this tracks all active entities,
+ * contains all the secondary controllers, provides rudimentary 'physics'
+ * of sorts ( mostly spherical collision logic )
+ * Also hosts the main 3D render sequence in render()
+ */
 public class Scene3D implements ILoadingFinishedListener {
     private final ArrayList<SceneActor> actors = new ArrayList<>(1024);
     private final ArrayList<SceneActor> addActors = new ArrayList<>(64);

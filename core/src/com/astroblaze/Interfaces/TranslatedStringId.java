@@ -1,5 +1,9 @@
 package com.astroblaze.Interfaces;
 
+/**
+ * This provides an interface for localizated strings to be
+ * fetched from android part of the project via IGUIRenderer
+ */
 public enum TranslatedStringId {
     Invalid,
     LevelStartReady,

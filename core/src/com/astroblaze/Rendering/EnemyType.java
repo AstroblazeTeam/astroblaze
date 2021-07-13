@@ -4,6 +4,10 @@ import com.astroblaze.*;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g3d.Model;
 
+/**
+ * Represents the set of possible enemies in the game, their parameters, models
+ * and their scaling according to current played level.
+ */
 public enum EnemyType {
     Simple(Assets.spaceShipAssets.get(4), 15f, 100f, 200f, 2f, 2, 3f, 1f, 60f, 0, 2.5f, 1 / 3f, 50f, 0f, 30f), // simple forward shooting enemy
     TrainingDummy(Assets.spaceShipAssets.get(4), 15f, 300f, 500f, 0f, 0, 3f, 1f, 30f, 0, 2.5f, 1 / 3f, 50f, 0f, 0f), // simple training dummy for tutorial

@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Actor to draw debug stuff on screen
+ * This actor is turned off in non-debuggable builds
+ */
 public class DebugTextActor extends Actor {
     private final BitmapFont font = new BitmapFont();
     private final GlyphLayout layout = new GlyphLayout();

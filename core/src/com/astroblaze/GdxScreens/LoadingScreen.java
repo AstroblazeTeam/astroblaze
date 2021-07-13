@@ -14,6 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+/**
+ * This is the loading screen, it shows splash screen and progress bar at startup.
+ * Once loaded it is disposed of and no longer relevant
+ */
 public class LoadingScreen extends ScreenAdapter {
     private final AstroblazeGame game;
     private final float lerpSpeed = 5f;

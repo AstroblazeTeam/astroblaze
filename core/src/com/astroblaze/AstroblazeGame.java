@@ -18,6 +18,11 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.ArrayList;
 
+/**
+ * This class is the LibGDX Game class that provides main game loop
+ * It is also a "glue" singleton class you can use to reach controllers,
+ * screens, display text in Android part of the project etc.
+ */
 public class AstroblazeGame extends Game implements ILoadingFinishedListener {
     public GameScreen gameScreen;
     public LoadingScreen loadingScreen;

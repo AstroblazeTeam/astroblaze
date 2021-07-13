@@ -4,6 +4,10 @@ import com.astroblaze.Rendering.EnemyType;
 
 import java.util.HashMap;
 
+/**
+ * This class tracks the current level stats, at the end of the level these stats are displayed
+ * in level completion screen and reset to zeroes.
+ */
 public class LevelStatTracker {
     private final PlayerState state;
     private final HashMap<EnemyType, Integer> killsMap = new HashMap<>(64);

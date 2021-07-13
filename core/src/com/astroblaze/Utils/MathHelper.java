@@ -3,6 +3,9 @@ package com.astroblaze.Utils;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * This class provides some simple math methods used throughout the project
+ */
 public class MathHelper {
     public static float repeat(float x, float max) {
         return MathUtils.clamp(x - MathUtils.floor(x / max) * max, 0f, max);

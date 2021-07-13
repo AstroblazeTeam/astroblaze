@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+/**
+ * This actor draws the player's health bar
+ */
 public class HealthBarActor extends Actor implements IUIChangeListener {
     private final float hpWidth = 4f; // width of hp bar (accounts for dpi)
     private final float hpLerpSpeed = 0.5f; // velocity of hp bar change

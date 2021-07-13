@@ -1,5 +1,8 @@
 package com.astroblaze;
 
+/**
+ * Represents an upgrade entry for one of the upgrade types
+ */
 public class UpgradeEntry {
     public final int maxTier;
     public final float multiplier;

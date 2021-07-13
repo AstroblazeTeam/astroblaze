@@ -8,6 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 // debounce implementation by simon04
 // https://stackoverflow.com/a/38296055/2687978
+
+/**
+ * This class implements a debouncer, used to debounce state updates so UI isn't overloaded
+ * with simultaneous events and avoids frame drops
+ */
 public class Debouncer {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final ConcurrentHashMap<Object, Future<?>> delayedMap = new ConcurrentHashMap<>();

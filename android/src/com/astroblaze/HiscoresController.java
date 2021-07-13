@@ -10,11 +10,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class provides api for highscores board
+ * hosted at https://services.karmaflux.com/api/Astroblaze/
+ */
 public class HiscoresController {
     public static abstract class RunnableResponseHandler<T> implements Runnable {
         public T response;
     }
 
+    /**
+     * @param r Runnable to run on success
+     * Fetch highscores from server
+     */
     public static void fetchBoard(RunnableResponseHandler<ArrayList<HiscoresEntry>> r) {
         Gdx.app.log("HiscoresController", "Started fetchBoard");
         Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
@@ -63,6 +71,10 @@ public class HiscoresController {
         });
     }
 
+    /**
+     * @param r Runnable to run on success
+     * Fetches current player rank based on their score
+     */
     public static void fetchRank(RunnableResponseHandler<Integer> r) {
         Gdx.app.log("HiscoresController", "fetchRank started");
         PlayerState state = AstroblazeGame.getPlayerState();
@@ -96,6 +108,12 @@ public class HiscoresController {
         });
     }
 
+
+    /**
+     * This updates user score on server
+     * @param r Runnable to run on success
+     * @param soft If true and already updated recently or score is the same, don't update again
+     */
     public static void submitRank(RunnableResponseHandler<Integer> r, boolean soft) {
         Gdx.app.log("HiscoresController", "submitRank started");
         PlayerState state = AstroblazeGame.getPlayerState();

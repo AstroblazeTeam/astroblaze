@@ -2,6 +2,11 @@ package com.astroblaze.Utils;
 
 import java.util.*;
 
+/**
+ * Class provides a weighted collection and a method
+ * to select random element according to their weight
+ * @param <T> Weighted result
+ */
 public class WeightedCollection<T> {
     private final NavigableMap<Integer, T> map = new TreeMap<>();
     private final Random random;

@@ -14,6 +14,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * This class draws player's laser beam using a shader
+ * and UV scrolling on the mesh (scrolling is done inside
+ * the shader using 'time' uniform)
+ */
 public class LaserController {
     private static class LaserInfo {
         Vector3 origin;

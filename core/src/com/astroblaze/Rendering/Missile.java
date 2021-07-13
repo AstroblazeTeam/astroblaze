@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * Class represents a missile, has some animation logic in here
+ */
 public class Missile extends Renderable {
     public final static float unpoweredSpeed = 150f;
     public final static float maxUnpoweredTime = 0.25f;

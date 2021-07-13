@@ -26,6 +26,10 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.Random;
 
+/**
+ * This Actor controls the level flow: starting the level, spawning enemies, bosses, and
+ * finishing the level when boss is dead. Also contains the tutorial flow.
+ */
 public class LevelControllerActor extends Actor {
     private final Scene3D scene;
     private final WeightedCollection<EnemyType> waveTypeWeights = new WeightedCollection<>();

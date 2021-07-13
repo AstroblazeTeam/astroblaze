@@ -10,6 +10,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.text.DecimalFormat;
 
+/**
+ * Class represents the player ship in the game, the common logic shared with EnemyShip
+ * is placed in SpaceShip and this provides overrides for player ship stats and purchased
+ * bonuses
+ */
 public class PlayerShip extends SpaceShip {
     public final float respawnNoControlTime = 1f;
 

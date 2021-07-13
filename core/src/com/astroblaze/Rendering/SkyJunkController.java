@@ -15,6 +15,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * This class renders and animates the background stars
+ */
 public class SkyJunkController implements ILoadingFinishedListener {
     private final int starCount = 512;
     private final Array<JunkInfo> activeDecals = new Array<>(1024);

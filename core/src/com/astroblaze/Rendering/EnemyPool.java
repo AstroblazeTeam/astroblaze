@@ -2,6 +2,9 @@ package com.astroblaze.Rendering;
 
 import com.badlogic.gdx.utils.Pool;
 
+/**
+ * This provides a pool for EnemyShip entities to reduce GC load
+ */
 public class EnemyPool extends Pool<EnemyShip> {
     private final Scene3D scene;
 

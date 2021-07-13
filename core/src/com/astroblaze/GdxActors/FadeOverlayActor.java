@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+/**
+ * Actor to provide interpolated fade overlay when going in/out of the game for smooth transition
+ */
 public class FadeOverlayActor {
     private final ShaderProgram shader;
     private final Mesh mesh;

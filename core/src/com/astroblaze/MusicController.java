@@ -9,6 +9,9 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.HashMap;
 
+/**
+ * This class handles playing music, changing tracks and crossfade while changing
+ */
 public class MusicController implements ILoadingFinishedListener {
     public enum MusicTrackType {None, UI, Game1, Game2, Game3, Ending}
 

@@ -14,6 +14,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * This provides a controller to draw decals; bullets, explosions, exhaust flames,
+ * background stars, etc are drawn here, this controls their lifecycle and animation if needed
+ * Also provides other classes a DecalBatch they can use for their drawing
+ */
 public class DecalController {
     private final DecalBatch batch;
     private final Array<DecalInfo> activeDecals = new Array<>(256);

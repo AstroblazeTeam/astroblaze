@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 
 import java.util.Random;
 
+/**
+ * Class manages the 3D perspective camera, provides methods for shaking and vibration
+ */
 public class CameraController extends PerspectiveCamera {
     private static final Random rng = new Random();
 

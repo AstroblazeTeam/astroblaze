@@ -8,6 +8,9 @@ import com.badlogic.gdx.utils.Pool;
 
 import java.util.ArrayList;
 
+/**
+ * This provides a pool for Missile entities to reduce GC load
+ */
 public class MissilePool extends Pool<Missile> {
     private final Vector3 offscreenPosition = new Vector3(6000f, 0f, 0f);
     private final ArrayList<Missile> activeMissiles = new ArrayList<>(256);

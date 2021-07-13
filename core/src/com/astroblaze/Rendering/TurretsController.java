@@ -11,6 +11,10 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * This class controls the turret rendering for ships that request a turret to be rendered
+ * on top of them
+ */
 public class TurretsController implements ILoadingFinishedListener {
     private final Array<TurretInfo> activeDecals = new Array<>(1024);
     private final Array<TextureAtlas.AtlasRegion> turrets = new Array<>(8);

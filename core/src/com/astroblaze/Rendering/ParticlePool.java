@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 
+/**
+ * This provides a pool for ParticleEffect entities to reduce GC load
+ */
 public class ParticlePool extends Pool<ParticleEffect> {
     private final ParticleSystem system;
     private ParticleEffect effect;

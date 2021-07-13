@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * Class represents the enemy ships in the game, the common logic shared with PlayerShip
+ * is placed in SpaceShip and this provides overrides for enemy ship stats and AI logic
+ */
 public class EnemyShip extends SpaceShip implements ICollisionProvider {
     private final LevelStatTracker statTracker;
     private float modelRadius;

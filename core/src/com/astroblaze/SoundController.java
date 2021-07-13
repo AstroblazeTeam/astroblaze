@@ -8,6 +8,11 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * Class to handle the sound effects, contains methods to play sounds and make sure
+ * they're played with the correct volume
+ * Some sounds that may occur multiple times at once are guarded against clipping
+ */
 public class SoundController implements ILoadingFinishedListener {
     private final PlayerState state;
 

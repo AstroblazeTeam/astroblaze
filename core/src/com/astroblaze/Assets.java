@@ -18,6 +18,12 @@ import com.badlogic.gdx.utils.Logger;
 
 import java.util.Locale;
 
+/**
+ * This class is the singleton AssetManager to the project
+ * it loads the asssets, initializes some collections and provides
+ * them for use for other classes.
+ * Once the class is disposed it also disposes all assets
+ */
 public class Assets extends AssetManager implements ILoadingFinishedListener {
     private static Assets instance;
     private static final int spaceShipModelsAvailable = 14;

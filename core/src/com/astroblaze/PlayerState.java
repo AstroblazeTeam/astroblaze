@@ -11,10 +11,16 @@ import com.google.gson.GsonBuilder;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This represents the player state, if player state change events are required there is also
+ * observable pattern implemented via IPlayerStateChangedListener
+ * This tracks player's money, score, owned ships, purchased upgrades etc.
+ * Also the player's settings like sound/music volume, screen shaking flag etc
+ * This also provides the methods to check if upgrade is purchaseable and actually buy it
+ */
 public class PlayerState {
-    private final transient ArrayList<IPlayerStateChangedListener> playerStateChangeListeners = new ArrayList<>(4);
-    private final transient static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private PlayerStateData data = new PlayerStateData();
+    private final ArrayList<IPlayerStateChangedListener> playerStateChangeListeners = new ArrayList<>(4);
+    private final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final Debouncer debouncer = new Debouncer();
     private final Runnable stateChangedUpdaterRunnable = new Runnable() {
         @Override
@@ -24,6 +30,8 @@ public class PlayerState {
             }
         }
     };
+
+    private PlayerStateData data = new PlayerStateData();
 
     private static class PlayerStateData {
         public String id = UUID.randomUUID().toString();

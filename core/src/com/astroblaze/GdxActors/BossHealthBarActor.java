@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Actor to draw boss health bar, if boss is present
+ */
 public class BossHealthBarActor extends Actor {
     private final float hpWidth = 4f; // width of hp bar (accounts for dpi)
     private final float hpLerpSpeed = 1f; // velocity of hp bar change

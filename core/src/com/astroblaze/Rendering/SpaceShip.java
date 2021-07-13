@@ -14,6 +14,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * This class represents the spaceships in game world, enemies are implementing
+ * abstract methods in EnemyShip and PlayerShip implements it for the player
+ * It hosts the common rendering and gun/turret logic
+ */
 public abstract class SpaceShip extends Renderable implements ITargetable {
     protected final Vector3 moveVector = new Vector3();
     protected final Scene3D scene;

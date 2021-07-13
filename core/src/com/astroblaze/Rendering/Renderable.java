@@ -10,6 +10,10 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * This class represents a 3D renderable object in the game
+ * It has position, rotation, scale and a model for rendering
+ */
 public class Renderable extends SceneActor {
     protected final Vector3 position = new Vector3();
     protected final Quaternion rotation = new Quaternion();

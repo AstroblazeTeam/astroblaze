@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import kotlin.Triple;
 
+/**
+ * This class handles animation on specific shop items when they're purchased
+ */
 public class RVItemAnimator extends DefaultItemAnimator {
     public static final long firstAnimDuration = 400;
 

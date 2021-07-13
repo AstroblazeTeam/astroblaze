@@ -5,6 +5,11 @@ import com.badlogic.gdx.graphics.g3d.Model;
 
 import java.util.ArrayList;
 
+/**
+ * This enum represents the player base ships before upgrades
+ * It also provides methods to get the actual stats including
+ * the upgrades player owns.
+ */
 public enum PlayerShipVariant {
     Shuttle(0, 0, 10f, 80f, 100f, 5, 2f, 0f, 1, 1, 2),
     Yacht(1, 1, 12f, 150f, 80f, 10, 3f, 20000f, 1, 2, 2),
