@@ -21,6 +21,10 @@ import com.badlogic.gdx.Gdx;
 
 import java.text.DecimalFormat;
 
+/**
+ * This class handles fragment_ship.xml, hosted in FragmentLevelSelect ViewPager2
+ * displays ship description, modified stats etc.
+ */
 public class FragmentShip extends Fragment implements IPlayerStateChangedListener {
     private final PlayerShipVariant variant;
     private Button btnAction;

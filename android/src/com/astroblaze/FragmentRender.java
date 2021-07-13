@@ -11,6 +11,11 @@ import androidx.annotation.Nullable;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 
+/**
+ * This fragment is the LibGDX render fragment, it has no layout
+ * Don't mess with this fragment as LibGDX wrappers will remove
+ * any widgets placed in this fragment
+ */
 public class FragmentRender extends AndroidFragmentApplication {
     public FragmentRender() {
         // Required empty public constructor

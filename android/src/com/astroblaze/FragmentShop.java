@@ -21,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles fragment_shop.xml to provide the player with a way to purchase
+ * and upgrade ships
+ */
 public class FragmentShop extends Fragment implements IPlayerStateChangedListener {
     private PlayerShipVariant variant;
     private TextView moneyDisplay;

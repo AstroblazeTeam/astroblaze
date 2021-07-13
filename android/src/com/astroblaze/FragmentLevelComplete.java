@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class handles fragment_level_complete.xml, triggered when the player completes a level
+ * This provides display and animation to final level stats and kills in the RecyclerView
+ */
 public class FragmentLevelComplete extends Fragment {
     private RecyclerView rvBoard;
 

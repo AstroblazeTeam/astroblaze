@@ -15,6 +15,10 @@ import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+/**
+ * Adapter for shop items, has some logic to delay waiting for animation
+ * so text isn't changed while animation is playing.
+ */
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ViewHolder> {
     private final PlayerShipVariant variant;
     private final Context context;

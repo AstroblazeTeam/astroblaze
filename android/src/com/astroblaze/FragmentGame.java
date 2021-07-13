@@ -21,6 +21,10 @@ import com.astroblaze.Rendering.PlayerShip;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class handles fragment_game.xml - one of the overlays on top of LibGDX rendering layer
+ * also provides the 2 in-game buttons to fire missiles/laser and draws/animates the money counter
+ */
 public class FragmentGame extends Fragment implements IUIChangeListener, IPlayerStateChangedListener {
     private TextView tvMoney;
     private TextView tvSpecial1;

@@ -19,6 +19,10 @@ import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
+/**
+ * This handles fragment_levelselect.xml provides selecting the level and ship,
+ * a way to enter the upgrades shop and starting the level.
+ */
 public class FragmentLevelSelect extends Fragment implements IPlayerStateChangedListener {
     private ShipPreviewActor preview;
     private ViewPager2 pagerLevels;

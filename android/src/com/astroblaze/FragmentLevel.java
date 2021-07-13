@@ -17,6 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
+/**
+ * This handles fragment_level.xml - one of the subviews in ViewPager2 hosted in LevelSelect
+ */
 public class FragmentLevel extends Fragment implements IPlayerStateChangedListener {
     private final int level;
     private TextView tvLevelDescription;

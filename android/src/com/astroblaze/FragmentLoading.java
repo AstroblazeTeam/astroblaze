@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * This is empty fragment so NavGraph doesn't display the main menu for loading screen
+ */
 public class FragmentLoading extends Fragment {
     public FragmentLoading() {
         // Required empty public constructor

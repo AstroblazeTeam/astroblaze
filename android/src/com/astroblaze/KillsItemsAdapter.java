@@ -18,6 +18,9 @@ import com.astroblaze.Rendering.EnemyType;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * An adapter for kills display in LevelComplete fragment's RecyclerView
+ */
 public class KillsItemsAdapter extends RecyclerView.Adapter<KillsItemsAdapter.ViewHolder> {
     private static class EnemyKillCount {
         public final EnemyType type;

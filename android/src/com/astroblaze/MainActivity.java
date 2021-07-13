@@ -17,6 +17,11 @@ import com.astroblaze.Interfaces.ILoadingFinishedListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication;
 
+/**
+ * This is the main activity that handles setting up a NavController,
+ * registering navigation events to control music and by doing so fires
+ * up LibGDX startup in FragmentRender/fragment_render.xml
+ */
 public class MainActivity extends FragmentActivity implements AndroidFragmentApplication.Callbacks, ILoadingFinishedListener {
     private AstroblazeGame game;
     private NavController navController;

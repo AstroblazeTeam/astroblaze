@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * This class handles fragment_options.xml, providing the options display
+ */
 public class FragmentOptions extends Fragment {
     private SoundController soundController;
     private MusicController musicController;

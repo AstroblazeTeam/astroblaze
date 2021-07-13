@@ -12,6 +12,10 @@ import androidx.navigation.NavController;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class handles fragment_gameover.xml, triggered when the player loses all their lives
+ * Only provides a single button to exit back up the NavGraph stack (or via back button)
+ */
 public class FragmentGameOver extends Fragment {
     public FragmentGameOver() {
         // Required empty public constructor

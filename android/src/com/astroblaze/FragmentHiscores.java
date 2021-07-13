@@ -20,6 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * This handles the highscores screen, animating the loading, fetching the data and displaying
+ * it in the RecyclerView
+ */
 public class FragmentHiscores extends Fragment {
     private RecyclerView rvBoard;
     private ProgressBar pgLoading;

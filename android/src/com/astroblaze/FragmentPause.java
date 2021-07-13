@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class handles fragment_pause.xml, providing the fragment displayed when game is paused
+ */
 public class FragmentPause extends Fragment {
     private final NavController.OnDestinationChangedListener onDestinationChangedListener;
 

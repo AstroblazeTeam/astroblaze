@@ -22,6 +22,9 @@ import android.widget.TextView;
 
 import com.astroblaze.Interfaces.IPlayerStateChangedListener;
 
+/**
+ * This class handles fragment_menu.xml, providing the main menu display
+ */
 public class FragmentMenu extends Fragment implements IPlayerStateChangedListener {
     private TextView tvPilotName;
     private TextView tvRank;

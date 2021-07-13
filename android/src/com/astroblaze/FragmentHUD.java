@@ -18,6 +18,10 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.*;
 
+/**
+ * This class handles fragment_hud.xml - one of the layers above LibGDX rendering layer
+ * This also implements IGUIRenderer to bridge Android localization and UI into LibGDX
+ */
 public class FragmentHUD extends Fragment implements IGUIRenderer {
     private final ArrayList<TextView> tvRenders = new ArrayList<>(16);
     private View view;

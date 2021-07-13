@@ -1,7 +1,6 @@
 package com.astroblaze;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * An adapter for hiscores fragment RecyclerView
+ */
 public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<HiscoresEntry> items;
@@ -48,7 +50,6 @@ public class HiscoresItemsAdapter extends RecyclerView.Adapter<HiscoresItemsAdap
 
         for (TextView textView : holder.allTextViews) {
             textView.setTextColor(color);
-            textView.setTypeface(textView.getTypeface(), isSelf ? Typeface.BOLD : Typeface.NORMAL);
         }
     }
 

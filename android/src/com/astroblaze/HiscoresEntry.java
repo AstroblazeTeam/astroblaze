@@ -1,5 +1,8 @@
 package com.astroblaze;
 
+/**
+ * Represents a single hiscores entry
+ */
 public class HiscoresEntry {
     public final int rank;
     public final String id;
