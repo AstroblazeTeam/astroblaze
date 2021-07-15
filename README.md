@@ -6,7 +6,7 @@ This project is a simple side scroller game made as final semester project for a
 
 ## Demo
 
-https://youtu.be/54PhBKuJAIc
+[![Astroblaze Demo Video](https://user-images.githubusercontent.com/6560075/125796263-71980dfe-7c7f-4e0d-a7fb-05b8330afd2a.png)](https://youtu.be/54PhBKuJAIc "Astroblaze Demo Video")
 
 ## Releases
 
